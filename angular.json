@@ -3,5 +3,36 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "ngx-charts-on-fhir": {
+      "projectType": "library",
+      "root": "projects/ngx-charts-on-fhir",
+      "sourceRoot": "projects/ngx-charts-on-fhir/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-charts-on-fhir/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-charts-on-fhir/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-charts-on-fhir/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-charts-on-fhir/src/test.ts",
+            "tsConfig": "projects/ngx-charts-on-fhir/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-charts-on-fhir/karma.conf.js"
+          }
+        }
+      }
+    }
   }
 }
