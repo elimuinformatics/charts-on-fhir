@@ -1,27 +1,18 @@
-# ChartsOnFhir
+# Charts-on-FHIR
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.5.
+A data visualization library for SMART-on-FHIR apps.
+Built with [Chart.js](https://www.chartjs.org/)
 
-## Development server
+## Running the Showcase app
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. Run `npm run watch ngx-charts-on-fhir` to build the library and watch for changes.
+2. Run `npm start showcase` to start the local development server for the showcase app.
+3. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Building the library
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `ng build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/ngx-charts-on-fhir` directory.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `ng test ngx-charts-on-fhir` to execute the unit tests via [Karma](https://karma-runner.github.io).
