@@ -1,0 +1,6 @@
+.empty-message {
+  position: relative;
+  top: -300px;
+  left: 400px;
+  z-index: 10;
+}

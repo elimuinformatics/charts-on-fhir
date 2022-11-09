@@ -1,0 +1,51 @@
+mat-sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.layout-sidebar {
+  min-width: 36vw;
+  display: flex;
+}
+.layout-sidebar-content {
+  flex: 1 1 auto;
+}
+.layout-sidebar-close {
+  flex: 0 0 auto;
+}
+.sidebar-close-button {
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  background-color: #3f51b5; /* #3f51b5; /* todo: get theme color */
+  border: 0px;
+  // border-right: 4px solid #7986d3;
+  padding: 0px;
+  width: 16px;
+  cursor: pointer;
+}
+.sidebar-close-button mat-icon {
+  margin: -4px;
+}
+
+.layout-main {
+  display: flex;
+  align-items: flex-start;
+}
+.layout-main-layers {
+  flex: 1 1 auto;
+  margin: 8px;
+  max-width: 35vw;
+}
+.layout-main-chart {
+  flex: 0 0 auto;
+  margin: 8px;
+  max-width: 65vw;
+}
+
+.scroll {
+  max-height: 600px;
+  overflow-y: auto;
+}

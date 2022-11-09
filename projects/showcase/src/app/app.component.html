@@ -1,1 +1,39 @@
-<lib-ngx-charts-on-fhir></lib-ngx-charts-on-fhir>
+<mat-sidenav-container>
+  <mat-sidenav mode="over" class="layout-sidebar" #browser opened>
+    <div class="layout-sidebar">
+      <div class="layout-sidebar-content">
+        <data-layer-browser></data-layer-browser>
+      </div>
+      <div class="layout-sidebar-close">
+        <button color="primary" class="sidebar-close-button" (click)="browser.close()" title="Close data browser"><mat-icon>arrow_left</mat-icon></button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="layout-main">
+      <mat-card class="layout-main-layers mat-elevation-z2">
+        <mat-card-header><h4>Data Layers</h4></mat-card-header>
+        <mat-card-content>
+          <data-layer-list></data-layer-list>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button *ngIf="!browser.opened" mat-button color="primary" (click)="browser.open()" title="Add data layers"><mat-icon>add</mat-icon>ADD DATA</button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-accordion multi class="layout-main-chart">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Chart </mat-panel-title>
+          </mat-expansion-panel-header>
+          <fhir-chart></fhir-chart>
+        </mat-expansion-panel>
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Insights </mat-panel-title>
+          </mat-expansion-panel-header>
+          <analysis></analysis>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

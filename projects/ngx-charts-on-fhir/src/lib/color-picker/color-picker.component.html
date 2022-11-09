@@ -1,0 +1,27 @@
+<button
+  mat-mini-fab
+  title="Choose a color"
+  [ngStyle]="{ 'background-color': selectedColor }"
+  class="mat-elevation-z4"
+  [disabled]="isDisabled"
+  (click)="isOpen = !isOpen"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+></button>
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  [cdkConnectedOverlayOffsetX]="-4"
+  [cdkConnectedOverlayOffsetY]="-44"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  (detach)="isOpen = false"
+  (backdropClick)="isOpen = false"
+>
+  <div class="overlay">
+    <button mat-mini-fab *ngFor="let color of palette" [ngStyle]="{ 'background-color': color }" class="mat-elevation-z4" (click)="onClick(color)">
+      <mat-icon *ngIf="color === selectedColor">check_small</mat-icon>
+    </button>
+  </div>
+</ng-template>

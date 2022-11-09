@@ -1,0 +1,4 @@
+<div class="chart-container" style="position: relative; width: 60vw">
+  <canvas width="100%" baseChart [type]="type ?? defaultType" [datasets]="datasets ?? defaultDatasets" [options]="options ?? defaultOptions"></canvas>
+  <div *ngIf="!datasets || datasets.length < 1" class="empty-message">No data layers are selected</div>
+</div>
