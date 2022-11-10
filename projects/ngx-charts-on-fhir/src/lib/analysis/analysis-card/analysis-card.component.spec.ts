@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { DataLayerColorService, COLOR_PALETTE } from '../../data-layer/data-layer-color.service';
 import { AnalysisCardComponent } from './analysis-card.component';
 
@@ -14,6 +16,7 @@ describe('AnalysisCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AnalysisCardComponent],
+      imports: [MatCardModule, MatIconModule],
       providers: [
         { provide: DataLayerColorService, useValue: mockColorService },
         { provide: COLOR_PALETTE, useValue: ['#000000', '#ffffff'] },
