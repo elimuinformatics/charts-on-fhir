@@ -15,7 +15,7 @@ export class FhirChartConfigurationService {
   constructor(private layerManager: DataLayerManagerService) {}
   chartConfig$ = this.layerManager.selectedLayers$.pipe(
     map((layers) => mergeLayers(layers)),
-    scan((config, layer) => updateConfiguration(config, layer), {} as TimelineConfiguration)
+    scan((config, layer) => updateConfiguration(config, layer), buildConfiguration())
   );
 }
 
@@ -50,7 +50,8 @@ const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) =>
 };
 const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).label?.content === (other as any).label.content;
 
-function buildConfiguration(datasets: Dataset[], scales: ChartScales, annotations: ChartAnnotations): TimelineConfiguration {
+/** Build a chart configuration object to display the given datasets, scales, and annotations */
+function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
   return {
     type: 'line',
     data: {

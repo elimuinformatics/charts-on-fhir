@@ -1,10 +1,11 @@
 import { forwardRef, Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, merge, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { DataLayerModule } from './data-layer.module';
+import { zip } from 'lodash-es';
 
 /** A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
@@ -44,7 +45,10 @@ export class DataLayerManagerService {
     this.stateSubject.next(value);
   }
   allLayers$ = this.stateSubject.pipe(map(({ layers }) => Object.values(layers)));
-  selectedLayers$ = this.stateSubject.pipe(map(({ layers, selected }) => selected.map((id) => layers[id])));
+  selectedLayers$ = this.stateSubject.pipe(
+    map(({ layers, selected }) => selected.map((id) => layers[id])),
+    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
+  );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
 
   // todo: roll this into stateSubject?
@@ -78,7 +82,10 @@ export class DataLayerManagerService {
 
   select(id: string) {
     if (!this.state.layers[id]) {
-      throw new Error(`No layer found with id [${id}]`);
+      throw new Error(`Layer [${id}] not found`);
+    }
+    if (this.state.layers[id].selected) {
+      throw new Error(`Layer [${id}] is already selected`);
     }
     this.stateSubject.next(
       produce(this.state, (draft) => {
@@ -96,23 +103,24 @@ export class DataLayerManagerService {
 
   remove(id: string) {
     if (!this.state.layers[id]) {
-      throw new Error(`No layer found with id [${id}]`);
+      throw new Error(`Layer [${id}] not found`);
+    }
+    if (!this.state.layers[id].selected) {
+      throw new Error(`Layer [${id}] is not selected`);
     }
     this.stateSubject.next(
       produce(this.state, (draft) => {
         const layer = draft.layers[id];
-        if (!layer.selected) {
-          layer.selected = false;
-          const index = draft.selected.indexOf(id);
-          draft.selected.splice(index, 1);
-        }
+        layer.selected = false;
+        const index = draft.selected.indexOf(id);
+        draft.selected.splice(index, 1);
       })
     );
   }
 
   enable(id: string, enabled = true) {
     if (!this.state.layers[id]) {
-      throw new Error(`No layer found with id [${id}]`);
+      throw new Error(`Layer [${id}] not found`);
     }
     this.stateSubject.next(
       produce(this.state, (draft) => {
@@ -127,7 +135,7 @@ export class DataLayerManagerService {
 
   update(layer: ManagedDataLayer) {
     if (!this.state.layers[layer.id]) {
-      throw new Error(`No layer found with id [${layer.id}]`);
+      throw new Error(`Layer [${layer.id}] not found`);
     }
     this.stateSubject.next(
       produce(this.state, (draft) => {
@@ -137,6 +145,9 @@ export class DataLayerManagerService {
   }
 
   move(previousIndex: number, newIndex: number) {
+    if (previousIndex < 0 || previousIndex > this.state.selected.length) {
+      throw new RangeError(`Index [${previousIndex}] is out of range [0 - ${this.state.selected.length}]`);
+    }
     this.stateSubject.next(
       produce(this.state, (draft) => {
         const movedLayers = draft.selected.splice(previousIndex, 1);

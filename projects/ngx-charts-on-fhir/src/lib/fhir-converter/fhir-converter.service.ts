@@ -5,7 +5,7 @@ import { FhirConverterModule } from './fhir-converter.module';
 import { MultiMapper } from './multi-mapper.service';
 
 /**
- * Converts a FHIR Bundle into [DataLayer]s using a [GroupConverter] to group similar Resources.
+ * Converts a FHIR Bundle into [DataLayer]s using a [MultiMapper] to map different Resource types.
  */
 @Injectable({
   providedIn: FhirConverterModule,
