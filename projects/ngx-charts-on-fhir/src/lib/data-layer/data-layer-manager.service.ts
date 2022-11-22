@@ -53,6 +53,16 @@ export class DataLayerManagerService {
 
   loading = false;
 
+  /**
+   * Retrieve layers from all of the injected [DataLayerService]s.
+   *
+   * This method subscribes to the Observables returned by each service's `retrieve()` method
+   * and merges each emitted [DataLayer] with the previously emitted layers using the injected [DataLayerMergeService].
+   *
+   * This method runs asynchronously and does not return anything.
+   * You can observe the retrieved layers using one of the manager's Observable properties:
+   * [allLayers$], [selectedLayers$], or [availableLayers$].
+   */
   retrieveAll() {
     this.loading = true;
     merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
