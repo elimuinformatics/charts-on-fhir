@@ -7,7 +7,6 @@ import { DataLayerColorService } from '../data-layer/data-layer-color.service';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { MILLISECONDS_PER_DAY } from '../utils';
 import { AnalysisCardContent } from './analysis-card-content.component';
-import { AnalysisCardComponent } from './analysis-card/analysis-card.component';
 
 import { AnalysisComponent, ANALYSIS_CARDS } from './analysis.component';
 import { AnalysisModule } from './analysis.module';
@@ -16,6 +15,22 @@ import { AnalysisModule } from './analysis.module';
 class MockCard extends AnalysisCardContent {
   override title = 'Mock Title';
   override icon = 'mock_icon';
+}
+
+@Component({})
+class MockCardHighPriority extends AnalysisCardContent {
+  override title = 'High Priority';
+  override get priority() {
+    return 100;
+  }
+}
+
+@Component({})
+class MockCardHidden extends AnalysisCardContent {
+  override title = 'Hidden';
+  override get priority() {
+    return 0;
+  }
 }
 
 const mockColorService = {
@@ -73,6 +88,37 @@ describe('AnalysisComponent', () => {
     expect(cardsContainer.childElementCount).toBe(2);
   });
 
+  it('cards should be ordered by priority', () => {
+    cards.push(MockCard, MockCardHighPriority);
+    layerManager.selectedLayers$.next([
+      {
+        id: '1',
+        name: 'Layer',
+        datasets: [{ label: 'one', data: [] }],
+        scales: {},
+      },
+    ]);
+    const cardInstances: AnalysisCardContent[] = fixture.debugElement
+      .query(By.css('.analysis-cards'))
+      .children.map((debugElement) => debugElement.componentInstance);
+    const titles = cardInstances.map((card) => card.title);
+    expect(titles).toEqual(['High Priority', 'Mock Title']);
+  });
+
+  it('cards with zero priority should be hidden', () => {
+    cards.push(MockCardHidden);
+    layerManager.selectedLayers$.next([
+      {
+        id: '1',
+        name: 'Layer',
+        datasets: [{ label: 'one', data: [] }],
+        scales: {},
+      },
+    ]);
+    const cardsContainer: HTMLElement = fixture.debugElement.query(By.css('.analysis-cards')).nativeElement;
+    expect(cardsContainer.childElementCount).toBe(0);
+  });
+
   it('should get title from card content', () => {
     cards.push(MockCard);
     const layer = {
@@ -84,7 +130,7 @@ describe('AnalysisComponent', () => {
     layerManager.selectedLayers$.next([layer]);
     fixture.detectChanges();
     const cardTitle: HTMLElement = fixture.debugElement.query(By.css('.analysis-card-title')).nativeElement;
-    expect(cardTitle.innerHTML).toBe("Mock Title");
+    expect(cardTitle.innerHTML).toBe('Mock Title');
   });
 
   it('should get icon from card content', () => {
