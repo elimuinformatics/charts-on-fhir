@@ -1,0 +1,20 @@
+<div class="scrolling-list">
+  <mat-accordion displayMode="flat" multi="true">
+    <mat-expansion-panel *ngFor="let dataset of datasetsReversed" expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="onCheckboxChange(dataset, $event)"
+            [checked]="!dataset.hidden"
+            [title]="dataset.hidden ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
+            color="primary"
+          ></mat-checkbox>
+          {{ dataset.label }}
+        </mat-panel-title>
+        <mat-panel-description> {{ dataset.data.length }} observations </mat-panel-description>
+      </mat-expansion-panel-header>
+      <dataset-options [dataset]="dataset" (change)="this.onDatasetOptionsChange(dataset, $event)"></dataset-options>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

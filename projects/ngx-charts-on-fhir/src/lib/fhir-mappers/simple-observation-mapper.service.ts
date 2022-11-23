@@ -1,0 +1,75 @@
+import { Injectable, Inject, forwardRef } from '@angular/core';
+import { ScaleOptions } from 'chart.js';
+import { Observation } from 'fhir/r2';
+import { merge } from 'lodash-es';
+import { DataLayer } from '../data-layer/data-layer';
+import { Mapper } from '../fhir-converter/multi-mapper.service';
+import { ChartAnnotation } from '../utils';
+import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from './fhir-mapper-options';
+import { FhirMappersModule } from './fhir-mappers.module';
+
+/** Required properties for mapping an Observation with [SimpleObservationMapper] */
+export type SimpleObservation = {
+  code: {
+    text: string;
+  };
+  effectiveDateTime: string;
+  valueQuantity: {
+    value: number;
+    unit: string;
+  };
+} & Observation;
+export function isSimpleObservation(resource: Observation): resource is SimpleObservation {
+  return !!(
+    resource.resourceType === 'Observation' &&
+    resource.code?.text &&
+    resource.effectiveDateTime &&
+    resource.valueQuantity?.value &&
+    resource.valueQuantity?.unit
+  );
+}
+
+/** Maps a FHIR Observation resource that has a single valueQuantity */
+@Injectable({
+  providedIn: forwardRef(() => FhirMappersModule),
+})
+export class SimpleObservationMapper implements Mapper<SimpleObservation> {
+  constructor(
+    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
+    @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
+    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
+  ) {}
+  canMap = isSimpleObservation;
+  map(resource: SimpleObservation): DataLayer {
+    return {
+      name: resource.code.text,
+      category: resource.category?.text,
+      datasets: [
+        {
+          label: resource.code.text,
+          yAxisID: resource.valueQuantity.unit,
+          data: [
+            {
+              x: new Date(resource.effectiveDateTime).getTime(),
+              y: resource.valueQuantity.value,
+            },
+          ],
+        },
+      ],
+      scales: {
+        timeline: this.timeScaleOptions,
+        [resource.valueQuantity.unit]: merge({}, this.linearScaleOptions, {
+          title: { text: resource.valueQuantity.unit },
+        }),
+      },
+      annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
+        merge({}, this.annotationOptions, {
+          label: { content: `${resource.code.text} Reference Range` },
+          yScaleID: resource.valueQuantity.unit,
+          yMax: range?.high?.value,
+          yMin: range?.low?.value,
+        })
+      ),
+    };
+  }
+}

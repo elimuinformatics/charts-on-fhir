@@ -1,0 +1,12 @@
+.mat-column-value {
+  padding-left: 16px;
+  text-align: end;
+  justify-content: flex-end;
+}
+table {
+  width: 100%;
+  background-color: #ffffff44;
+}
+.menu {
+  float: right;
+}

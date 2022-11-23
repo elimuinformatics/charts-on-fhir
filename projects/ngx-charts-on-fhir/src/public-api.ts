@@ -2,6 +2,27 @@
  * Public API Surface of ngx-charts-on-fhir
  */
 
-export * from './lib/ngx-charts-on-fhir.service';
-export * from './lib/ngx-charts-on-fhir.component';
-export * from './lib/ngx-charts-on-fhir.module';
+export * from './lib/analysis/analysis.module';
+export * from './lib/analysis/analysis.component';
+export * from './lib/analysis/analysis-card-content.component';
+export * from './lib/analysis-cards/analysis-cards.module';
+export * from './lib/analysis-cards/statistics/statistics.component';
+export * from './lib/analysis-cards/reference-range/reference-range.component';
+export * from './lib/fhir-chart/fhir-chart.component';
+export * from './lib/fhir-chart/fhir-chart.module';
+export * from './lib/data-layer-browser/data-layer-browser.module';
+export * from './lib/data-layer-browser/data-layer-browser.component';
+export * from './lib/data-layer-list/data-layer-list/data-layer-list.component';
+export * from './lib/data-layer-list/data-layer-list.module';
+export * from './lib/data-layer/data-layer.module';
+export * from './lib/data-layer/data-layer-manager.service';
+export * from './lib/data-layer/data-layer-color.service';
+export * from './lib/data-layer/data-layer';
+export * from './lib/fhir-converter/fhir-converter.module';
+export * from './lib/fhir-converter/fhir-converter.service';
+export * from './lib/fhir-converter/multi-mapper.service';
+export * from './lib/fhir-mappers/fhir-mapper-options';
+export * from './lib/fhir-mappers/fhir-mappers.module';
+export * from './lib/fhir-mappers/component-observation-mapper.service';
+export * from './lib/fhir-mappers/simple-observation-mapper.service';
+export * from './lib/utils';
