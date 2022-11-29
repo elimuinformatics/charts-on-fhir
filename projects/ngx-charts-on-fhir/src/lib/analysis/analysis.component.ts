@@ -70,7 +70,6 @@ export class AnalysisComponent implements OnInit, OnChanges {
   }
 
   createCards() {
-    console.log('Creating Cards');
     this.cardContexts = [];
     for (let cardType of this.cardTypes) {
       for (let layer of this.layers) {
