@@ -32,7 +32,7 @@ export class DataLayerOptionsComponent implements OnInit{
       this.change.emit(
         produce(this.layer, (draft) => {
           draft.annotations = castDraft(annotations);
-          // draft.enabled = annotations.some((annotations: any) => !annotations.display);
+        
         })
       );
     }

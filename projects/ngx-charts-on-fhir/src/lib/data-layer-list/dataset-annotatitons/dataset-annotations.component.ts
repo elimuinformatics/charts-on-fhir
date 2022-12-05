@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Annotation } from 'fhir/r2';
 import produce from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
@@ -11,50 +12,47 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
   styleUrls: ['./dataset-annotations.component.css'],
 })
 export class DatasetAnnotationsComponent implements OnInit {
-  private _dataset?: Dataset;
-  private _annotation?: any; 
-  @Input() set dataset(dataset: Dataset) {
-    this._dataset = dataset;
-    this.updateForm(dataset);
-  }
-
+  public _annotation?: any; 
 
   @Input() set annotation(annotation: Dataset) {
     this._annotation = annotation;
      console.log(this._annotation)
+     this.updateForm(annotation);
   }
 
 
-  @Output() change = new EventEmitter<Dataset>();
+  @Output() onAnnotationsChange = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
 
-  get datasetLineOptions(): Dataset<'line'> {
-    return this._dataset as Dataset<'line'>;
-  }
-
   form = this.fb.group({
     color: this.fb.control('', { nonNullable: true }),
-    type: this.fb.control<TimelineChartType>('line', { nonNullable: true }),
-    interpolation: this.fb.control(false, { nonNullable: true }),
-    fill: this.fb.control(false, { nonNullable: true }),
+    label: this.fb.control('', { nonNullable: true }),
+    yMax: this.fb.control('', { nonNullable: true }),
+    yMin: this.fb.control('', { nonNullable: true }),
   });
 
   ngOnInit(): void {
+  
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
     });
+
+
   }
 
   private updateModel(formValue: typeof this.form.value): void {
-    if (this._dataset) {
-      const props: Partial<Dataset> = {
-        type: formValue.type,
-        cubicInterpolationMode: formValue.interpolation ? 'monotone' : 'default',
-        fill: formValue.fill ? 'stack' : false,
-      };
-      this.change.emit(
-        produce(this._dataset, (draft) => {
+    console.log(formValue.label)
+    if (this._annotation) {
+      const props: any = {
+        label: {
+            "content": formValue.label
+        },
+        "yMax": formValue.yMax,
+        "yMin": formValue.yMin
+    }
+      this.onAnnotationsChange.emit(
+        produce(this._annotation, (draft: any) => {
           merge(draft, props);
           this.colorService.setColor(draft, formValue.color ?? '');
         })
@@ -62,13 +60,12 @@ export class DatasetAnnotationsComponent implements OnInit {
     }
   }
 
-  private updateForm(dataset: Dataset): void {
-    const line = dataset as Dataset<'line'>;
+  private updateForm(annotation: any): void {
     this.form.patchValue({
-      color: this.colorService.getColor(dataset),
-      type: dataset.type ?? 'line',
-      interpolation: line.cubicInterpolationMode === 'monotone',
-      fill: !!line.fill,
+      label: this._annotation.label.content,
+      yMax: this._annotation.yMax,
+      yMin: this._annotation.yMin,
+      color : this._annotation.backgroundColor 
     });
   }
 }

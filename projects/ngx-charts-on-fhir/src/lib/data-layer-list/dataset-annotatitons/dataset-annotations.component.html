@@ -1,21 +1,20 @@
 <form [formGroup]="form">
   <section>
-    <mat-slide-toggle formControlName="interpolation">Cubic interpolation</mat-slide-toggle>
     <mat-label>Annotation Color : </mat-label>
     <color-picker formControlName="color"></color-picker>
       <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>Annotation Label : </mat-label>
-        <input matInput placeholder="Placeholder">
+        <input matInput formControlName="label" placeholder="Placeholder">
       </mat-form-field>
     <mat-label>Annotation Range : </mat-label>
     <section>
       <mat-form-field class="example-full-width" appearance="outline">
           <mat-label>Annotation yMax : </mat-label>
-          <input matInput placeholder="Placeholder">
+          <input matInput placeholder="Placeholder" formControlName="yMax">
       </mat-form-field>
       <mat-form-field class="example-full-width" appearance="outline">
           <mat-label>Annotation yMin : </mat-label>
-          <input matInput placeholder="Placeholder">
+          <input matInput placeholder="Placeholder" formControlName="yMin">
       </mat-form-field>
     </section>
   </section>

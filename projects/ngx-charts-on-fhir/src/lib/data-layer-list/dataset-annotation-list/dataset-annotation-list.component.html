@@ -16,7 +16,7 @@
         </mat-panel-title>
         <mat-panel-description> Annotation </mat-panel-description>
       </mat-expansion-panel-header>
-      <dataset-annotations [annotation]="annotation" (change)="this.onDatasetOptionsChange(annotation, $event)"></dataset-annotations>
+      <dataset-annotations [annotation]="annotation" (onAnnotationsChange)="this.onAnnotationsChange(annotation, $event)"></dataset-annotations>
     </mat-expansion-panel>
   </mat-accordion>
 </div>
