@@ -2,7 +2,7 @@
 
 <div class="scrolling-list">
   <mat-accordion displayMode="flat" multi="true">
-    <mat-expansion-panel *ngFor="let annotation of _annotations" expanded="true">
+    <mat-expansion-panel *ngFor="let annotation of _annotations; trackBy:trackByIndex" expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
            <mat-checkbox

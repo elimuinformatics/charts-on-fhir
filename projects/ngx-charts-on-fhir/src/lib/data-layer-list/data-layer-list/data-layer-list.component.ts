@@ -39,7 +39,8 @@ export class DataLayerListComponent {
   }
 
   onLayerChange(layer: ManagedDataLayer) {
-    this.layerManager.update(layer);
+    if(layer.id)
+       this.layerManager.update(layer);
   }
 
   onLayerRemove(layer: ManagedDataLayer) {

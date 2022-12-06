@@ -40,4 +40,8 @@ export class DatasetAnnotationListComponent {
       );
     }
   }
+  
+  trackByIndex(index:any,value: any){
+    return index;
+  }
 }
