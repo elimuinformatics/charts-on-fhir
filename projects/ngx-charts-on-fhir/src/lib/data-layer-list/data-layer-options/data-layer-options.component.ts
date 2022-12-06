@@ -7,14 +7,9 @@ import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
   templateUrl: './data-layer-options.component.html',
   styleUrls: ['./data-layer-options.component.css'],
 })
-export class DataLayerOptionsComponent implements OnInit{
+export class DataLayerOptionsComponent{
   @Input() layer?: ManagedDataLayer;
   @Output() change = new EventEmitter<ManagedDataLayer>();
-
-
-  ngOnInit() {
-    console.log(this.layer)
-  }
 
   onDatasetsChange(datasets: Dataset[]) {
     if (this.layer) {

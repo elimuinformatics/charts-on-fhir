@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import produce, { castDraft } from 'immer';
-import { Dataset } from '../../data-layer/data-layer';
 
 @Component({
   selector: 'dataset-annotation-list',
@@ -9,15 +8,13 @@ import { Dataset } from '../../data-layer/data-layer';
   styleUrls: ['./dataset-annotation-list.component.css'],
 })
 export class DatasetAnnotationListComponent {
-  datasetsReversed: Dataset[] | undefined;
-  public _annotations: any[] | undefined; 
+  public _annotations: any[] | undefined;
 
   @Input() set annotations(annotations: any[] | undefined) {
     this._annotations = annotations;
-    console.log('annotations ====> ' , this._annotations)
- }
+  }
 
- @Output() annotationsChange = new EventEmitter<Dataset[]>();
+  @Output() annotationsChange = new EventEmitter<any[]>();
 
   onCheckboxChange(annotation: any, event: MatCheckboxChange) {
     if (this._annotations) {
@@ -40,8 +37,8 @@ export class DatasetAnnotationListComponent {
       );
     }
   }
-  
-  trackByIndex(index:any,value: any){
+
+  trackByIndex(index: any, value: any) {
     return index;
   }
 }

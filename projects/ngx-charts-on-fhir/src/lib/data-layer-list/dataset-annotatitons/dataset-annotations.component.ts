@@ -2,9 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import produce from 'immer';
 import { merge } from 'lodash-es';
-import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { ChartAnnotations } from '../../utils';
 
 @Component({
   selector: 'dataset-annotations',
@@ -12,14 +10,12 @@ import { ChartAnnotations } from '../../utils';
   styleUrls: ['./dataset-annotations.component.css'],
 })
 export class DatasetAnnotationsComponent implements OnInit {
-  public _annotation?: any; 
+  public _annotation?: any;
 
   @Input() set annotation(annotation: any) {
     this._annotation = annotation;
-     console.log(this._annotation)
-     this.updateForm(annotation);
+    this.updateForm(annotation);
   }
-
 
   @Output() onAnnotationsChange = new EventEmitter<any>();
 
@@ -33,43 +29,37 @@ export class DatasetAnnotationsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-  
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
     });
-
-
   }
 
   private updateModel(formValue: typeof this.form.value): void {
-   
     if (this._annotation) {
       const props: any = {
         label: {
-            "content": formValue.label
+          content: formValue.label,
         },
-        "yMax": formValue.yMax,
-        "yMin": formValue.yMin,
-        "backgroundColor" : formValue.color
-    }
+        yMax: formValue.yMax,
+        yMin: formValue.yMin,
+        backgroundColor: formValue.color,
+      };
       this.onAnnotationsChange.emit(
         produce(this._annotation, (draft: any) => {
           merge(draft, props);
-          // this.colorService.setAnnotationColor(draft, formValue.color ?? '');
         })
       );
     }
   }
 
   private updateForm(annotation: any): void {
-    if(this._annotation){
+    if (this._annotation) {
       this.form.patchValue({
         label: annotation.label.content,
         yMax: annotation.yMax,
         yMin: annotation.yMin,
-        color : this.colorService.getAnnotationColor(annotation) 
+        color: this.colorService.getAnnotationColor(annotation),
       });
     }
-   
   }
 }
