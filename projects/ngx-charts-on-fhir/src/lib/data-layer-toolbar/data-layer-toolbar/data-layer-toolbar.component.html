@@ -1,0 +1,16 @@
+<div class="layout-toolbar">
+  <data-layer-toolbar-button
+    [active]="active === 'browser'"
+    [badge]="(layerManager.availableLayers$ | async)?.length"
+    icon="add"
+    tooltip="Add Data Layers"
+    (click)="onClick('browser')"
+  ></data-layer-toolbar-button>
+  <data-layer-toolbar-button
+    [active]="active === 'options'"
+    [badge]="(layerManager.selectedLayers$ | async)?.length"
+    icon="checklist"
+    tooltip="Selected Layers"
+    (click)="onClick('options')"
+  ></data-layer-toolbar-button>
+</div>

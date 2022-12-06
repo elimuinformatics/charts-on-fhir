@@ -1,0 +1,12 @@
+.button-wrapper {
+  text-align: center;
+  color: #bfc9ff;
+  border-left: 3px solid transparent;
+  padding-right: 3px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.button-wrapper.active {
+  border-left: 3px solid white;
+  color: white;
+}
