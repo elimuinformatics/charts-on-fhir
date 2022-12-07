@@ -5,11 +5,11 @@ import { merge } from 'lodash-es';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 
 @Component({
-  selector: 'dataset-annotations',
-  templateUrl: './dataset-annotations.component.html',
-  styleUrls: ['./dataset-annotations.component.css'],
+  selector: 'annotation-options',
+  templateUrl: './annotation-options.component.html',
+  styleUrls: ['./annotation-options.component.css'],
 })
-export class DatasetAnnotationsComponent implements OnInit {
+export class AnnotationOptionsComponent implements OnInit {
   public _annotation?: any;
 
   @Input() set annotation(annotation: any) {

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { DatasetAnnotationListComponent } from './dataset-annotation-list.component';
+import { AnnotationListComponent } from './annotation-list.component';
 
 describe('DatasetAnnotationListComponent', () => {
-  let component: DatasetAnnotationListComponent;
-  let fixture: ComponentFixture<DatasetAnnotationListComponent>;
+  let component: AnnotationListComponent;
+  let fixture: ComponentFixture<AnnotationListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatasetAnnotationListComponent],
+      declarations: [AnnotationListComponent],
       imports: [MatExpansionModule, MatCheckboxModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DatasetAnnotationListComponent);
+    fixture = TestBed.createComponent(AnnotationListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

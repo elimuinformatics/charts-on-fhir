@@ -21,8 +21,8 @@ export class FhirChartComponent implements OnInit {
   defaultOptions: ChartConfiguration['options'] = {};
   @Input() options: ChartConfiguration['options'] | null = this.defaultOptions;
 
-  @Input() width: string = "600px";
-  @Input() height: string = "300px";
+  @Input() width: string = '600px';
+  @Input() height: string = '300px';
 
   constructor(private configService: FhirChartConfigurationService) {}
 

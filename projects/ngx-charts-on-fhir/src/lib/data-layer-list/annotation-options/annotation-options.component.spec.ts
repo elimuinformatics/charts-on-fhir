@@ -6,7 +6,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { DatasetAnnotationsComponent } from './dataset-annotations.component';
+import { AnnotationOptionsComponent } from './annotation-options.component';
 
 const mockColorService = {
   getColor: () => '#000000',
@@ -25,13 +25,13 @@ class MockColorPickerComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {}
 }
 
-describe('DatasetAnnotationsComponent', () => {
-  let component: DatasetAnnotationsComponent;
-  let fixture: ComponentFixture<DatasetAnnotationsComponent>;
+describe('AnnotationOptionsComponent', () => {
+  let component: AnnotationOptionsComponent;
+  let fixture: ComponentFixture<AnnotationOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatasetAnnotationsComponent, MockColorPickerComponent],
+      declarations: [AnnotationOptionsComponent, MockColorPickerComponent],
       imports: [MatButtonModule, MatButtonToggleModule, MatSlideToggleModule, MatIconModule, ReactiveFormsModule],
       providers: [
         { provide: DataLayerColorService, useValue: mockColorService },
@@ -39,7 +39,7 @@ describe('DatasetAnnotationsComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DatasetAnnotationsComponent);
+    fixture = TestBed.createComponent(AnnotationOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

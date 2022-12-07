@@ -1,10 +1,6 @@
 ## Overview
 
-
-
 ## How it was tested
-
-
 
 ## Checklist
 

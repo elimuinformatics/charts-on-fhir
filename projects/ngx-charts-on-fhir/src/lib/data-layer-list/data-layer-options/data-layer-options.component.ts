@@ -7,7 +7,7 @@ import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
   templateUrl: './data-layer-options.component.html',
   styleUrls: ['./data-layer-options.component.css'],
 })
-export class DataLayerOptionsComponent{
+export class DataLayerOptionsComponent {
   @Input() layer?: ManagedDataLayer;
   @Output() change = new EventEmitter<ManagedDataLayer>();
 
@@ -27,7 +27,6 @@ export class DataLayerOptionsComponent{
       this.change.emit(
         produce(this.layer, (draft) => {
           draft.annotations = castDraft(annotations);
-        
         })
       );
     }

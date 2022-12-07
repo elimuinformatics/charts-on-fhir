@@ -41,7 +41,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation): DataLayer {
-    const output =  {
+    return {
       name: resource.code.text,
       category: resource.category?.text,
       datasets: [
@@ -64,7 +64,6 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       },
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
-          display: true,
           label: { content: `${resource.code.text} Reference Range` },
           yScaleID: resource.valueQuantity.unit,
           yMax: range?.high?.value,
@@ -72,6 +71,5 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         })
       ),
     };
-    return output;
   }
 }

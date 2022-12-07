@@ -3,11 +3,11 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import produce, { castDraft } from 'immer';
 
 @Component({
-  selector: 'dataset-annotation-list',
-  templateUrl: './dataset-annotation-list.component.html',
-  styleUrls: ['./dataset-annotation-list.component.css'],
+  selector: 'annotation-list',
+  templateUrl: './annotation-list.component.html',
+  styleUrls: ['./annotation-list.component.css'],
 })
-export class DatasetAnnotationListComponent {
+export class AnnotationListComponent {
   public _annotations: any[] | undefined;
 
   @Input() set annotations(annotations: any[] | undefined) {

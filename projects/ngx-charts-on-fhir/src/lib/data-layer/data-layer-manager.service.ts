@@ -94,7 +94,6 @@ export class DataLayerManagerService {
         layer.selected = true;
         layer.enabled = true;
         this.colorService.chooseColorsFromPalette(layer);
-        this.colorService.chooseAnnotationColorsFromPalette(layer);
         if (layer.scales?.['timeline']) {
           layer.scales['timeline'].afterDataLimits = ({ max, min }) => this.timelineRangeSubject.next({ max, min });
         }

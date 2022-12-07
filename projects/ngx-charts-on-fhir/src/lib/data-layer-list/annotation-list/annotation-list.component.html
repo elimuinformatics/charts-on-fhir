@@ -1,22 +1,22 @@
-<h3>Annotation Options</h3>    
+<h3>Annotation Options</h3>
 
 <div class="scrolling-list">
   <mat-accordion displayMode="flat" multi="true">
-    <mat-expansion-panel *ngFor="let annotation of _annotations; trackBy:trackByIndex" expanded="true">
+    <mat-expansion-panel *ngFor="let annotation of _annotations; trackBy: trackByIndex" expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
-           <mat-checkbox
+          <mat-checkbox
             (click)="$event.stopPropagation()"
             (change)="onCheckboxChange(annotation, $event)"
             [checked]="annotation.display"
             [title]="annotation.display ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
             color="primary"
-          ></mat-checkbox> 
+          ></mat-checkbox>
           {{ annotation.label.content }}
         </mat-panel-title>
         <mat-panel-description> Annotation </mat-panel-description>
       </mat-expansion-panel-header>
-      <dataset-annotations [annotation]="annotation" (onAnnotationsChange)="this.onAnnotationsChange(annotation, $event)"></dataset-annotations>
+      <annotation-options [annotation]="annotation" (onAnnotationsChange)="this.onAnnotationsChange(annotation, $event)"></annotation-options>
     </mat-expansion-panel>
   </mat-accordion>
 </div>
