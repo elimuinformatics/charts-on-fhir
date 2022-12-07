@@ -1,13 +1,16 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Build and Test
+name: Build Test Scan
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
   build:
@@ -28,6 +31,19 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build ngx-charts-on-fhir
-    - run: npm test -- ngx-charts-on-fhir --no-watch
     - run: npm run build showcase
-    - run: npm test -- showcase --no-watch
+    - run: npm test -- --no-watch --code-coverage
+    - name: Analyze with SonarCloud
+      # You can pin the exact commit or the version.
+      uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+      with:
+        # Additional arguments for the sonarcloud scanner
+        args:
+          # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+          # mandatory
+          -Dsonar.projectKey=elimuinformatics_charts-on-fhir
+          -Dsonar.organization=elimuinformatics-1
+          -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
