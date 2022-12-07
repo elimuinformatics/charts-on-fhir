@@ -16,16 +16,21 @@ export class FhirChartComponent implements OnInit {
   defaultType: ChartConfiguration['type'] = 'line';
   @Input() type: ChartConfiguration['type'] | null = this.defaultType;
 
-  defaultDatasets: ChartConfiguration['data']['datasets'] = [];
-  @Input() datasets: ChartConfiguration['data']['datasets'] | null = this.defaultDatasets;
+  @Input() datasets: ChartConfiguration['data']['datasets'] | null = [];
 
   defaultOptions: ChartConfiguration['options'] = {};
   @Input() options: ChartConfiguration['options'] | null = this.defaultOptions;
+
+  @Input() width: string = "600px";
+  @Input() height: string = "300px";
 
   constructor(private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin);
+
+    // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
+    Chart.defaults.maintainAspectRatio = false;
 
     Chart.defaults.plugins.zoom = merge(Chart.defaults.plugins.zoom, {
       pan: {
