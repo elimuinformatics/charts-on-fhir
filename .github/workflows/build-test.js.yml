@@ -46,4 +46,4 @@ jobs:
           # mandatory
           -Dsonar.projectKey=elimuinformatics_charts-on-fhir
           -Dsonar.organization=elimuinformatics-1
-          -Dsonar.javascript.lcov.reportPaths=./coverage/**/lcov.info
+          -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
