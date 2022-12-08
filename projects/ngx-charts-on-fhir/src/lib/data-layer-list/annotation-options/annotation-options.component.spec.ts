@@ -19,10 +19,10 @@ const mockColorService = {
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
 })
 class MockColorPickerComponent implements ControlValueAccessor {
-  writeValue(obj: any): void {}
-  registerOnChange(fn: any): void {}
-  registerOnTouched(fn: any): void {}
-  setDisabledState?(isDisabled: boolean): void {}
+  writeValue(obj: any): void { /* TODO document why this method 'writeValue' is empty */ }
+  registerOnChange(fn: any): void { /* TODO document why this method 'registerOnChange' is empty */ }
+  registerOnTouched(fn: any): void { /* TODO document why this method 'registerOnTouched' is empty */ }
+  setDisabledState?(isDisabled: boolean): void { /* TODO document why this method 'setDisabledState' is empty */ }
 }
 
 describe('AnnotationOptionsComponent', () => {

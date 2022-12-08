@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import produce, { castDraft } from 'immer';
 import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
 
