@@ -47,5 +47,5 @@ jobs:
           -Dsonar.projectKey=elimuinformatics_charts-on-fhir
           -Dsonar.organization=elimuinformatics-1
           -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
-          -Dsonar.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js
+          -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js
           -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
