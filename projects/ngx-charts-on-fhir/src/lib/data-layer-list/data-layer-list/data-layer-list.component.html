@@ -1,33 +1,40 @@
-<p class="center" *ngIf="!(layerManager.selectedLayers$ | async)?.length">No data layers are selected</p>
-<mat-accordion class="drag-boundary" cdkDropList (cdkDropListDropped)="onDrop($event)">
-  <mat-expansion-panel
-    *ngFor="let layer of layerManager.selectedLayers$ | async; trackBy: getLayerId"
-    #panel
-    expanded="true"
-    cdkDrag
-    cdkDragPreviewContainer="parent"
-    cdkDragBoundary=".drag-boundary"
-    cdkDragLockAxis="y"
-    cdkDragPreviewClass="data-layer-drag-preview"
-  >
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon fontIcon="drag_indicator" cdkDragHandle (pointerdown)="onDragHandlePointerDown(panel, $event)" (click)="$event.stopPropagation()"></mat-icon>
-        <mat-checkbox
-          [checked]="isCheckboxChecked(layer)"
-          [indeterminate]="isCheckboxIndeterminate(layer)"
-          (click)="$event.stopPropagation()"
-          (change)="onCheckboxChange(layer, $event)"
-          [title]="layer.enabled ? 'Hide this layer on the chart' : 'Show this layer on the chart'"
-          color="primary"
-        >
-        </mat-checkbox>
-        {{ layer.name }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <data-layer-options [layer]="layer" (change)="onLayerChange($event)"></data-layer-options>
-    <mat-action-row>
-      <button mat-mini-fab color="primary" (click)="onLayerRemove(layer)" title="Remove this layer"><mat-icon fontIcon="delete"></mat-icon></button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
+<div class="scroll-container">
+  <p class="empty-message" *ngIf="!(layerManager.selectedLayers$ | async)?.length">No data layers are selected</p>
+  <mat-accordion multi class="drag-boundary" cdkDropList (cdkDropListDropped)="onDrop($event)">
+    <mat-expansion-panel
+      *ngFor="let layer of layerManager.selectedLayers$ | async; trackBy: getLayerId"
+      #panel
+      expanded="false"
+      cdkDrag
+      cdkDragPreviewContainer="parent"
+      cdkDragBoundary=".drag-boundary"
+      cdkDragLockAxis="y"
+      cdkDragPreviewClass="data-layer-drag-preview"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon
+            fontIcon="drag_indicator"
+            cdkDragHandle
+            (pointerdown)="onDragHandlePointerDown(panel, $event)"
+            (click)="$event.stopPropagation()"
+          ></mat-icon>
+          <mat-checkbox
+            [checked]="isCheckboxChecked(layer)"
+            [indeterminate]="isCheckboxIndeterminate(layer)"
+            (click)="$event.stopPropagation()"
+            (change)="onCheckboxChange(layer, $event)"
+            [title]="layer.enabled ? 'Hide this layer on the chart' : 'Show this layer on the chart'"
+            color="primary"
+          >
+          </mat-checkbox>
+          {{ layer.name }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <data-layer-options [layer]="layer" (change)="onLayerChange($event)"></data-layer-options>
+      <mat-action-row>
+        <button mat-mini-fab color="primary" (click)="onLayerRemove(layer)" title="Remove this layer"><mat-icon fontIcon="delete"></mat-icon></button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -1,0 +1,8 @@
+.layout-toolbar {
+  color: #fff;
+  background-color: #3f51b5;
+  position: absolute;
+  height: 100vh;
+  width: 48px;
+  padding-top: 16px;
+}

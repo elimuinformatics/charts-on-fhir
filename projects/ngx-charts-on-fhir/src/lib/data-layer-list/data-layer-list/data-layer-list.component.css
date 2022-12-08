@@ -10,7 +10,14 @@
   height: 48px;
 }
 
-.center {
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.empty-message {
+  margin-top: 24px;
   text-align: center;
 }
 
