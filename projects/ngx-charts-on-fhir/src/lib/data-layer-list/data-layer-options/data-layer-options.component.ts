@@ -9,11 +9,11 @@ import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
 })
 export class DataLayerOptionsComponent {
   @Input() layer?: ManagedDataLayer;
-  @Output() change = new EventEmitter<ManagedDataLayer>();
+  @Output() layerChange = new EventEmitter<ManagedDataLayer>();
 
   onDatasetsChange(datasets: Dataset[]) {
     if (this.layer) {
-      this.change.emit(
+      this.layerChange.emit(
         produce(this.layer, (draft) => {
           draft.datasets = castDraft(datasets);
           draft.enabled = datasets.some((dataset) => !dataset.hidden);
