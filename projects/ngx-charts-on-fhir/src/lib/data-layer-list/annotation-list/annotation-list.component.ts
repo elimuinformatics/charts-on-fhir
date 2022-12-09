@@ -38,7 +38,7 @@ export class AnnotationListComponent {
     }
   }
 
-  trackByIndex(index: any, value: any) {
+  trackByIndex(index: any) {
     return index;
   }
 }
