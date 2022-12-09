@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@angular/core';
+import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
@@ -34,7 +34,8 @@ export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
-    private mergeService: DataLayerMergeService
+    private mergeService: DataLayerMergeService,
+    private ngZone: NgZone,
   ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
@@ -95,7 +96,7 @@ export class DataLayerManagerService {
         layer.enabled = true;
         this.colorService.chooseColorsFromPalette(layer);
         if (layer.scales?.['timeline']) {
-          layer.scales['timeline'].afterDataLimits = ({ max, min }) => this.timelineRangeSubject.next({ max, min });
+          layer.scales['timeline'].afterDataLimits = ({ max, min }) => this.ngZone.run(() => this.timelineRangeSubject.next({ max, min }));
         }
       })
     );
