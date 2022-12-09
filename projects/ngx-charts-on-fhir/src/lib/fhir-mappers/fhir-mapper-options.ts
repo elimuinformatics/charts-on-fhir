@@ -31,6 +31,23 @@ const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
   },
 } as const;
 
+export const CATEGORY_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'category'>>('Category scale options', {
+  factory: () => defaultCategoryScaleOptions,
+});
+const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
+  display: 'auto',
+  position: 'left',
+  type: 'category',
+  offset: true,
+  stack: 'all',
+  title: {
+    display: true,
+  },
+  ticks: {
+    autoSkip: false,
+  }
+} as const;
+
 export const ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Annotation Options', {
   factory: () => defaultAnnotationOptions,
 });
