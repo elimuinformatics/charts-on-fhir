@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, ScatterDataPoint } from 'chart.js';
+import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
 import produce from 'immer';
 import { mapValues, merge } from 'lodash-es';
 import { map, scan } from 'rxjs';
-import { TimelineChartType, ManagedDataLayer, DataLayer, Dataset } from '../data-layer/data-layer';
+import { TimelineChartType, ManagedDataLayer, DataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined } from '../utils';
 
-type TimelineConfiguration = ChartConfiguration<TimelineChartType, ScatterDataPoint[]>;
+type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
 /** Builds a ChartConfiguration object from a DataLayerManager's selected layers */
 @Injectable()
