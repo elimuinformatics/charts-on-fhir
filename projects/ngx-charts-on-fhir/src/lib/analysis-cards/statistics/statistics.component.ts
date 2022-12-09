@@ -24,7 +24,7 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
 
   statistics: NameValuePair[] = [];
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.computeStatistics(this.visibleData);
   }
 
