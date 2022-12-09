@@ -1,5 +1,5 @@
 import { ChartDataset, ScatterDataPoint, ChartType, ScaleChartOptions } from 'chart.js';
-import { _DeepPartialObject, _DeepPartialArray, DeepPartial } from 'chart.js/types/utils';
+import { DeepPartial } from 'chart.js/types/utils';
 import { ChartAnnotations } from '../utils';
 
 /** Timeline only supports Chart Types that have a Y-axis */

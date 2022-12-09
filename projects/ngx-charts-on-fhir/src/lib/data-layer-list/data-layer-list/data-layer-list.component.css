@@ -1,13 +1,10 @@
-.cdk-drag-placeholder {
-  opacity: 0;
-}
-
 /* workaround for cdkDrag computing height of preview element before the panel closes */
 .data-layer-drag-preview {
   height: 48px !important;
 }
 .cdk-drag-placeholder {
   height: 48px;
+  opacity: 0;
 }
 
 .scroll-container {
