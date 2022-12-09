@@ -19,10 +19,10 @@ const mockColorService = {
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
 })
 class MockColorPickerComponent implements ControlValueAccessor {
-  writeValue(obj: any): void { /* TODO document why this method 'writeValue' is empty */ }
-  registerOnChange(fn: any): void { /* TODO document why this method 'registerOnChange' is empty */ }
-  registerOnTouched(fn: any): void { /* TODO document why this method 'registerOnTouched' is empty */ }
-  setDisabledState?(isDisabled: boolean): void { /* TODO document why this method 'setDisabledState' is empty */ }
+  writeValue(obj: any): void { /* Writes a new value to the element. */ }
+  registerOnChange(fn: any): void { /* Registers a callback function that is called when the control's value changes in the UI. */ }
+  registerOnTouched(fn: any): void { /* Registers a callback function that is called by the forms API on initialization to update the form model on blur. */ }
+  setDisabledState?(isDisabled: boolean): void { /* Function that is called by the forms API when the control status changes to or from 'DISABLED'. Depending on the status, it enables or disables the appropriate DOM element */ }
 }
 
 describe('AnnotationOptionsComponent', () => {

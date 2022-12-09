@@ -9,7 +9,7 @@
             (click)="$event.stopPropagation()"
             (change)="onCheckboxChange(annotation, $event)"
             [checked]="annotation.display"
-            [title]="annotation.display ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
+            [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"
             color="primary"
           ></mat-checkbox>
           {{ annotation.label.content }}
