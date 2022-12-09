@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges } from '@angular/core';
 import { ScatterDataPoint } from 'chart.js';
 import { mean, floor, max, min } from 'lodash-es';
 import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
