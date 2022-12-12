@@ -16,9 +16,7 @@ export class AppComponent implements OnInit {
   onToolbarChange(sidenav: MatSidenav, panel: string | null) {
     if (panel) {
       this.sidenavPanel = panel;
-      // close and then asynchronously re-open sidenav to trigger a resize
-      sidenav.close();
-      setTimeout(() => sidenav.open());
+      sidenav.open();
     } else {
       sidenav.close();
     }
