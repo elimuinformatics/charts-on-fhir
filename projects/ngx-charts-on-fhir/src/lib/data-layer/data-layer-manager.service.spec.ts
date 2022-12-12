@@ -17,7 +17,7 @@ describe('DataLayerManagerService', () => {
   beforeEach(() => {
     // fake mergeService adds layers without modifying them and overwrites layers with same name
     mergeService = jasmine.createSpyObj('DataLayerMergeService', ['merge']);
-    mergeService.merge.and.callFake((c, l) => ({ ...c, [l.name]: { ...l } as any }));
+    mergeService.merge.and.callFake((collection, layer) => ({ ...collection, [layer.name]: { ...layer } as any }));
     // fake colorService sets borderColor because we can't use toHaveBeenCalledWith() for functions that are called with an immer draft
     colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette']);
     colorService.chooseColorsFromPalette.and.callFake((l) => l.datasets.forEach((d) => (d.borderColor = '#000000')));

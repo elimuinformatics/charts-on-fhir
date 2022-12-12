@@ -5,7 +5,6 @@ import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
 @Component({
   selector: 'data-layer-options',
   templateUrl: './data-layer-options.component.html',
-  styleUrls: ['./data-layer-options.component.css'],
 })
 export class DataLayerOptionsComponent {
   @Input() layer?: ManagedDataLayer;
