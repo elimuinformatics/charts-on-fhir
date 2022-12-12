@@ -19,10 +19,18 @@ const mockColorService = {
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
 })
 class MockColorPickerComponent implements ControlValueAccessor {
-  writeValue(obj: any): void { /* Writes a new value to the element. */ }
-  registerOnChange(fn: any): void { /* Registers a callback function that is called when the control's value changes in the UI. */ }
-  registerOnTouched(fn: any): void { /* Registers a callback function that is called by the forms API on initialization to update the form model on blur. */ }
-  setDisabledState?(isDisabled: boolean): void { /* Function that is called by the forms API when the control status changes to or from 'DISABLED'. Depending on the status, it enables or disables the appropriate DOM element */ }
+  writeValue(obj: any): void {
+    /* intentionally empty stub */
+  }
+  registerOnChange(fn: any): void {
+    /* intentionally empty stub */
+  }
+  registerOnTouched(fn: any): void {
+    /* intentionally empty stub */
+  }
+  setDisabledState?(isDisabled: boolean): void {
+    /* intentionally empty stub */
+  }
 }
 
 describe('AnnotationOptionsComponent', () => {
@@ -46,5 +54,58 @@ describe('AnnotationOptionsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('called private updateModel method', () => {
+    let spyon = spyOn<any>(component, 'updateModel');
+    let formValue: any = { color: '#377eb8', label: 'Systolic Blood Pressure Reference Range', yMax: 130, yMin: 90 };
+    component['updateModel'](formValue);
+    expect(spyon).toHaveBeenCalled();
+  });
+
+  it('when updateModel called it should emit event', () => {
+    let formValue: any = { color: '#377eb8', label: 'Systolic Blood Pressure Reference Range', yMax: 130, yMin: 90 };
+    const emitSpy = spyOn(component.onAnnotationsChange, 'emit');
+    component._annotation = {
+      label: {
+        display: true,
+        position: { x: 'start', y: 'end' },
+        color: '#666666',
+        font: { size: 16, weight: 'normal' },
+        content: 'Systolic Blood Pressure Reference Range',
+      },
+      type: 'box',
+      backgroundColor: '#ECF0F9',
+      borderWidth: 0,
+      drawTime: 'beforeDraw',
+      display: true,
+      yScaleID: 'mm[Hg]',
+      yMax: 130,
+      yMin: 90,
+    };
+    component['updateModel'](formValue);
+    expect(emitSpy).toHaveBeenCalled();
+  });
+  it('called private updateForm method', () => {
+    let spyon = spyOn<any>(component, 'updateForm');
+    let annotation: any = {
+      label: {
+        display: true,
+        position: { x: 'start', y: 'end' },
+        color: '#666666',
+        font: { size: 16, weight: 'normal' },
+        content: 'Systolic Blood Pressure Reference Range',
+      },
+      type: 'box',
+      backgroundColor: '#377eb8',
+      borderWidth: 0,
+      drawTime: 'beforeDraw',
+      display: true,
+      yScaleID: 'mm[Hg]',
+      yMax: 130,
+      yMin: 90,
+    };
+    component['updateForm'](annotation);
+    expect(spyon).toHaveBeenCalled();
   });
 });
