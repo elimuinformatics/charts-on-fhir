@@ -1,17 +1,8 @@
-import { Component, forwardRef } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { AnnotationOptionsComponent } from './annotation-options.component';
-
-const mockColorService = {
-  getColor: () => '#000000',
-  setColor: () => {},
-};
 
 @Component({
   selector: 'color-picker',
@@ -36,76 +27,48 @@ class MockColorPickerComponent implements ControlValueAccessor {
 describe('AnnotationOptionsComponent', () => {
   let component: AnnotationOptionsComponent;
   let fixture: ComponentFixture<AnnotationOptionsComponent>;
-
+  let colorService: DataLayerColorService;
+  let palette: string[];
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AnnotationOptionsComponent, MockColorPickerComponent],
-      imports: [MatButtonModule, MatButtonToggleModule, MatSlideToggleModule, MatIconModule, ReactiveFormsModule],
-      providers: [
-        { provide: DataLayerColorService, useValue: mockColorService },
-        { provide: COLOR_PALETTE, useValue: ['#000000', '#ffffff'] },
-      ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(AnnotationOptionsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    colorService = new DataLayerColorService(palette);
+    TestBed.configureTestingModule({
+      declarations: [AnnotationOptionsComponent],
+      providers: [FormBuilder],
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+      .overrideComponent(AnnotationOptionsComponent, {
+        set: {
+          providers: [{ provide: DataLayerColorService, useValue: colorService }],
+        },
+      })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(AnnotationOptionsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
   });
+  function updateForm(annotaionOptions: any) {
+    component.form.controls['color'].setValue(annotaionOptions.color);
+    component.form.controls['label'].setValue(annotaionOptions.label);
+    component.form.controls['yMax'].setValue(annotaionOptions.yMax);
+    component.form.controls['yMin'].setValue(annotaionOptions.yMin);
+  }
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('called private updateModel method', () => {
-    let spyon = spyOn<any>(component, 'updateModel');
-    let formValue: any = { color: '#377eb8', label: 'Systolic Blood Pressure Reference Range', yMax: 130, yMin: 90 };
-    component['updateModel'](formValue);
-    expect(spyon).toHaveBeenCalled();
-  });
+  it('form value should update from form changes', fakeAsync(() => {
+    let annotaionOptions = { color: 'color', label: 'label', yMax: 80, yMin: 120 };
+    updateForm(annotaionOptions);
 
-  it('when updateModel called it should emit event', () => {
-    let formValue: any = { color: '#377eb8', label: 'Systolic Blood Pressure Reference Range', yMax: 130, yMin: 90 };
-    const emitSpy = spyOn(component.onAnnotationsChange, 'emit');
-    component._annotation = {
-      label: {
-        display: true,
-        position: { x: 'start', y: 'end' },
-        color: '#666666',
-        font: { size: 16, weight: 'normal' },
-        content: 'Systolic Blood Pressure Reference Range',
-      },
-      type: 'box',
-      backgroundColor: '#ECF0F9',
-      borderWidth: 0,
-      drawTime: 'beforeDraw',
-      display: true,
-      yScaleID: 'mm[Hg]',
-      yMax: 130,
-      yMin: 90,
-    };
-    component['updateModel'](formValue);
-    expect(emitSpy).toHaveBeenCalled();
-  });
-  it('called private updateForm method', () => {
-    let spyon = spyOn<any>(component, 'updateForm');
-    let annotation: any = {
-      label: {
-        display: true,
-        position: { x: 'start', y: 'end' },
-        color: '#666666',
-        font: { size: 16, weight: 'normal' },
-        content: 'Systolic Blood Pressure Reference Range',
-      },
-      type: 'box',
-      backgroundColor: '#377eb8',
-      borderWidth: 0,
-      drawTime: 'beforeDraw',
-      display: true,
-      yScaleID: 'mm[Hg]',
-      yMax: 130,
-      yMin: 90,
-    };
-    component['updateForm'](annotation);
-    expect(spyon).toHaveBeenCalled();
-  });
+    fixture.detectChanges();
+    const updateModelSpy = spyOn<any>(component, 'updateModel');
+    component['updateModel'](annotaionOptions);
+    fixture.whenStable().then(() => {
+      expect(component.form.value).toEqual(annotaionOptions);
+      expect(updateModelSpy).toHaveBeenCalled();
+    });
+  }));
 });
