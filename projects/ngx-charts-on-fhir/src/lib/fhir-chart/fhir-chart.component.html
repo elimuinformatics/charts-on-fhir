@@ -1,6 +1,15 @@
 <div class="chart-container" [style.width]="width" [style.height]="height">
-  <canvas *ngIf="datasets && datasets.length > 0; else empty" width="100%" baseChart [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
-  <ng-template #empty>
-    <div class="empty-message"><div class="empty-message-content">No data layers are selected</div></div>
-  </ng-template>
+  <div class="chart-container-resize-fix">
+    <canvas
+      *ngIf="datasets && datasets.length > 0; else empty"
+      width="100%"
+      baseChart
+      [type]="type ?? defaultType"
+      [datasets]="datasets"
+      [options]="options ?? defaultOptions"
+    ></canvas>
+    <ng-template #empty>
+      <div class="empty-message"><div class="empty-message-content">No data layers are selected</div></div>
+    </ng-template>
+  </div>
 </div>
