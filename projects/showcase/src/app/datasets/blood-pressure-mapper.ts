@@ -38,12 +38,15 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
       //   yMin: 80,
       // }),
       merge({}, this.annotationOptions, {
+        display : true,
         label: { content: 'Systolic Blood Pressure Reference Range' },
         yScaleID: layer.datasets[0].yAxisID,
         yMax: 130,
         yMin: 90,
       }),
       merge({}, this.annotationOptions, {
+        display : true,
+
         label: { content: 'Diastolic Blood Pressure Reference Range' },
         yScaleID: layer.datasets[0].yAxisID,
         yMax: 80,

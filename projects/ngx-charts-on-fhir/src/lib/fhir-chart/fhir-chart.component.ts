@@ -4,6 +4,7 @@ import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { merge } from 'lodash-es';
+import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
 
 @Component({
@@ -16,7 +17,8 @@ export class FhirChartComponent implements OnInit {
   defaultType: ChartConfiguration['type'] = 'line';
   @Input() type: ChartConfiguration['type'] | null = this.defaultType;
 
-  @Input() datasets: ChartConfiguration['data']['datasets'] | null = [];
+  defaultDatasets: ChartConfiguration<TimelineChartType, TimelineDataPoint[]>['data']['datasets'] = [];
+  @Input() datasets: ChartConfiguration<TimelineChartType, TimelineDataPoint[]>['data']['datasets'] | null = this.defaultDatasets;
 
   defaultOptions: ChartConfiguration['options'] = {};
   @Input() options: ChartConfiguration['options'] | null = this.defaultOptions;

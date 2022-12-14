@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import produce, { castDraft } from 'immer';
 import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
 
@@ -6,9 +6,14 @@ import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
   selector: 'data-layer-options',
   templateUrl: './data-layer-options.component.html',
 })
-export class DataLayerOptionsComponent {
+export class DataLayerOptionsComponent implements OnInit{
   @Input() layer?: ManagedDataLayer;
   @Output() change = new EventEmitter<ManagedDataLayer>();
+
+
+  ngOnInit() {
+    console.log(this.layer)
+  }
 
   onDatasetsChange(datasets: Dataset[]) {
     if (this.layer) {
@@ -16,6 +21,17 @@ export class DataLayerOptionsComponent {
         produce(this.layer, (draft) => {
           draft.datasets = castDraft(datasets);
           draft.enabled = datasets.some((dataset) => !dataset.hidden);
+        })
+      );
+    }
+  }
+
+  onAnnotationsChange(annotations: any) {
+    if (this.layer) {
+      this.change.emit(
+        produce(this.layer, (draft) => {
+          draft.annotations = castDraft(annotations);
+        
         })
       );
     }
