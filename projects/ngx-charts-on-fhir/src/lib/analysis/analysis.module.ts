@@ -9,6 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [AnalysisComponent, AnalysisCardHostDirective, AnalysisCardComponent],
   imports: [CommonModule, MatCardModule, MatIconModule],
-  exports: [AnalysisComponent],
+  exports: [AnalysisComponent, AnalysisCardComponent],
 })
 export class AnalysisModule {}
