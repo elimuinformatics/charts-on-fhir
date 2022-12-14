@@ -26,8 +26,9 @@ describe('DataLayerOptionsComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('onDatasetsChange', () => {
-    it('should emit event when onDatasetsChange called ', () => {
-      let dataset: any = [
+    it('should emit event, when onDatasetsChange called', () => {
+      spyOn(component.change, 'emit');
+      const datasets: any = [
         {
           label: 'Diastolic Blood Pressure',
           yAxisID: 'mm[Hg]',
@@ -35,28 +36,53 @@ describe('DataLayerOptionsComponent', () => {
             { x: 1359454965000, y: 96 },
             { x: 1362478965000, y: 90 },
           ],
+          cubicInterpolationMode: 'default',
+          fill: false,
         },
       ];
-      component.onDatasetsChange(dataset);
-      component.change.subscribe((next) => {
-        expect(next).toHaveBeenCalled();
-      });
+      component.layer = {
+        id: '-109669932',
+        name: 'Blood Pressure',
+        category: 'vital-signs',
+        datasets: [
+          {
+            label: 'Diastolic Blood Pressure',
+            yAxisID: 'mm[Hg]',
+            data: [
+              { x: 1359454965000, y: 96 },
+              { x: 1362478965000, y: 90 },
+            ],
+          },
+        ],
+        scales: {},
+        annotations: [],
+      };
+      component.onDatasetsChange(datasets);
+
+      expect(component.change.emit).toHaveBeenCalled();
     });
   });
   describe('onAnnotationsChange', () => {
-    it('when onAnnotationsChange() called it should emit event', () => {
-      let annotations: any = [
+    it('should emit event, when onAnnotationsChange called', () => {
+      spyOn(component.change, 'emit');
+      const annotations: any = [
         {
           label: {
             display: true,
           },
         },
       ];
-
+      component.layer = {
+        id: '-109669932',
+        name: 'Blood Pressure',
+        category: 'vital-signs',
+        datasets: [],
+        scales: {},
+        annotations: [],
+      };
       component.onAnnotationsChange(annotations);
-      component.change.subscribe((next) => {
-        expect(next).toHaveBeenCalled();
-      });
+
+      expect(component.change.emit).toHaveBeenCalled();
     });
   });
 });

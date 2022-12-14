@@ -71,4 +71,27 @@ describe('AnnotationOptionsComponent', () => {
       expect(updateModelSpy).toHaveBeenCalled();
     });
   }));
+  describe('set annotation', () => {
+    it('success', async () => {
+      let annotation: any = {
+        label: {
+          display: true,
+          position: { x: 'start', y: 'end' },
+          color: '#666666',
+          font: { size: 16, weight: 'normal' },
+          content: 'Systolic Blood Pressure Reference Range',
+        },
+        type: 'box',
+        backgroundColor: '#ECF0F9',
+        borderWidth: 0,
+        drawTime: 'beforeDraw',
+        display: false,
+        yScaleID: 'mm[Hg]',
+        yMax: 130,
+        yMin: 90,
+      };
+      component.annotation = annotation;
+      expect(component._annotation['display']).toBe(annotation['display']);
+    });
+  });
 });
