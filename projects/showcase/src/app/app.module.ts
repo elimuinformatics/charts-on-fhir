@@ -21,10 +21,12 @@ import {
   FhirMappersModule,
   COLOR_PALETTE,
   AnalysisModule,
+  AnalysisCardsModule,
   DataLayerModule,
   DataLayerBrowserModule,
   DataLayerListModule,
   DataLayerToolbarModule,
+  FhirChartSummaryModule,
 } from 'ngx-charts-on-fhir';
 
 @NgModule({
@@ -32,6 +34,7 @@ import {
   imports: [
     BrowserModule,
     FhirChartModule,
+    FhirChartSummaryModule,
     NgChartsModule,
     BrowserAnimationsModule,
     MatExpansionModule,
@@ -47,6 +50,7 @@ import {
     FhirConverterModule,
     FhirMappersModule,
     AnalysisModule,
+    AnalysisCardsModule,
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },

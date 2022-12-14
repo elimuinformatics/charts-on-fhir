@@ -1,0 +1,5 @@
+<div class="chart-summary">
+  <analysis-card *ngFor="let ctx of cardContexts$ | async" [dataset]="ctx.dataset" icon="info" class="dataset-summary">
+    <statistics [layer]="ctx.layer" [dataset]="ctx.dataset" [dateRange]="ctx.dateRange" [visibleData]="ctx.visibleData"></statistics>
+  </analysis-card>
+</div>

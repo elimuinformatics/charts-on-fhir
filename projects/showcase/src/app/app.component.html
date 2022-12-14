@@ -13,20 +13,12 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="layout-main">
-      <mat-accordion multi class="layout-main-chart">
-        <mat-expansion-panel expanded="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title> Chart </mat-panel-title>
-          </mat-expansion-panel-header>
-          <fhir-chart width="100%" height="500px"></fhir-chart>
-        </mat-expansion-panel>
-        <mat-expansion-panel expanded="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title> Insights </mat-panel-title>
-          </mat-expansion-panel-header>
-          <analysis></analysis>
-        </mat-expansion-panel>
-      </mat-accordion>
+      <mat-card class="layout-main-chart mat-elevation-z2">
+        <fhir-chart width="100%" height="calc(100vh - 48px)"></fhir-chart>
+      </mat-card>
+      <div class="layout-main-insights">
+        <fhir-chart-summary></fhir-chart-summary>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

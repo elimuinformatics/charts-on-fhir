@@ -1,0 +1,12 @@
+.chart-summary {
+  height: 100%;
+  padding-top: 48px; /* todo: vertical padding should be dynamic based on chartArea to accomodate varying legend and x-axis label height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 8px;
+}
+.dataset-summary {
+  flex: 0 1 auto;
+  overflow-y: auto;
+}
