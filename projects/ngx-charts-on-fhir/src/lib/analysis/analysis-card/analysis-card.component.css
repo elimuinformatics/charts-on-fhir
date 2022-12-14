@@ -1,6 +1,7 @@
-/* .analysis-card {
+.card-container {
+  border-left: 3px solid;
   height: 100%;
-} */
+}
 .mat-card-subtitle .mat-icon {
   margin: -8px 0px;
 }
