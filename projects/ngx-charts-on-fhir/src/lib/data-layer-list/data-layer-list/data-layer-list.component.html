@@ -31,7 +31,7 @@
           {{ layer.name }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <data-layer-options [layer]="layer" (change)="onLayerChange($event)"></data-layer-options>
+      <data-layer-options [layer]="layer" (layerChange)="onLayerChange($event)"></data-layer-options>
       <mat-action-row>
         <button mat-mini-fab color="primary" (click)="onLayerRemove(layer)" title="Remove this layer"><mat-icon fontIcon="delete"></mat-icon></button>
       </mat-action-row>
