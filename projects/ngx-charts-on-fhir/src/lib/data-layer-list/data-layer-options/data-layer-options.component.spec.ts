@@ -27,7 +27,7 @@ describe('DataLayerOptionsComponent', () => {
   });
   describe('onDatasetsChange', () => {
     it('should emit event, when onDatasetsChange called', () => {
-      spyOn(component.change, 'emit');
+      spyOn(component.layerChange, 'emit');
       const datasets: any = [
         {
           label: 'Diastolic Blood Pressure',
@@ -59,12 +59,12 @@ describe('DataLayerOptionsComponent', () => {
       };
       component.onDatasetsChange(datasets);
 
-      expect(component.change.emit).toHaveBeenCalled();
+      expect(component.layerChange.emit).toHaveBeenCalled();
     });
   });
   describe('onAnnotationsChange', () => {
     it('should emit event, when onAnnotationsChange called', () => {
-      spyOn(component.change, 'emit');
+      spyOn(component.layerChange, 'emit');
       const annotations: any = [
         {
           label: {
@@ -82,7 +82,7 @@ describe('DataLayerOptionsComponent', () => {
       };
       component.onAnnotationsChange(annotations);
 
-      expect(component.change.emit).toHaveBeenCalled();
+      expect(component.layerChange.emit).toHaveBeenCalled();
     });
   });
 });

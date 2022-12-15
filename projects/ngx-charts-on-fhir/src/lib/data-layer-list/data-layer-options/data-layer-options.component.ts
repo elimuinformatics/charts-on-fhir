@@ -23,7 +23,7 @@ export class DataLayerOptionsComponent {
 
   onAnnotationsChange(annotations: any) {
     if (this.layer) {
-      this.change.emit(
+      this.layerChange.emit(
         produce(this.layer, (draft) => {
           draft.annotations = castDraft(annotations);
         })
