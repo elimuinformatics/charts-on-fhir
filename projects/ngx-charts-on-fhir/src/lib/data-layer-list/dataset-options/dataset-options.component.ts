@@ -16,7 +16,7 @@ export class DatasetOptionsComponent implements OnInit {
     this._dataset = dataset;
     this.updateForm(dataset);
   }
-  @Output() change = new EventEmitter<Dataset>();
+  @Output() datasetChange = new EventEmitter<Dataset>();
 
   constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
 
@@ -44,7 +44,7 @@ export class DatasetOptionsComponent implements OnInit {
         cubicInterpolationMode: formValue.interpolation ? 'monotone' : 'default',
         fill: formValue.fill ? 'stack' : false,
       };
-      this.change.emit(
+      this.datasetChange.emit(
         produce(this._dataset, (draft) => {
           merge(draft, props);
           this.colorService.setColor(draft, formValue.color ?? '');

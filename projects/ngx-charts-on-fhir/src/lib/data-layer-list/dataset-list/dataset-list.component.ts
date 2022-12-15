@@ -15,12 +15,12 @@ export class DatasetListComponent {
     this._datasets = datasets;
     this.datasetsReversed = datasets?.slice().reverse();
   }
-  @Output() change = new EventEmitter<Dataset[]>();
+  @Output() datasetsChange = new EventEmitter<Dataset[]>();
 
   onCheckboxChange(dataset: Dataset, event: MatCheckboxChange) {
     if (this._datasets) {
       const index = this._datasets.indexOf(dataset);
-      this.change.emit(
+      this.datasetsChange.emit(
         produce(this._datasets, (draft) => {
           draft[index].hidden = !event.checked;
         })
@@ -31,7 +31,7 @@ export class DatasetListComponent {
   onDatasetOptionsChange(oldDataset: Dataset, newDataset: Dataset) {
     if (this._datasets) {
       const index = this._datasets.indexOf(oldDataset);
-      this.change.emit(
+      this.datasetsChange.emit(
         produce(this._datasets, (draft) => {
           draft[index] = castDraft(newDataset);
         })

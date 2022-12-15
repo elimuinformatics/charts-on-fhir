@@ -14,6 +14,8 @@ export * from './lib/data-layer-browser/data-layer-browser.module';
 export * from './lib/data-layer-browser/data-layer-browser.component';
 export * from './lib/data-layer-list/data-layer-list/data-layer-list.component';
 export * from './lib/data-layer-list/data-layer-list.module';
+export * from './lib/data-layer-toolbar/data-layer-toolbar.module';
+export * from './lib/data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
 export * from './lib/data-layer/data-layer.module';
 export * from './lib/data-layer/data-layer-manager.service';
 export * from './lib/data-layer/data-layer-color.service';
