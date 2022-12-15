@@ -10,14 +10,14 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
   styleUrls: ['./annotation-options.component.css'],
 })
 export class AnnotationOptionsComponent implements OnInit {
-  public _annotation?: any;
+  private _annotation?: any;
 
   @Input() set annotation(annotation: any) {
     this._annotation = annotation;
     this.updateForm(annotation);
   }
 
-  @Output() onAnnotationsChange = new EventEmitter<any>();
+  @Output() annotationsChange = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
 
@@ -44,7 +44,7 @@ export class AnnotationOptionsComponent implements OnInit {
         yMin: formValue.yMin,
         backgroundColor: formValue.color,
       };
-      this.onAnnotationsChange.emit(
+      this.annotationsChange.emit(
         produce(this._annotation, (draft: any) => {
           merge(draft, props);
         })

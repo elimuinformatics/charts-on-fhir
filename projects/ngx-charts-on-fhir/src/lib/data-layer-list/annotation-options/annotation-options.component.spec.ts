@@ -1,4 +1,4 @@
-import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
@@ -31,28 +31,20 @@ describe('AnnotationOptionsComponent', () => {
   let palette: string[];
   beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [AnnotationOptionsComponent],
-      providers: [FormBuilder],
-      schemas: [NO_ERRORS_SCHEMA],
-    })
-      .overrideComponent(AnnotationOptionsComponent, {
-        set: {
-          providers: [{ provide: DataLayerColorService, useValue: colorService }],
-        },
-      })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AnnotationOptionsComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
+      providers: [FormBuilder, { provide: DataLayerColorService, useValue: colorService }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AnnotationOptionsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
-  function updateForm(annotaionOptions: any) {
-    component.form.controls['color'].setValue(annotaionOptions.color);
-    component.form.controls['label'].setValue(annotaionOptions.label);
-    component.form.controls['yMax'].setValue(annotaionOptions.yMax);
-    component.form.controls['yMin'].setValue(annotaionOptions.yMin);
+  function updateForm(annotationOptions: any) {
+    component.form.controls['color'].setValue(annotationOptions.color);
+    component.form.controls['label'].setValue(annotationOptions.label);
+    component.form.controls['yMax'].setValue(annotationOptions.yMax);
+    component.form.controls['yMin'].setValue(annotationOptions.yMin);
   }
 
   it('should create', () => {
@@ -60,38 +52,11 @@ describe('AnnotationOptionsComponent', () => {
   });
 
   it('form value should update from form changes', fakeAsync(() => {
-    let annotaionOptions = { color: 'color', label: 'label', yMax: 80, yMin: 120 };
-    updateForm(annotaionOptions);
-
+    let annotationOptions = { color: 'color', label: 'label', yMax: 80, yMin: 120 };
+    updateForm(annotationOptions);
     fixture.detectChanges();
-    const updateModelSpy = spyOn<any>(component, 'updateModel');
-    component['updateModel'](annotaionOptions);
     fixture.whenStable().then(() => {
-      expect(component.form.value).toEqual(annotaionOptions);
-      expect(updateModelSpy).toHaveBeenCalled();
+      expect(component.form.value).toEqual(annotationOptions);
     });
   }));
-  describe('set annotation', () => {
-    it('success', async () => {
-      let annotation: any = {
-        label: {
-          display: true,
-          position: { x: 'start', y: 'end' },
-          color: '#666666',
-          font: { size: 16, weight: 'normal' },
-          content: 'Systolic Blood Pressure Reference Range',
-        },
-        type: 'box',
-        backgroundColor: '#ECF0F9',
-        borderWidth: 0,
-        drawTime: 'beforeDraw',
-        display: false,
-        yScaleID: 'mm[Hg]',
-        yMax: 130,
-        yMin: 90,
-      };
-      component.annotation = annotation;
-      expect(component._annotation['display']).toBe(annotation['display']);
-    });
-  });
 });
