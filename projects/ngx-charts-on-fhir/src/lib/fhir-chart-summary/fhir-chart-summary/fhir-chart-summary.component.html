@@ -1,5 +1,5 @@
 <div class="chart-summary">
-  <analysis-card *ngFor="let ctx of cardContexts$ | async" [dataset]="ctx.dataset" icon="info" class="dataset-summary">
-    <statistics [layer]="ctx.layer" [dataset]="ctx.dataset" [dateRange]="ctx.dateRange" [visibleData]="ctx.visibleData"></statistics>
+  <analysis-card *ngFor="let visible of visibleDataService.visible$ | async" [dataset]="visible.dataset" icon="info" class="dataset-summary">
+    <statistics [layer]="visible.layer" [dataset]="visible.dataset" [dateRange]="visible.dateRange" [visibleData]="visible.data"></statistics>
   </analysis-card>
 </div>
