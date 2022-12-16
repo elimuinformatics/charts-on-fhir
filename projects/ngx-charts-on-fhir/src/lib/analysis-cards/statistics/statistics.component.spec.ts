@@ -65,5 +65,4 @@ describe('AnalysisStatisticsComponent', () => {
       ['3'], // Median
     ]);
   });
-
 });

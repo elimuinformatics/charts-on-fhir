@@ -17,9 +17,7 @@ describe('DataLayerToolbarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DataLayerToolbarModule],
-      providers: [
-        { provide: DataLayerManagerService, useValue: mockLayerManager },
-      ]
+      providers: [{ provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataLayerToolbarComponent);

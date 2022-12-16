@@ -9,4 +9,3 @@ import { VisibleDataService } from '../../data-layer/visible-data.service';
 export class FhirChartSummaryComponent {
   constructor(public visibleDataService: VisibleDataService) {}
 }
-

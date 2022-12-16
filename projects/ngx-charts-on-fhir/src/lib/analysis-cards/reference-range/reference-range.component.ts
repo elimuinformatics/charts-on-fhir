@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
 import { ReferenceRange, isReferenceRangeFor, computeDaysOutOfRange, groupByDay } from '../analysis-utils';
 
-/** 
+/**
  * @deprecated This component will probably be removed because this functionality is now included in the statistics component.
  */
 @Component({

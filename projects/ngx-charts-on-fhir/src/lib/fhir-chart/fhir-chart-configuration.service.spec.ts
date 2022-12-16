@@ -242,9 +242,7 @@ describe('FhirChartConfigurationService', () => {
           name: '1',
           id: '1',
           enabled: true,
-          datasets: [
-            { label: 'one', data: [], borderColor: '#000000' },
-          ],
+          datasets: [{ label: 'one', data: [], borderColor: '#000000' }],
           scales: {},
         },
       ];
@@ -253,9 +251,7 @@ describe('FhirChartConfigurationService', () => {
           name: '1',
           id: '1',
           enabled: true,
-          datasets: [
-            { label: 'one', data: [], borderColor: '#ffffff' },
-          ],
+          datasets: [{ label: 'one', data: [], borderColor: '#ffffff' }],
           scales: {},
         },
       ];
@@ -267,9 +263,7 @@ describe('FhirChartConfigurationService', () => {
           y: {
             type: 'line',
             data: {
-              datasets: [
-                { label: 'one', data: [], borderColor: '#ffffff' },
-              ],
+              datasets: [{ label: 'one', data: [], borderColor: '#ffffff' }],
             },
             options: {
               scales: {},

@@ -1,8 +1,8 @@
-import { ScatterDataPoint } from "chart.js";
-import { DeepPartial } from "chart.js/types/utils";
-import { AnnotationOptions, BoxAnnotationOptions } from "chartjs-plugin-annotation";
-import { groupBy } from "lodash-es";
-import { DataLayer, Dataset } from "../data-layer/data-layer";
+import { ScatterDataPoint } from 'chart.js';
+import { DeepPartial } from 'chart.js/types/utils';
+import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
+import { groupBy } from 'lodash-es';
+import { DataLayer, Dataset } from '../data-layer/data-layer';
 
 export type ReferenceRange = {
   yMax: number;

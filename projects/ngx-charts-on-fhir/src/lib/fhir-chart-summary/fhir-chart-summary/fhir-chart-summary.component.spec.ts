@@ -54,7 +54,7 @@ describe('FhirChartSummaryComponent', () => {
   it('should set inputs on analysis-card component', () => {
     const visibleData: any = {
       dataset: 'dataset',
-    }
+    };
     visibleDataService.visible$.next([visibleData]);
     fixture.detectChanges();
     const card: DebugElement = fixture.debugElement.query(By.directive(MockAnalysisCardComponent));
