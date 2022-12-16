@@ -3,7 +3,7 @@ import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
 import { computeDaysOutOfRange, isReferenceRangeFor } from './analysis-utils';
 
-fdescribe('Analysis Utils', () => {
+describe('Analysis Utils', () => {
   describe('isReferenceRangeFor', () => {
     it("should return true for dataset's reference range", () => {
       const dataset: Dataset = { label: 'Test', data: [] };
