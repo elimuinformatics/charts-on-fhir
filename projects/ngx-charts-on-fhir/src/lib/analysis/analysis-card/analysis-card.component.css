@@ -5,3 +5,6 @@
 .mat-card-subtitle .mat-icon {
   margin: -8px 0px;
 }
+.mat-card-title {
+  font-size: 20px;
+}

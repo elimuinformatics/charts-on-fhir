@@ -1,7 +1,7 @@
 <mat-card class="analysis-card" [style.borderColor]="color">
   <mat-card-title-group>
     <mat-icon class="analysis-card-icon" [style.color]="color">{{ icon }}</mat-icon>
-    <mat-card-subtitle class="analysis-card-subtitle">{{ dataset?.label }}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="subtitle" class="analysis-card-subtitle">{{ subtitle }}</mat-card-subtitle>
     <mat-card-title *ngIf="title" class="analysis-card-title">{{ title }}</mat-card-title>
   </mat-card-title-group>
   <mat-card-content>
