@@ -8,12 +8,12 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 })
 export class DataLayerToolbarComponent implements OnChanges {
   @Input() active: string | null = null;
-  @Output() change = new EventEmitter<string | null>();
+  @Output() activeChange = new EventEmitter<string | null>();
 
   constructor(public layerManager: DataLayerManagerService) {}
 
   ngOnChanges(): void {
-    this.change.emit(this.active);
+    this.activeChange.emit(this.active);
   }
 
   onClick(tool: string | null) {
@@ -22,6 +22,6 @@ export class DataLayerToolbarComponent implements OnChanges {
     } else {
       this.active = tool;
     }
-    this.change.emit(this.active);
+    this.activeChange.emit(this.active);
   }
 }
