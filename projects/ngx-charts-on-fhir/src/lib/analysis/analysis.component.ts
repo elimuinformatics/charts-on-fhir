@@ -30,7 +30,7 @@ type CardContext = {
   cardContentRef: ComponentRef<AnalysisCardContent>;
 };
 
-/** 
+/**
  * @deprecated This component will probably be removed because we have no plans to use it in a real app
  * and dynamically-created components may become difficult to maintain.
  */

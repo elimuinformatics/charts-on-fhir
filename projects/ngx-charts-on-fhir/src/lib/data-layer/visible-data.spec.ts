@@ -137,7 +137,7 @@ describe('FhirChartSummaryService', () => {
       ];
       const manager: any = {
         selectedLayers$: hot('a', { a: layers }),
-        timelineRange$: hot('rs', { r: { min: 2, max: 3 }, s: {min: 4, max: 6} }),
+        timelineRange$: hot('rs', { r: { min: 2, max: 3 }, s: { min: 4, max: 6 } }),
       };
       const service = new VisibleDataService(manager);
       expect(service.visible$).toBeObservable(
@@ -149,7 +149,7 @@ describe('FhirChartSummaryService', () => {
           ],
           y: [
             jasmine.objectContaining({
-              data: [{ x: 5 },],
+              data: [{ x: 5 }],
             }),
           ],
         })

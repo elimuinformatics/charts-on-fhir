@@ -4,7 +4,7 @@ import { Observation, ObservationComponent } from 'fhir/r2';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
 import { Mapper } from '../fhir-converter/multi-mapper.service';
-import { ChartAnnotation, } from '../utils';
+import { ChartAnnotation } from '../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from './fhir-mapper-options';
 import { FhirMappersModule } from './fhir-mappers.module';
 

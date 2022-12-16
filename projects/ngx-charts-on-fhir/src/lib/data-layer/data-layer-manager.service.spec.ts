@@ -23,8 +23,8 @@ describe('DataLayerManagerService', () => {
     colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette']);
     colorService.chooseColorsFromPalette.and.callFake((l) => l.datasets.forEach((d) => (d.borderColor = '#000000')));
     // fake zone.run() can just invoke its callback because we don't care about change detection here
-    ngZone = jasmine.createSpyObj('NgZone', ['run'])
-      ngZone.run.and.callFake((fn) => fn());
+    ngZone = jasmine.createSpyObj('NgZone', ['run']);
+    ngZone.run.and.callFake((fn) => fn());
   });
 
   describe('retrieveAll', () => {
