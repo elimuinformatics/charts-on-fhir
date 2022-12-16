@@ -1,0 +1,5 @@
+<div class="chart-summary">
+  <analysis-card *ngFor="let visible of visibleDataService.visible$ | async" [dataset]="visible.dataset" [title]="visible.dataset.label" icon="info" class="dataset-summary mat-elevation-z2">
+    <statistics [layer]="visible.layer" [dataset]="visible.dataset" [dateRange]="visible.dateRange" [visibleData]="visible.data"></statistics>
+  </analysis-card>
+</div>

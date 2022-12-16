@@ -41,13 +41,14 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation): DataLayer {
+    const scaleName = `${resource.code.text} (${resource.valueQuantity.unit})`;
     return {
       name: resource.code.text,
       category: resource.category?.text,
       datasets: [
         {
           label: resource.code.text,
-          yAxisID: resource.valueQuantity.unit,
+          yAxisID: scaleName,
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
@@ -58,14 +59,14 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       ],
       scales: {
         timeline: this.timeScaleOptions,
-        [resource.valueQuantity.unit]: merge({}, this.linearScaleOptions, {
-          title: { text: resource.valueQuantity.unit },
+        [scaleName]: merge({}, this.linearScaleOptions, {
+          title: { text: scaleName },
         }),
       },
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
           label: { content: `${resource.code.text} Reference Range` },
-          yScaleID: resource.valueQuantity.unit,
+          yScaleID: scaleName,
           yMax: range?.high?.value,
           yMin: range?.low?.value,
         })

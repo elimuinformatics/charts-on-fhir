@@ -11,6 +11,7 @@ import { AnalysisCardContent } from '../analysis-card-content.component';
 export class AnalysisCardComponent {
   @Input() dataset?: Dataset;
   @Input() title?: string;
+  @Input() subtitle?: string;
   @Input() icon?: string;
 
   @ContentChild(AnalysisCardContent) content?: AnalysisCardContent;

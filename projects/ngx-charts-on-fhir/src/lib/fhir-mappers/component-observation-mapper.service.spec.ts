@@ -120,10 +120,10 @@ describe('ComponentObservationMapper', () => {
         ],
       };
       const mapper = new ComponentObservationMapper({}, { type: 'linear' }, {});
-      expect(mapper.map(observation).scales?.['unit']).toEqual({
+      expect(mapper.map(observation).scales?.['text (unit)']).toEqual(jasmine.objectContaining({
         type: 'linear',
-        title: { text: 'unit' },
-      });
+        title: { text: 'text (unit)' },
+      }));
     });
 
     it('should map referenceRange to an annotation', () => {
@@ -149,7 +149,7 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
-          yScaleID: 'unit',
+          yScaleID: 'text (unit)',
           yMin: 1,
           yMax: 10,
         })
