@@ -2,7 +2,7 @@ import { hot } from 'jasmine-marbles';
 import { ManagedDataLayer } from './data-layer';
 import { VisibleDataService } from './visible-data.service';
 
-fdescribe('FhirChartSummaryService', () => {
+describe('FhirChartSummaryService', () => {
   describe('visible$', () => {
     it('should emit when selectedLayers$ changes', () => {
       const a: Partial<ManagedDataLayer>[] = [
