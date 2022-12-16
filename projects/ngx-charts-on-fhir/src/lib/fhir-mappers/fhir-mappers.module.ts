@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SimpleMedicationMapper } from './simple-medication-mapper.service';
-
 
 // {
 //     providers : [SimpleMedicationMapper],
