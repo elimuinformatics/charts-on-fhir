@@ -1,9 +1,6 @@
-.card-container {
-  border-left: 3px solid;
-  min-height: 100%;
-}
 .analysis-card {
-  height: 100%;
+  border-left: 4px solid;
+  min-height: 100%;
 }
 .mat-card-subtitle .mat-icon {
   margin: -8px 0px;
