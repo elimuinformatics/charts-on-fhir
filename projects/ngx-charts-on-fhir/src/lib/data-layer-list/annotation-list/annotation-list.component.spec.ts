@@ -34,16 +34,16 @@ describe('DatasetAnnotationListComponent', () => {
       component.onCheckboxChange(annotation, event);
       expect(component.annotationsChange.emit).toHaveBeenCalled();
     });
+
     it('should set display=true when checked', async () => {
-      let event: any = { checked: true };
-      let annotations = [{ label: { display: true } }];
-      component.annotations = annotations;
-      spyOn(component, 'onCheckboxChange');
+      const original = [{ label: { content: 'Test' }, display: false }];
+      const expected = [{ label: { content: 'Test' }, display: true }];
+      let emitted: any = null;
+      component.annotations = original;
+      component.annotationsChange.subscribe((e) => (emitted = e));
       const checkbox = await loader.getHarness(MatCheckboxHarness);
       await checkbox.check();
-      component.annotationsChange.subscribe((e) => {
-        expect(e).toEqual(event);
-      });
+      expect(emitted).toEqual(expected);
     });
   });
 

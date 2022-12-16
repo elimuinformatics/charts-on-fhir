@@ -59,4 +59,38 @@ describe('AnnotationOptionsComponent', () => {
       expect(component.form.value).toEqual(annotationOptions);
     });
   }));
+
+  it('should display annotaion form correctly', async () => {
+    const formElement = fixture.nativeElement.querySelector('#annotationform');
+    const inputElemnts = formElement.querySelectorAll('input');
+    expect(inputElemnts.length).toEqual(3);
+  });
+
+  it('should check annotaion label value after entering some value and validation', async () => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const annotaionFormLabel = fixture.nativeElement.querySelector('#annotationform').querySelectorAll('input')[1];
+      annotaionFormLabel.value = 'somevalue';
+      annotaionFormLabel.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        const label = component.form.get('label');
+        expect(annotaionFormLabel.value).toEqual(label?.value);
+      });
+    });
+  });
+
+  it('should check annotaion label value after entering some value and validation', async () => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const annotaionFormLabel = fixture.nativeElement.querySelector('#annotationform').querySelectorAll('input')[3];
+      annotaionFormLabel.value = 10;
+      annotaionFormLabel.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        const yMax = component.form.get('yMax');
+        expect(annotaionFormLabel.value).toEqual(yMax?.value);
+      });
+    });
+  });
 });
