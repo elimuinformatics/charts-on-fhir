@@ -18,7 +18,7 @@ export class AnnotationOptionsComponent implements OnInit {
     this.updateForm(annotation);
   }
 
-  @Output() annotationsChange = new EventEmitter<any>();
+  @Output() annotationChange = new EventEmitter<any>();
 
   constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
 
@@ -45,7 +45,7 @@ export class AnnotationOptionsComponent implements OnInit {
         yMin: formValue.yMin,
         backgroundColor: formValue.color,
       };
-      this.annotationsChange.emit(
+      this.annotationChange.emit(
         produce(this._annotation, (draft: any) => {
           merge(draft, this.newAnnotation);
         })

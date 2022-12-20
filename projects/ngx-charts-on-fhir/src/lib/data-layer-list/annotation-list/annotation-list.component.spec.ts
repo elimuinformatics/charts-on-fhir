@@ -26,37 +26,40 @@ describe('DatasetAnnotationListComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('onCheckboxChange', () => {
-    it('should update view, control and emit the option if an option is clicked', () => {
-      spyOn(component.annotationsChange, 'emit');
-      const annotation = { label: { display: true } };
-      component.annotations = [annotation];
-      let event: any = { checked: true };
-      component.onCheckboxChange(annotation, event);
-      expect(component.annotationsChange.emit).toHaveBeenCalled();
-    });
-
-    it('should set display=true when checked', async () => {
-      const original = [{ label: { content: 'Test' }, display: false }];
-      const expected = [{ label: { content: 'Test' }, display: true }];
-      let emitted: any = null;
-      component.annotations = original;
+    it('should set display true when checked', async () => {
+      let emitted: any;
       component.annotationsChange.subscribe((e) => (emitted = e));
-      const checkbox = await loader.getHarness(MatCheckboxHarness);
-      await checkbox.check();
-      expect(emitted).toEqual(expected);
+      const annotations = [{ label: { content: 'Test', display: true }, display: false }];
+      component.annotations = annotations;
+      let checkedEvent: any = [{ label: { content: 'Test', display: true }, display: true }];
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      await checkBoxHarness.check();
+      expect(emitted).toEqual(checkedEvent);
+    });
+    it('should set display false when unchecked', async () => {
+      let emitted: any;
+      component.annotationsChange.subscribe((e) => (emitted = e));
+      const annotations = [{ label: { content: 'Test', display: true }, display: true }];
+      component.annotations = annotations;
+      let unCheckedEvent: any = [{ label: { content: 'Test', display: true }, display: false }];
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      await checkBoxHarness.uncheck();
+      expect(emitted).toEqual(unCheckedEvent);
     });
   });
 
   describe('onAnnotationsChange', () => {
     it('should update view, control and emit the option if an option is clicked', () => {
-      spyOn(component.annotationsChange, 'emit');
+      let emitted: any;
+      component.annotationsChange.subscribe((e) => (emitted = e));
       const oldAnnotation = { label: { display: true } };
       const newAnnotation = { label: { display: false } };
       component.annotations = [oldAnnotation];
       component.onAnnotationsChange(oldAnnotation, newAnnotation);
-      expect(component.annotationsChange.emit).toHaveBeenCalled();
+      expect(emitted).toEqual([newAnnotation]);
     });
   });
+
   describe('trackByIndex', () => {
     it('should return index when trackByIndex called ', () => {
       const index = 0;
