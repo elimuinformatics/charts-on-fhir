@@ -30,4 +30,5 @@ export * from './lib/fhir-mappers/fhir-mapper-options';
 export * from './lib/fhir-mappers/fhir-mappers.module';
 export * from './lib/fhir-mappers/component-observation-mapper.service';
 export * from './lib/fhir-mappers/simple-observation-mapper.service';
+export * from './lib/fhir-mappers/simple-medication-mapper.service';
 export * from './lib/utils';

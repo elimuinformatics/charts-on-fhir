@@ -1,4 +1,4 @@
-import { ComponentObservationMapper, Mapper, SimpleObservationMapper } from 'ngx-charts-on-fhir';
+import { ComponentObservationMapper, Mapper, SimpleObservationMapper, SimpleMedicationMapper } from 'ngx-charts-on-fhir';
 import { BloodPressureMapper } from '../datasets/blood-pressure-mapper';
 
 /**
@@ -9,4 +9,5 @@ export const mapperProviders = [
   { provide: Mapper, useExisting: BloodPressureMapper, multi: true },
   { provide: Mapper, useExisting: ComponentObservationMapper, multi: true },
   { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },
+  { provide: Mapper, useExisting : SimpleMedicationMapper, multi: true}
 ];

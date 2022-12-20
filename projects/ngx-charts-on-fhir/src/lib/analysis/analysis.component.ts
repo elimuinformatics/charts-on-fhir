@@ -11,10 +11,9 @@ import {
   Type,
   ViewChild,
 } from '@angular/core';
-import { ScatterDataPoint } from 'chart.js';
 import { ceil } from 'lodash-es';
 import { distinctUntilChanged, throttleTime } from 'rxjs';
-import { DataLayer, Dataset } from '../data-layer/data-layer';
+import { DataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { MILLISECONDS_PER_DAY } from '../utils';
 import { AnalysisCardContent } from './analysis-card-content.component';
@@ -119,7 +118,7 @@ export class AnalysisComponent implements OnInit, OnChanges {
     cardContentRef.changeDetectorRef.detectChanges();
   }
 
-  private getVisibleData(dataset: Dataset): ScatterDataPoint[] {
+  private getVisibleData(dataset: Dataset): TimelineDataPoint[] {
     return dataset.data.filter((point) => this.range.min <= point.x && point.x <= this.range.max);
   }
 }
