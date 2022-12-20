@@ -12,6 +12,9 @@ const patient = kautzer186;
 
 @Injectable({ providedIn: 'root' })
 export class FhirDataService {
+  server = 'https://fhir2-internal.elimuinformatics.com/baseDstu2'
+  patient = '170913';
+  url = `${server}/MedicationOrder?patient=${patient}&_count=100`
   constructor(private http: HttpClient) {}
 
   getObservations() {
@@ -22,7 +25,7 @@ export class FhirDataService {
 
 
   getMedicationsOrder() {
-    return this.http.get<Bundle<MedicationOrder>>(`${server}/MedicationOrder?patient=${patient}&_count=100`).pipe(
+    return this.http.get<Bundle<MedicationOrder>>(this.url).pipe(
       expand((result) => this.getNextBundle(result).pipe(delay(100))) // todo: remove this delay
     );
   }
