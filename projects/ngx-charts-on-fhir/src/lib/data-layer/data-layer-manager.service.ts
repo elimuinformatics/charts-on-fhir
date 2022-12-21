@@ -55,6 +55,7 @@ export class DataLayerManagerService {
   private timelineRangeSubject = new ReplaySubject<{ min: number; max: number }>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
+  loader$ = new BehaviorSubject<boolean>(false); 
   loading = false;
   loadingObservable = new BehaviorSubject<boolean>(false);
    
@@ -71,7 +72,7 @@ export class DataLayerManagerService {
    */
   retrieveAll() {
     this.loading = true;
-    this.loadingObservable.next(true);
+    this.loader$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
       next: (layer) =>
         this.stateSubject.next({
@@ -79,12 +80,8 @@ export class DataLayerManagerService {
           layers: this.mergeService.merge(this.state.layers, layer),
         }),
       error: (err) => console.error(err),
-      complete: () => {this.loading = false; this.loadingObservable.next(false);},
+      complete: () => {this.loading = false; this.loader$.next(false);},
     });
-  }
-
-  isLoading() {
-    return this.loadingObservable;
   } 
 
   select(id: string) {

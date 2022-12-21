@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { sum } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'data-layer-browser',
@@ -37,7 +35,7 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
       layer.datasets.some((dataset) => dataset.label?.toLowerCase().includes(filter));
     this.filterControl.valueChanges.subscribe((value) => (this.dataSource.filter = value?.trim().toLowerCase() ?? ''));
 
-    this.layerManager.isLoading().subscribe(loading => {
+    this.layerManager.loader$.subscribe((loading:boolean) => {
        this.isProgress = loading;
     })
   }
