@@ -17,7 +17,7 @@
         </mat-panel-title>
         <mat-panel-description> Annotation </mat-panel-description>
       </mat-expansion-panel-header>
-      <annotation-options [annotation]="annotation" (onAnnotationsChange)="this.onAnnotationsChange(annotation, $event)"></annotation-options>
+      <annotation-options [annotation]="annotation" (annotationChange)="this.onAnnotationsChange(annotation, $event)"></annotation-options>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

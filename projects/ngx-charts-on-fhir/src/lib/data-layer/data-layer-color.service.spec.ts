@@ -16,7 +16,7 @@ describe('DataLayerColorService', () => {
   });
 
   describe('chooseColorsFromPalette', () => {
-    it('should call chooseColorsFromPalette', inject([DataLayerColorService], (service: DataLayerColorService) => {
+    it('should call setColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
         datasets: [{ label: 'Diastolic Blood Pressure' }],
         annotations: [{ label: { display: true } }],
@@ -28,7 +28,7 @@ describe('DataLayerColorService', () => {
     }));
   });
   describe('getAnnotationColor', () => {
-    it('should get correct annotation color by calling getAnnotationColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
+    it('should return the annotation background color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const annotation: any = {
         label: {},
         backgroundColor: '#ECF0F9',
