@@ -38,19 +38,6 @@ describe('DataLayerColorService', () => {
   });
 
   describe('getColor', () => {
-    it('should getColor called', () => {
-      const dataset: any = {
-        label: 'Diastolic Blood Pressure',
-        yAxisID: 'mm[Hg]',
-        data: [],
-        backgroundColor: '#e41a1c33',
-      };
-      const getColorSpy = spyOn(colorService, 'getColor');
-      colorService.getColor(dataset);
-      expect(getColorSpy).toBeDefined();
-      expect(getColorSpy).toHaveBeenCalled();
-    });
-
     it('should get correct annotation color by calling getColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = {
         label: 'Diastolic Blood Pressure',

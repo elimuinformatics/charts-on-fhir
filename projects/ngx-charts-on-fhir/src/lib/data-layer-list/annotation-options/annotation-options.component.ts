@@ -11,7 +11,6 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
 })
 export class AnnotationOptionsComponent implements OnInit {
   private _annotation?: any;
-  newAnnotation?: any;
 
   @Input() set annotation(annotation: any) {
     this._annotation = annotation;
@@ -37,7 +36,7 @@ export class AnnotationOptionsComponent implements OnInit {
 
   private updateModel(formValue: typeof this.form.value): void {
     if (this._annotation) {
-      this.newAnnotation = {
+      let props = {
         label: {
           content: formValue.label,
         },
@@ -47,7 +46,7 @@ export class AnnotationOptionsComponent implements OnInit {
       };
       this.annotationChange.emit(
         produce(this._annotation, (draft: any) => {
-          merge(draft, this.newAnnotation);
+          merge(draft, props);
         })
       );
     }
