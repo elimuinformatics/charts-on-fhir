@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Bundle, Observation } from 'fhir/r2';
+import { Bundle, MedicationOrder, Observation } from 'fhir/r2';
 import { delay, EMPTY, expand, Observable, of, tap } from 'rxjs';
 
 const server = 'https://fhir2-internal.elimuinformatics.com/baseDstu2';
@@ -12,10 +12,20 @@ const patient = kautzer186;
 
 @Injectable({ providedIn: 'root' })
 export class FhirDataService {
+  server = 'https://fhir2-internal.elimuinformatics.com/baseDstu2'
+  patient = '170913';
+  url = `${server}/MedicationOrder?patient=${patient}&_count=100`
   constructor(private http: HttpClient) {}
 
   getObservations() {
     return this.http.get<Bundle<Observation>>(`${server}/Observation?patient=${patient}&_count=100`).pipe(
+      expand((result) => this.getNextBundle(result).pipe(delay(100))) // todo: remove this delay
+    );
+  }
+
+
+  getMedicationsOrder() {
+    return this.http.get<Bundle<MedicationOrder>>(this.url).pipe(
       expand((result) => this.getNextBundle(result).pipe(delay(100))) // todo: remove this delay
     );
   }

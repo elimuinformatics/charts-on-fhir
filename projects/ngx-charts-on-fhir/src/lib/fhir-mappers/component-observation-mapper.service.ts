@@ -1,7 +1,7 @@
 import { Injectable, Inject, forwardRef } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { Observation, ObservationComponent } from 'fhir/r2';
-import { fromPairs, merge } from 'lodash-es';
+import { merge } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
 import { Mapper } from '../fhir-converter/multi-mapper.service';
 import { ChartAnnotation } from '../utils';
@@ -30,7 +30,14 @@ export function isComponentObservation(resource: Observation): resource is Compo
     resource.code?.text &&
     resource.effectiveDateTime &&
     resource.component?.length &&
-    resource.component.every((c) => c.code.text && c.valueQuantity?.value && c.valueQuantity?.unit)
+    resource.component.every(
+      (c) =>
+        c.code.text &&
+        c.valueQuantity?.value &&
+        c.valueQuantity?.unit &&
+        // all components must have the same units of measure
+        c.valueQuantity.unit === resource?.component?.[0].valueQuantity?.unit
+    )
   );
 }
 /** Maps a FHIR Observation resource that has multiple components */
@@ -45,6 +52,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
   ) {}
   canMap = isComponentObservation;
   map(resource: ComponentObservation): DataLayer {
+    const scaleName = `${resource.code.text} (${resource.component[0].valueQuantity.unit})`;
     return {
       name: resource.code.text,
       category: resource.category?.text,
@@ -52,30 +60,27 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         .sort((a, b) => a.code.text.localeCompare(b.code.text))
         .map((component) => ({
           label: component.code.text,
-          yAxisID: component.valueQuantity.unit,
+          yAxisID: scaleName,
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
               y: component.valueQuantity.value,
             },
           ],
-        }))
-        .sort(),
-      scales: fromPairs([
-        ['timeline', this.timeScaleOptions],
-        ...resource.component.map((component) => [
-          component.valueQuantity.unit,
-          merge({}, this.linearScaleOptions, {
-            title: { text: component.valueQuantity.unit },
-          }),
-        ]),
-      ]),
+        })),
+      scales: {
+        timeline: this.timeScaleOptions,
+        [scaleName]: merge({}, this.linearScaleOptions, {
+          title: { text: scaleName },
+          stackWeight: resource.component.length,
+        }),
+      },
       annotations: resource.component.flatMap(
         (component) =>
           component.referenceRange?.map((range) =>
             merge({}, this.annotationOptions, {
               label: { content: `${component.code.text} Reference Range` },
-              yScaleID: component.valueQuantity.unit,
+              yScaleID: scaleName,
               yMax: range?.high?.value,
               yMin: range?.low?.value,
             })

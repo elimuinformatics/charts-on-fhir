@@ -25,6 +25,7 @@ import {
   DataLayerBrowserModule,
   DataLayerListModule,
   DataLayerToolbarModule,
+  FhirChartSummaryModule,
 } from 'ngx-charts-on-fhir';
 
 @NgModule({
@@ -32,6 +33,7 @@ import {
   imports: [
     BrowserModule,
     FhirChartModule,
+    FhirChartSummaryModule,
     NgChartsModule,
     BrowserAnimationsModule,
     MatExpansionModule,

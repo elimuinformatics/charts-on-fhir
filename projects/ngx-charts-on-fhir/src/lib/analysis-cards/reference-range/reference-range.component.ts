@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
-import { ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/types/utils';
-import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
-import { groupBy } from 'lodash-es';
 import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
-import { Dataset } from '../../data-layer/data-layer';
+import { ReferenceRange, isReferenceRangeFor, computeDaysOutOfRange, groupByDay } from '../analysis-utils';
 
-type ReferenceRange = {
-  yMax: number;
-  yMin: number;
-  yScaleID: string;
-};
-
+/**
+ * @deprecated This component will probably be removed because this functionality is now included in the statistics component.
+ */
 @Component({
   selector: 'reference-range',
   templateUrl: './reference-range.component.html',
@@ -36,7 +29,7 @@ export class ReferenceRangeComponent extends AnalysisCardContent {
 
   get daysWithObservations(): number {
     if (this.dataset) {
-      const days = Object.values(groupBy(this.visibleData, getDay));
+      const days = groupByDay(this.visibleData);
       return days.length;
     }
     return 0;
@@ -45,31 +38,9 @@ export class ReferenceRangeComponent extends AnalysisCardContent {
   get daysOutOfRange(): number {
     if (this.layer && this.dataset) {
       if (this.referenceRange) {
-        return computeDaysOutOfRange(this.visibleData, this.referenceRange);
+        return computeDaysOutOfRange(this.layer, this.dataset, this.visibleData) ?? 0;
       }
     }
     return 0;
   }
-}
-
-function isReferenceRangeFor(dataset: Dataset) {
-  return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
-    return (
-      (annotation as BoxAnnotationOptions)?.label?.content === `${dataset.label} Reference Range` &&
-      typeof annotation.yMax === 'number' &&
-      typeof annotation.yMin === 'number' &&
-      typeof annotation.yScaleID === 'string'
-    );
-  };
-}
-
-function computeDaysOutOfRange(data: ScatterDataPoint[], refRange: ReferenceRange) {
-  const isOutOfRange = (point: ScatterDataPoint) => point.y < refRange.yMin || refRange.yMax < point.y;
-  const days = Object.values(groupBy(data, getDay)).filter((points) => points.some(isOutOfRange));
-  return days.length;
-}
-
-function getDay(point: ScatterDataPoint): string {
-  const date = new Date(point.x);
-  return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`;
 }

@@ -1,4 +1,5 @@
 .angular
 dist
+coverage
 node_modules
 .github/pull_request_template.md

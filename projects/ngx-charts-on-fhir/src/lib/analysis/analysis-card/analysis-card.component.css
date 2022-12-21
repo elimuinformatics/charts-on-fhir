@@ -1,6 +1,10 @@
-/* .analysis-card {
-  height: 100%;
-} */
+.analysis-card {
+  border-left: 4px solid;
+  min-height: 100%;
+}
 .mat-card-subtitle .mat-icon {
   margin: -8px 0px;
+}
+.mat-card-title {
+  font-size: 20px;
 }

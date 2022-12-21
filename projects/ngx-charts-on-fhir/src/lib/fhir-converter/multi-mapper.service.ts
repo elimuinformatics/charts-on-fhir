@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { ChartType, ScatterDataPoint } from 'chart.js';
-import { TimelineChartType, DataLayer } from '../data-layer/data-layer';
+import { ChartType } from 'chart.js';
+import { TimelineChartType, DataLayer, TimelineDataPoint } from '../data-layer/data-layer';
 import { FhirConverterModule } from './fhir-converter.module';
 
 /** Maps properties from a single resource to properties on a DataLayer */
-export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = ScatterDataPoint[]> {
+export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> {
   abstract canMap(resource: unknown): resource is R;
   abstract map(resource: R): DataLayer<T, D>;
 }
@@ -15,8 +15,8 @@ export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = Sca
 @Injectable({
   providedIn: FhirConverterModule,
 })
-export class MultiMapper implements Mapper<unknown, TimelineChartType, ScatterDataPoint[]> {
-  constructor(@Inject(Mapper) private mappers: Mapper<unknown, TimelineChartType, ScatterDataPoint[]>[]) {}
+export class MultiMapper implements Mapper<unknown, TimelineChartType, TimelineDataPoint[]> {
+  constructor(@Inject(Mapper) private mappers: Mapper<unknown, TimelineChartType, TimelineDataPoint[]>[]) {}
   canMap(resource: unknown): resource is unknown {
     return this.mappers.some((mapper) => mapper.canMap(resource));
   }

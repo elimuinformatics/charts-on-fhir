@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject, throttleTime } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -35,7 +35,7 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
     private mergeService: DataLayerMergeService,
-    private ngZone: NgZone,
+    private ngZone: NgZone
   ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
@@ -52,9 +52,8 @@ export class DataLayerManagerService {
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
 
-  // todo: roll this into stateSubject?
   private timelineRangeSubject = new ReplaySubject<{ min: number; max: number }>();
-  timelineRange$ = this.timelineRangeSubject.asObservable();
+  timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
   loading = false;
 
