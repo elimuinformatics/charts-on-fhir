@@ -4,7 +4,7 @@ import { OperatorFunction, pipe, map, Observable, combineLatestWith } from 'rxjs
 import { DateRange } from '../analysis/analysis-card-content.component';
 import { ManagedDataLayer, DataLayer, Dataset } from './data-layer';
 import { DataLayerManagerService } from './data-layer-manager.service';
-import { MILLISECONDS_PER_DAY } from '../utils';
+import { isValidScatterDataPoint, MILLISECONDS_PER_DAY } from '../utils';
 import { DataLayerModule } from './data-layer.module';
 
 export type VisibleData = {
@@ -45,7 +45,10 @@ function byMostRecentValue(a: Dataset, b: Dataset) {
   if (ay == null || by == null) {
     return 0;
   }
-  return by - ay;
+  if (typeof ay === 'number' && typeof by === 'number') {
+    return by - ay;
+  }
+  throw new TypeError('Unsupported y-value types');
 }
 
 function filterByDateRange(dateRange$: Observable<{ min: number; max: number }>): OperatorFunction<{ layer: DataLayer; dataset: Dataset }[], VisibleData[]> {
@@ -55,7 +58,7 @@ function filterByDateRange(dateRange$: Observable<{ min: number; max: number }>)
       datasets.map(({ layer, dataset }) => ({
         layer,
         dataset,
-        data: dataset.data.filter((point) => range.min <= point.x && point.x <= range.max),
+        data: dataset.data.filter(isValidScatterDataPoint).filter((point) => range.min <= point.x && point.x <= range.max),
         dateRange: {
           min: new Date(range.min),
           max: new Date(range.max),

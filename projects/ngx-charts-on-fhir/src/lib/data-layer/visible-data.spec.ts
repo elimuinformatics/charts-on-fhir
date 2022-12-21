@@ -2,7 +2,7 @@ import { hot } from 'jasmine-marbles';
 import { ManagedDataLayer } from './data-layer';
 import { VisibleDataService } from './visible-data.service';
 
-describe('FhirChartSummaryService', () => {
+describe('VisibleDataService', () => {
   describe('visible$', () => {
     it('should emit when selectedLayers$ changes', () => {
       const a: Partial<ManagedDataLayer>[] = [
@@ -132,7 +132,16 @@ describe('FhirChartSummaryService', () => {
         {
           name: 'Layer',
           enabled: true,
-          datasets: [{ data: [{ x: 0 }, { x: 2 }, { x: 3 }, { x: 5 }] }],
+          datasets: [
+            {
+              data: [
+                { x: 0, y: 0 },
+                { x: 2, y: 0 },
+                { x: 3, y: 0 },
+                { x: 5, y: 0 },
+              ],
+            },
+          ],
         },
       ];
       const manager: any = {
@@ -144,12 +153,15 @@ describe('FhirChartSummaryService', () => {
         hot('xy', {
           x: [
             jasmine.objectContaining({
-              data: [{ x: 2 }, { x: 3 }],
+              data: [
+                { x: 2, y: 0 },
+                { x: 3, y: 0 },
+              ],
             }),
           ],
           y: [
             jasmine.objectContaining({
-              data: [{ x: 5 }],
+              data: [{ x: 5, y: 0 }],
             }),
           ],
         })

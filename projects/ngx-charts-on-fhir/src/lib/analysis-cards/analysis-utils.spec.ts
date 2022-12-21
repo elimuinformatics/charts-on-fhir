@@ -1,6 +1,7 @@
+import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
-import { DataLayer, Dataset } from '../data-layer/data-layer';
+import { DataLayer, Dataset, TimelineChartType } from '../data-layer/data-layer';
 import { computeDaysOutOfRange, isReferenceRangeFor } from './analysis-utils';
 
 describe('Analysis Utils', () => {
@@ -26,7 +27,7 @@ describe('Analysis Utils', () => {
 
   describe('computeDaysOutOfRange', () => {
     it('should return the number of days outside of the reference range', () => {
-      const layer: DataLayer = {
+      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
