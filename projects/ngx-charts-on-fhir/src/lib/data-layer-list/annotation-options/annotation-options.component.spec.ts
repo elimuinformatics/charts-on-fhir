@@ -57,11 +57,12 @@ describe('AnnotationOptionsComponent', () => {
   });
 
   it('should update annotation label when input is changed', async () => {
-    let labelInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='annotationLabel']" }));
-    let labelInputControl = fixture.componentInstance.form.controls['label'];
-    const testLabel = 'test label';
-    await labelInputHarness.setValue(testLabel);
-    expect(labelInputControl.value).toBe(testLabel);
+    let emitted: any = null;
+    component.annotation = { label: { content: 'Old' } };
+    component.annotationChange.subscribe(e => emitted = e)
+    const labelInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='annotationLabel']" }));
+    await labelInputHarness.setValue('New');
+    expect(emitted.label.content).toEqual('New');
   });
 
   it('should update annotation yMax when input is changed', async () => {
@@ -77,19 +78,13 @@ describe('AnnotationOptionsComponent', () => {
     await yMinInputHarness.setValue('100');
     expect(yMinInputControl.value).toBe(100);
   });
-
+  
   it('should update form when input is change', async () => {
     let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200 };
     component.annotation = annotation;
-    let labelInputControl = fixture.componentInstance.form.controls['label'];
-    let yMaxInputControl = fixture.componentInstance.form.controls['yMax'];
-    let yMinInputControl = fixture.componentInstance.form.controls['yMin'];
     let labelInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='annotationLabel']" }));
     let yMinInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMin']" }));
     let yMaxInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMax']" }));
-    expect(labelInputControl.value).toBe('Test');
-    expect(yMaxInputControl.value).toBe(200);
-    expect(yMinInputControl.value).toBe(100);
     expect(await labelInputHarness.getValue()).toBe('Test');
     expect(await yMinInputHarness.getValue()).toBe('100');
     expect(await yMaxInputHarness.getValue()).toBe('200');

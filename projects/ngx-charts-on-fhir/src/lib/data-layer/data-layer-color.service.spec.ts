@@ -50,30 +50,11 @@ describe('DataLayerColorService', () => {
     }));
   });
 
-  it('getColor checks the type of color is string or undefined', function () {
-    const dataset: any = {
-      data: [],
-      borderColor: '#e41a1c',
-      backgroundColor: '#e41a1c33',
-      pointBorderColor: '#e41a1c',
-      pointBackgroundColor: '#e41a1c',
-    };
-    const color = '#e41a1c';
-    const spyColor = colorService.getColor(dataset);
-    spyOn(colorService, 'getColor').and.callFake(function () {
-      if (typeof color === 'string') {
-        return color;
-      } else {
-        return undefined;
-      }
-    });
-    expect(spyColor).toEqual('#e41a1c');
-  });
   describe('setColor', () => {
     it('should setColor function called', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = { borderColor: '#e41a1c' };
       service.setColor(dataset, '#e41a1c');
-      expect('#e41a1c').toEqual(dataset.borderColor);
+      expect(dataset.borderColor).toEqual('#e41a1c');
     }));
   });
 

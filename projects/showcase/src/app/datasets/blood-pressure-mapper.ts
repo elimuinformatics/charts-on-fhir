@@ -46,7 +46,6 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
       }),
       merge({}, this.annotationOptions, {
         display: true,
-
         label: { content: 'Diastolic Blood Pressure Reference Range' },
         yScaleID: layer.datasets[0].yAxisID,
         yMax: 80,
