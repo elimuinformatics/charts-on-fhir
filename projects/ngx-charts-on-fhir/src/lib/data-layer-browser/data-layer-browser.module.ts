@@ -11,7 +11,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   declarations: [DataLayerBrowserComponent],
   imports: [CommonModule, MatIconModule, MatTableModule, MatSortModule, MatInputModule, MatButtonModule, ReactiveFormsModule, MatProgressBarModule],
-  exports: [DataLayerBrowserComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  exports: [DataLayerBrowserComponent]
 })
 export class DataLayerBrowserModule {}

@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, of, ReplaySubject, throttleTime } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject, throttleTime } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -55,10 +55,7 @@ export class DataLayerManagerService {
   private timelineRangeSubject = new ReplaySubject<{ min: number; max: number }>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
-  loader$ = new BehaviorSubject<boolean>(false); 
-  loading = false;
-  loadingObservable = new BehaviorSubject<boolean>(false);
-   
+  loading$ = new BehaviorSubject<boolean>(false); 
 
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
@@ -71,8 +68,7 @@ export class DataLayerManagerService {
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
   retrieveAll() {
-    this.loading = true;
-    this.loader$.next(true);
+    this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
       next: (layer) =>
         this.stateSubject.next({
@@ -80,7 +76,7 @@ export class DataLayerManagerService {
           layers: this.mergeService.merge(this.state.layers, layer),
         }),
       error: (err) => console.error(err),
-      complete: () => {this.loading = false; this.loader$.next(false);},
+      complete: () => {this.loading$.next(false);},
     });
   } 
 

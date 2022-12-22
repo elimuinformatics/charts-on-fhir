@@ -9,10 +9,9 @@
     </mat-form-field>
   </header>
   <section class="progress-bar-section">
-    <mat-progress-bar *ngIf="isProgress"
+    <mat-progress-bar *ngIf="!(layerManager.loading$ | async)"
         class="progress-bar-margin"
-        mode="indeterminate"
-        [value]="value">
+        mode="indeterminate">
     </mat-progress-bar>
   </section>
 

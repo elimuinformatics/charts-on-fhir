@@ -12,8 +12,6 @@ import { DataLayerManagerService } from '../data-layer/data-layer-manager.servic
   styleUrls: ['./data-layer-browser.component.css'],
 })
 export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
-  isProgress: boolean = true; 
-  value = 50;
   @Output() addLayer = new EventEmitter<DataLayer>();
 
   constructor(readonly layerManager: DataLayerManagerService) {}
@@ -34,10 +32,6 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
       layer.category?.toLowerCase().includes(filter) ||
       layer.datasets.some((dataset) => dataset.label?.toLowerCase().includes(filter));
     this.filterControl.valueChanges.subscribe((value) => (this.dataSource.filter = value?.trim().toLowerCase() ?? ''));
-
-    this.layerManager.loader$.subscribe((loading:boolean) => {
-       this.isProgress = loading;
-    })
   }
   ngAfterViewInit() {
     if (this.sort) {
