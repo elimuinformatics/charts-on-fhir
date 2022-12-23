@@ -1,14 +1,13 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { AnnotationOptionsComponent } from './annotation-options.component';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ColorPickerModule } from '../../color-picker/color-picker.module';
 import { Component, forwardRef } from '@angular/core';
 
 @Component({
@@ -59,26 +58,30 @@ describe('AnnotationOptionsComponent', () => {
   it('should update annotation label when input is changed', async () => {
     let emitted: any = null;
     component.annotation = { label: { content: 'Old' } };
-    component.annotationChange.subscribe(e => emitted = e)
+    component.annotationChange.subscribe((e) => (emitted = e));
     const labelInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='annotationLabel']" }));
     await labelInputHarness.setValue('New');
     expect(emitted.label.content).toEqual('New');
   });
 
   it('should update annotation yMax when input is changed', async () => {
-    let yMaxInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMax']" }));
-    let yMaxInputControl = fixture.componentInstance.form.controls['yMax'];
-    await yMaxInputHarness.setValue('100');
-    expect(yMaxInputControl.value).toBe(100);
+    let emitted: any = null;
+    component.annotation = { color: 'color', label: { content: 'Old' }, yMax: 100, yMin: 50 };
+    component.annotationChange.subscribe((e) => (emitted = e));
+    const yMaxInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMax']" }));
+    await yMaxInputHarness.setValue('110');
+    expect(emitted.yMax).toEqual(110);
   });
 
   it('should update annotation yMin when input is changed', async () => {
+    let emitted: any = null;
+    component.annotation = { color: 'color', label: { content: 'Old' }, yMax: 100, yMin: 50 };
+    component.annotationChange.subscribe((e) => (emitted = e));
     let yMinInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMin']" }));
-    let yMinInputControl = fixture.componentInstance.form.controls['yMin'];
-    await yMinInputHarness.setValue('100');
-    expect(yMinInputControl.value).toBe(100);
+    await yMinInputHarness.setValue('60');
+    expect(emitted.yMin).toBe(60);
   });
-  
+
   it('should update form when input is change', async () => {
     let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200 };
     component.annotation = annotation;
