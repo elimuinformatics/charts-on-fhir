@@ -15,7 +15,7 @@ const mockLayerManager = {
   availableLayers$: EMPTY,
   selectedLayers$: EMPTY,
   timelineRange$: EMPTY,
-  loader$: EMPTY
+  loading$: EMPTY
 };
 
 describe('DataLayerBrowserComponent', () => {
