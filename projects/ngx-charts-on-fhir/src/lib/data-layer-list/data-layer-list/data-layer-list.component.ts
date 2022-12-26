@@ -13,7 +13,7 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 export class DataLayerListComponent {
   constructor(readonly layerManager: DataLayerManagerService) {}
 
-  getLayerId(index: number, layer: ManagedDataLayer) {
+  getLayerId(_index: number, layer: ManagedDataLayer) {
     return layer.id;
   }
 
@@ -39,7 +39,9 @@ export class DataLayerListComponent {
   }
 
   onLayerChange(layer: ManagedDataLayer) {
-    this.layerManager.update(layer);
+    if (layer.id) {
+      this.layerManager.update(layer);
+    }
   }
 
   onLayerRemove(layer: ManagedDataLayer) {

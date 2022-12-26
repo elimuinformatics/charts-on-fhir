@@ -5,16 +5,15 @@ name: Build Test Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -49,3 +48,4 @@ jobs:
           -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
           -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js
           -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
+          

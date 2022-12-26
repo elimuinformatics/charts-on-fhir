@@ -14,9 +14,19 @@ import { DatasetListComponent } from './dataset-list/dataset-list.component';
 import { DataLayerOptionsComponent } from './data-layer-options/data-layer-options.component';
 import { DatasetOptionsComponent } from './dataset-options/dataset-options.component';
 import { ColorPickerModule } from '../color-picker/color-picker.module';
+import { MatInputModule } from '@angular/material/input';
+import { AnnotationOptionsComponent } from './annotation-options/annotation-options.component';
+import { AnnotationListComponent } from './annotation-list/annotation-list.component';
 
 @NgModule({
-  declarations: [DataLayerListComponent, DatasetListComponent, DataLayerOptionsComponent, DatasetOptionsComponent],
+  declarations: [
+    DataLayerListComponent,
+    DatasetListComponent,
+    DataLayerOptionsComponent,
+    DatasetOptionsComponent,
+    AnnotationOptionsComponent,
+    AnnotationListComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -29,6 +39,7 @@ import { ColorPickerModule } from '../color-picker/color-picker.module';
     MatSlideToggleModule,
     MatFormFieldModule,
     ColorPickerModule,
+    MatInputModule,
   ],
   exports: [DataLayerListComponent],
 })

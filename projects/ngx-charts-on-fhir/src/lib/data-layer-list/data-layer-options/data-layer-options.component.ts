@@ -20,4 +20,14 @@ export class DataLayerOptionsComponent {
       );
     }
   }
+
+  onAnnotationsChange(annotations: any) {
+    if (this.layer) {
+      this.layerChange.emit(
+        produce(this.layer, (draft) => {
+          draft.annotations = castDraft(annotations);
+        })
+      );
+    }
+  }
 }
