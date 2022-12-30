@@ -17,7 +17,7 @@ export class RangeSelectorComponent {
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
-      this.getMaxDateFromLayers(layers); 
+      this.getMaxDateFromLayers(layers);
     })
 
   }
@@ -35,6 +35,7 @@ export class RangeSelectorComponent {
     let chart = Chart.getChart('baseChart');
     chart?.resetZoom();
     chart?.update();
+    this.getMaxDateFromLayers(this.layers)
   }
 
   dateChange(date: any, type: string) {
@@ -43,21 +44,23 @@ export class RangeSelectorComponent {
     this.updateRangeSelector(0);
   }
 
-  getMaxDateFromLayers(layers: any[]) {
+  getMaxDateFromLayers(layers?: any[]) {
     let data: any[] = [];
-    layers.forEach((layersData) => {
-      data.push(layersData.datasets[0].data)
-    })
-    let sortedData: any[] = [];
-    for (let item of data) {
-      let xcordinates = item.map((el: any) => el.x)
-      sortedData = sortedData.concat(xcordinates)
+    if (layers) {
+      layers.forEach((layersData) => {
+        data.push(layersData.datasets[0].data)
+      })
+      let sortedData: any[] = [];
+      for (let item of data) {
+        let xcordinates = item.map((el: any) => el.x)
+        sortedData = sortedData.concat(xcordinates)
+      }
+      sortedData = sortedData.sort((x: any, y: any) => {
+        return x - y;
+      })
+      this.maxDate = new Date(sortedData[sortedData.length - 1]);
+      this.minDate = new Date(sortedData[0])
     }
-    sortedData = sortedData.sort((x: any, y: any) => {
-      return x - y;
-    })
-    this.maxDate = sortedData[sortedData.length - 1];
-    this.minDate = sortedData[0];
   }
 
   removeFocus() {

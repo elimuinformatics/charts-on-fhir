@@ -4,10 +4,12 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -16,22 +18,28 @@ body {
 .mat-badge-content {
   background: none;
 }
+
 .mat-tooltip {
   font-size: 14px;
 }
 
-.mat-form-field{
-  top: 5px !important;
-}
-.mat-form-field-infix{
-  display: flex !important;
-  height: 40px;
-}
-input.mat-input-element{
-  position: relative !important;
-  bottom: 0px !important;
-}
-.mat-datepicker-toggle{
-  position: relative !important;
-  bottom: 20px !important;
+.range-selector {
+  .mat-form-field {
+    top: 5px !important;
+  }
+
+  .mat-form-field-infix {
+    display: flex !important;
+    height: 40px;
+  }
+
+  input.mat-input-element {
+    position: relative !important;
+    bottom: 0px !important;
+  }
+
+  .mat-datepicker-toggle {
+    position: relative !important;
+    bottom: 20px !important;
+  }
 }
