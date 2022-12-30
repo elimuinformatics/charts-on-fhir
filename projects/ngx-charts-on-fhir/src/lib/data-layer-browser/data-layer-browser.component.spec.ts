@@ -1,6 +1,8 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatInputHarness } from '@angular/material/input/testing';
+import { MatSortHeaderHarness } from '@angular/material/sort/testing';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, EMPTY } from 'rxjs';
@@ -76,10 +78,78 @@ describe('DataLayerBrowserComponent', () => {
     layerManager.availableLayers$.next(layers);
     const table = await loader.getHarness(MatTableHarness);
     const values = await table.getCellTextByColumnName();
-    expect(values).toEqual(jasmine.objectContaining({
-      name: jasmine.objectContaining({ text: ['One', 'Two'] }),
-      category: jasmine.objectContaining({ text: ['A, B', 'C, D'] }),
-      datapoints: jasmine.objectContaining({ text: ['1', '2'] }),
-    }));
+    expect(values).toEqual(
+      jasmine.objectContaining({
+        name: jasmine.objectContaining({ text: ['One', 'Two'] }),
+        category: jasmine.objectContaining({ text: ['A, B', 'C, D'] }),
+        datapoints: jasmine.objectContaining({ text: ['1', '2'] }),
+      })
+    );
   });
+
+  it('should filter layers by category', async () => {
+    const layers: ManagedDataLayer[] = [
+      {
+        id: '1',
+        name: 'One',
+        category: ['A'],
+        datasets: [{ data: [] }],
+        scales: {},
+      },
+      {
+        id: '2',
+        name: 'Two',
+        category: ['C'],
+        datasets: [{ data: [] }],
+        scales: {},
+      },
+    ];
+    layerManager.availableLayers$.next(layers);
+    const filter = await loader.getHarness(MatInputHarness);
+    await filter.setValue('A');
+    const table = await loader.getHarness(MatTableHarness);
+    const values = await table.getCellTextByColumnName();
+    expect(values).toEqual(
+      jasmine.objectContaining({
+        category: jasmine.objectContaining({ text: ['A'] }),
+      })
+    );
+  });
+
+  it('should sort layers by category', async () => {
+    const layers: ManagedDataLayer[] = [
+      {
+        id: '1',
+        name: 'One',
+        category: ['B'],
+        datasets: [{ data: [] }],
+        scales: {},
+      },
+      {
+        id: '2',
+        name: 'Two',
+        category: ['C'],
+        datasets: [{ data: [] }],
+        scales: {},
+      },
+      {
+        id: '3',
+        name: 'Three',
+        category: ['A'],
+        datasets: [{ data: [] }],
+        scales: {},
+      },
+    ];
+    layerManager.availableLayers$.next(layers);
+    const categorySort = await loader.getHarness(MatSortHeaderHarness.with({label: 'Category'}));
+    await categorySort.click();
+    const table = await loader.getHarness(MatTableHarness);
+    const values = await table.getCellTextByColumnName();
+    expect(values).toEqual(
+      jasmine.objectContaining({
+        category: jasmine.objectContaining({ text: ['A', 'B', 'C'] }),
+      })
+    );
+  });
+
 });
