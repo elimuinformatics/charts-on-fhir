@@ -22,17 +22,17 @@ export class DataLayerColorService {
     }
   }
 
-  setAnnotationColor(annotation: any, color: string): void {
+  setAnnotationColor(annotation: any, color?: string): void {
     const line = annotation;
     line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
   }
 
   getAnnotationColor(annotation: any): string | undefined {
     const color = annotation.backgroundColor;
-    if (typeof color === 'string') {
-      return color;
+    if (typeof color === 'string' && !color.includes('33')) {
+      return color + '33';
     }
-    return undefined;
+    return color;
   }
 
   setColor(dataset: Dataset, color: string): void {
