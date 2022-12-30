@@ -95,7 +95,7 @@ describe('AnnotationOptionsComponent', () => {
 
   it('should emit annotation change event with updated annotations', async () => {
     let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF' };
-    let updatedAnnotation = { label: { content: 'Updated test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF' };
+    let updatedAnnotation = { label: { content: 'Updated test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF33' };
     component.annotation = annotation;
     let emitted: any;
     component.annotationChange.subscribe((e: any) => {
