@@ -45,7 +45,7 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   },
   ticks: {
     autoSkip: false,
-  }
+  },
 } as const;
 
 export const ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Annotation Options', {

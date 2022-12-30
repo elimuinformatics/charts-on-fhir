@@ -1,4 +1,4 @@
-import { Observation } from 'fhir/r2';
+import { Observation } from 'fhir/r4';
 import { SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
 
 describe('SimpleObservationMapper', () => {

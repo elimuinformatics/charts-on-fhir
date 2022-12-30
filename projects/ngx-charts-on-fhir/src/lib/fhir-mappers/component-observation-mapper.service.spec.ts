@@ -1,4 +1,4 @@
-import { Observation } from 'fhir/r2';
+import { Observation } from 'fhir/r4';
 import { ComponentObservation, ComponentObservationMapper } from './component-observation-mapper.service';
 
 describe('ComponentObservationMapper', () => {
