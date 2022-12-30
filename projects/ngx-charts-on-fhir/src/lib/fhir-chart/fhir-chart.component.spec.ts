@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY } from 'rxjs';
 import { DataLayerColorService, COLOR_PALETTE } from '../data-layer/data-layer-color.service';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
@@ -22,7 +23,7 @@ describe('FhirChartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FhirChartModule],
+      imports: [FhirChartModule, BrowserAnimationsModule],
       providers: [
         { provide: DataLayerManagerService, useValue: mockLayerManager },
         { provide: DataLayerColorService, useValue: mockColorService },

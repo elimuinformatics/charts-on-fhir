@@ -9,9 +9,7 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
   styleUrls: ['./range-selector.component.css'],
 })
 export class RangeSelectorComponent {
-
-  showBtns: boolean = true;
-  layerData: any;
+  layers?: any[];
   array: any = [];
   finalArray: any = [];
   maxDate: any
@@ -21,12 +19,8 @@ export class RangeSelectorComponent {
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
-      this.getMaxDateFromLayers(layers);
-      if (layers.length > 0) {
-        this.showBtns = true;
-      } else {
-        this.showBtns = false;
-      }
+      this.layers = layers;
+      this.getMaxDateFromLayers(layers); 
     })
 
   }
