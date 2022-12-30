@@ -32,7 +32,7 @@ describe('DatasetAnnotationListComponent', () => {
       const annotations = [{ label: { content: 'Test', display: true }, display: false }];
       component.annotations = annotations;
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: true }];
-      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.check();
       expect(emitted).toEqual(expectedOutput);
     });
@@ -42,7 +42,7 @@ describe('DatasetAnnotationListComponent', () => {
       const annotations = [{ label: { content: 'Test', display: true }, display: true }];
       component.annotations = annotations;
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: false }];
-      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.uncheck();
       expect(emitted).toEqual(expectedOutput);
     });
