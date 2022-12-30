@@ -1,6 +1,6 @@
 <div class="monthzoom-container" *ngIf='showBtns'>
   <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle (click)="updateRangeSelector(1)" color="primary">1 mo</mat-button-toggle>
+    <mat-button-toggle (click)="updateRangeSelector(1)">1 mo</mat-button-toggle>
     <mat-button-toggle (click)="updateRangeSelector(3)">3 mo</mat-button-toggle>
     <mat-button-toggle (click)="updateRangeSelector(6)">6 mo</mat-button-toggle>
     <mat-button-toggle (click)="updateRangeSelector(12)">1 y</mat-button-toggle>
@@ -8,13 +8,13 @@
   </mat-button-toggle-group>&nbsp;&nbsp;
   <mat-form-field appearance="fill">
     <mat-label>Start date</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')">
+    <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>&nbsp;&nbsp;
   <mat-form-field appearance="fill">
     <mat-label>End date</mat-label>
-    <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')">
+    <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate">
     <mat-datepicker-toggle matIconSuffix [for]="pickerDate"></mat-datepicker-toggle>
     <mat-datepicker #pickerDate></mat-datepicker>
   </mat-form-field>
