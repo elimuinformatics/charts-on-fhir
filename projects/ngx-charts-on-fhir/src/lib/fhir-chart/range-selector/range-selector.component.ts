@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Chart } from 'chart.js';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 
@@ -16,11 +16,12 @@ export class RangeSelectorComponent {
   finalArray: any = [];
   maxDate: any
   minDate: any
-  constructor(private layerManager: DataLayerManagerService) { }
+  myTag: any
+  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
-      this.getMaxDateFromLayers(layers); 
+      this.getMaxDateFromLayers(layers);
       if (layers.length > 0) {
         this.showBtns = true;
       } else {
@@ -30,13 +31,14 @@ export class RangeSelectorComponent {
 
   }
   updateRangeSelector(monthCount: number) {
-    if(monthCount) {
+    if (monthCount) {
       this.minDate = new Date(this.maxDate);
-      this.minDate.setMonth(this.minDate.getMonth() - monthCount); 
-    } 
+      this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
+      this.maxDate = new Date(this.maxDate)
+    }
     let chart = Chart.getChart('baseChart');
     chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
-    chart?.update() 
+    chart?.update()
   }
   resetZoomData() {
     let chart = Chart.getChart('baseChart');
@@ -45,6 +47,7 @@ export class RangeSelectorComponent {
   }
 
   dateChange(date: any, type: string) {
+    this.removeFocus()
     type === 'min' ? this.minDate = date.value : this.maxDate = date.value;
     this.updateRangeSelector(0);
   }
@@ -63,6 +66,17 @@ export class RangeSelectorComponent {
       return x - y;
     })
     this.maxDate = sortedData[sortedData.length - 1];
-    this.minDate = sortedData[0] 
+    this.minDate = sortedData[0]
   }
+
+  removeFocus() {
+    this.myTag = this.el.nativeElement.querySelectorAll("mat-button-toggle");
+    this.myTag.forEach((selectedTagValue: any) => {
+      if (selectedTagValue.classList.contains('mat-button-toggle-checked')) {
+        selectedTagValue.classList.remove('mat-button-toggle-checked');
+      }
+    })
+
+  }
+
 }
