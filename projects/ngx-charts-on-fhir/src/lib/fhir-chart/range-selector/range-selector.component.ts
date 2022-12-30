@@ -10,12 +10,9 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 })
 export class RangeSelectorComponent {
   layers?: any[];
-  array: any = [];
-  finalArray: any = [];
   maxDate: any
   minDate: any
-  myTag: any
-  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
+ constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
@@ -60,12 +57,12 @@ export class RangeSelectorComponent {
       return x - y;
     })
     this.maxDate = sortedData[sortedData.length - 1];
-    this.minDate = sortedData[0]
+    this.minDate = sortedData[0];
   }
 
   removeFocus() {
-    this.myTag = this.el.nativeElement.querySelectorAll("mat-button-toggle");
-    this.myTag.forEach((selectedTagValue: any) => {
+    const matButtonToggle = this.el.nativeElement.querySelectorAll("mat-button-toggle");
+    matButtonToggle.forEach((selectedTagValue: any) => {
       if (selectedTagValue.classList.contains('mat-button-toggle-checked')) {
         selectedTagValue.classList.remove('mat-button-toggle-checked');
       }
