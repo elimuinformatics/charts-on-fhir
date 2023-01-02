@@ -1,4 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 
@@ -38,9 +39,9 @@ export class RangeSelectorComponent {
     this.getMaxDateFromLayers(this.layers)
   }
 
-  dateChange(date: any, type: string) {
+  dateChange(event: MatDatepickerInputEvent<Date>, type: string) {
     this.removeFocus()
-    type === 'min' ? this.minDate = date.value : this.maxDate = date.value;
+    type === 'min' ? this.minDate = event.value : this.maxDate = event.value;
     this.updateRangeSelector(0);
   }
 

@@ -166,4 +166,20 @@ describe('RangeSelectorComponent', () => {
       expect(component.resetZoomData).toHaveBeenCalled();
     });
   });
+
+  it('should check dateChange selected event for start date', () => {
+    const date: any = { value : new Date(2020, 2, 2) };
+    component.dateChange(date , 'min');
+    fixture.detectChanges();
+    expect(component.minDate).toEqual(date.value);
+  });
+
+
+  it('should check dateChange selected event for end date', () => {
+    const date: any = { value : new Date(2020, 2, 2) };
+    component.dateChange(date , 'max');
+    fixture.detectChanges();
+    expect(component.maxDate).toEqual(date.value);
+  });
+
 });
