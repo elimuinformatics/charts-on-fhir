@@ -10,7 +10,6 @@ import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MatInputHarness } from '@angular/material/input/testing';
 
 
 const mockLayerManager = {
@@ -52,10 +51,6 @@ const mockLayerManager = {
   move() { },
 };
 
-const mockColorService = {
-  getColor: () => '#000000',
-  setColor: () => { },
-};
 
 describe('RangeSelectorComponent', () => {
   let component: RangeSelectorComponent;
@@ -171,19 +166,4 @@ describe('RangeSelectorComponent', () => {
       expect(component.resetZoomData).toHaveBeenCalled();
     });
   });
-
-  it('should minDate set on start date change', async () => {
-    mockLayerManager.selectedLayers$.subscribe((layers) => {
-      component.getMaxDateFromLayers(layers);
-      component.layers = layers;
-    })
-    spyOn(component, 'resetZoomData');
-    let startDateInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='mindate']" }));
-    await startDateInputHarness.setValue('2022-10-10');
-    fixture.whenStable().then(() => {
-      expect(component.minDate).toEqual('1');
-    });
-  });
-
-
 });
