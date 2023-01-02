@@ -39,9 +39,13 @@ export class RangeSelectorComponent {
     this.getMaxDateFromLayers(this.layers)
   }
 
-  dateChange(event: MatDatepickerInputEvent<Date>, type: string) {
+  dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
     this.removeFocus()
-    type === 'min' ? this.minDate = event.value : this.maxDate = event.value;
+    if(datePickerType === 'min') {
+       this.minDate = event.value;
+    } else {
+       this.maxDate = event.value;
+    }
     this.updateRangeSelector(0);
   }
 
