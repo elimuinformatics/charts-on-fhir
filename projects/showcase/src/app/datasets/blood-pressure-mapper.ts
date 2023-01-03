@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { merge } from 'lodash-es';
-import { Coding, Observation } from 'fhir/r2';
+import { Coding, Observation } from 'fhir/r4';
 import {
   ComponentObservation,
   ANNOTATION_OPTIONS,

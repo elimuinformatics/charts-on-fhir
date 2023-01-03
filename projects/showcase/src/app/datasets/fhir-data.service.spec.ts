@@ -1,28 +1,31 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Bundle, MedicationOrder } from 'fhir/r2';
+import { Bundle, MedicationRequest } from 'fhir/r4';
 import { FhirDataService } from './fhir-data.service';
 
 describe('postService (HttpClientTestingModule)', () => {
   let fhirdataService: FhirDataService;
   let httpTestingController: HttpTestingController;
-  let medicationBundle: Bundle<MedicationOrder> = {
+  let medicationBundle: Bundle<MedicationRequest> = {
     resourceType: 'Bundle',
-    id: 'f3772a8e-591d-4d9b-a985-0b29fbd92522',
     type: 'searchset',
-    total: 2,
-
     entry: [
       {
         resource: {
-          resourceType: 'MedicationOrder',
+          resourceType: 'MedicationRequest',
           id: '173531',
+          intent: 'order',
+          status: 'completed',
+          subject: {},
         },
       },
       {
         resource: {
-          resourceType: 'MedicationOrder',
+          resourceType: 'MedicationRequest',
           id: '173532',
+          intent: 'order',
+          status: 'completed',
+          subject: {},
         },
       },
     ],
@@ -37,9 +40,9 @@ describe('postService (HttpClientTestingModule)', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  describe('getMedicationsOrder()', () => {
-    it('should return medication bundle when getMedicationsOrder() is called', (done: DoneFn) => {
-      fhirdataService.getMedicationsOrder().subscribe((data) => {
+  describe('getMedicationRequests()', () => {
+    it('should return medication bundle when getMedicationRequests() is called', (done: DoneFn) => {
+      fhirdataService.getMedicationRequests().subscribe((data) => {
         expect(data).toEqual(medicationBundle);
         done();
       });

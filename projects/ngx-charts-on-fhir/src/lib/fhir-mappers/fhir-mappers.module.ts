@@ -1,5 +1,3 @@
 import { NgModule } from '@angular/core';
 @NgModule()
-export class FhirMappersModule {
-    
-}
+export class FhirMappersModule {}

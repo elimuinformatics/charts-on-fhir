@@ -1,4 +1,4 @@
-import { Observation } from 'fhir/r2';
+import { Observation } from 'fhir/r4';
 import { SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
 
 describe('SimpleObservationMapper', () => {
@@ -103,6 +103,19 @@ describe('SimpleObservationMapper', () => {
           yMax: 10,
         })
       );
+    });
+
+    it('should map category', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        category: [{ coding: [{ display: 'A' }] }, { coding: [{ display: 'B' }] }],
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 7, unit: 'unit' },
+      };
+      const mapper = new SimpleObservationMapper({}, {}, {});
+      expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
   });
 });

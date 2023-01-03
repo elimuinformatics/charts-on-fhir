@@ -6,5 +6,5 @@ import { ObservationLayerService } from '../datasets/observations.service';
 export const dataLayerProviders = [
   { provide: DataLayerService, useExisting: ExampleDataset, multi: true },
   { provide: DataLayerService, useExisting: ObservationLayerService, multi: true },
-  { provide: DataLayerService, useExisting: MedicationLayerService, multi: true}
+  { provide: DataLayerService, useExisting: MedicationLayerService, multi: true },
 ];
