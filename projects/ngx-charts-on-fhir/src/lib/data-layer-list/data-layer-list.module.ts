@@ -23,9 +23,9 @@ import { AnnotationListComponent } from './annotation-list/annotation-list.compo
     DataLayerListComponent,
     DatasetListComponent,
     DataLayerOptionsComponent,
-    DatasetOptionsComponent,
     AnnotationOptionsComponent,
     AnnotationListComponent,
+    DatasetOptionsComponent,
   ],
   imports: [
     CommonModule,
