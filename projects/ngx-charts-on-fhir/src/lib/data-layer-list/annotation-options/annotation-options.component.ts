@@ -42,7 +42,7 @@ export class AnnotationOptionsComponent implements OnInit {
         },
         yMax: formValue.yMax,
         yMin: formValue.yMin,
-        backgroundColor: formValue.color,
+        backgroundColor: this.colorService.getAnnotationColor(formValue.color),
       };
       this.annotationChange.emit(
         produce(this._annotation, (draft: any) => {
@@ -58,7 +58,7 @@ export class AnnotationOptionsComponent implements OnInit {
         label: annotation.label.content,
         yMax: annotation.yMax,
         yMin: annotation.yMin,
-        color: this.colorService.getAnnotationColor(annotation),
+        color: annotation.backgroundColor,
       });
     }
   }

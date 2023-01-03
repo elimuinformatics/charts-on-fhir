@@ -27,8 +27,7 @@ export class DataLayerColorService {
     line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
   }
 
-  getAnnotationColor(annotation: any): string | undefined {
-    const color = annotation.backgroundColor;
+  getAnnotationColor(color: any): string | undefined {
     if (typeof color === 'string' && !color.includes('33')) {
       return color + '33';
     }

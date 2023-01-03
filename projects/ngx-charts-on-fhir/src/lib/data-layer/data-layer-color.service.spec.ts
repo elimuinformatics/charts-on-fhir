@@ -29,11 +29,8 @@ describe('DataLayerColorService', () => {
   });
   describe('getAnnotationColor', () => {
     it('should return the annotation background color', inject([DataLayerColorService], (service: DataLayerColorService) => {
-      const annotation: any = {
-        label: {},
-        backgroundColor: '#ECF0F933',
-      };
-      expect(service.getAnnotationColor(annotation)).toEqual(annotation.backgroundColor);
+      const color = '#ECF0F9';
+      expect(service.getAnnotationColor(color)).toEqual('#ECF0F933');
     }));
   });
 
