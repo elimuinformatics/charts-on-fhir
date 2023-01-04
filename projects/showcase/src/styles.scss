@@ -25,21 +25,21 @@ body {
 
 .range-selector {
   .mat-form-field {
-    top: 5px !important;
+    top: 5px;
   }
 
   .mat-form-field-infix {
-    display: flex !important;
+    display: flex;
     height: 40px;
   }
 
   input.mat-input-element {
-    position: relative !important;
-    bottom: 0px !important;
+    position: relative;
+    bottom: 0px;
   }
 
   .mat-datepicker-toggle {
-    position: relative !important;
-    bottom: 20px !important;
+    position: relative;
+    bottom: 20px;
   }
 }

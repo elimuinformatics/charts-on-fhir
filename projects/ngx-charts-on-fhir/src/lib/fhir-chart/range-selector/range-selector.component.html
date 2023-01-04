@@ -1,5 +1,5 @@
 <div class="range-selector" *ngIf='layers && layers.length > 0'>
-  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [(ngModel)]="selected">
     <mat-button-toggle id="onemonth" (click)="updateRangeSelector(1)" >1 mo</mat-button-toggle>
     <mat-button-toggle id="threemonth" (click)="updateRangeSelector(3)">3 mo</mat-button-toggle>
     <mat-button-toggle id="sixmonth" (click)="updateRangeSelector(6)">6 mo</mat-button-toggle>

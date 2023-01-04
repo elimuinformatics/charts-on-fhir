@@ -13,7 +13,8 @@ export class RangeSelectorComponent {
   layers?: any[];
   maxDate: any
   minDate: any
- constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
+  selected: any;
+  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
@@ -40,13 +41,13 @@ export class RangeSelectorComponent {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
-    this.removeFocus()
     if(datePickerType === 'min') {
-       this.minDate = event.value;
+      this.minDate = event.value;
     } else {
-       this.maxDate = event.value;
+      this.maxDate = event.value;
     }
     this.updateRangeSelector(0);
+    this.selected = null;
   }
 
   getMaxDateFromLayers(layers?: any[]) {
@@ -67,15 +68,5 @@ export class RangeSelectorComponent {
       this.minDate = new Date(sortedData[0])
     }
   }
-
-  removeFocus() {
-    const matButtonToggle = this.el.nativeElement.querySelectorAll("mat-button-toggle");
-    matButtonToggle.forEach((selectedTagValue: any) => {
-      if (selectedTagValue.classList.contains('mat-button-toggle-checked')) {
-        selectedTagValue.classList.remove('mat-button-toggle-checked');
-      }
-    })
-
-  }
-
+  
 }

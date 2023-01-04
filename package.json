@@ -20,8 +20,6 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
-    "@material/button": "^14.0.0",
-    "angular-mat-datepicker": "^0.0.2",
     "chart.js": "^3.6.0",
     "chartjs-adapter-date-fns": "^2.0.0",
     "chartjs-plugin-annotation": "^2.0.1",
