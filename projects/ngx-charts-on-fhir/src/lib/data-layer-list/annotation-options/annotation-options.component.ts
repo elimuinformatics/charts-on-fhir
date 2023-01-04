@@ -42,7 +42,7 @@ export class AnnotationOptionsComponent implements OnInit {
         },
         yMax: formValue.yMax,
         yMin: formValue.yMin,
-        backgroundColor: this.colorService.getAnnotationColor(formValue.color),
+        backgroundColor: this.colorService.addTransparencyAbritraryColor(formValue.color),
       };
       this.annotationChange.emit(
         produce(this._annotation, (draft: any) => {

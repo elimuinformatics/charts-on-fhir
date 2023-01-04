@@ -27,10 +27,10 @@ describe('DataLayerColorService', () => {
       expect(setColorSpy).toHaveBeenCalled();
     }));
   });
-  describe('getAnnotationColor', () => {
+  describe('addTransparencyAbritraryColor', () => {
     it('should return the annotation background color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const color = '#ECF0F9';
-      expect(service.getAnnotationColor(color)).toEqual('#ECF0F933');
+      expect(service.addTransparencyAbritraryColor(color)).toEqual('#ECF0F933');
     }));
   });
 
