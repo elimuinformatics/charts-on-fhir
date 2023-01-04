@@ -8,13 +8,18 @@ class MockDatasetListComponent {
   @Input() datasets?: Dataset[];
 }
 
+@Component({ selector: 'annotation-list', template: '' })
+class MockAnnotationListComponent {
+  @Input() annotations?: any[];
+}
+
 describe('DataLayerOptionsComponent', () => {
   let component: DataLayerOptionsComponent;
   let fixture: ComponentFixture<DataLayerOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataLayerOptionsComponent, MockDatasetListComponent],
+      declarations: [DataLayerOptionsComponent, MockDatasetListComponent, MockAnnotationListComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataLayerOptionsComponent);
