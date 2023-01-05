@@ -1,4 +1,5 @@
-import { fhirclient } from "fhirclient/lib/types";
+import { fhirclient } from 'fhirclient/lib/types';
+
 /**
  * A local test environment that uses Logica Sandbox open FHIR server with a hard-coded patient ID
  */
@@ -7,7 +8,7 @@ export const environment = {
   clientState: {
     serverUrl: 'https://api.logicahealth.org/chartsonfhir/open',
     tokenResponse: {
-      patient: '20920'
-    }
+      patient: '20920',
+    },
   } as fhirclient.ClientState,
 };
