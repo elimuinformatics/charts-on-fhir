@@ -4,7 +4,7 @@ import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
-fdescribe('FhirDataService', () => {
+describe('FhirDataService', () => {
   let service: FhirDataService;
 
   beforeEach(() => {
