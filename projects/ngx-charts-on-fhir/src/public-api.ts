@@ -13,6 +13,7 @@ export * from './lib/fhir-chart/fhir-chart.component';
 export * from './lib/fhir-chart/fhir-chart.module';
 export * from './lib/fhir-chart-summary/fhir-chart-summary/fhir-chart-summary.component';
 export * from './lib/fhir-chart-summary/fhir-chart-summary.module';
+export * from './lib/fhir-data/fhir-data.service';
 export * from './lib/data-layer-browser/data-layer-browser.module';
 export * from './lib/data-layer-browser/data-layer-browser.component';
 export * from './lib/data-layer-list/data-layer-list/data-layer-list.component';
