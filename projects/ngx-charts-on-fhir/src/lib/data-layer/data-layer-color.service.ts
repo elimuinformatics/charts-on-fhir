@@ -27,7 +27,7 @@ export class DataLayerColorService {
     line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
   }
 
-  addTransparency(color: string): string | undefined {
+  addTransparency(color: string | undefined): string | undefined {
     if (typeof color === 'string' && !color.endsWith('33')) {
       return color + '33';
     }
