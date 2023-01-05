@@ -8,7 +8,7 @@ export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
   providedIn: forwardRef(() => DataLayerModule),
 })
 export class DataLayerColorService {
-  constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
+  constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) { }
 
   private nextColorIndex = 0;
 
@@ -27,7 +27,7 @@ export class DataLayerColorService {
     line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
   }
 
-  addTransparency(color: any): string | undefined {
+  addTransparency(color: string): string | undefined {
     if (typeof color === 'string' && !color.endsWith('33')) {
       return color + '33';
     }
