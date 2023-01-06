@@ -143,7 +143,7 @@ export type TimingCodeMedication = {
   ];
 } & TimingMedication;
 
-export const timingAbbreviationCodeSystem = 'http://terminology.hl7.org/3.1.0/CodeSystem-v3-GTSAbbreviation.html';
+export const timingAbbreviationCodeSystem = 'http://terminology.hl7.org/CodeSystem/v3-GTSAbbreviation';
 
 export function isTimingCodeMedication(resource: MedicationRequest): resource is TimingCodeMedication {
   return (
