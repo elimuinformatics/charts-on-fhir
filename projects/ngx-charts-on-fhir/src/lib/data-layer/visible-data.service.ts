@@ -48,7 +48,7 @@ function byMostRecentValue(a: Dataset, b: Dataset) {
   if (typeof ay === 'number' && typeof by === 'number') {
     return by - ay;
   }
-  throw new TypeError('Unsupported y-value types');
+  return 0;
 }
 
 function filterByDateRange(dateRange$: Observable<{ min: number; max: number }>): OperatorFunction<{ layer: DataLayer; dataset: Dataset }[], VisibleData[]> {
