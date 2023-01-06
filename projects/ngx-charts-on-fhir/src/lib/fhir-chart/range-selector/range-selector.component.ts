@@ -1,6 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
+import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 
 
@@ -10,11 +11,15 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
   styleUrls: ['./range-selector.component.css'],
 })
 export class RangeSelectorComponent {
-  layers?: any[];
-  maxDate: any
-  minDate: any
-  selected: any;
-  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { }
+  layers?: DataLayer[];
+  maxDate: Date | string;
+  minDate: Date | string; 
+  isMatGroupFocus : boolean = true;
+ constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { 
+     this.maxDate = new Date();
+     this.minDate = new Date();
+
+  }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
@@ -25,7 +30,7 @@ export class RangeSelectorComponent {
   }
   updateRangeSelector(monthCount: number) {
     if (monthCount) {
-      this.minDate = new Date(this.maxDate);
+      this.minDate = new Date(new Date());
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
       this.maxDate = new Date(this.maxDate)
     }
@@ -41,13 +46,15 @@ export class RangeSelectorComponent {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
-    if(datePickerType === 'min') {
-      this.minDate = event.value;
-    } else {
-      this.maxDate = event.value;
+    if(event.value) {
+      if(datePickerType === 'min') {
+        this.minDate = event.value;
+     } else {
+        this.maxDate = event.value;
+     }
     }
     this.updateRangeSelector(0);
-    this.selected = null;
+    this.isMatGroupFocus = false;
   }
 
   getMaxDateFromLayers(layers?: any[]) {
