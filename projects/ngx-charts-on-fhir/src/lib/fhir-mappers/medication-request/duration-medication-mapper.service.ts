@@ -1,6 +1,6 @@
 import { Injectable, forwardRef } from '@angular/core';
 import { Dosage, MedicationRequest } from 'fhir/r4';
-import { DataLayer } from '../../data-layer/data-layer';
+import { DataLayer, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../../fhir-converter/multi-mapper.service';
 import { MILLISECONDS_PER_DAY } from '../../utils';
 import { FhirMappersModule } from '../fhir-mappers.module';
@@ -258,9 +258,10 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
   constructor(private baseMapper: SimpleMedicationMapper) {}
   canMap = isDurationMedication;
   map(resource: DurationMedication): DataLayer {
-    const layer = this.baseMapper.map(resource);
+    const layer = this.baseMapper.map(resource) as DataLayer<'line',TimelineDataPoint[]>;
     layer.datasets = layer.datasets.map((dataset) => ({
       ...dataset,
+      type: 'line',
       pointRadius: 0,
       borderWidth: 20, // width of the line
       data: [

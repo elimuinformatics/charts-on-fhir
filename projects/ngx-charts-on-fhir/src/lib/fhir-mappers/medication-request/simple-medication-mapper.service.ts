@@ -34,6 +34,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       category: ['medication'],
       datasets: [
         {
+          type: 'scatter',
           label: resource?.medicationCodeableConcept?.text,
           yAxisID: 'medications',
           indexAxis: 'y',
