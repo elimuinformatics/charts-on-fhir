@@ -45,6 +45,8 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   },
   ticks: {
     autoSkip: false,
+    mirror: true,
+    labelOffset: -20,
   },
 } as const;
 
