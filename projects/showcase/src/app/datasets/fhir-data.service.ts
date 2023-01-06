@@ -1,33 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Bundle, MedicationOrder, Observation } from 'fhir/r2';
+import { Bundle, MedicationRequest, Observation } from 'fhir/r4';
 import { delay, EMPTY, expand, Observable, of, tap } from 'rxjs';
 
-const server = 'https://fhir2-internal.elimuinformatics.com/baseDstu2';
-const loganSmith = '78193';
-const trentLasher = '117335';
-const stanleyGeorge = '115534';
-const kautzer186 = '170913';
-const patient = kautzer186;
+const server = 'https://api.logicahealth.org/chartsonfhir/open';
+const vonRueden376 = '14635';
+const baumbach677 = '15134';
+const wolf938 = '20920';
+const patient = wolf938;
 
 @Injectable({ providedIn: 'root' })
 export class FhirDataService {
-  server = 'https://fhir2-internal.elimuinformatics.com/baseDstu2'
-  patient = '170913';
-  url = `${server}/MedicationOrder?patient=${patient}&_count=100`
+  url = `${server}/MedicationRequest?patient=${patient}&_count=100`;
   constructor(private http: HttpClient) {}
 
   getObservations() {
-    return this.http.get<Bundle<Observation>>(`${server}/Observation?patient=${patient}&_count=100`).pipe(
-      expand((result) => this.getNextBundle(result).pipe(delay(100))) // todo: remove this delay
-    );
+    return this.http.get<Bundle<Observation>>(`${server}/Observation?patient=${patient}&_count=100`).pipe(expand((result) => this.getNextBundle(result)));
   }
 
-
-  getMedicationsOrder() {
-    return this.http.get<Bundle<MedicationOrder>>(this.url).pipe(
-      expand((result) => this.getNextBundle(result).pipe(delay(100))) // todo: remove this delay
-    );
+  getMedicationRequests() {
+    return this.http.get<Bundle<MedicationRequest>>(this.url).pipe(expand((result) => this.getNextBundle(result)));
   }
 
   getBloodPressureObservations() {

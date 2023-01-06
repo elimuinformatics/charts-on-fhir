@@ -9,5 +9,5 @@ export const mapperProviders = [
   { provide: Mapper, useExisting: BloodPressureMapper, multi: true },
   { provide: Mapper, useExisting: ComponentObservationMapper, multi: true },
   { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },
-  { provide: Mapper, useExisting : SimpleMedicationMapper, multi: true}
+  { provide: Mapper, useExisting: SimpleMedicationMapper, multi: true },
 ];

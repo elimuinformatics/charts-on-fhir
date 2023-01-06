@@ -12,6 +12,6 @@ export class MedicationLayerService extends DataLayerService {
   }
   name = 'Medications';
   retrieve = () => {
-    return this.fhir.getMedicationsOrder().pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return this.fhir.getMedicationRequests().pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
   };
 }
