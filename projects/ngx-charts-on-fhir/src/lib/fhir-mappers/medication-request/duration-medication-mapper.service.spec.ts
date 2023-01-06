@@ -8,6 +8,7 @@ import {
   TimingScheduleMedication,
   TimingCodeMedication,
   TimingTextMedication,
+  timingAbbreviationCodeSystem,
 } from './duration-medication-mapper.service';
 import { SimpleMedicationMapper } from './simple-medication-mapper.service';
 
@@ -163,7 +164,8 @@ describe('DurationMedicationMapper', () => {
               code: {
                 coding: [
                   {
-                    code: 'd',
+                    system: timingAbbreviationCodeSystem,
+                    code: 'qd',
                   },
                 ],
               },
@@ -396,7 +398,16 @@ describe('DurationMedicationMapper', () => {
           {
             timing: {
               code: {
-                coding: [{ code: 'qd' }],
+                coding: [
+                  {
+                    system: 'http://www.example.com/proprietary-code-system',
+                    code: 'never',
+                  },
+                  {
+                    system: timingAbbreviationCodeSystem,
+                    code: 'qd',
+                  },
+                ],
               },
             },
             doseAndRate: [
@@ -429,7 +440,12 @@ describe('DurationMedicationMapper', () => {
           {
             timing: {
               code: {
-                coding: [{ code: 'never' }],
+                coding: [
+                  {
+                    system: timingAbbreviationCodeSystem,
+                    code: 'never',
+                  },
+                ],
               },
             },
             doseAndRate: [
@@ -461,7 +477,12 @@ describe('DurationMedicationMapper', () => {
           {
             timing: {
               code: {
-                coding: [{ code: 'qd' }],
+                coding: [
+                  {
+                    system: timingAbbreviationCodeSystem,
+                    code: 'qd',
+                  },
+                ],
               },
             },
             doseAndRate: [

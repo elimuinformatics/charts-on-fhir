@@ -133,18 +133,25 @@ export type TimingCodeMedication = {
     {
       timing: {
         code: {
-          coding: [{ code: string }];
+          coding: {
+            system: string;
+            code: string;
+          }[];
         };
       };
     } & TimingMedication['dosageInstruction'][0]
   ];
 } & TimingMedication;
 
+export const timingAbbreviationCodeSystem = 'http://terminology.hl7.org/3.1.0/CodeSystem-v3-GTSAbbreviation.html';
+
 export function isTimingCodeMedication(resource: MedicationRequest): resource is TimingCodeMedication {
   return (
     isTimingMedication(resource) && //
-    resource.dosageInstruction[0].timing?.code?.coding?.length === 1 &&
-    resource.dosageInstruction[0].timing.code.coding[0].code != null
+    resource.dosageInstruction[0].timing?.code?.coding != null &&
+    resource.dosageInstruction[0].timing.code.coding.some(
+      ({code, system}) => code != null && system === timingAbbreviationCodeSystem
+    )
   );
 }
 
@@ -273,9 +280,9 @@ function computeDailyFrequency(resource: TimingMedication) {
       week: 1 / 7,
       mo: 1 / 30,
     };
-    const code = resource.dosageInstruction[0].timing.code.coding[0].code;
-    if (timingCodeFrequency[code]) {
-      return timingCodeFrequency[code];
+    const coding = resource.dosageInstruction[0].timing.code.coding.find(({ system }) => system === timingAbbreviationCodeSystem);
+    if (coding?.code && timingCodeFrequency[coding.code] != null) {
+      return timingCodeFrequency[coding.code];
     }
   } else if (isTimingTextMedication(resource)) {
     if (resource.dosageInstruction[0].timing.code.text === 'daily') {
