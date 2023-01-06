@@ -20,7 +20,7 @@ const basicMedication = {
   subject: {},
 } as const;
 
-fdescribe('DurationMedicationMapper', () => {
+describe('DurationMedicationMapper', () => {
   let mapper: DurationMedicationMapper;
 
   beforeEach(() => {
