@@ -5,17 +5,17 @@
     <mat-button-toggle id="sixmonth" (click)="updateRangeSelector(6)">6 mo</mat-button-toggle>
     <mat-button-toggle id="oneyear" (click)="updateRangeSelector(12)">1 y</mat-button-toggle>
     <mat-button-toggle id="resetzoom" (click)="resetZoomData()">All</mat-button-toggle>
-  </mat-button-toggle-group>&nbsp;&nbsp;
+  </mat-button-toggle-group>
   <mat-form-field appearance="fill">
     <mat-label>Start date</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate">
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>&nbsp;&nbsp;
+  </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>End date</mat-label>
     <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate">
-    <mat-datepicker-toggle matIconSuffix [for]="pickerDate"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
     <mat-datepicker #pickerDate></mat-datepicker>
   </mat-form-field>
 </div>

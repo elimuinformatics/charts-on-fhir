@@ -13,7 +13,7 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date | string;
-  minDate: Date | string; 
+  minDate: Date | string;
   isMatGroupFocus : boolean = true;
  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { 
      this.maxDate = new Date();
@@ -30,7 +30,7 @@ export class RangeSelectorComponent {
   }
   updateRangeSelector(monthCount: number) {
     if (monthCount) {
-      this.minDate = new Date(new Date());
+      this.minDate = new Date(this.maxDate);
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
       this.maxDate = new Date(this.maxDate)
     }

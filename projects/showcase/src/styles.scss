@@ -22,24 +22,3 @@ body {
 .mat-tooltip {
   font-size: 14px;
 }
-
-.range-selector {
-  .mat-form-field {
-    top: 5px;
-  }
-
-  .mat-form-field-infix {
-    display: flex;
-    height: 40px;
-  }
-
-  input.mat-input-element {
-    position: relative;
-    bottom: 0px;
-  }
-
-  .mat-datepicker-toggle {
-    position: relative;
-    bottom: 20px;
-  }
-}
