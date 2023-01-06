@@ -186,6 +186,42 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
   );
 }
 
+/**
+ * Maps a FHIR MedicationRequest resource for which the supply duration can be calculated using one the supported algorthims.
+ */
+@Injectable({
+  providedIn: forwardRef(() => FhirMappersModule),
+})
+export class DurationMedicationMapper implements Mapper<DurationMedication> {
+  constructor(private baseMapper: SimpleMedicationMapper) {}
+  canMap = isDurationMedication;
+  map(resource: DurationMedication): DataLayer {
+    const layer = this.baseMapper.map(resource) as DataLayer<'line', TimelineDataPoint[]>;
+    layer.datasets = layer.datasets.map((dataset) => ({
+      ...dataset,
+      type: 'line',
+      pointRadius: 0,
+      borderWidth: 20, // width of the line
+      data: [
+        ...dataset.data,
+        {
+          // Add second datapoint for the end of the computed duration
+          x: new Date(resource.authoredOn).getTime() + computeDuration(resource),
+          y: dataset.data[0].y,
+        },
+        {
+          // Adding a NaN datapoint has 2 effects:
+          // 1. Chart.js will render a gap in the line between each MedicationRequest
+          // 2. The sort() in DataLayerMergeService will bail out and leave this dataset unsorted
+          x: NaN,
+          y: dataset.data[0].y,
+        },
+      ],
+    }));
+    return layer;
+  }
+}
+
 /** Compute the expected medication supply duration (in milliseconds) */
 function computeDuration(resource: DurationMedication): number {
   if (isBoundsDurationMedication(resource)) {
@@ -246,40 +282,4 @@ function computeDailyFrequency(resource: TimingMedication) {
     }
   }
   throw new TypeError(`Unsupported MedicationRequest Timing: ${JSON.stringify(resource.dosageInstruction[0].timing)}`);
-}
-
-/**
- * Maps a FHIR MedicationRequest resource for which the supply duration can be calculated using one the supported algorthims.
- */
-@Injectable({
-  providedIn: forwardRef(() => FhirMappersModule),
-})
-export class DurationMedicationMapper implements Mapper<DurationMedication> {
-  constructor(private baseMapper: SimpleMedicationMapper) {}
-  canMap = isDurationMedication;
-  map(resource: DurationMedication): DataLayer {
-    const layer = this.baseMapper.map(resource) as DataLayer<'line',TimelineDataPoint[]>;
-    layer.datasets = layer.datasets.map((dataset) => ({
-      ...dataset,
-      type: 'line',
-      pointRadius: 0,
-      borderWidth: 20, // width of the line
-      data: [
-        ...dataset.data,
-        {
-          // Add second datapoint for the end of the computed duration
-          x: new Date(resource.authoredOn).getTime() + computeDuration(resource),
-          y: dataset.data[0].y,
-        },
-        {
-          // Adding a NaN datapoint has 2 effects:
-          // 1. Chart.js will render a gap in the line between each MedicationRequest
-          // 2. The sort() in DataLayerMergeService will bail out and leave this dataset unsorted
-          x: NaN,
-          y: dataset.data[0].y,
-        },
-      ],
-    }));
-    return layer;
-  }
 }
