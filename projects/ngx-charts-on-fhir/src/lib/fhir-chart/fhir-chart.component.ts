@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -28,7 +28,7 @@ export class FhirChartComponent implements OnInit {
 
   @ViewChild('baseChart') baseChart?:ElementRef;
 
-  constructor(private configService: FhirChartConfigurationService) {}
+  constructor(private configService: FhirChartConfigurationService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin);
@@ -66,5 +66,8 @@ export class FhirChartComponent implements OnInit {
       this.datasets = config.data.datasets;
       this.options = config.options;
     });
+  }
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
 }

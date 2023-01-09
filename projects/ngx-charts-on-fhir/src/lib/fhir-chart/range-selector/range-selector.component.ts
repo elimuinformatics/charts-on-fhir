@@ -16,7 +16,7 @@ export class RangeSelectorComponent {
   minDate: Date | string;
   isMatGroupFocus : boolean = true;
 
-  @Input() chart?: Chart; 
+  @Input() chartElementRef?: ElementRef; 
 
  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { 
      this.maxDate = new Date();
@@ -36,12 +36,14 @@ export class RangeSelectorComponent {
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
       this.maxDate = new Date(this.maxDate)
     }
-    this.chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
-    this.chart?.update()
+    let chart = Chart.getChart(this.chartElementRef?.nativeElement);
+    chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
+    chart?.update()
   }
   resetZoomData() {
-    this.chart?.resetZoom();
-    this.chart?.update();
+    let chart = Chart.getChart(this.chartElementRef?.nativeElement);
+    chart?.resetZoom();
+    chart?.update();
     this.getMaxDateFromLayers(this.layers)
   }
 
