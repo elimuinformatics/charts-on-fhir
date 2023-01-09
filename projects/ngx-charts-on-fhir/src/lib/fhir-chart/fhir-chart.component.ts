@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -25,6 +25,8 @@ export class FhirChartComponent implements OnInit {
 
   @Input() width: string = '600px';
   @Input() height: string = '300px';
+
+  @ViewChild('baseChart') baseChart?:ElementRef;
 
   constructor(private configService: FhirChartConfigurationService) {}
 

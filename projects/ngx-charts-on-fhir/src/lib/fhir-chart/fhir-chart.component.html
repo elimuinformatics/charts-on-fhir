@@ -1,13 +1,12 @@
 <div class="range-selector">
-  <range-selector></range-selector>
+  <range-selector [chart]="baseChart"></range-selector>
 </div>
 <div class="chart-container" [style.width]="width" [style.height]="height">
   <div class="chart-container-resize-fix">
     <canvas
       *ngIf="datasets && datasets.length > 0; else empty"
       width="100%"
-      baseChart
-      id="baseChart"
+      #baseChart
       [type]="type ?? defaultType"
       [datasets]="datasets"
       [options]="options ?? defaultOptions"

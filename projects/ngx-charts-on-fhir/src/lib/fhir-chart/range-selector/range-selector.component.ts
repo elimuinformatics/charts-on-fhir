@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
 import { DataLayer } from '../../data-layer/data-layer';
@@ -15,10 +15,12 @@ export class RangeSelectorComponent {
   maxDate: Date | string;
   minDate: Date | string;
   isMatGroupFocus : boolean = true;
+
+  @Input() chart?: Chart; 
+
  constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { 
      this.maxDate = new Date();
      this.minDate = new Date();
-
   }
 
   ngOnInit(): void {
@@ -34,14 +36,12 @@ export class RangeSelectorComponent {
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
       this.maxDate = new Date(this.maxDate)
     }
-    let chart = Chart.getChart('baseChart');
-    chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
-    chart?.update()
+    this.chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
+    this.chart?.update()
   }
   resetZoomData() {
-    let chart = Chart.getChart('baseChart');
-    chart?.resetZoom();
-    chart?.update();
+    this.chart?.resetZoom();
+    this.chart?.update();
     this.getMaxDateFromLayers(this.layers)
   }
 
