@@ -40,6 +40,7 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   type: 'category',
   offset: true,
   stack: 'all',
+  stackWeight: 0.6,
   title: {
     display: true,
   },
