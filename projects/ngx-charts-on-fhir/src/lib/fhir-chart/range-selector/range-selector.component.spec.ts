@@ -10,6 +10,7 @@ import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
+import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 
 
 const mockLayerManager = {
@@ -80,14 +81,10 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should display the range selector when one or more data layer is selected', () => {
-    component.layers = [{
-      id: '-109669932',
-      name: 'Blood Pressure',
-      category: 'vital-signs',
-      annotations: [],
-      selected: true,
-      enabled: true,
-    }];
+    mockLayerManager.selectedLayers$.subscribe((layers) => {
+      component.getMaxDateFromLayers(layers);
+      component.layers = layers as DataLayer[];
+    })
     fixture.detectChanges();
     const cards = element.query(By.css(".range-selector"));
     expect(cards).toBeTruthy();
@@ -104,7 +101,7 @@ describe('RangeSelectorComponent', () => {
   it('should calculate proper 1 month ago date from max layer date', async () => {
     mockLayerManager.selectedLayers$.subscribe((layers) => {
       component.getMaxDateFromLayers(layers);
-      component.layers = layers;
+      component.layers = layers as DataLayer[];
     })
 
     let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='onemonth']" }));
@@ -117,7 +114,7 @@ describe('RangeSelectorComponent', () => {
   it('should calculate proper 3 month ago date from max layer date', async () => {
     mockLayerManager.selectedLayers$.subscribe((layers) => {
       component.getMaxDateFromLayers(layers);
-      component.layers = layers;
+      component.layers = layers as DataLayer[];
     })
 
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='threemonth']" }));
@@ -130,7 +127,7 @@ describe('RangeSelectorComponent', () => {
   it('should calculate proper 6 month ago date from max layer date', async () => {
     mockLayerManager.selectedLayers$.subscribe((layers) => {
       component.getMaxDateFromLayers(layers);
-      component.layers = layers;
+      component.layers = layers as DataLayer[];;
     })
 
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='sixmonth']" }));
@@ -143,7 +140,7 @@ describe('RangeSelectorComponent', () => {
   it('should calculate proper 12 month ago date from max layer date', async () => {
     mockLayerManager.selectedLayers$.subscribe((layers) => {
       component.getMaxDateFromLayers(layers);
-      component.layers = layers;
+      component.layers = layers as DataLayer[];;
     })
 
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='oneyear']" }));
@@ -157,7 +154,7 @@ describe('RangeSelectorComponent', () => {
   it('should reset a chart when click on all button', async () => {
     mockLayerManager.selectedLayers$.subscribe((layers) => {
       component.getMaxDateFromLayers(layers);
-      component.layers = layers;
+      component.layers = layers as DataLayer[];;
     })
     spyOn(component, 'resetZoomData');
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='resetzoom']" }));
