@@ -209,6 +209,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
       label: dataset.label + ' (duration)',
       type: 'line',
       pointRadius: 0,
+      pointHoverRadius: 0,
       borderWidth: 20, // width of the line
       data: [
         ...dataset.data,
