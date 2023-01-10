@@ -54,9 +54,15 @@
             "polyfills": "projects/showcase/src/polyfills.ts",
             "tsConfig": "projects/showcase/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["projects/showcase/src/favicon.ico", "projects/showcase/src/assets"],
+            "assets": ["projects/showcase/src/favicon.ico", "projects/showcase/src/assets", "projects/showcase/src/launch.html"],
             "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "projects/showcase/src/styles.scss"],
-            "scripts": []
+            "scripts": [
+              {
+                "input": "node_modules/fhirclient/build/fhir-client.js",
+                "inject": false,
+                "bundleName": "fhirclient"
+              }
+            ]
           },
           "configurations": {
             "production": {
@@ -87,6 +93,14 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "logica-open": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/showcase/src/environments/environment.ts",
+                  "with": "projects/showcase/src/environments/environment.logica-open.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -99,9 +113,12 @@
             },
             "development": {
               "browserTarget": "showcase:build:development"
+            },
+            "logica-open": {
+              "browserTarget": "showcase:build:development,logica-open"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "logica-open"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
