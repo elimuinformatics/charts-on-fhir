@@ -4,7 +4,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 .mat-column-value {
-  padding-left: 16px;
+  /* padding-left: 16px; */
   text-align: end;
   justify-content: flex-end;
 }
@@ -14,4 +14,7 @@ table {
 }
 .menu {
   float: right;
+}
+tr:last-child .row-header ,tr:last-child .row-data {
+  border-bottom: none;
 }

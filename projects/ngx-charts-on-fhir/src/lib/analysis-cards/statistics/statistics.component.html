@@ -3,7 +3,7 @@
     <th scope="row" mat-cell *matCellDef="let element" class="row-header">{{ element.name }}</th>
   </ng-container>
   <ng-container matColumnDef="value">
-    <td mat-cell *matCellDef="let element">{{ element.value }}</td>
+    <td mat-cell *matCellDef="let element" class="row-data">{{ element.value }}</td>
   </ng-container>
   <tr mat-row *matRowDef="let row; columns: ['name', 'value']"></tr>
 </table>
