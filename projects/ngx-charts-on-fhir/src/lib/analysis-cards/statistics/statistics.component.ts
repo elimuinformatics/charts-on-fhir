@@ -2,6 +2,7 @@ import { Component, OnChanges } from '@angular/core';
 import { ScatterDataPoint } from 'chart.js';
 import { mean, floor, reject } from 'lodash-es';
 import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
+import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { computeDaysOutOfRange, groupByDay } from '../analysis-utils';
 
@@ -23,21 +24,25 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     }
     return 5;
   }
-  maxDate: any;
-  minDate: any;
-  monthsCount: any;
+  maxDate: Date | string;
+  minDate: Date | string;
+  previousDate: Date | string;
+  monthsCount?: number;
   statistics: NameValuePair[] = [];
-  layers?: any[];
+  layers?: DataLayer[];
   previousDataDates?: any[] = [];
   constructor(private layerManager: DataLayerManagerService) {
     super();
+    this.maxDate = new Date();
+    this.minDate = new Date();
+    this.previousDate = new Date();
   }
 
   ngOnChanges(): void {
     this.getMaxMinDate(this.visibleData)
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
-      this.getPreviousDataFromLayers(this.layers)
+      this.getPreviousDataFromLayers(this.layers, this.monthsCount || 0)
     })
     this.computeStatistics(this.visibleData);
   }
@@ -94,19 +99,19 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
   diff_months_count(startDate: any, endDate: any) {
     const diffTime = Math.abs(startDate - endDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.monthsCount = Math.floor(diffDays / 30);
+    this.monthsCount = diffDays / 30;
   }
-  getPreviousDataFromLayers(layer: any) {
+  getPreviousDataFromLayers(layer: any, monthsCount: number) {
     let data: any[] = [];
     if (layer) {
       layer.forEach((layersData: any) => {
         data.push(layersData.datasets[0].data)
       })
-      let previousDate = new Date(this.minDate);
-      previousDate.setMonth(new Date(this.minDate).getMonth() - this.monthsCount);
+      this.previousDate = new Date(this.minDate);
+      this.previousDate.setMonth(new Date(this.minDate).getMonth() - monthsCount);
       data.forEach((layerData) => {
         layerData.forEach((previousData: any) => {
-          if (new Date(previousData.x) < new Date(this.minDate) && new Date(previousData.x) > new Date(previousDate)) {
+          if (new Date(previousData.x) < new Date(this.minDate) && new Date(previousData.x) > new Date(this.previousDate)) {
             this.previousDataDates?.push(previousData)
           }
         })

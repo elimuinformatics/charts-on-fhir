@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
@@ -10,7 +10,7 @@ import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
+import { DataLayer, } from '../../data-layer/data-layer';
 
 
 const mockLayerManager = {
