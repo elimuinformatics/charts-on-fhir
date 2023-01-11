@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -26,7 +26,13 @@ import {
   DataLayerListModule,
   DataLayerToolbarModule,
   FhirChartSummaryModule,
+  FhirDataService,
 } from 'ngx-charts-on-fhir';
+import { environment } from '../environments/environment';
+
+function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
+  return () => service.initialize(environment.clientState);
+}
 
 @NgModule({
   declarations: [AppComponent, CustomCardExampleComponent],
@@ -51,6 +57,7 @@ import {
     AnalysisModule,
   ],
   providers: [
+    { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     { provide: COLOR_PALETTE, useValue: paletteProvider },
     mapperProviders,

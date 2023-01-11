@@ -1,10 +1,10 @@
 import { Injectable, Inject, forwardRef } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
-import { Observation, ObservationComponent } from 'fhir/r2';
+import { Observation, ObservationComponent } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
 import { Mapper } from '../fhir-converter/multi-mapper.service';
-import { ChartAnnotation } from '../utils';
+import { ChartAnnotation, isDefined } from '../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from './fhir-mapper-options';
 import { FhirMappersModule } from './fhir-mappers.module';
 
@@ -55,7 +55,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
     const scaleName = `${resource.code.text} (${resource.component[0].valueQuantity.unit})`;
     return {
       name: resource.code.text,
-      category: resource.category?.text,
+      category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: resource.component
         .sort((a, b) => a.code.text.localeCompare(b.code.text))
         .map((component) => ({

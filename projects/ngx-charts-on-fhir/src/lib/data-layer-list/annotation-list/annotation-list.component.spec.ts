@@ -6,6 +6,13 @@ import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, Input } from '@angular/core';
+
+@Component({ selector: 'annotation-options', template: '' })
+class MockAnnotationOptionsComponent {
+  @Input() annotation?: any;
+}
+
 
 describe('DatasetAnnotationListComponent', () => {
   let component: AnnotationListComponent;
@@ -13,7 +20,7 @@ describe('DatasetAnnotationListComponent', () => {
   let loader: HarnessLoader;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AnnotationListComponent],
+      declarations: [AnnotationListComponent, MockAnnotationOptionsComponent],
       imports: [MatExpansionModule, MatCheckboxModule, BrowserAnimationsModule],
     }).compileComponents();
     fixture = TestBed.createComponent(AnnotationListComponent);
@@ -32,7 +39,7 @@ describe('DatasetAnnotationListComponent', () => {
       const annotations = [{ label: { content: 'Test', display: true }, display: false }];
       component.annotations = annotations;
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: true }];
-      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.check();
       expect(emitted).toEqual(expectedOutput);
     });
@@ -42,7 +49,7 @@ describe('DatasetAnnotationListComponent', () => {
       const annotations = [{ label: { content: 'Test', display: true }, display: true }];
       component.annotations = annotations;
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: false }];
-      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: "[id='annotationDisplayCheckBox']" }));
+      let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.uncheck();
       expect(emitted).toEqual(expectedOutput);
     });

@@ -16,9 +16,8 @@ export class AnnotationListComponent {
 
   @Output() annotationsChange = new EventEmitter<any[]>();
 
-  onCheckboxChange(annotation: any, event: MatCheckboxChange) {
+  onCheckboxChange(index: any, event: MatCheckboxChange) {
     if (this._annotations) {
-      const index = this._annotations.indexOf(annotation);
       this.annotationsChange.emit(
         produce(this._annotations, (draft) => {
           draft[index].display = event.checked;

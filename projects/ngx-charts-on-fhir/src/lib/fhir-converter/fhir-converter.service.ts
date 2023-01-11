@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Bundle } from 'fhir/r2';
+import { Bundle } from 'fhir/r4';
 import { DataLayer } from '../data-layer/data-layer';
 import { FhirConverterModule } from './fhir-converter.module';
 import { MultiMapper } from './multi-mapper.service';
