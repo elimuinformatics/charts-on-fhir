@@ -63,17 +63,11 @@ describe('FhirChartSummaryComponent', () => {
 
   it('should set inputs on statistics component', () => {
     const visibleData: any = {
-      layer: 'layer',
-      dataset: 'dataset',
-      data: 'data',
-      dateRange: 'dateRange',
+      dataset: { label: 'dataset' },
     };
     visibleDataService.visible$.next([visibleData]);
     fixture.detectChanges();
     const statistics: DebugElement = fixture.debugElement.query(By.directive(MockStatisticsComponent));
-    expect(statistics.componentInstance.layer).toEqual('layer');
-    expect(statistics.componentInstance.dataset).toEqual('dataset');
-    expect(statistics.componentInstance.visibleData).toEqual('data');
-    expect(statistics.componentInstance.dateRange).toEqual('dateRange');
+    expect(statistics.componentInstance.visibleData).toEqual(visibleData);
   });
 });

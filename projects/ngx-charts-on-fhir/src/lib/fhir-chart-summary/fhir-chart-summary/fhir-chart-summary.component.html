@@ -1,11 +1,11 @@
 <div class="chart-summary">
   <analysis-card
-    *ngFor="let visible of visibleDataService.visible$ | async"
-    [dataset]="visible.dataset"
-    [title]="visible.dataset.label"
+    *ngFor="let visibleData of visibleDataService.visible$ | async"
+    [dataset]="visibleData.dataset"
+    [title]="visibleData.dataset.label"
     icon="info"
     class="dataset-summary mat-elevation-z2"
   >
-    <statistics [layer]="visible.layer" [dataset]="visible.dataset" [dateRange]="visible.dateRange" [visibleData]="visible.data"></statistics>
+    <statistics [visibleData]="visibleData"></statistics>
   </analysis-card>
 </div>

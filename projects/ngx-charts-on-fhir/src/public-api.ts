@@ -2,13 +2,9 @@
  * Public API Surface of ngx-charts-on-fhir
  */
 
-export * from './lib/analysis/analysis.module';
-export * from './lib/analysis/analysis.component';
-export * from './lib/analysis/analysis-card-content.component';
-export * from './lib/analysis/analysis-card/analysis-card.component';
+export * from './lib/analysis-cards/analysis-card/analysis-card.component';
 export * from './lib/analysis-cards/analysis-cards.module';
 export * from './lib/analysis-cards/statistics/statistics.component';
-export * from './lib/analysis-cards/reference-range/reference-range.component';
 export * from './lib/fhir-chart/fhir-chart.component';
 export * from './lib/fhir-chart/fhir-chart.module';
 export * from './lib/fhir-chart-summary/fhir-chart-summary/fhir-chart-summary.component';
