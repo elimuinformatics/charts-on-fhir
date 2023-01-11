@@ -1,8 +1,5 @@
 import { Injectable, forwardRef } from '@angular/core';
-import { ChartTypeRegistry } from 'chart.js';
-import { DeepPartial } from 'chart.js/types/utils';
-import { omit } from 'lodash-es';
-import { DataLayer, DataLayerCollection, TimelineChartType } from './data-layer';
+import { DataLayer, DataLayerCollection } from './data-layer';
 import produce, { castDraft } from 'immer';
 import { DataLayerModule } from './data-layer.module';
 
@@ -20,10 +17,7 @@ export class DataLayerMergeService {
       if (!draft[id]) {
         draft[id] = { id, ...castDraft(layer) };
       } else {
-        for (let i = 0; i < draft[id].datasets.length; i++) {
-          draft[id].datasets[i].data.push(...layer.datasets[i].data);
-          draft[id].datasets[i].data.sort((a, b) => a.x - b.x);
-        }
+        mergeDatasets(draft[id], layer);
       }
     });
   }
@@ -43,17 +37,22 @@ function hashCode(str: string): number {
   return hash;
 }
 
-function extractMetadata(layer: DataLayer): MetadataLayer {
+function extractMetadata(layer: DataLayer): DataLayer {
   return {
     ...layer,
-    datasets: layer.datasets.map<Metadataset>((dataset) => omit(dataset, 'data') as any),
+    datasets: [],
   };
 }
 
-/** DataLayer without the data */
-type MetadataLayer = Omit<DataLayer, 'datasets'> & {
-  datasets: Metadataset[];
-};
-
-/** Dataset without the data */
-type Metadataset = DeepPartial<{ [key in TimelineChartType]: { type: key } & ChartTypeRegistry[key]['datasetOptions'] }[TimelineChartType]>;
+/** Merge in place, matching datasets by label. This function mutates `mergedLayer` and its datasets. */
+function mergeDatasets(mergedLayer: DataLayer, newLayer: DataLayer) {
+  for (let newDataset of newLayer.datasets) {
+    const mergedDataset = mergedLayer.datasets.find((dataset) => dataset.label === newDataset.label);
+    if (mergedDataset) {
+      mergedDataset.data.push(...newDataset.data);
+      mergedDataset.data.sort((a, b) => a.x - b.x);
+    } else {
+      mergedLayer.datasets.push(newDataset);
+    }
+  }
+}

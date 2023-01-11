@@ -2,10 +2,10 @@ import { Injectable, Inject, forwardRef } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
-import { DataLayer } from '../data-layer/data-layer';
-import { Mapper } from '../fhir-converter/multi-mapper.service';
-import { TIME_SCALE_OPTIONS, CATEGORY_SCALE_OPTIONS } from './fhir-mapper-options';
-import { FhirMappersModule } from './fhir-mappers.module';
+import { DataLayer } from '../../data-layer/data-layer';
+import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { TIME_SCALE_OPTIONS, CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { FhirMappersModule } from '../fhir-mappers.module';
 
 /** Required properties for mapping a MedicationRequest with [SimpleMedicationMapper] */
 export type SimpleMedication = {
@@ -34,6 +34,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       category: ['medication'],
       datasets: [
         {
+          type: 'scatter',
           label: resource?.medicationCodeableConcept?.text,
           yAxisID: 'medications',
           indexAxis: 'y',

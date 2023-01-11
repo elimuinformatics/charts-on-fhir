@@ -61,6 +61,18 @@ function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, 
       scales,
       plugins: {
         annotation: { annotations },
+        legend: {
+          labels: {
+            // hide legend labels for datasets that use a category axis
+            filter(item, data) {
+              const dataset = data.datasets.find(({ label }) => label === item.text) as Dataset<'line'>;
+              if (dataset?.yAxisID) {
+                return scales[dataset.yAxisID]?.type !== 'category';
+              }
+              return true;
+            }
+          }
+        }
       },
     },
   };
