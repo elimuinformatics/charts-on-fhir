@@ -1,7 +1,7 @@
 import { Component, OnChanges } from '@angular/core';
 import { ScatterDataPoint } from 'chart.js';
 import { mean, floor, reject } from 'lodash-es';
-import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
+import { AnalysisCardContent, DateRange } from '../../analysis/analysis-card-content.component';
 import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { computeDaysOutOfRange, groupByDay } from '../analysis-utils';
@@ -24,25 +24,28 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     }
     return 5;
   }
-  maxDate: Date | string;
-  minDate: Date | string;
+  override dateRange: DateRange;
   previousDate: Date | string;
-  monthsCount?: number;
+  daysCount?: number;
   statistics: NameValuePair[] = [];
   layers?: DataLayer[];
   previousDataDates?: any[] = [];
   constructor(private layerManager: DataLayerManagerService) {
     super();
-    this.maxDate = new Date();
-    this.minDate = new Date();
+
     this.previousDate = new Date();
+    this.dateRange = {
+      max: new Date(),
+      min: new Date(),
+      days: 0
+    }
   }
 
   ngOnChanges(): void {
     this.getMaxMinDate(this.visibleData)
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
-      this.getPreviousDataFromLayers(this.layers, this.monthsCount || 0)
+      this.getPreviousDataFromLayers(this.layers, this.daysCount || 0)
     })
     this.computeStatistics(this.visibleData);
   }
@@ -92,30 +95,36 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     sortedData = sortedData.sort((x: any, y: any) => {
       return x - y;
     })
-    this.maxDate = new Date(sortedData[sortedData.length - 1]);
-    this.minDate = new Date(sortedData[0]);
-    this.diff_months_count(this.minDate, this.maxDate)
+
+    this.dateRange = {
+      max: new Date(sortedData[sortedData.length - 1]),
+      min: new Date(sortedData[0]),
+      days: this.dateRange?.days
+    }
+    this.diff_months_count(this.dateRange.min, this.dateRange.max)
   }
+
   diff_months_count(startDate: any, endDate: any) {
     const diffTime = Math.abs(startDate - endDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.monthsCount = diffDays / 30;
+    this.daysCount = diffDays
   }
-  getPreviousDataFromLayers(layer: any, monthsCount: number) {
+
+  getPreviousDataFromLayers(layer: any, daysCount: number) {
     let data: any[] = [];
     if (layer) {
       layer.forEach((layersData: any) => {
         data.push(layersData.datasets[0].data)
       })
-      this.previousDate = new Date(this.minDate);
-      this.previousDate.setMonth(new Date(this.minDate).getMonth() - monthsCount);
-      data.forEach((layerData) => {
-        layerData.forEach((previousData: any) => {
-          if (new Date(previousData.x) < new Date(this.minDate) && new Date(previousData.x) > new Date(this.previousDate)) {
-            this.previousDataDates?.push(previousData)
-          }
+        this.previousDate = new Date(this.dateRange.min);
+        this.previousDate.setMonth(new Date(this.dateRange.min).getDay() - Math.round(daysCount));
+        data.forEach((layerData) => {
+          layerData.forEach((previousData: any) => {
+            if (new Date(previousData.x) < new Date(this.dateRange.min) && new Date(previousData.x) > new Date(this.previousDate)) {
+              this.previousDataDates?.push(previousData)
+            }
+          })
         })
-      })
     }
   }
 }
