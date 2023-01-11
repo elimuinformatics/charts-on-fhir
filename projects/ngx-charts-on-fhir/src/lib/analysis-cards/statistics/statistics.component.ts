@@ -26,7 +26,7 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
   }
   override dateRange: DateRange;
   previousDate: Date | string;
-  daysCount?: number;
+  monthsCount?: number;
   statistics: NameValuePair[] = [];
   layers?: DataLayer[];
   previousDataDates?: any[] = [];
@@ -45,7 +45,7 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     this.getMaxMinDate(this.visibleData)
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
-      this.getPreviousDataFromLayers(this.layers, this.daysCount || 0)
+      this.getPreviousDataFromLayers(this.layers, this.monthsCount || 0)
     })
     this.computeStatistics(this.visibleData);
   }
@@ -107,17 +107,17 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
   diff_months_count(startDate: any, endDate: any) {
     const diffTime = Math.abs(startDate - endDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.daysCount = diffDays
+    this.monthsCount = diffDays/30
   }
 
-  getPreviousDataFromLayers(layer: any, daysCount: number) {
+  getPreviousDataFromLayers(layer: any, monthsCount: number) {
     let data: any[] = [];
     if (layer) {
       layer.forEach((layersData: any) => {
         data.push(layersData.datasets[0].data)
       })
         this.previousDate = new Date(this.dateRange.min);
-        this.previousDate.setMonth(new Date(this.dateRange.min).getDay() - Math.round(daysCount));
+        this.previousDate.setMonth(new Date(this.dateRange.min).getMonth() - Math.round(monthsCount));
         data.forEach((layerData) => {
           layerData.forEach((previousData: any) => {
             if (new Date(previousData.x) < new Date(this.dateRange.min) && new Date(previousData.x) > new Date(this.previousDate)) {

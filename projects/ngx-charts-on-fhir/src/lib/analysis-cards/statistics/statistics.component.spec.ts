@@ -112,9 +112,9 @@ describe('AnalysisStatisticsComponent', () => {
       component.getPreviousDataFromLayers(layers, 1);
       // component.layers = layers as DataLayer[];
     })
-    component.diff_months_count(component.minDate, component.maxDate)
-    const expectedPreviousDate = new Date(component.minDate);
-    expectedPreviousDate.setMonth(new Date(component.minDate).getMonth() - 1);
+    component.diff_months_count(component.dateRange.min, component.dateRange.max)
+    const expectedPreviousDate = new Date(component.dateRange.min);
+    expectedPreviousDate.setMonth(new Date(component.dateRange.min).getMonth() - 1);
     expect(component.previousDate).toEqual(expectedPreviousDate);
   });
 
@@ -124,9 +124,9 @@ describe('AnalysisStatisticsComponent', () => {
       component.getPreviousDataFromLayers(layers, 3);
       // component.layers = layers as DataLayer[];
     })
-    component.diff_months_count(component.minDate, component.maxDate)
-    const expectedPreviousDate = new Date(component.minDate);
-    expectedPreviousDate.setMonth(new Date(component.minDate).getMonth() - 3);
+    component.diff_months_count(component.dateRange.min, component.dateRange.max)
+    const expectedPreviousDate = new Date(component.dateRange.min);
+    expectedPreviousDate.setMonth(new Date(component.dateRange.min).getMonth() - 3);
     expect(component.previousDate).toEqual(expectedPreviousDate);
   });
 
@@ -136,9 +136,9 @@ describe('AnalysisStatisticsComponent', () => {
       component.getPreviousDataFromLayers(layers, 6);
       // component.layers = layers as DataLayer[];
     })
-    component.diff_months_count(component.minDate, component.maxDate)
-    const expectedPreviousDate = new Date(component.minDate);
-    expectedPreviousDate.setMonth(new Date(component.minDate).getMonth() - 6);
+    component.diff_months_count(component.dateRange.min, component.dateRange.max)
+    const expectedPreviousDate = new Date(component.dateRange.min);
+    expectedPreviousDate.setMonth(new Date(component.dateRange.min).getMonth() - 6);
     expect(component.previousDate).toEqual(expectedPreviousDate);
   });
   
@@ -148,9 +148,9 @@ describe('AnalysisStatisticsComponent', () => {
       component.getPreviousDataFromLayers(layers, 12);
       // component.layers = layers as DataLayer[];
     })
-    component.diff_months_count(component.minDate, component.maxDate)
-    const expectedPreviousDate = new Date(component.minDate);
-    expectedPreviousDate.setMonth(new Date(component.minDate).getMonth() - 12);
+    component.diff_months_count(component.dateRange.min, component.dateRange.max)
+    const expectedPreviousDate = new Date(component.dateRange.min);
+    expectedPreviousDate.setMonth(new Date(component.dateRange.min).getMonth() - 12);
     expect(component.previousDate).toEqual(expectedPreviousDate);
   });
 
