@@ -25,6 +25,7 @@
     "chartjs-plugin-annotation": "^2.0.1",
     "chartjs-plugin-zoom": "^1.2.1",
     "date-fns": "^2.29.3",
+    "fhirclient": "^2.5.2",
     "immer": "^9.0.16",
     "lodash-es": "^4.17.21",
     "ng2-charts": "^4.0.1",
