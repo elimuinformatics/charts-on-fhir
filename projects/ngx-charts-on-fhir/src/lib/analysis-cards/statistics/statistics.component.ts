@@ -1,7 +1,9 @@
 import { Component, OnChanges } from '@angular/core';
 import { ScatterDataPoint } from 'chart.js';
-import { mean, floor } from 'lodash-es';
+import { mean, floor, reject } from 'lodash-es';
 import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
+import { DataLayer } from '../../data-layer/data-layer';
+import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { computeDaysOutOfRange, groupByDay } from '../analysis-utils';
 
 type NameValuePair = {
@@ -22,22 +24,42 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     }
     return 5;
   }
-
+  maxDate: Date | string;
+  minDate: Date | string;
+  previousDate: Date | string;
+  monthsCount?: number;
   statistics: NameValuePair[] = [];
+  layers?: DataLayer[];
+  previousDataDates?: any[] = [];
+  constructor(private layerManager: DataLayerManagerService) {
+    super();
+    this.maxDate = new Date();
+    this.minDate = new Date();
+    this.previousDate = new Date();
+  }
 
   ngOnChanges(): void {
+    this.getMaxMinDate(this.visibleData)
+    this.layerManager.selectedLayers$.subscribe((layers) => {
+      this.layers = layers;
+      this.getPreviousDataFromLayers(this.layers, this.monthsCount || 0)
+    })
     this.computeStatistics(this.visibleData);
   }
 
   computeStatistics(data: ScatterDataPoint[]) {
     const values = data.map((point) => point.y).sort((a, b) => a - b);
-    this.statistics = [
-      { name: 'Timespan', value: `${this.dateRange?.days} days` },
-      { name: 'Days Reported', value: this.daysReported(data) },
-      { name: 'Outside Goal', value: this.daysOutOfRange(data) },
-      { name: 'Average', value: mean(values) },
-      { name: 'Median', value: median(values) },
-    ].map(({ name, value }) => ({ name, value: format(value) }));
+    if (this.previousDataDates) {
+      const previousValues = this.previousDataDates.map((point) => point.y).sort((a, b) => a - b);
+      this.statistics = [
+        { name: 'Summary', value: 'Current', previousValue: 'Previous' },
+        { name: 'Timespan', value: `${this.dateRange?.days} days`, previousValue: `${this.dateRange?.days} days` },
+        { name: 'Days Reported', value: this.daysReported(data), previousValue: this.daysReported(this.previousDataDates) },
+        { name: 'Outside Goal', value: this.daysOutOfRange(data), previousValue: this.daysOutOfRange(this.previousDataDates) },
+        { name: 'Average', value: mean(values), previousValue: mean(previousValues).toFixed(2) },
+        { name: 'Median', value: median(values), previousValue: median(previousValues).toFixed(2) },
+      ].map(({ name, value, previousValue }) => ({ name, value: format(value), previousValue }));
+    }
   }
 
   daysReported(data: ScatterDataPoint[]): string | undefined {
@@ -63,6 +85,39 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     const pctOutOfRange = ((100 * outOfRange) / reported).toFixed(0);
     return `${pctOutOfRange}% (${outOfRange}/${reported} days)`;
   }
+  getMaxMinDate(data: any) {
+    let sortedData: any[] = [];
+    let xcordinates = data.map((el: any) => el.x)
+    sortedData = sortedData.concat(xcordinates)
+    sortedData = sortedData.sort((x: any, y: any) => {
+      return x - y;
+    })
+    this.maxDate = new Date(sortedData[sortedData.length - 1]);
+    this.minDate = new Date(sortedData[0]);
+    this.diff_months_count(this.minDate, this.maxDate)
+  }
+  diff_months_count(startDate: any, endDate: any) {
+    const diffTime = Math.abs(startDate - endDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    this.monthsCount = diffDays / 30;
+  }
+  getPreviousDataFromLayers(layer: any, monthsCount: number) {
+    let data: any[] = [];
+    if (layer) {
+      layer.forEach((layersData: any) => {
+        data.push(layersData.datasets[0].data)
+      })
+      this.previousDate = new Date(this.minDate);
+      this.previousDate.setMonth(new Date(this.minDate).getMonth() - monthsCount);
+      data.forEach((layerData) => {
+        layerData.forEach((previousData: any) => {
+          if (new Date(previousData.x) < new Date(this.minDate) && new Date(previousData.x) > new Date(this.previousDate)) {
+            this.previousDataDates?.push(previousData)
+          }
+        })
+      })
+    }
+  }
 }
 
 function format(value?: number | string): string {
@@ -83,3 +138,4 @@ function median(values: number[]): number {
   }
   return values[m];
 }
+
