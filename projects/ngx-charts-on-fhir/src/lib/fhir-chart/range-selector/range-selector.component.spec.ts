@@ -172,10 +172,8 @@ describe('RangeSelectorComponent', () => {
     component.getMaxDateFromLayers(component.layers)
     const componentMindate = new Date(component.minDate).getTime()
     const componentMaxdate = new Date(component.maxDate).getTime()
-    if (component.layers) {
-      expect(componentMaxdate).toEqual(component.layers[0].datasets[0].data[1].x);
-      expect(componentMindate).toEqual(component.layers[2].datasets[0].data[1].x);
-    }
+      expect(componentMaxdate).toEqual(component.layers?.[0].datasets[0].data[1].x as number);
+      expect(componentMindate).toEqual(component.layers?.[2].datasets[0].data[1].x as number);
   })
-  
+
 });

@@ -16,7 +16,7 @@ export class RangeSelectorComponent {
   minDate: Date | string;
   isMatGroupFocus : boolean = true;
 
- constructor(private layerManager: DataLayerManagerService, private el: ElementRef) { 
+ constructor(private layerManager: DataLayerManagerService) { 
      this.maxDate = new Date();
      this.minDate = new Date();
   }
