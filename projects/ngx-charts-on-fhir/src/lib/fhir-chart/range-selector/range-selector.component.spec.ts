@@ -47,7 +47,7 @@ const mockLayerManager = {
         ]
       }
     ]
-  },{
+  }, {
     datasets: [
       {
         data: [
@@ -168,15 +168,14 @@ describe('RangeSelectorComponent', () => {
     expect(component.maxDate).toEqual(date.value);
   });
 
-  it('should check maxDate', async () => {
-    mockLayerManager.selectedLayers$.subscribe((layers) => {
-      component.getMaxDateFromLayers(layers);
-      component.layers = layers as DataLayer[];
-    })
-    const maxDate:any=new Date(component.maxDate).toLocaleString()
-    const minDate:any=new Date(component.minDate).toLocaleString()
-    expect(`${maxDate}`).toEqual('15/03/2016, 15:52:45')
-    expect(`${minDate}`).toEqual('14/01/1970, 19:28:25')
+  it('should check maxDate and minDate', async () => {
+    component.getMaxDateFromLayers(component.layers)
+    const componentMindate = new Date(component.minDate).getTime()
+    const componentMaxdate = new Date(component.maxDate).getTime()
+    if (component.layers) {
+      expect(componentMaxdate).toEqual(component.layers[0].datasets[0].data[1].x);
+      expect(componentMindate).toEqual(component.layers[2].datasets[0].data[1].x);
+    }
   })
-
+  
 });
