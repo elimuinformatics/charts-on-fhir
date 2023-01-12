@@ -12,15 +12,12 @@ import { mapperProviders } from './providers/mapper-providers';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { CustomCardExampleComponent } from './cards/custom-card-example/custom-card-example.component';
-import { analysisCardProviders } from './providers/analysis-card-providers';
 import paletteProvider from './providers/palette-provider';
 import {
   FhirChartModule,
   FhirConverterModule,
   FhirMappersModule,
   COLOR_PALETTE,
-  AnalysisModule,
   DataLayerModule,
   DataLayerBrowserModule,
   DataLayerListModule,
@@ -35,7 +32,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
 }
 
 @NgModule({
-  declarations: [AppComponent, CustomCardExampleComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FhirChartModule,
@@ -54,7 +51,6 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     MatSidenavModule,
     FhirConverterModule,
     FhirMappersModule,
-    AnalysisModule,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
@@ -62,7 +58,6 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     { provide: COLOR_PALETTE, useValue: paletteProvider },
     mapperProviders,
     dataLayerProviders,
-    analysisCardProviders,
   ],
   bootstrap: [AppComponent],
 })

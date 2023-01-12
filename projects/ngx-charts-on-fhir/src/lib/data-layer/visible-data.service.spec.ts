@@ -153,15 +153,19 @@ describe('VisibleDataService', () => {
         hot('xy', {
           x: [
             jasmine.objectContaining({
-              data: [
-                { x: 2, y: 0 },
-                { x: 3, y: 0 },
-              ],
+              visible: jasmine.objectContaining({
+                data: [
+                  { x: 2, y: 0 },
+                  { x: 3, y: 0 },
+                ],
+              }),
             }),
           ],
           y: [
             jasmine.objectContaining({
-              data: [{ x: 5, y: 0 }],
+              visible: jasmine.objectContaining({
+                data: [{ x: 5, y: 0 }],
+              }),
             }),
           ],
         })
