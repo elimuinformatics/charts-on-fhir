@@ -173,8 +173,10 @@ describe('RangeSelectorComponent', () => {
       component.getMaxDateFromLayers(layers);
       component.layers = layers as DataLayer[];
     })
-    expect(`${component.maxDate}`).toEqual('Tue Mar 15 2016 15:52:45 GMT+0530 (India Standard Time)')
-    expect(`${component.minDate}`).toEqual('Wed Jan 14 1970 19:28:25 GMT+0530 (India Standard Time)')
+    const maxDate:any=new Date(component.maxDate).toLocaleString()
+    const minDate:any=new Date(component.minDate).toLocaleString()
+    expect(`${maxDate}`).toEqual('15/03/2016, 15:52:45')
+    expect(`${minDate}`).toEqual('14/01/1970, 19:28:25')
   })
 
 });
