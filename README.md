@@ -9,7 +9,18 @@ Built with [Chart.js](https://www.chartjs.org/)
 2. Run `npm start showcase` to start the local development server for the showcase app.
 3. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
+### Logica Open FHIR Server
+
 When running in Angular development server, if no EHR launch context is detected then the showcase app will connect to an open FHIR server using the configuration in `environment.logica-open.ts`.
+
+### Mock FHIR Server
+
+A mock FHIR server can also be used for offline development when Logica is unavailable.
+1. `npm run mock-fhir-install` (first time only)
+2. `npm run mock-fhir`
+3. `npm start showcase -- --configuration=mock`
+
+### EHR Launch
 
 To test an EHR launch with the Angular development server, you need an EHR simulator that allows using unsecured HTTP on localhost. The app should be registered with the following configuration:
 - Launch URI: `http://localhost:4200/launch.html`

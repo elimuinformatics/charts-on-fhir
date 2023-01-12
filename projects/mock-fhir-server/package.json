@@ -1,0 +1,12 @@
+{
+  "name": "mock-fhir-server",
+  "version": "1.0.0",
+  "description": "A simple mock FHIR server for local development",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.1"
+  }
+}
