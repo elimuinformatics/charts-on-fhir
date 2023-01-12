@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import FHIR from 'fhirclient';
+import * as FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
