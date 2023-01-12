@@ -3,8 +3,9 @@
   text-align: left;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
-.mat-column-value {
-  /* padding-left: 16px; */
+.mat-column-current,
+.mat-column-previous {
+  padding-left: 16px;
   text-align: end;
   justify-content: flex-end;
 }

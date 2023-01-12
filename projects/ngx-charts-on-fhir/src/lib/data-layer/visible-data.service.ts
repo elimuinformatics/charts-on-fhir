@@ -1,17 +1,27 @@
 import { forwardRef, Injectable } from '@angular/core';
 import { ScatterDataPoint } from 'chart.js';
 import { OperatorFunction, pipe, map, Observable, combineLatestWith } from 'rxjs';
-import { DateRange } from '../analysis/analysis-card-content.component';
 import { ManagedDataLayer, DataLayer, Dataset } from './data-layer';
 import { DataLayerManagerService } from './data-layer-manager.service';
-import { isValidScatterDataPoint, MILLISECONDS_PER_DAY } from '../utils';
+import { isValidScatterDataPoint, MILLISECONDS_PER_DAY, NumberRange } from '../utils';
 import { DataLayerModule } from './data-layer.module';
 
 export type VisibleData = {
   layer: DataLayer;
   dataset: Dataset;
+  visible: DataSlice;
+  previous: DataSlice;
+};
+
+export type DataSlice = {
   data: ScatterDataPoint[];
   dateRange: DateRange;
+};
+
+export type DateRange = {
+  min: Date;
+  max: Date;
+  days: number;
 };
 
 /** A service that filters data based on the current bounds of the chart's timeline scale */
@@ -20,7 +30,7 @@ export type VisibleData = {
 })
 export class VisibleDataService {
   constructor(private layerManager: DataLayerManagerService) {}
-  visible$ = this.layerManager.selectedLayers$.pipe(visibleDatasets(), filterByDateRange(this.layerManager.timelineRange$));
+  visible$ = this.layerManager.selectedLayers$.pipe(visibleDatasets(), addVisibleData(this.layerManager.timelineRange$));
 }
 
 function visibleDatasets(): OperatorFunction<ManagedDataLayer[], { layer: DataLayer; dataset: Dataset }[]> {
@@ -51,20 +61,34 @@ function byMostRecentValue(a: Dataset, b: Dataset) {
   return 0;
 }
 
-function filterByDateRange(dateRange$: Observable<{ min: number; max: number }>): OperatorFunction<{ layer: DataLayer; dataset: Dataset }[], VisibleData[]> {
+function addVisibleData(dateRange$: Observable<NumberRange>): OperatorFunction<{ layer: DataLayer; dataset: Dataset }[], VisibleData[]> {
   return pipe(
     combineLatestWith(dateRange$),
     map(([datasets, range]) =>
       datasets.map(({ layer, dataset }) => ({
         layer,
         dataset,
-        data: dataset.data.filter(isValidScatterDataPoint).filter((point) => range.min <= point.x && point.x <= range.max),
-        dateRange: {
-          min: new Date(range.min),
-          max: new Date(range.max),
-          days: Math.ceil((range.max - range.min) / MILLISECONDS_PER_DAY),
-        },
+        visible: filterByDateRange(dataset.data, range),
+        previous: filterByDateRange(dataset.data, previous(range)),
       }))
     )
   );
+}
+
+function filterByDateRange(data: Dataset['data'], range: NumberRange) {
+  return {
+    data: data.filter(isValidScatterDataPoint).filter((point) => range.min <= point.x && point.x <= range.max),
+    dateRange: {
+      min: new Date(range.min),
+      max: new Date(range.max),
+      days: Math.ceil((range.max - range.min) / MILLISECONDS_PER_DAY),
+    },
+  };
+}
+
+function previous({ min, max }: NumberRange): NumberRange {
+  return {
+    max: min,
+    min: min - (max - min),
+  };
 }

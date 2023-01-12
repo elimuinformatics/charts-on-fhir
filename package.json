@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "mock-fhir-install": "cd projects/mock-fhir-server && npm install",
+    "mock-fhir": "cd projects/mock-fhir-server && npm start"
   },
   "private": true,
   "dependencies": {

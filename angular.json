@@ -101,6 +101,14 @@
                   "with": "projects/showcase/src/environments/environment.logica-open.ts"
                 }
               ]
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/showcase/src/environments/environment.ts",
+                  "with": "projects/showcase/src/environments/environment.mock.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -116,6 +124,9 @@
             },
             "logica-open": {
               "browserTarget": "showcase:build:development,logica-open"
+            },
+            "mock": {
+              "browserTarget": "showcase:build:development,mock"
             }
           },
           "defaultConfiguration": "logica-open"
