@@ -1,4 +1,5 @@
-import { Chart, Plugin, Scale, CoreScaleOptions, CartesianScaleOptions } from 'chart.js';
+import { Chart, Plugin, Scale, CartesianScaleOptions } from 'chart.js';
+import { isCartesianScale } from '../utils';
 
 export const scaleStackDividerPlugin: Plugin = {
   id: 'scale-stack-divider-plugin',
@@ -24,8 +25,4 @@ function drawDivider({ ctx, chartArea }: Chart, scale: Scale<CartesianScaleOptio
   ctx.moveTo(chartArea.left - 1, top);
   ctx.lineTo(chartArea.right, top);
   ctx.stroke();
-}
-
-function isCartesianScale(scale: Scale<CoreScaleOptions>): scale is Scale<CartesianScaleOptions> {
-  return scale.type === 'linear' || scale.type === 'logarithmic' || scale.type === 'category';
 }

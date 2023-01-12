@@ -49,6 +49,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       scales: {
         timeline: this.timeScaleOptions,
         medications: merge({}, this.categoryScaleOptions, {
+          type: 'medication',
           title: { text: 'Medications' },
         }),
       },
