@@ -1,24 +1,24 @@
 import { Injectable, Inject, forwardRef } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
-import { MedicationOrder } from 'fhir/r2';
+import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
-import { DataLayer } from '../data-layer/data-layer';
-import { Mapper } from '../fhir-converter/multi-mapper.service';
-import { TIME_SCALE_OPTIONS, CATEGORY_SCALE_OPTIONS } from './fhir-mapper-options';
-import { FhirMappersModule } from './fhir-mappers.module';
+import { DataLayer } from '../../data-layer/data-layer';
+import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { TIME_SCALE_OPTIONS, CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { FhirMappersModule } from '../fhir-mappers.module';
 
-/** Required properties for mapping a MedicationOrder with [SimpleMedicationMapper] */
+/** Required properties for mapping a MedicationRequest with [SimpleMedicationMapper] */
 export type SimpleMedication = {
   medicationCodeableConcept: {
     text: string;
   };
-  dateWritten: string;
-} & MedicationOrder;
-export function isMedication(resource: MedicationOrder): resource is SimpleMedication {
-  return !!(resource.resourceType === 'MedicationOrder' && resource.dateWritten && resource.medicationCodeableConcept?.text);
+  authoredOn: string;
+} & MedicationRequest;
+export function isMedication(resource: MedicationRequest): resource is SimpleMedication {
+  return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
 }
 
-/** Maps a FHIR MedicationOrder resource that only has a dateWritten and no supply duration */
+/** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
 @Injectable({
   providedIn: forwardRef(() => FhirMappersModule),
 })
@@ -31,15 +31,16 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   map(resource: SimpleMedication): DataLayer {
     return {
       name: resource?.medicationCodeableConcept?.text,
-      category: 'Medication',
+      category: ['medication'],
       datasets: [
         {
+          type: 'scatter',
           label: resource?.medicationCodeableConcept?.text,
           yAxisID: 'medications',
           indexAxis: 'y',
           data: [
             {
-              x: new Date(resource.dateWritten).getTime(),
+              x: new Date(resource.authoredOn).getTime(),
               y: resource?.medicationCodeableConcept?.text,
             },
           ],

@@ -1,4 +1,4 @@
-import { Observation } from 'fhir/r2';
+import { Observation } from 'fhir/r4';
 import { ComponentObservation, ComponentObservationMapper } from './component-observation-mapper.service';
 
 describe('ComponentObservationMapper', () => {
@@ -156,6 +156,24 @@ describe('ComponentObservationMapper', () => {
           yMax: 10,
         })
       );
+    });
+
+    it('should map category', () => {
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        category: [{ coding: [{ display: 'A' }] }, { coding: [{ display: 'B' }] }],
+        effectiveDateTime: new Date().toISOString(),
+        component: [
+          {
+            code: { text: 'component' },
+            valueQuantity: { value: 7, unit: 'unit' },
+          },
+        ],
+      };
+      const mapper = new ComponentObservationMapper({}, {}, {});
+      expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
   });
 });
