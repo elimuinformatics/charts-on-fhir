@@ -11,6 +11,9 @@ import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 
 const mockLayerManager = {
@@ -34,12 +37,27 @@ const mockLayerManager = {
       {
         data: [
           {
-            x: 1362478965000,
+            x: 1473505702,
             y: 69.6
           },
           {
-            x: 1458037365000,
-            y: 98.98
+            x: 1573505702,
+            y: 93.98
+          }
+        ]
+      }
+    ]
+  },{
+    datasets: [
+      {
+        data: [
+          {
+            x: 1373505702,
+            y: 69.6
+          },
+          {
+            x: 1173505702,
+            y: 94.98
           }
         ]
       }
@@ -62,7 +80,7 @@ describe('RangeSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatButtonToggleModule, MatInputModule, BrowserAnimationsModule],
+      imports: [MatButtonToggleModule, MatInputModule, FormsModule, BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule],
       declarations: [RangeSelectorComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: mockLayerManager },
@@ -85,7 +103,7 @@ describe('RangeSelectorComponent', () => {
     expect(cards).toBeTruthy();
   });
 
-  it('should not display the range selector when one or more data layer is selected', () => {
+  it('should not display the range selector when no data layer is selected', () => {
     component.layers = [];
     fixture.detectChanges();
     const cards = element.query(By.css(".range-selector"));
@@ -102,11 +120,6 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 3 month ago date from max layer date', async () => {
-    mockLayerManager.selectedLayers$.subscribe((layers) => {
-      component.getMaxDateFromLayers(layers);
-      component.layers = layers as DataLayer[];
-    })
-
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='threemonth']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date(component.maxDate);
@@ -141,18 +154,27 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should check dateChange selected event for start date', () => {
-    const date: any = { value : new Date(2020, 2, 2) };
-    component.dateChange(date , 'min');
+    const date: any = { value: new Date(2020, 2, 2) };
+    component.dateChange(date, 'min');
     fixture.detectChanges();
     expect(component.minDate).toEqual(date.value);
   });
 
 
   it('should check dateChange selected event for end date', () => {
-    const date: any = { value : new Date(2020, 2, 2) };
-    component.dateChange(date , 'max');
+    const date: any = { value: new Date(2020, 2, 2) };
+    component.dateChange(date, 'max');
     fixture.detectChanges();
     expect(component.maxDate).toEqual(date.value);
   });
+
+  it('should check maxDate', async () => {
+    mockLayerManager.selectedLayers$.subscribe((layers) => {
+      component.getMaxDateFromLayers(layers);
+      component.layers = layers as DataLayer[];
+    })
+    expect(`${component.maxDate}`).toEqual('Tue Mar 15 2016 15:52:45 GMT+0530 (India Standard Time)')
+    expect(`${component.minDate}`).toEqual('Wed Jan 14 1970 19:28:25 GMT+0530 (India Standard Time)')
+  })
 
 });

@@ -26,8 +26,6 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  @ViewChild('baseChart') baseChart?:ElementRef;
-
   constructor(private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
