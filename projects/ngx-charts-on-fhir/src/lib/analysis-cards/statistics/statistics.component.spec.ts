@@ -3,10 +3,12 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { MatTableModule } from '@angular/material/table';
-import { DataLayer } from '../../data-layer/data-layer';
+import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
 import { StatisticsComponent } from './statistics.component';
+import { VisibleData } from '../../data-layer/visible-data.service';
+import { ScatterDataPoint } from 'chart.js';
 
-describe('AnalysisStatisticsComponent', () => {
+describe('StatisticsComponent', () => {
   let component: StatisticsComponent;
   let fixture: ComponentFixture<StatisticsComponent>;
   let loader: HarnessLoader;
@@ -28,7 +30,7 @@ describe('AnalysisStatisticsComponent', () => {
   });
 
   it('should display statistics for the dataset', async () => {
-    const layer: DataLayer = {
+    const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
       name: 'Layer',
       datasets: [
         {
@@ -50,19 +52,27 @@ describe('AnalysisStatisticsComponent', () => {
         },
       ],
     };
-    fixture.componentRef.setInput('layer', layer);
-    fixture.componentRef.setInput('dataset', layer.datasets[0]);
-    fixture.componentRef.setInput('visibleData', layer.datasets[0].data);
-    fixture.componentRef.setInput('dateRange', { days: 5 });
+    const visibleData: VisibleData = {
+      layer,
+      dataset: layer.datasets[0],
+      visible: {
+        data: layer.datasets[0].data,
+        dateRange: { min: new Date('2022-01-01'), max: new Date('2022-01-05'), days: 5 },
+      },
+      previous: {
+        data: [],
+        dateRange: { min: new Date('2021-12-26'), max: new Date('2022-12-31'), days: 5 },
+      },
+    };
+    fixture.componentRef.setInput('visibleData', visibleData);
     const table = await loader.getHarness(MatTableHarness);
     const values = await table.getCellTextByIndex();
-    // MatTableHarness does not support <th scope="row"> so we have to check by row index instead of row header text.
     expect(values).toEqual([
-      ['5 days'], // Timespan
-      ['60% (3/5 days)'], // Days Reported
-      ['67% (2/3 days)'], // Outside Goal
-      ['3'], // Average
-      ['3'], // Median
+      ['Timespan', '5 days', '5 days'],
+      ['Days Reported', '60% (3/5 days)', '0% (0/5 days)'],
+      ['Outside Goal', '67% (2/3 days)', 'N/A'],
+      ['Average', '3', 'N/A'],
+      ['Median', '3', 'N/A'],
     ]);
   });
 });

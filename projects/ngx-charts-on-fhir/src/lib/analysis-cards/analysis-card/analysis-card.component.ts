@@ -1,7 +1,6 @@
-import { Component, ContentChild, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Dataset } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { AnalysisCardContent } from '../analysis-card-content.component';
 
 @Component({
   selector: 'analysis-card',
@@ -13,8 +12,6 @@ export class AnalysisCardComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() icon?: string;
-
-  @ContentChild(AnalysisCardContent) content?: AnalysisCardContent;
 
   constructor(private colorService: DataLayerColorService) {}
 
