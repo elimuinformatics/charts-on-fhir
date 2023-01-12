@@ -51,7 +51,7 @@ const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) =>
 const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).label?.content === (other as any).label.content;
 
 /** Build a chart configuration object to display the given datasets, scales, and annotations */
-function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
+ function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
   return {
     type: 'line',
     data: {

@@ -4,6 +4,7 @@ import { DataLayerColorService, COLOR_PALETTE } from '../data-layer/data-layer-c
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { FhirChartComponent } from './fhir-chart.component';
 import { FhirChartModule } from './fhir-chart.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const mockColorService = {
   getColor: () => '#000000',
@@ -22,7 +23,7 @@ describe('FhirChartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FhirChartModule],
+      imports: [FhirChartModule,NoopAnimationsModule],
       providers: [
         { provide: DataLayerManagerService, useValue: mockLayerManager },
         { provide: DataLayerColorService, useValue: mockColorService },
