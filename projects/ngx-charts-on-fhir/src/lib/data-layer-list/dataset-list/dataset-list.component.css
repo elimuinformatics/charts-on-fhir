@@ -9,3 +9,8 @@ mat-panel-title {
 mat-checkbox {
   margin-right: 8px;
 }
+mat-title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 370px;
+}

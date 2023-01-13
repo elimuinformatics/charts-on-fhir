@@ -10,7 +10,9 @@
             [title]="dataset.hidden ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
             color="primary"
           ></mat-checkbox>
-          {{ dataset.label }}
+          <mat-title matTooltip={{dataset.label}}>
+            {{ dataset.label }}
+          </mat-title>
         </mat-panel-title>
         <mat-panel-description> {{ dataset.data.length }} observations </mat-panel-description>
       </mat-expansion-panel-header>
