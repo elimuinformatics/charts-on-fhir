@@ -8,7 +8,7 @@ export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
   providedIn: forwardRef(() => DataLayerModule),
 })
 export class DataLayerColorService {
-  constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) { }
+  constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
 
   private nextColorIndex = 0;
 

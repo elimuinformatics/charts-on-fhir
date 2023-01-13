@@ -1,4 +1,4 @@
-import { ChartConfiguration, ScaleChartOptions, ScatterDataPoint } from 'chart.js';
+import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, ScaleChartOptions, ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
@@ -20,3 +20,7 @@ export function isValidScatterDataPoint<P>(point: P): point is P & ScatterDataPo
 }
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+export function isCartesianScale(scale: Scale<CoreScaleOptions>): scale is Scale<CartesianScaleOptions> {
+  return scale.type === 'linear' || scale.type === 'logarithmic' || scale.type === 'category' || scale.type === 'medication';
+}

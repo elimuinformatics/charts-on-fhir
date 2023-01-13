@@ -63,16 +63,16 @@ const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => 
         annotation: { annotations },
         legend: {
           labels: {
-            // hide legend labels for datasets that use a category axis
+            // hide legend labels for medications
             filter(item, data) {
               const dataset = data.datasets.find(({ label }) => label === item.text) as Dataset<'line'>;
               if (dataset?.yAxisID) {
-                return scales[dataset.yAxisID]?.type !== 'category';
+                return scales[dataset.yAxisID]?.type !== 'medication';
               }
               return true;
-            }
-          }
-        }
+            },
+          },
+        },
       },
     },
   };

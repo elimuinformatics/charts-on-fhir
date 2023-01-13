@@ -141,7 +141,7 @@ describe('DataLayerBrowserComponent', () => {
       },
     ];
     layerManager.availableLayers$.next(layers);
-    const categorySort = await loader.getHarness(MatSortHeaderHarness.with({label: 'Category'}));
+    const categorySort = await loader.getHarness(MatSortHeaderHarness.with({ label: 'Category' }));
     await categorySort.click();
     const table = await loader.getHarness(MatTableHarness);
     const values = await table.getCellTextByColumnName();
@@ -151,5 +151,4 @@ describe('DataLayerBrowserComponent', () => {
       })
     );
   });
-
 });
