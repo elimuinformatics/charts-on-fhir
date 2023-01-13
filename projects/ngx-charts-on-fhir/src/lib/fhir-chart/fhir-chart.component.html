@@ -1,7 +1,7 @@
 <div class="range-selector">
   <range-selector></range-selector>
 </div>
-<div class="chart-container" [style.width]="width" [style.height]="height">
+<div class="chart-container" [style.width]="width" [style.height]="getChartHeight()">
   <div class="chart-container-resize-fix">
     <canvas
       *ngIf="datasets && datasets.length > 0; else empty"
