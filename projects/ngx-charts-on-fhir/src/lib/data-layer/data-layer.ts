@@ -13,7 +13,7 @@ export type TimelineDataPoint = {
 /** A collection of closely-related data, metadata, and annotations */
 export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = {
   name: string;
-  category?: string;
+  category?: string[];
   scales: DeepPartial<ScaleChartOptions<T>>['scales'];
   datasets: ChartDataset<T, D>[];
   annotations?: ChartAnnotations;

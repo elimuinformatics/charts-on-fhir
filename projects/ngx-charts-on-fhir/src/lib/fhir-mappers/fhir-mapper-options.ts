@@ -40,12 +40,15 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   type: 'category',
   offset: true,
   stack: 'all',
+  stackWeight: 0.6,
   title: {
     display: true,
   },
   ticks: {
     autoSkip: false,
-  }
+    mirror: true,
+    labelOffset: -20,
+  },
 } as const;
 
 export const ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Annotation Options', {

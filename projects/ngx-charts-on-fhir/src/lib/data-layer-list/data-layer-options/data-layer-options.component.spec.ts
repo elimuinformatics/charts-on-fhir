@@ -48,7 +48,7 @@ describe('DataLayerOptionsComponent', () => {
       component.layer = {
         id: '-109669932',
         name: 'Blood Pressure',
-        category: 'vital-signs',
+        category: ['vital-signs'],
         datasets: [
           {
             label: 'Diastolic Blood Pressure',
@@ -80,7 +80,7 @@ describe('DataLayerOptionsComponent', () => {
       component.layer = {
         id: '-109669932',
         name: 'Blood Pressure',
-        category: 'vital-signs',
+        category: ['vital-signs'],
         datasets: [],
         scales: {},
         annotations: [],

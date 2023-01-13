@@ -1,9 +1,16 @@
 <table mat-table [dataSource]="statistics" aria-label="Statistics">
   <ng-container matColumnDef="name">
-    <th scope="row" mat-cell *matCellDef="let element" class="row-header">{{ element.name }}</th>
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
   </ng-container>
-  <ng-container matColumnDef="value">
-    <td mat-cell *matCellDef="let element">{{ element.value }}</td>
+  <ng-container matColumnDef="current">
+    <th mat-header-cell *matHeaderCellDef>Current</th>
+    <td mat-cell *matCellDef="let element">{{ element.current }}</td>
   </ng-container>
-  <tr mat-row *matRowDef="let row; columns: ['name', 'value']"></tr>
+  <ng-container matColumnDef="previous">
+    <th mat-header-cell *matHeaderCellDef>Previous</th>
+    <td mat-cell *matCellDef="let element">{{ element.previous }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="['name', 'current', 'previous']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name', 'current', 'previous']"></tr>
 </table>

@@ -8,9 +8,9 @@ describe('FhirChartConfigurationService', () => {
     data: { datasets: [] },
     options: {
       scales: {},
-      plugins: {
+      plugins: jasmine.objectContaining({
         annotation: { annotations: [] },
-      },
+      }),
     },
   } as const;
 
@@ -42,28 +42,16 @@ describe('FhirChartConfigurationService', () => {
         hot('xyz', {
           x: emptyConfig,
           y: {
-            type: 'line',
+            ...emptyConfig,
             data: { datasets: [{ label: 'one', data: [] }] },
-            options: {
-              scales: {},
-              plugins: {
-                annotation: { annotations: [] },
-              },
-            },
           },
           z: {
-            type: 'line',
+            ...emptyConfig,
             data: {
               datasets: [
                 { label: 'one', data: [] },
                 { label: 'two', data: [] },
               ],
-            },
-            options: {
-              scales: {},
-              plugins: {
-                annotation: { annotations: [] },
-              },
             },
           },
         })
@@ -101,29 +89,21 @@ describe('FhirChartConfigurationService', () => {
         hot('xyz', {
           x: emptyConfig,
           y: {
-            type: 'line',
-            data: { datasets: [] },
+            ...emptyConfig,
             options: {
+              ...emptyConfig.options,
               scales: {
                 one: { title: { text: 'one' } },
-              },
-              plugins: {
-                annotation: { annotations: [] },
               },
             },
           },
           z: {
-            type: 'line',
-            data: {
-              datasets: [],
-            },
+            ...emptyConfig,
             options: {
+              ...emptyConfig.options,
               scales: {
                 one: { title: { text: 'one' } },
                 two: { title: { text: 'two' } },
-              },
-              plugins: {
-                annotation: { annotations: [] },
               },
             },
           },
@@ -160,29 +140,25 @@ describe('FhirChartConfigurationService', () => {
         hot('xyz', {
           x: emptyConfig,
           y: {
-            type: 'line',
-            data: { datasets: [] },
+            ...emptyConfig,
             options: {
               scales: {},
-              plugins: {
+              plugins: jasmine.objectContaining({
                 annotation: {
                   annotations: [{ label: { content: 'one' } }],
                 },
-              },
+              }),
             },
           },
           z: {
-            type: 'line',
-            data: {
-              datasets: [],
-            },
+            ...emptyConfig,
             options: {
               scales: {},
-              plugins: {
+              plugins: jasmine.objectContaining({
                 annotation: {
                   annotations: [{ label: { content: 'one' } }, { label: { content: 'two' } }],
                 },
-              },
+              }),
             },
           },
         })
@@ -223,14 +199,8 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: {
-            type: 'line',
+            ...emptyConfig,
             data: { datasets: [{ label: 'one', data: [] }] },
-            options: {
-              scales: {},
-              plugins: {
-                annotation: { annotations: [] },
-              },
-            },
           },
         })
       );
@@ -261,15 +231,9 @@ describe('FhirChartConfigurationService', () => {
         hot('xy', {
           x: jasmine.anything(), // cannot test prior state because it has been mutated
           y: {
-            type: 'line',
+            ...emptyConfig,
             data: {
               datasets: [{ label: 'one', data: [], borderColor: '#ffffff' }],
-            },
-            options: {
-              scales: {},
-              plugins: {
-                annotation: { annotations: [] },
-              },
             },
           },
         })

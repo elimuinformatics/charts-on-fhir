@@ -122,4 +122,76 @@ describe('DataLayerMergeService', () => {
     const layers = Object.values(collection);
     expect(layers[0].datasets[0].borderColor).toBe('#000000');
   });
+
+  it('should merge datasets with matching labels', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [
+        { label: 'one', data: [{ x: 1, y: 1 }] },
+        { label: 'two', data: [{ x: 2, y: 2 }] },
+      ],
+      scales: {},
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [
+        { label: 'two', data: [{ x: 2, y: 22 }] },
+        { label: 'one', data: [{ x: 1, y: 11 }] },
+      ],
+      scales: {},
+    };
+    collection = service.merge(collection, layer1);
+    collection = service.merge(collection, layer2);
+    const layers = Object.values(collection);
+    expect(layers.length).toBe(1);
+    expect(layers[0].datasets).toEqual(
+      jasmine.arrayWithExactContents([
+        {
+          label: 'one',
+          data: [
+            { x: 1, y: 1 },
+            { x: 1, y: 11 },
+          ],
+        },
+        {
+          label: 'two',
+          data: [
+            { x: 2, y: 2 },
+            { x: 2, y: 22 },
+          ],
+        },
+      ])
+    );
+  });
+
+  it('should create a new dataset if labels dont match', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
+      scales: {},
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [{ label: 'two', data: [{ x: 2, y: 2 }] }],
+      scales: {},
+    };
+    collection = service.merge(collection, layer1);
+    collection = service.merge(collection, layer2);
+    const layers = Object.values(collection);
+    expect(layers.length).toBe(1);
+    expect(layers[0].datasets).toEqual(
+      jasmine.arrayWithExactContents([
+        {
+          label: 'one',
+          data: [{ x: 1, y: 1 }],
+        },
+        {
+          label: 'two',
+          data: [{ x: 2, y: 2 }],
+        },
+      ])
+    );
+  });
 });
