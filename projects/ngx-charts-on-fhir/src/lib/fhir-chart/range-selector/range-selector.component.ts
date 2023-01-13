@@ -14,17 +14,21 @@ export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date | string;
   minDate: Date | string;
-  isMatGroupFocus : boolean = true;
+  isMatGroupFocus: boolean = true;
 
- constructor(private layerManager: DataLayerManagerService) { 
-     this.maxDate = new Date();
-     this.minDate = new Date();
+  constructor(private layerManager: DataLayerManagerService) {
+    this.maxDate = new Date();
+    this.minDate = new Date();
   }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
       this.getMaxDateFromLayers(layers);
+    })
+    this.layerManager.timelineRange$.subscribe((timelineRange) => {
+      this.maxDate = new Date(timelineRange.max);
+      this.minDate = new Date(timelineRange.min); 
     })
 
   }
@@ -49,9 +53,9 @@ export class RangeSelectorComponent {
     if(event.value) {
       if(datePickerType === 'min') {
         this.minDate = event.value;
-     } else {
+      } else {
         this.maxDate = event.value;
-     }
+      }
     }
     this.updateRangeSelector(0);
     this.isMatGroupFocus = false;
@@ -75,5 +79,5 @@ export class RangeSelectorComponent {
       this.minDate = new Date(sortedData[0])
     }
   }
-  
+
 }
