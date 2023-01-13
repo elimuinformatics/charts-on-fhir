@@ -70,9 +70,9 @@ function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, 
                 return scales[dataset.yAxisID]?.type !== 'medication';
               }
               return true;
-            }
-          }
-        }
+            },
+          },
+        },
       },
     },
   };

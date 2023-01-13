@@ -33,7 +33,7 @@ export class FhirChartComponent implements OnInit {
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
     Chart.register(MedicationScale);
-    
+
     // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
     Chart.defaults.maintainAspectRatio = false;
 
