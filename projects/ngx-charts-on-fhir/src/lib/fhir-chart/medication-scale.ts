@@ -1,4 +1,4 @@
-import { CategoryScale, CategoryScaleOptions } from "chart.js";
+import { CategoryScale } from 'chart.js';
 
 /** Use declaration merging to add a scale type to the type registry */
 declare module 'chart.js' {
@@ -19,4 +19,3 @@ export class MedicationScale extends CategoryScale {
     return (pixel - this.top) * shrink + this.top + extraPadding;
   }
 }
-
