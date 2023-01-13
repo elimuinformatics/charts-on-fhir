@@ -25,11 +25,12 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
   getLayerId = (index: number, layer: DataLayer) => layer.name;
   getDatasetCount = (layer: DataLayer) => layer.datasets.length;
   getDatapointCount = (layer: DataLayer) => sum(layer.datasets.map((dataset) => dataset.data.length));
+  getCategory = (layer: DataLayer) => layer.category?.join(', ') ?? '';
   ngOnInit(): void {
     this.layerManager.availableLayers$.subscribe((layers) => (this.dataSource.data = layers));
     this.dataSource.filterPredicate = (layer, filter) =>
       layer.name.toLowerCase().includes(filter) ||
-      layer.category?.toLowerCase().includes(filter) ||
+      layer.category?.some((category) => category.toLowerCase().includes(filter)) ||
       layer.datasets.some((dataset) => dataset.label?.toLowerCase().includes(filter));
     this.filterControl.valueChanges.subscribe((value) => (this.dataSource.filter = value?.trim().toLowerCase() ?? ''));
   }
@@ -38,6 +39,8 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
       this.dataSource.sortingDataAccessor = (item, property) => {
         if (property === 'datapoints') {
           return this.getDatapointCount(item);
+        } else if (property === 'category') {
+          return this.getCategory(item);
         }
         return String(item[property as keyof typeof item]);
       };

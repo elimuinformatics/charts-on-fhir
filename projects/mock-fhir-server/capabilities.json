@@ -1,0 +1,47 @@
+{
+  "kind": "instance",
+  "implementation": {
+    "description": "Mock FHIR Server",
+    "url": "htts://localhost:3000/metadata"
+  },
+  "software": { "name": "JSON Server" },
+  "fhirVersion": "4.0.1",
+  "format": ["application/fhir+json"],
+  "rest": [
+    {
+      "interaction": [{ "code": "transaction" }],
+      "mode": "server",
+      "resource": [
+        {
+          "type": "Patient",
+          "profile": "http://hl7.org/fhir/StructureDefinition/Patient",
+          "interaction": [{ "code": "read" }]
+        },
+        {
+          "type": "Observation",
+          "profile": "http://hl7.org/fhir/StructureDefinition/Observation",
+          "interaction": [{ "code": "read" }],
+          "searchParam": [
+            {
+              "name": "patient",
+              "type": "reference",
+              "documentation": "The subject that the observation is about (if patient)"
+            }
+          ]
+        },
+        {
+          "type": "MedicationRequest",
+          "profile": "http://hl7.org/fhir/StructureDefinition/MedicationRequest",
+          "interaction": [{ "code": "read" }],
+          "searchParam": [
+            {
+              "name": "patient",
+              "type": "reference",
+              "documentation": "Returns prescriptions for a specific patient"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,12 +1,13 @@
-import { Component, OnChanges } from '@angular/core';
-import { ScatterDataPoint } from 'chart.js';
-import { mean, floor } from 'lodash-es';
-import { AnalysisCardContent } from '../../analysis/analysis-card-content.component';
+import { Component, Input, OnChanges } from '@angular/core';
+import { mean, mapValues } from 'lodash-es';
+import { DataLayer, Dataset } from '../../data-layer/data-layer';
+import { DataSlice, VisibleData } from '../../data-layer/visible-data.service';
 import { computeDaysOutOfRange, groupByDay } from '../analysis-utils';
 
-type NameValuePair = {
+type StatisticsRow = {
   name: string;
-  value: string;
+  current: string;
+  previous: string;
 };
 
 @Component({
@@ -14,34 +15,42 @@ type NameValuePair = {
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css'],
 })
-export class StatisticsComponent extends AnalysisCardContent implements OnChanges {
-  override title = 'Statistics';
-  override get priority() {
-    if (this.visibleData.length <= 1) {
-      return 0;
-    }
-    return 5;
-  }
+export class StatisticsComponent implements OnChanges {
+  @Input() visibleData?: VisibleData;
 
-  statistics: NameValuePair[] = [];
+  title = 'Statistics';
+  statistics: StatisticsRow[] = [];
+  layer?: DataLayer;
+  dataset?: Dataset;
 
   ngOnChanges(): void {
-    this.computeStatistics(this.visibleData);
+    if (this.visibleData) {
+      this.layer = this.visibleData.layer;
+      this.dataset = this.visibleData.dataset;
+      const current = this.computeStatistics(this.visibleData.visible);
+      const previous = this.computeStatistics(this.visibleData.previous);
+      this.statistics = Object.keys(current).map((name) => ({
+        name,
+        current: current[name],
+        previous: previous[name],
+      }));
+    }
   }
 
-  computeStatistics(data: ScatterDataPoint[]) {
-    const values = data.map((point) => point.y).sort((a, b) => a - b);
-    this.statistics = [
-      { name: 'Timespan', value: `${this.dateRange?.days} days` },
-      { name: 'Days Reported', value: this.daysReported(data) },
-      { name: 'Outside Goal', value: this.daysOutOfRange(data) },
-      { name: 'Average', value: mean(values) },
-      { name: 'Median', value: median(values) },
-    ].map(({ name, value }) => ({ name, value: format(value) }));
+  computeStatistics(slice: DataSlice): Record<string, string> {
+    const values = slice.data.map((point) => point.y).sort((a, b) => a - b);
+    const stats = {
+      Timespan: `${slice.dateRange?.days} days`,
+      'Days Reported': this.daysReported(slice),
+      'Outside Goal': this.daysOutOfRange(slice),
+      Average: mean(values),
+      Median: median(values),
+    };
+    return mapValues(stats, format);
   }
 
-  daysReported(data: ScatterDataPoint[]): string | undefined {
-    const days = this.dateRange?.days;
+  daysReported({ data, dateRange }: DataSlice): string | undefined {
+    const days = dateRange?.days;
     if (!days) {
       return undefined;
     }
@@ -50,8 +59,8 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
     return `${pctReported}% (${reported}/${days} days)`;
   }
 
-  daysOutOfRange(data: ScatterDataPoint[]): string | undefined {
-    const days = this.dateRange?.days;
+  daysOutOfRange({ data, dateRange }: DataSlice): string | undefined {
+    const days = dateRange?.days;
     const reported = groupByDay(data).length;
     if (!days || !reported) {
       return undefined;
@@ -66,7 +75,7 @@ export class StatisticsComponent extends AnalysisCardContent implements OnChange
 }
 
 function format(value?: number | string): string {
-  if (value == null) {
+  if (value == null || (typeof value === 'number' && isNaN(value))) {
     return 'N/A';
   }
   if (typeof value === 'number') {
@@ -77,7 +86,7 @@ function format(value?: number | string): string {
 
 /** Compute the median of a pre-sorted list of values */
 function median(values: number[]): number {
-  const m = floor(values.length / 2);
+  const m = Math.floor(values.length / 2);
   if (values.length % 2 === 0) {
     return (values[m] + values[m - 1]) / 2;
   }

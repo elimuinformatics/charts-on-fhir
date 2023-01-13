@@ -6,6 +6,7 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { DataLayerModule } from './data-layer.module';
 import { zip } from 'lodash-es';
+import { NumberRange } from '../utils';
 
 /** A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
@@ -52,10 +53,10 @@ export class DataLayerManagerService {
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
 
-  private timelineRangeSubject = new ReplaySubject<{ min: number; max: number }>();
+  private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
-  loading$ = new BehaviorSubject<boolean>(false); 
+  loading$ = new BehaviorSubject<boolean>(false);
 
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
@@ -76,9 +77,11 @@ export class DataLayerManagerService {
           layers: this.mergeService.merge(this.state.layers, layer),
         }),
       error: (err) => console.error(err),
-      complete: () => {this.loading$.next(false);},
+      complete: () => {
+        this.loading$.next(false);
+      },
     });
-  } 
+  }
 
   select(id: string) {
     if (!this.state.layers[id]) {

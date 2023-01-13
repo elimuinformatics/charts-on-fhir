@@ -2,6 +2,8 @@ import { ChartConfiguration, ScaleChartOptions, ScatterDataPoint } from 'chart.j
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
+export type NumberRange = { min: number; max: number };
+
 export type ChartData = ChartConfiguration['data'];
 export type ChartDatasets = ChartConfiguration['data']['datasets'];
 export type ChartScales = DeepPartial<ScaleChartOptions>['scales'];
