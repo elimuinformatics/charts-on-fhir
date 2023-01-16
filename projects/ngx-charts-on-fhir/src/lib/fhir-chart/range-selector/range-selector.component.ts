@@ -14,16 +14,13 @@ export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date | string;
   minDate: Date | string;
-  _isMatGroupFocus: boolean = true;
-  @Input() 
-  set isMatGroupFocus(isMatGroupFocus: boolean){
-    this._isMatGroupFocus = isMatGroupFocus;
-  }
+
+  @Input() isMatGroupFocus: boolean;
  
   constructor(private layerManager: DataLayerManagerService) {
     this.maxDate = new Date();
     this.minDate = new Date();
-    this._isMatGroupFocus = true;
+    this.isMatGroupFocus = true;
   }
 
   ngOnInit(): void {
@@ -39,7 +36,7 @@ export class RangeSelectorComponent {
   }
   ngOnChanges(changes: SimpleChanges){
     const changedProp = changes["isMatGroupFocus"];
-    this._isMatGroupFocus = changedProp.currentValue;
+    this.isMatGroupFocus = changedProp.currentValue;
   }
 
   updateRangeSelector(monthCount: number) {
@@ -68,7 +65,7 @@ export class RangeSelectorComponent {
       }
     }
     this.updateRangeSelector(0);
-    this._isMatGroupFocus = false;
+    this.isMatGroupFocus = false;
   }
 
   getMaxDateFromLayers(layers?: any[]) {
