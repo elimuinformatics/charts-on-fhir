@@ -12,5 +12,5 @@ mat-checkbox {
 mat-title{
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 370px;
+  max-width: 300px;
 }
