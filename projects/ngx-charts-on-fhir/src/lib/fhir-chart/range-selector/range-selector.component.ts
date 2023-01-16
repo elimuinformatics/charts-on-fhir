@@ -70,7 +70,7 @@ export class RangeSelectorComponent {
       let sortedData: any[] = [];
       for (let item of data) {
         let xcordinates = item.map(function (el: any) {
-          if (isNaN(el.x) == false) {
+          if (!isNaN(el.x)) {
             return el.x;
           }
         })
