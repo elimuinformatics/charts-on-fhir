@@ -50,7 +50,7 @@ export class FhirChartComponent implements OnInit {
         wheel: { enabled: true },
         drag: { enabled: false },
         pinch: { enabled: true },
-        onZoomComplete: function (myChart: any) {
+        onZoomComplete: function () {
           that.isMatGroupFocus = !that.isMatGroupFocus ;
         }
       },
