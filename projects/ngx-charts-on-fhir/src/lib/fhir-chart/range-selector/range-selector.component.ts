@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
 import { DataLayer } from '../../data-layer/data-layer';
@@ -14,11 +14,16 @@ export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date | string;
   minDate: Date | string;
-  isMatGroupFocus: boolean = true;
-
+  _isMatGroupFocus: boolean = true;
+  @Input() 
+  set isMatGroupFocus(isMatGroupFocus: boolean){
+    this._isMatGroupFocus = isMatGroupFocus;
+  }
+ 
   constructor(private layerManager: DataLayerManagerService) {
     this.maxDate = new Date();
     this.minDate = new Date();
+    this._isMatGroupFocus = true;
   }
 
   ngOnInit(): void {
@@ -32,6 +37,11 @@ export class RangeSelectorComponent {
     })
 
   }
+  ngOnChanges(changes: SimpleChanges){
+    const changedProp = changes["isMatGroupFocus"];
+    this._isMatGroupFocus = changedProp.currentValue;
+  }
+
   updateRangeSelector(monthCount: number) {
     if (monthCount) {
       this.minDate = new Date(this.maxDate);
@@ -58,7 +68,7 @@ export class RangeSelectorComponent {
       }
     }
     this.updateRangeSelector(0);
-    this.isMatGroupFocus = false;
+    this._isMatGroupFocus = false;
   }
 
   getMaxDateFromLayers(layers?: any[]) {
