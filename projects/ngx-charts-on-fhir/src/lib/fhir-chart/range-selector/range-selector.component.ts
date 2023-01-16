@@ -69,7 +69,14 @@ export class RangeSelectorComponent {
       })
       let sortedData: any[] = [];
       for (let item of data) {
-        let xcordinates = item.map((el: any) => el.x)
+        let xcordinates = item.map(function (el: any) {
+          if (isNaN(el.x) == false) {
+            return el.x;
+          }
+        })
+        xcordinates = xcordinates.filter(function( element:any ) {
+          return element !== undefined;
+       });
         sortedData = sortedData.concat(xcordinates)
       }
       sortedData = sortedData.sort((x: any, y: any) => {
