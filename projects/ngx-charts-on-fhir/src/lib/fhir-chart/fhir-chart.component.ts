@@ -30,6 +30,11 @@ export class FhirChartComponent implements OnInit {
 
   constructor(private configService: FhirChartConfigurationService) {}
 
+  getChartHeight(): string {
+    const rangeSelectorHeight = '72px';
+    return `calc(${this.height} - ${rangeSelectorHeight})`;
+  }
+
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
     Chart.register(MedicationScale);
