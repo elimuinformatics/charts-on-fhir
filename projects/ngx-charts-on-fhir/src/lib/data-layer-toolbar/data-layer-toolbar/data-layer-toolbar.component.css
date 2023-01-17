@@ -6,3 +6,8 @@
   width: 48px;
   padding-top: 16px;
 }
+
+#badge-movement ::ng-deep .mat-mdc-tooltip-trigger {
+  padding: 12px 15px 12px 4px;
+}
+
