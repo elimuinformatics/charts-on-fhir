@@ -1,10 +1,7 @@
 <div class="range-selector" *ngIf='layers && layers.length > 0'>
-  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [(ngModel)]="_isMatGroupFocus">
-    <mat-button-toggle id="onemonth" (click)="updateRangeSelector(1)" >1 mo</mat-button-toggle>
-    <mat-button-toggle id="threemonth" (click)="updateRangeSelector(3)">3 mo</mat-button-toggle>
-    <mat-button-toggle id="sixmonth" (click)="updateRangeSelector(6)">6 mo</mat-button-toggle>
-    <mat-button-toggle id="oneyear" (click)="updateRangeSelector(12)">1 y</mat-button-toggle>
-    <mat-button-toggle id="resetzoom" (click)="resetZoomData()">All</mat-button-toggle>
+  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [(ngModel)]="selectedButton">
+    <mat-button-toggle *ngFor="let rangeButton of rangeSelectorButtons;" [id]="rangeButton.value" [value]="rangeButton.month" (click)="updateRangeSelector(rangeButton.month)" >{{ rangeButton.value }}</mat-button-toggle>
+    <mat-button-toggle id="resetzoom" (click)="resetZoomChart()" [value]="0">All</mat-button-toggle>
   </mat-button-toggle-group>
   <mat-form-field appearance="fill">
     <mat-label>Start date</mat-label>

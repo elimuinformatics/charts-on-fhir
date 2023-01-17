@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
 import { DataLayer } from '../../data-layer/data-layer';
@@ -14,67 +14,82 @@ export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date | string;
   minDate: Date | string;
-  _isMatGroupFocus: boolean = true;
-  @Input() 
-  set isMatGroupFocus(isMatGroupFocus: boolean){
-    this._isMatGroupFocus = isMatGroupFocus;
-  }
- 
+  isMatGroupFocus: boolean = true;
+  monthDiff : number = 0;
+
+  rangeSelectorButtons = [
+    { month: 1, value: '1 mo' },
+    { month: 3, value: '3 mo' },
+    { month: 6, value: '6 mo' },
+    { month: 12, value: '1 y' },
+  ]
+  selectedButton: number = 0;
+
   constructor(private layerManager: DataLayerManagerService) {
     this.maxDate = new Date();
     this.minDate = new Date();
-    this._isMatGroupFocus = true;
   }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
-      this.getMaxDateFromLayers(layers);
+      this.getMaxDateFromLayers();
     })
     this.layerManager.timelineRange$.subscribe((timelineRange) => {
       this.maxDate = new Date(timelineRange.max);
-      this.minDate = new Date(timelineRange.min); 
-    })
+      this.minDate = new Date(timelineRange.min);
+      const months = this.calculateMonthDiff(this.minDate, this.maxDate);
+      let diff = months - this.selectedButton;
 
-  }
-  ngOnChanges(changes: SimpleChanges){
-    const changedProp = changes["isMatGroupFocus"];
-    this._isMatGroupFocus = changedProp.currentValue;
+      if(diff === months){
+         this.selectedButton = 0; 
+      } else if (this.selectedButton !== months) {
+        this.selectedButton = 13;
+      }
+    })
+    this.selectedButton = 0;
   }
 
   updateRangeSelector(monthCount: number) {
+    this.getMaxDateFromLayers()
     if (monthCount) {
       this.minDate = new Date(this.maxDate);
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
-      this.maxDate = new Date(this.maxDate)
+      this.maxDate = new Date(this.maxDate);
+      this.updateChart();
+    } else {
+      this.resetZoomChart()
     }
-    let chart = Chart.getChart('baseChart')
-    chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom')
-    chart?.update()
   }
-  resetZoomData() {
-    let chart = Chart.getChart('baseChart')
+
+  updateChart() {
+    const chart = Chart.getChart('baseChart');
+    chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom');
+    chart?.update();
+  }
+
+  resetZoomChart() {
+    const chart = Chart.getChart('baseChart');
     chart?.resetZoom();
     chart?.update();
-    this.getMaxDateFromLayers(this.layers)
+    this.getMaxDateFromLayers();
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
-    if(event.value) {
-      if(datePickerType === 'min') {
+    if (event.value) {
+      if (datePickerType === 'min') {
         this.minDate = event.value;
       } else {
         this.maxDate = event.value;
       }
     }
-    this.updateRangeSelector(0);
-    this._isMatGroupFocus = false;
+    this.updateChart();
   }
 
-  getMaxDateFromLayers(layers?: any[]) {
+  getMaxDateFromLayers() {
     let data: any[] = [];
-    if (layers) {
-      layers.forEach((layersData) => {
+    if (this.layers) {
+      this.layers.forEach((layersData) => {
         data.push(layersData.datasets[0].data)
       })
       let sortedData: any[] = [];
@@ -88,6 +103,14 @@ export class RangeSelectorComponent {
       this.maxDate = new Date(sortedData[sortedData.length - 1]);
       this.minDate = new Date(sortedData[0])
     }
+  }
+
+  calculateMonthDiff(minDateValue: Date, maxDateValue: Date) {
+    let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
+    months -= minDateValue.getMonth();
+    months += maxDateValue.getMonth();
+    months <= 0 ? 0 : months;
+    return months;
   }
 
 }

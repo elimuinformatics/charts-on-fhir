@@ -28,7 +28,6 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  isMatGroupFocus: boolean = true;
   
   constructor(private configService: FhirChartConfigurationService) {
   }
@@ -41,7 +40,6 @@ export class FhirChartComponent implements OnInit {
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
     Chart.register(MedicationScale);
-    const that=this;
     // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
     Chart.defaults.maintainAspectRatio = false;
    
@@ -55,9 +53,6 @@ export class FhirChartComponent implements OnInit {
         wheel: { enabled: true },
         drag: { enabled: false },
         pinch: { enabled: true },
-        onZoomComplete: function () {
-          that.isMatGroupFocus = !that.isMatGroupFocus ;
-        }
       },
     });
 
