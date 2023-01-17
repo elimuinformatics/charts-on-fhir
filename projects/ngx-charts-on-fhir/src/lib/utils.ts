@@ -6,7 +6,7 @@ export type NumberRange = { min: number; max: number };
 export function previous({ min, max }: NumberRange): NumberRange {
   return {
     max: min - 1,
-    min: min - (max - min),
+    min: min - 1 - (max - min),
   };
 }
 
