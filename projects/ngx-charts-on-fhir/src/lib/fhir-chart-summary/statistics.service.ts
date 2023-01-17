@@ -28,8 +28,9 @@ type CombinedStats = {
 export class StatisticsService {
   /** Get a string-formatted set of statistics for datapoints in the given [DataLayer] that fall within the given date range */
   getFormattedStatistics(layer: DataLayer, range: NumberRange): Record<string, string> {
-    const precision = this.estimatePrecision(layer.datasets);
-    const sortedDatasets = layer.datasets.slice().sort(byMostRecentValue);
+    const datasets = layer.datasets.filter(dataset => !dataset.hidden);
+    const precision = this.estimatePrecision(datasets);
+    const sortedDatasets = datasets.slice().sort(byMostRecentValue);
     const separateStats = sortedDatasets.map((dataset) => this.computeStatistics(layer, dataset, range));
     const combinedStats = this.combineStatistics(separateStats);
     return this.formatStatistics(combinedStats, precision);
