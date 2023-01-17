@@ -17,6 +17,7 @@ import { ColorPickerModule } from '../color-picker/color-picker.module';
 import { MatInputModule } from '@angular/material/input';
 import { AnnotationOptionsComponent } from './annotation-options/annotation-options.component';
 import { AnnotationListComponent } from './annotation-list/annotation-list.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { AnnotationListComponent } from './annotation-list/annotation-list.compo
     MatFormFieldModule,
     ColorPickerModule,
     MatInputModule,
+    MatTooltipModule
   ],
   exports: [DataLayerListComponent],
 })
