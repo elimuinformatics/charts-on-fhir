@@ -43,7 +43,7 @@ describe('FhirChartSummaryComponent', () => {
     summaryService = jasmine.createSpyObj('SummaryService', ['canSummarize', 'summarize']);
     summaryService.canSummarize.and.returnValue(true);
     summaryService.summarize.and.returnValue([{ name: 'summary' }]);
-    colorService = jasmine.createSpyObj('ColorService', ['getColor']);
+    colorService = jasmine.createSpyObj('ColorService', ['getColorGradient']);
     await TestBed.configureTestingModule({
       declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent, MockDynamicTableComponent],
       providers: [

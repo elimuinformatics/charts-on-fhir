@@ -1,5 +1,5 @@
 .summary-card {
-  border-left: 4px solid;
+  border-left: 4px solid transparent;
   min-height: 100%;
 }
 .mat-card-subtitle .mat-icon {
