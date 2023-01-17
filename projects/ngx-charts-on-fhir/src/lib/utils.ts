@@ -3,6 +3,12 @@ import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
 export type NumberRange = { min: number; max: number };
+export function previous({ min, max }: NumberRange): NumberRange {
+  return {
+    max: min - 1,
+    min: min - (max - min),
+  };
+}
 
 export type ChartData = ChartConfiguration['data'];
 export type ChartDatasets = ChartConfiguration['data']['datasets'];
@@ -23,4 +29,14 @@ export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 export function isCartesianScale(scale: Scale<CoreScaleOptions>): scale is Scale<CartesianScaleOptions> {
   return scale.type === 'linear' || scale.type === 'logarithmic' || scale.type === 'category' || scale.type === 'medication';
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Format a date using Elimu standard date format "d MMM yyyy" */
+export function formatDate(date: Date): string {
+    const d = date.getDate();
+    const MMM = MONTHS[date.getMonth()];
+    const yyyy = date.getFullYear();
+    return `${d} ${MMM} ${yyyy}`;
 }

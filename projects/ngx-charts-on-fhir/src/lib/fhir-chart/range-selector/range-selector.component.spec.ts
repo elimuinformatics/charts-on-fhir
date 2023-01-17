@@ -63,7 +63,6 @@ const mockLayerManager = {
       }
     ]
   }]),
-  timelineRange$: EMPTY,
   remove() { },
   update() { },
   enable() { },

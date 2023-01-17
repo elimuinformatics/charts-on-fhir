@@ -20,7 +20,6 @@ const mockColorService = {
 class MockLayerManager {
   availableLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
   selectedLayers$ = EMPTY;
-  timelineRange$ = EMPTY;
   loading$ = EMPTY;
 }
 
@@ -58,7 +57,7 @@ describe('DataLayerBrowserComponent', () => {
         name: 'One',
         category: ['A', 'B'],
         datasets: [{ data: [{ x: 1, y: 1 }] }],
-        scales: {},
+        scale: { id: '1' },
       },
       {
         id: '2',
@@ -72,7 +71,7 @@ describe('DataLayerBrowserComponent', () => {
             ],
           },
         ],
-        scales: {},
+        scale: { id: '2' },
       },
     ];
     layerManager.availableLayers$.next(layers);
@@ -94,14 +93,14 @@ describe('DataLayerBrowserComponent', () => {
         name: 'One',
         category: ['A'],
         datasets: [{ data: [] }],
-        scales: {},
+        scale: { id: '1' },
       },
       {
         id: '2',
         name: 'Two',
         category: ['C'],
         datasets: [{ data: [] }],
-        scales: {},
+        scale: { id: '2' },
       },
     ];
     layerManager.availableLayers$.next(layers);
@@ -123,21 +122,21 @@ describe('DataLayerBrowserComponent', () => {
         name: 'One',
         category: ['B'],
         datasets: [{ data: [] }],
-        scales: {},
+        scale: { id: '1' },
       },
       {
         id: '2',
         name: 'Two',
         category: ['C'],
         datasets: [{ data: [] }],
-        scales: {},
+        scale: { id: '2' },
       },
       {
         id: '3',
         name: 'Three',
         category: ['A'],
         datasets: [{ data: [] }],
-        scales: {},
+        scale: { id: '3' },
       },
     ];
     layerManager.availableLayers$.next(layers);

@@ -2,36 +2,56 @@ import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
-import { VisibleData, VisibleDataService } from '../../data-layer/visible-data.service';
+import { ManagedDataLayer } from '../../data-layer/data-layer';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
+import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { NumberRange } from '../../utils';
+import { SummaryService } from '../summary.service';
 import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
 
-class MockVisibleDataService {
-  visible$ = new BehaviorSubject<VisibleData[]>([]);
+class MockLayerManager {
+  selectedLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
 }
 
-@Component({ selector: 'analysis-card', template: '<ng-content></ng-content>' })
-class MockAnalysisCardComponent {
-  @Input() dataset: unknown;
+class MockConfigService {
+  timelineRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }
 
-@Component({ selector: 'statistics', template: '' })
-class MockStatisticsComponent {
-  @Input() layer: unknown;
-  @Input() dataset: unknown;
-  @Input() visibleData: unknown;
-  @Input() dateRange: unknown;
+@Component({ selector: 'fhir-chart-summary-card', template: '<ng-content></ng-content>' })
+class MockFhirChartSummaryCardComponent {
+  @Input() title: unknown;
+  @Input() color: unknown;
+}
+
+@Component({ selector: 'dynamic-table', template: '' })
+class MockDynamicTableComponent {
+  @Input() data: Record<string, string>[] = [];
 }
 
 describe('FhirChartSummaryComponent', () => {
   let component: FhirChartSummaryComponent;
   let fixture: ComponentFixture<FhirChartSummaryComponent>;
-  let visibleDataService: MockVisibleDataService;
+  let layerManager: MockLayerManager;
+  let configService: MockConfigService;
+  let summaryService: jasmine.SpyObj<SummaryService>;
+  let colorService: jasmine.SpyObj<DataLayerColorService>;
 
   beforeEach(async () => {
-    visibleDataService = new MockVisibleDataService();
+    layerManager = new MockLayerManager();
+    configService = new MockConfigService();
+    summaryService = jasmine.createSpyObj('SummaryService', ['canSummarize', 'summarize']);
+    summaryService.canSummarize.and.returnValue(true);
+    summaryService.summarize.and.returnValue([{ name: 'summary' }]);
+    colorService = jasmine.createSpyObj('ColorService', ['getColor']);
     await TestBed.configureTestingModule({
-      declarations: [FhirChartSummaryComponent, MockAnalysisCardComponent, MockStatisticsComponent],
-      providers: [{ provide: VisibleDataService, useValue: visibleDataService }],
+      declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent, MockDynamicTableComponent],
+      providers: [
+        { provide: DataLayerManagerService, useValue: layerManager },
+        { provide: FhirChartConfigurationService, useValue: configService },
+        { provide: SummaryService, useValue: summaryService, multi: true },
+        { provide: DataLayerColorService, useValue: colorService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FhirChartSummaryComponent);
@@ -43,31 +63,27 @@ describe('FhirChartSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render a card for each dataset', () => {
-    const emptyVisibleData: any = { layer: {}, dataset: {}, data: [], dateRange: {} };
-    visibleDataService.visible$.next([emptyVisibleData, emptyVisibleData, emptyVisibleData]);
+  it('should render a card for each layer', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [], scale: { id: 'test' } };
+    layerManager.selectedLayers$.next([layer, layer, layer]);
     fixture.detectChanges();
-    const cards = fixture.debugElement.queryAll(By.directive(MockAnalysisCardComponent));
+    const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
     expect(cards.length).toBe(3);
   });
 
-  it('should set inputs on analysis-card component', () => {
-    const visibleData: any = {
-      dataset: 'dataset',
-    };
-    visibleDataService.visible$.next([visibleData]);
+  it('should set inputs on fhir-chart-summary-card component', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.selectedLayers$.next([layer]);
     fixture.detectChanges();
-    const card: DebugElement = fixture.debugElement.query(By.directive(MockAnalysisCardComponent));
-    expect(card.componentInstance.dataset).toEqual('dataset');
+    const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
+    expect(card.componentInstance.title).toEqual('layer');
   });
 
-  it('should set inputs on statistics component', () => {
-    const visibleData: any = {
-      dataset: { label: 'dataset' },
-    };
-    visibleDataService.visible$.next([visibleData]);
+  it('should set inputs on dynamic-table component', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.selectedLayers$.next([layer]);
     fixture.detectChanges();
-    const statistics: DebugElement = fixture.debugElement.query(By.directive(MockStatisticsComponent));
-    expect(statistics.componentInstance.visibleData).toEqual(visibleData);
+    const statistics: DebugElement = fixture.debugElement.query(By.directive(MockDynamicTableComponent));
+    expect(statistics.componentInstance.data).toEqual([{ name: 'summary' }]);
   });
 });

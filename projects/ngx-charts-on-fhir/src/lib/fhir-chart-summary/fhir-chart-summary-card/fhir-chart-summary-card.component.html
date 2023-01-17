@@ -1,0 +1,10 @@
+<mat-card class="summary-card" [style.borderColor]="color">
+  <mat-card-title-group>
+    <mat-icon [style.color]="color">{{ icon }}</mat-icon>
+    <mat-card-subtitle *ngIf="subtitle">{{ subtitle }}</mat-card-subtitle>
+    <mat-card-title *ngIf="title" [matTooltip]="title">{{ title }}</mat-card-title>
+  </mat-card-title-group>
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

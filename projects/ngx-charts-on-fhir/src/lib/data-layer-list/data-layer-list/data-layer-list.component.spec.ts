@@ -15,7 +15,6 @@ const mockColorService = {
 
 const mockLayerManager = {
   selectedLayers$: EMPTY,
-  timelineRange$: EMPTY,
   remove() {},
   update() {},
   enable() {},
