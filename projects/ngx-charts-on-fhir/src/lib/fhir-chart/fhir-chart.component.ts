@@ -6,6 +6,8 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import { merge } from 'lodash-es';
 import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
+import { MedicationScale } from './medication-scale';
+import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
 @Component({
   selector: 'fhir-chart',
@@ -28,8 +30,14 @@ export class FhirChartComponent implements OnInit {
 
   constructor(private configService: FhirChartConfigurationService) {}
 
+  getChartHeight(): string {
+    const rangeSelectorHeight = '72px';
+    return `calc(${this.height} - ${rangeSelectorHeight})`;
+  }
+
   ngOnInit(): void {
-    Chart.register(annotationPlugin, zoomPlugin);
+    Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
+    Chart.register(MedicationScale);
 
     // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
     Chart.defaults.maintainAspectRatio = false;
