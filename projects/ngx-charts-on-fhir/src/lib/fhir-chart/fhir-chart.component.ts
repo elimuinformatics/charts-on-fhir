@@ -42,7 +42,8 @@ export class FhirChartComponent implements OnInit {
     Chart.register(MedicationScale);
     // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
     Chart.defaults.maintainAspectRatio = false;
-   
+    const that = this;
+
     Chart.defaults.plugins.zoom = merge(Chart.defaults.plugins.zoom, {
       pan: {
         enabled: true,
@@ -71,7 +72,8 @@ export class FhirChartComponent implements OnInit {
 
     this.configService.chartConfig$.subscribe((config) => {
       this.datasets = config.data.datasets;
-      this.options = config.options;
+      this.options = config.options;  isMatGroupFocus: boolean = true;
+
     });
   }
 }
