@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { DataLayer } from '../data-layer/data-layer';
-import { formatDate, NumberRange, previous } from '../utils';
-
+import { NumberRange, previous } from '../utils';
 
 /** Maps properties from a single resource to properties on a DataLayer */
 export abstract class SummaryService {
@@ -30,23 +29,3 @@ export class ScatterDataPointSummaryService implements SummaryService {
     return summary;
   }
 }
-
-@Injectable({
-  providedIn: 'root',
-})
-export class MedicationSummaryService implements SummaryService {
-  constructor(private stats: StatisticsService) {}
-
-  canSummarize(layer: DataLayer): boolean {
-    return layer.scale.type === 'medication';
-  }
-  summarize(layer: DataLayer): Record<string, string>[] {
-    return layer.datasets.map(dataset => ({
-      name: dataset.label ?? '(unknown)',
-      'Date Written': formatDate(new Date(dataset.data[0].x)), // TODO: find most recent authoredOn date
-    }));
-  }
-}
-
-
-
