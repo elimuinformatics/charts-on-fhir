@@ -21,10 +21,3 @@
 mat-checkbox {
   margin-right: 2px;
 }
-
-mat-title{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 450px;
-}

@@ -11,7 +11,7 @@ const jsonServer = require("json-server");
  */
 function generateData() {
   const data = {
-    metadata: JSON.parse(fs.readFileSync("./capabilities.json")),
+    metadata: JSON.parse(fs.readFileSync('./capabilities.json')),
   };
   const dataPath = "./data";
   const filenames = fs.readdirSync(dataPath);
@@ -60,7 +60,7 @@ router.render = (req, res) => {
     res.jsonp({
       resourceType: "Bundle",
       type: "searchset",
-      entry: res.locals.data.map((resource) => ({ resource })),
+      entry: res.locals.data.map(resource => ({ resource })),
     });
   } else {
     res.jsonp(res.locals.data);

@@ -149,7 +149,9 @@ export function isTimingCodeMedication(resource: MedicationRequest): resource is
   return (
     isTimingMedication(resource) && //
     resource.dosageInstruction[0].timing?.code?.coding != null &&
-    resource.dosageInstruction[0].timing.code.coding.some(({ code, system }) => code != null && system === timingAbbreviationCodeSystem)
+    resource.dosageInstruction[0].timing.code.coding.some(
+      ({code, system}) => code != null && system === timingAbbreviationCodeSystem
+    )
   );
 }
 

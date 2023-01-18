@@ -31,16 +31,16 @@ const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
   },
 } as const;
 
-export const MEDICATION_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'medication'>>('Medication scale options', {
-  factory: () => defaultMedicationScaleOptions,
+export const CATEGORY_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'category'>>('Category scale options', {
+  factory: () => defaultCategoryScaleOptions,
 });
-const defaultMedicationScaleOptions: ScaleOptions<'medication'> = {
+const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   display: 'auto',
   position: 'left',
-  type: 'medication',
+  type: 'category',
   offset: true,
   stack: 'all',
-  stackWeight: 0.7,
+  stackWeight: 0.6,
   title: {
     display: true,
   },

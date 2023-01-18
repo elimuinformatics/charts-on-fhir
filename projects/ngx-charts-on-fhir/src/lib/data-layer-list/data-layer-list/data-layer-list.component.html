@@ -28,9 +28,7 @@
             color="primary"
           >
           </mat-checkbox>
-          <mat-title [matTooltip]="layer.name">
-            {{ layer.name }}
-          </mat-title>
+          {{ layer.name }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <data-layer-options [layer]="layer" (layerChange)="onLayerChange($event)"></data-layer-options>

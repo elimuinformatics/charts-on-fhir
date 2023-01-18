@@ -7,8 +7,6 @@ export * from './lib/analysis-cards/analysis-cards.module';
 export * from './lib/analysis-cards/statistics/statistics.component';
 export * from './lib/fhir-chart/fhir-chart.component';
 export * from './lib/fhir-chart/fhir-chart.module';
-export * from './lib/fhir-chart/medication-scale';
-export * from './lib/fhir-chart/scale-stack-divider-plugin';
 export * from './lib/fhir-chart-summary/fhir-chart-summary/fhir-chart-summary.component';
 export * from './lib/fhir-chart-summary/fhir-chart-summary.module';
 export * from './lib/fhir-data/fhir-data.service';

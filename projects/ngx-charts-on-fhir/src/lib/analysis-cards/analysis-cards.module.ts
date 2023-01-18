@@ -6,11 +6,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AnalysisCardComponent } from './analysis-card/analysis-card.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [AnalysisCardComponent, StatisticsComponent],
-  imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule, MatIconModule,MatTooltipModule],
+  imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule, MatIconModule],
   exports: [AnalysisCardComponent, StatisticsComponent],
 })
 export class AnalysisCardsModule {}

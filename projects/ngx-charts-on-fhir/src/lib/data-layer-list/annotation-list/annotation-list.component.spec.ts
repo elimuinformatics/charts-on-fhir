@@ -13,6 +13,7 @@ class MockAnnotationOptionsComponent {
   @Input() annotation?: any;
 }
 
+
 describe('DatasetAnnotationListComponent', () => {
   let component: AnnotationListComponent;
   let fixture: ComponentFixture<AnnotationListComponent>;

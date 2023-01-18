@@ -4,7 +4,7 @@ import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../../fhir-converter/multi-mapper.service';
-import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { TIME_SCALE_OPTIONS, CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirMappersModule } from '../fhir-mappers.module';
 
 /** Required properties for mapping a MedicationRequest with [SimpleMedicationMapper] */
@@ -25,7 +25,7 @@ export function isMedication(resource: MedicationRequest): resource is SimpleMed
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   constructor(
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'medication'>
+    @Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>
   ) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer {
@@ -48,7 +48,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       ],
       scales: {
         timeline: this.timeScaleOptions,
-        medications: merge({}, this.medicationScaleOptions, {
+        medications: merge({}, this.categoryScaleOptions, {
           title: { text: 'Medications' },
         }),
       },

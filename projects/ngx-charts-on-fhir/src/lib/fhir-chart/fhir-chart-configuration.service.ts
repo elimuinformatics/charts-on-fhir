@@ -51,7 +51,7 @@ const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) =>
 const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).label?.content === (other as any).label.content;
 
 /** Build a chart configuration object to display the given datasets, scales, and annotations */
- function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
+function buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
   return {
     type: 'line',
     data: {
@@ -63,16 +63,16 @@ const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => 
         annotation: { annotations },
         legend: {
           labels: {
-            // hide legend labels for medications
+            // hide legend labels for datasets that use a category axis
             filter(item, data) {
               const dataset = data.datasets.find(({ label }) => label === item.text) as Dataset<'line'>;
               if (dataset?.yAxisID) {
-                return scales[dataset.yAxisID]?.type !== 'medication';
+                return scales[dataset.yAxisID]?.type !== 'category';
               }
               return true;
-            },
-          },
-        },
+            }
+          }
+        }
       },
     },
   };
