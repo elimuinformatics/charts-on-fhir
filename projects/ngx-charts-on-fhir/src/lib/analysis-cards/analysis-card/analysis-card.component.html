@@ -1,9 +1,11 @@
 <mat-card class="analysis-card" [style.borderColor]="color">
-  <mat-card-title-group>
-    <mat-icon class="analysis-card-icon" [style.color]="color">{{ icon }}</mat-icon>
-    <mat-card-subtitle *ngIf="subtitle" class="analysis-card-subtitle">{{ subtitle }}</mat-card-subtitle>
-    <mat-card-title *ngIf="title" class="analysis-card-title"  [matTooltip]="title">{{ title }}</mat-card-title>
-  </mat-card-title-group>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-icon class="analysis-card-icon" [style.color]="color">{{ icon }}</mat-icon>
+      <mat-card-subtitle *ngIf="subtitle" class="analysis-card-subtitle">{{ subtitle }}</mat-card-subtitle>
+      <mat-card-title *ngIf="title" class="analysis-card-title" [matTooltip]="title">{{ title }}</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
   <mat-card-content>
     <ng-content></ng-content>
   </mat-card-content>
