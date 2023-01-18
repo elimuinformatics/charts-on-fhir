@@ -7,7 +7,6 @@ import { DataLayerToolbarComponent } from './data-layer-toolbar.component';
 const mockLayerManager = {
   availableLayers$: EMPTY,
   selectedLayers$: EMPTY,
-  timelineRange$: EMPTY,
 };
 
 describe('DataLayerToolbarComponent', () => {

@@ -59,7 +59,7 @@ describe('DataLayerOptionsComponent', () => {
             ],
           },
         ],
-        scales: {},
+        scale: { id: 'Blood Pressure' },
         annotations: [],
       };
       component.onDatasetsChange(datasets);
@@ -82,7 +82,7 @@ describe('DataLayerOptionsComponent', () => {
         name: 'Blood Pressure',
         category: ['vital-signs'],
         datasets: [],
-        scales: {},
+        scale: { id: 'Blood Pressure' },
         annotations: [],
       };
       component.onAnnotationsChange(annotations);

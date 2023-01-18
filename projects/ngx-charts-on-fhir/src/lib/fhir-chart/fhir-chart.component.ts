@@ -13,7 +13,6 @@ import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
   selector: 'fhir-chart',
   templateUrl: './fhir-chart.component.html',
   styleUrls: ['./fhir-chart.component.css'],
-  providers: [FhirChartConfigurationService],
 })
 export class FhirChartComponent implements OnInit {
   defaultType: ChartConfiguration['type'] = 'line';

@@ -14,7 +14,7 @@ describe('DataLayerMergeService', () => {
     const layer: DataLayer = {
       name: 'Test',
       datasets: [],
-      scales: {},
+      scale: { id: 'test' },
     };
     service.merge(collection, layer);
     expect(collection).toEqual({});
@@ -25,12 +25,12 @@ describe('DataLayerMergeService', () => {
     const layer1: DataLayer = {
       name: 'Test',
       datasets: [],
-      scales: {},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Different',
       datasets: [],
-      scales: {},
+      scale: { id: 'different' },
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);
@@ -47,7 +47,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 0, y: 0 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Test',
@@ -56,7 +56,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 1, y: 1 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);
@@ -74,7 +74,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 0, y: 0 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Test',
@@ -83,7 +83,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 1, y: 1 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     collection = service.merge(collection, layer1);
     collection = produce(collection, (draft) => {
@@ -103,7 +103,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 0, y: 0 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Test',
@@ -112,7 +112,7 @@ describe('DataLayerMergeService', () => {
           data: [{ x: 1, y: 1 }],
         },
       ],
-      scales: {},
+      scale: { id: 'test' },
     };
     collection = service.merge(collection, layer1);
     collection = produce(collection, (draft) => {
@@ -131,7 +131,7 @@ describe('DataLayerMergeService', () => {
         { label: 'one', data: [{ x: 1, y: 1 }] },
         { label: 'two', data: [{ x: 2, y: 2 }] },
       ],
-      scales: {},
+      scale: {id: 'test'},
     };
     const layer2: DataLayer = {
       name: 'Test',
@@ -139,7 +139,7 @@ describe('DataLayerMergeService', () => {
         { label: 'two', data: [{ x: 2, y: 22 }] },
         { label: 'one', data: [{ x: 1, y: 11 }] },
       ],
-      scales: {},
+      scale: { id: 'test'},
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);
@@ -170,12 +170,12 @@ describe('DataLayerMergeService', () => {
     const layer1: DataLayer = {
       name: 'Test',
       datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
-      scales: {},
+      scale: { id: 'test'},
     };
     const layer2: DataLayer = {
       name: 'Test',
       datasets: [{ label: 'two', data: [{ x: 2, y: 2 }] }],
-      scales: {},
+      scale: { id: 'test'},
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);

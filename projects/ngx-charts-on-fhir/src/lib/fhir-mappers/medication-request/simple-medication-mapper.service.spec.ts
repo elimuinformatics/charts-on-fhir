@@ -57,7 +57,7 @@ describe('SimpleMedicationMapper', () => {
       expect(mapper.map(medication).datasets[0].data[0].y).toEqual('text');
     });
 
-    it('should return a layer with a timeline scale', () => {
+    it('should return a layer with a medication scale', () => {
       const medication: SimpleMedication = {
         resourceType: 'MedicationRequest',
         medicationCodeableConcept: { text: 'text' },
@@ -66,8 +66,12 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({ type: 'time' }, {});
-      expect(mapper.map(medication).scales?.['timeline']).toEqual({ type: 'time' });
+      const mapper = new SimpleMedicationMapper({}, { type: 'medication' });
+      expect(mapper.map(medication).scale).toEqual({
+        id: 'medications',
+        type: 'medication',
+        title: { text: 'Medications' },
+      });
     });
   });
 });

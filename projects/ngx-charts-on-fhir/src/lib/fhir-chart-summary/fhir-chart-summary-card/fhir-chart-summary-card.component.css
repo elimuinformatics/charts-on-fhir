@@ -1,5 +1,5 @@
-.analysis-card {
-  border-left: 4px solid;
+.summary-card {
+  border-left: 4px solid transparent;
   min-height: 100%;
 }
 .mat-card-subtitle .mat-icon {
