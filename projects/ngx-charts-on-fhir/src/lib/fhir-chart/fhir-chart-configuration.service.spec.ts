@@ -1,4 +1,5 @@
 import { NgZone } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
 import { hot, getTestScheduler } from 'jasmine-marbles';
 import { ManagedDataLayer } from '../data-layer/data-layer';
 import { FhirChartConfigurationService, TimelineConfiguration } from './fhir-chart-configuration.service';
@@ -251,9 +252,9 @@ describe('FhirChartConfigurationService', () => {
     });
   });
 
-  xdescribe('timelineRange$', () => {
-    it('should emit when timeline scale limits change', () => {
-      const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
+  describe('timelineRange$', () => {
+    it('should emit when timeline scale limits change', waitForAsync(() => {
+      const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
@@ -264,10 +265,10 @@ describe('FhirChartConfigurationService', () => {
           x: { min: 2, max: 3 },
         })
       );
-    });
+    }));
 
-    it('should run afterDataLimits callback within NgZone', () => {
-      const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
+    it('should run afterDataLimits callback within NgZone', waitForAsync(() => {
+      const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
@@ -275,6 +276,6 @@ describe('FhirChartConfigurationService', () => {
       getTestScheduler().schedule(() => (config.options?.scales?.['timeline'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       getTestScheduler().flush();
       expect(ngZone.run).toHaveBeenCalledTimes(1);
-    });
+    }));
   });
 });
