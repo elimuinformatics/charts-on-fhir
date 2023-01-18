@@ -53,18 +53,6 @@ describe('SimpleObservationMapper', () => {
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
-    it('should return a layer with a timeline scale', () => {
-      const observation: SimpleObservation = {
-        resourceType: 'Observation',
-        status: 'final',
-        code: { text: 'text' },
-        effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
-      };
-      const mapper = new SimpleObservationMapper({ type: 'time' }, {}, {});
-      expect(mapper.map(observation).scales?.['timeline']).toEqual({ type: 'time' });
-    });
-
     it('should map valueQuantity.unit to the title of a linear scale', () => {
       const observation: SimpleObservation = {
         resourceType: 'Observation',
@@ -74,7 +62,8 @@ describe('SimpleObservationMapper', () => {
         valueQuantity: { value: 7, unit: 'unit' },
       };
       const mapper = new SimpleObservationMapper({}, { type: 'linear' }, {});
-      expect(mapper.map(observation).scales?.['text (unit)']).toEqual({
+      expect(mapper.map(observation).scale).toEqual({
+        id: 'text (unit)',
         type: 'linear',
         title: { text: 'text (unit)' },
       });

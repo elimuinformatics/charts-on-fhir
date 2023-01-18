@@ -14,7 +14,6 @@ const mockColorService = {
 const mockLayerManager = {
   availableLayers$: EMPTY,
   selectedLayers$: EMPTY,
-  timelineRange$: EMPTY,
 };
 
 describe('FhirChartComponent', () => {

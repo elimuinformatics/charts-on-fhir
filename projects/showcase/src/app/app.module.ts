@@ -26,6 +26,7 @@ import {
   FhirDataService,
 } from 'ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
+import { summaryProviders } from './providers/summary-providers';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -58,6 +59,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     { provide: COLOR_PALETTE, useValue: paletteProvider },
     mapperProviders,
     dataLayerProviders,
+    summaryProviders,
   ],
   bootstrap: [AppComponent],
 })

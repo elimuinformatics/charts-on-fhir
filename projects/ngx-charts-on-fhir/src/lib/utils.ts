@@ -3,6 +3,12 @@ import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
 export type NumberRange = { min: number; max: number };
+export function previous({ min, max }: NumberRange): NumberRange {
+  return {
+    max: min - 1,
+    min: min - 1 - (max - min),
+  };
+}
 
 export type ChartData = ChartConfiguration['data'];
 export type ChartDatasets = ChartConfiguration['data']['datasets'];

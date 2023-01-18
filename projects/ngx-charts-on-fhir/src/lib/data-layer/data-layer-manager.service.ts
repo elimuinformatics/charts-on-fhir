@@ -36,7 +36,6 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
     private mergeService: DataLayerMergeService,
-    private ngZone: NgZone
   ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
@@ -52,9 +51,6 @@ export class DataLayerManagerService {
     distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
-
-  private timelineRangeSubject = new ReplaySubject<NumberRange>();
-  timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
   loading$ = new BehaviorSubject<boolean>(false);
 
@@ -97,9 +93,6 @@ export class DataLayerManagerService {
         layer.selected = true;
         layer.enabled = true;
         this.colorService.chooseColorsFromPalette(layer);
-        if (layer.scales?.['timeline']) {
-          layer.scales['timeline'].afterDataLimits = ({ max, min }) => this.ngZone.run(() => this.timelineRangeSubject.next({ max, min }));
-        }
       })
     );
   }

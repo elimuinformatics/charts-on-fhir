@@ -1,11 +1,13 @@
 <div class="chart-summary">
-  <analysis-card
-    *ngFor="let visibleData of visibleDataService.visible$ | async"
-    [dataset]="visibleData.dataset"
-    [title]="visibleData.dataset.label"
-    icon="info"
-    class="dataset-summary mat-elevation-z2"
-  >
-    <statistics [visibleData]="visibleData"></statistics>
-  </analysis-card>
+  <ng-container *ngIf="configService.timelineRange$ | async as range">
+    <fhir-chart-summary-card
+      *ngFor="let layer of layerManager.selectedLayers$ | async"
+      [color]="colorService.getColorGradient(layer)"
+      [title]="layer.name"
+      icon="info"
+      class="dataset-summary mat-elevation-z2"
+    >
+      <dynamic-table [data]="summarize(layer, range)"></dynamic-table>
+    </fhir-chart-summary-card>
+  </ng-container>
 </div>
