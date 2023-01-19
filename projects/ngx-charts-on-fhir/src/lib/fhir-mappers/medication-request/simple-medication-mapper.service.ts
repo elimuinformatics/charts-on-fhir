@@ -30,7 +30,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer {
     return {
-      name: resource?.medicationCodeableConcept?.text,
+      name: 'Medications',
       category: ['medication'],
       datasets: [
         {
@@ -46,12 +46,10 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           ],
         },
       ],
-      scales: {
-        timeline: this.timeScaleOptions,
-        medications: merge({}, this.medicationScaleOptions, {
-          title: { text: 'Medications' },
-        }),
-      },
+      scale: merge({}, this.medicationScaleOptions, {
+        id: 'medications',
+        title: { text: 'Medications' },
+      }),
     };
   }
 }

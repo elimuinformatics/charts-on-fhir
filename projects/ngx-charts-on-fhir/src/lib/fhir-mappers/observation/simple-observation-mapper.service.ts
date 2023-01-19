@@ -57,12 +57,10 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
           ],
         },
       ],
-      scales: {
-        timeline: this.timeScaleOptions,
-        [scaleName]: merge({}, this.linearScaleOptions, {
-          title: { text: scaleName },
-        }),
-      },
+      scale: merge({}, this.linearScaleOptions, {
+        id: scaleName,
+        title: { text: scaleName },
+      }),
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
           label: { content: `${resource.code.text} Reference Range` },

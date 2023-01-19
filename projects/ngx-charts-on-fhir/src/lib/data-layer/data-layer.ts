@@ -1,5 +1,4 @@
-import { ChartDataset, ChartType, ScaleChartOptions } from 'chart.js';
-import { DeepPartial } from 'chart.js/types/utils';
+import { ChartDataset, ChartType, ScaleOptions } from 'chart.js';
 import { ChartAnnotations } from '../utils';
 
 /** Timeline only supports Chart Types that have a Y-axis */
@@ -10,11 +9,13 @@ export type TimelineDataPoint = {
   y: number | string;
 };
 
+export type TimelineScaleType = 'linear' | 'category' | 'medication';
+
 /** A collection of closely-related data, metadata, and annotations */
 export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = {
   name: string;
   category?: string[];
-  scales: DeepPartial<ScaleChartOptions<T>>['scales'];
+  scale: ScaleOptions & { id: string };
   datasets: ChartDataset<T, D>[];
   annotations?: ChartAnnotations;
 };

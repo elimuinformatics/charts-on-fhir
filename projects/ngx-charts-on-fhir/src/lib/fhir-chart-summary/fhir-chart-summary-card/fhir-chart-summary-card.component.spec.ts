@@ -2,20 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { DataLayerColorService, COLOR_PALETTE } from '../../data-layer/data-layer-color.service';
-import { AnalysisCardComponent } from './analysis-card.component';
+import { FhirChartSummaryCardComponent } from './fhir-chart-summary-card.component';
 
 const mockColorService = {
   getColor: () => '#000000',
   setColor: () => {},
 };
 
-describe('AnalysisCardComponent', () => {
-  let component: AnalysisCardComponent;
-  let fixture: ComponentFixture<AnalysisCardComponent>;
+describe('FhirChartSummaryCardComponent', () => {
+  let component: FhirChartSummaryCardComponent;
+  let fixture: ComponentFixture<FhirChartSummaryCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AnalysisCardComponent],
+      declarations: [FhirChartSummaryCardComponent],
       imports: [MatCardModule, MatIconModule],
       providers: [
         { provide: DataLayerColorService, useValue: mockColorService },
@@ -23,7 +23,7 @@ describe('AnalysisCardComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AnalysisCardComponent);
+    fixture = TestBed.createComponent(FhirChartSummaryCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

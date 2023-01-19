@@ -1,9 +1,9 @@
-import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, ElementRef, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Chart } from 'chart.js';
 import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-
+import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
 
 @Component({
   selector: 'range-selector',
@@ -26,17 +26,14 @@ export class RangeSelectorComponent {
   ]
   selectedButton: number = 0;
 
-  constructor(private layerManager: DataLayerManagerService) {
+  constructor(private layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {
     this.maxDate = new Date();
     this.minDate = new Date();
     
 
-    this.layerManager.timelineRange$.subscribe((timelineRange) => {
+    this.configService.timelineRange$.subscribe((timelineRange) => {
       this.maxDate = new Date(timelineRange.max);
       this.minDate = new Date(timelineRange.min);
-      const months = this.calculateMonthDiff(this.minDate, this.maxDate);
-      this.isFirst ? this.selectedButton = 0 : this.selectedButton = months;
-      this.isFirst = false;
     })
   }
 
@@ -44,7 +41,11 @@ export class RangeSelectorComponent {
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
       this.getMaxDateFromLayers();
-    })
+    });
+    this.configService.timelineRange$.subscribe((timelineRange) => {
+      this.maxDate = new Date(timelineRange.max);
+      this.minDate = new Date(timelineRange.min);
+    });
   }
 
   updateRangeSelector(monthCount: number) {
@@ -53,20 +54,13 @@ export class RangeSelectorComponent {
       this.minDate = new Date(this.maxDate);
       this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
       this.maxDate = new Date(this.maxDate);
-      this.updateChart();
-    } else {
-      this.resetZoomChart()
     }
-  }
-
-  updateChart() {
-    const chart = Chart.getChart('baseChart');
+    let chart = Chart.getChart('baseChart');
     chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom');
     chart?.update();
   }
-
-  resetZoomChart() {
-    const chart = Chart.getChart('baseChart');
+  resetZoomData() {
+    let chart = Chart.getChart('baseChart');
     chart?.resetZoom();
     chart?.update();
     this.getMaxDateFromLayers();
@@ -80,34 +74,27 @@ export class RangeSelectorComponent {
         this.maxDate = event.value;
       }
     }
-    this.updateChart();
   }
 
   getMaxDateFromLayers() {
     let data: any[] = [];
     if (this.layers) {
       this.layers.forEach((layersData) => {
-        data.push(layersData.datasets[0].data)
-      })
+        data.push(layersData.datasets[0].data);
+      });
       let sortedData: any[] = [];
       for (let item of data) {
-        let xcordinates = item.map((el: any) => el.x)
-        sortedData = sortedData.concat(xcordinates)
+        let xcordinates = item.map((el: any) => el.x);
+        xcordinates = xcordinates.filter(function( element:any ) {
+          return !Number.isNaN(element);
+       });
+        sortedData = sortedData.concat(xcordinates);
       }
       sortedData = sortedData.sort((x: any, y: any) => {
         return x - y;
-      })
+      });
       this.maxDate = new Date(sortedData[sortedData.length - 1]);
-      this.minDate = new Date(sortedData[0])
+      this.minDate = new Date(sortedData[0]);
     }
   }
-
-  calculateMonthDiff(minDateValue: Date, maxDateValue: Date) {
-    let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
-    months -= minDateValue.getMonth();
-    months += maxDateValue.getMonth();
-    months <= 0 ? 0 : months;
-    return months;
-  }
-
 }

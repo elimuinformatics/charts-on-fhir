@@ -68,13 +68,11 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
             },
           ],
         })),
-      scales: {
-        timeline: this.timeScaleOptions,
-        [scaleName]: merge({}, this.linearScaleOptions, {
-          title: { text: scaleName },
-          stackWeight: resource.component.length,
-        }),
-      },
+      scale: merge({}, this.linearScaleOptions, {
+        id: scaleName,
+        title: { text: scaleName },
+        stackWeight: resource.component.length,
+      }),
       annotations: resource.component.flatMap(
         (component) =>
           component.referenceRange?.map((range) =>

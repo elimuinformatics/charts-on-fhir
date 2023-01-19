@@ -2,15 +2,17 @@
  * Public API Surface of ngx-charts-on-fhir
  */
 
-export * from './lib/analysis-cards/analysis-card/analysis-card.component';
-export * from './lib/analysis-cards/analysis-cards.module';
-export * from './lib/analysis-cards/statistics/statistics.component';
+export * from './lib/fhir-chart-summary/fhir-chart-summary-card/fhir-chart-summary-card.component';
 export * from './lib/fhir-chart/fhir-chart.component';
 export * from './lib/fhir-chart/fhir-chart.module';
 export * from './lib/fhir-chart/medication-scale';
 export * from './lib/fhir-chart/scale-stack-divider-plugin';
 export * from './lib/fhir-chart-summary/fhir-chart-summary/fhir-chart-summary.component';
 export * from './lib/fhir-chart-summary/fhir-chart-summary.module';
+export * from './lib/fhir-chart-summary/statistics.service';
+export * from './lib/fhir-chart-summary/summary.service';
+export * from './lib/dynamic-table/dynamic-table.component';
+export * from './lib/dynamic-table/dynamic-table.module';
 export * from './lib/fhir-data/fhir-data.service';
 export * from './lib/data-layer-browser/data-layer-browser.module';
 export * from './lib/data-layer-browser/data-layer-browser.component';

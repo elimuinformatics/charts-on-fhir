@@ -89,23 +89,6 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
-    it('should return a layer with a timeline scale', () => {
-      const observation: ComponentObservation = {
-        resourceType: 'Observation',
-        status: 'final',
-        code: { text: 'text' },
-        effectiveDateTime: new Date().toISOString(),
-        component: [
-          {
-            code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
-          },
-        ],
-      };
-      const mapper = new ComponentObservationMapper({ type: 'time' }, {}, {});
-      expect(mapper.map(observation).scales?.['timeline']).toEqual({ type: 'time' });
-    });
-
     it('should map valueQuantity.unit to the title of a linear scale', () => {
       const observation: ComponentObservation = {
         resourceType: 'Observation',
@@ -120,8 +103,9 @@ describe('ComponentObservationMapper', () => {
         ],
       };
       const mapper = new ComponentObservationMapper({}, { type: 'linear' }, {});
-      expect(mapper.map(observation).scales?.['text (unit)']).toEqual(
+      expect(mapper.map(observation).scale).toEqual(
         jasmine.objectContaining({
+          id: 'text (unit)',
           type: 'linear',
           title: { text: 'text (unit)' },
         })
