@@ -15,4 +15,4 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY nginx.conf /etc/nginx/
 ARG project
 COPY --from=build /home/node/dist/${project} /usr/share/nginx/html
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx"]
