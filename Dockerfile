@@ -1,3 +1,4 @@
+### STAGE 1: Build ###
 FROM node:18.13.0-alpine AS build
 USER node
 WORKDIR /home/node
