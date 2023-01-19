@@ -17,8 +17,8 @@ interface LayerRange {
 })
 export class RangeSelectorComponent {
   layers?: DataLayer[];
-  maxDate: Date | string;
-  minDate: Date | string;
+  maxDate: Date;
+  minDate: Date;
   layerRange: LayerRange = { min: new Date(), max: new Date() }
 
 
@@ -97,7 +97,9 @@ export class RangeSelectorComponent {
     let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
     months -= minDateValue.getMonth();
     months += maxDateValue.getMonth();
-    if (months) return months;
+    if (months) {
+      return months;
+    }
     return 0;
   }
 

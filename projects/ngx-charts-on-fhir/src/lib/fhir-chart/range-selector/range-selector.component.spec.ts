@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
-import { EMPTY, of } from 'rxjs';
+import { of } from 'rxjs';
 import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -13,6 +13,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
 
 
 const mockLayerManager = {
@@ -173,6 +174,15 @@ describe('RangeSelectorComponent', () => {
     const componentMaxdate = new Date(component.layerRange.max).getTime()
     expect(componentMaxdate).toEqual(component.layers?.[0].datasets[0].data[1].x as number);
     expect(componentMindate).toEqual(component.layers?.[2].datasets[0].data[1].x as number);
+  })
+
+  it('should check month difference between two dates', async () => {
+    const componentMaxdate = new Date();
+    const componentMindate = new Date();
+    const monthCount = 1;
+    componentMindate.setMonth(componentMindate.getMonth() - monthCount);
+    let months = component.calculateMonthDiff(componentMindate, componentMaxdate)
+    expect(months).toEqual(monthCount)
   })
 
 });
