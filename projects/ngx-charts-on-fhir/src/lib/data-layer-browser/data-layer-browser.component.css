@@ -2,7 +2,6 @@
   display: flex;
   flex-flow: column;
   height: 100vh;
-  padding-left: 2vh;
 }
 .controls {
   flex: 0 1 auto;
