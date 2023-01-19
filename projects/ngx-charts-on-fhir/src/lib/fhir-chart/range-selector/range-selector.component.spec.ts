@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
@@ -10,7 +10,6 @@ import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
@@ -111,7 +110,7 @@ describe('RangeSelectorComponent', () => {
 
 
   it('should calculate proper 1 month ago date from max layer date', async () => {
-    let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='onemonth']" }));
+    let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 mo']" }));
     await ButtonInputGroup.check();
     const expectedMinDate = new Date(component.maxDate);
     expectedMinDate.setMonth(new Date(component.maxDate).getMonth() - 1);
@@ -119,7 +118,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 3 month ago date from max layer date', async () => {
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='threemonth']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date(component.maxDate);
     expectedMinDate.setMonth(new Date(component.maxDate).getMonth() - 3);
@@ -127,7 +126,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 6 month ago date from max layer date', async () => {
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='sixmonth']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date(component.maxDate);
     expectedMinDate.setMonth(new Date(component.maxDate).getMonth() - 6);
@@ -135,7 +134,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 12 month ago date from max layer date', async () => {
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='oneyear']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date(component.maxDate);
     expectedMinDate.setMonth(new Date(component.maxDate).getMonth() - 12);
@@ -144,11 +143,12 @@ describe('RangeSelectorComponent', () => {
 
 
   it('should reset a chart when click on all button', async () => {
-    spyOn(component, 'resetZoomData');
+    spyOn(component, 'resetZoomChart');
+    component.resetZoomChart()
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='resetzoom']" }));
     await ButtonInput.check();
     fixture.whenStable().then(() => {
-      expect(component.resetZoomData).toHaveBeenCalled();
+      expect(component.resetZoomChart).toHaveBeenCalled();
     });
   });
 
@@ -168,11 +168,11 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should check maxDate and minDate', async () => {
-    component.getMaxDateFromLayers(component.layers)
-    const componentMindate = new Date(component.minDate).getTime()
-    const componentMaxdate = new Date(component.maxDate).getTime()
-      expect(componentMaxdate).toEqual(component.layers?.[0].datasets[0].data[1].x as number);
-      expect(componentMindate).toEqual(component.layers?.[2].datasets[0].data[1].x as number);
+    component.getLayerRangeFromLayers()
+    const componentMindate = new Date(component.layerRange.min).getTime()
+    const componentMaxdate = new Date(component.layerRange.max).getTime()
+    expect(componentMaxdate).toEqual(component.layers?.[0].datasets[0].data[1].x as number);
+    expect(componentMindate).toEqual(component.layers?.[2].datasets[0].data[1].x as number);
   })
 
 });
