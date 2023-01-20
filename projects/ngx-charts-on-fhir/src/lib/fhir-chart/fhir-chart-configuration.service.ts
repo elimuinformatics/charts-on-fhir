@@ -1,8 +1,8 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart } from 'chart.js';
+import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
 import produce from 'immer';
 import { isNumber, mapValues, merge } from 'lodash-es';
-import { map, ReplaySubject, scan, throttleTime } from 'rxjs';
+import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
@@ -34,19 +34,31 @@ export class FhirChartConfigurationService {
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
+  private config: TimelineConfiguration | null = null;
   chartConfig$ = this.layerManager.selectedLayers$.pipe(
     map((layers) => this.mergeLayers(layers)),
-    scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration())
+    scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
+    tap((config) => {
+      this.config = config;
+    })
   );
 
+  private lockZoomRange = false;
+
   setTimelineRange({ min, max }: NumberRange) {
+    this.lockZoomRange = true;
     this.timeline.min = min;
     this.timeline.max = max;
   }
 
-  resetTimelineRange() {
-    this.timeline.min = undefined;
-    this.timeline.max = undefined;
+  resetTimelineRange(datasets?: Dataset[]) {
+    this.lockZoomRange = false;
+    datasets = datasets ?? this.config?.data.datasets;
+    if (datasets) {
+      const values = datasets.flatMap((dataset) => dataset.data.map((point) => point.x).filter((x) => !Number.isNaN(x)));
+      this.timeline.min = Math.min(...values);
+      this.timeline.max = Math.max(...values);
+    }
   }
 
   mergeLayers(layers: ManagedDataLayer[]): MergedDataLayer {
@@ -68,6 +80,9 @@ export class FhirChartConfigurationService {
 
   /** Build a chart configuration object to display the given datasets, scales, and annotations */
   buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
+    if (!this.lockZoomRange && datasets.length > 0) {
+      this.resetTimelineRange(datasets);
+    }
     return {
       type: 'line',
       data: {
@@ -82,19 +97,13 @@ export class FhirChartConfigurationService {
           annotation: { annotations },
           zoom: {
             zoom: {
-              onZoom: ({ chart }) => {
-                const { min, max } = chart.scales['timeline'];
-                console.log('onZoomComplete', min, max);
-                this.timeline.min = min;
-                this.timeline.max = max;
+              onZoomComplete: ({ chart }) => {
+                this.setTimelineRange(chart.scales['timeline']);
               },
             },
             pan: {
-              onPan: ({ chart }) => {
-                const { min, max } = chart.scales['timeline'];
-                console.log('onPanComplete', min, max);
-                this.timeline.min = min;
-                this.timeline.max = max;
+              onPanComplete: ({ chart }) => {
+                this.setTimelineRange(chart.scales['timeline']);
               },
             },
           },
