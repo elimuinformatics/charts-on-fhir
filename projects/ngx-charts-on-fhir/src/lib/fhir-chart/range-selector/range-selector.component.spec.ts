@@ -73,11 +73,7 @@ const mockConfigServiceManager = {
   timelineRange$: of({
     min: 1578330227000,
     max: 1650906227000
-  }),
-  remove() { },
-  update() { },
-  enable() { },
-  move() { },
+  })
 };
 
 
