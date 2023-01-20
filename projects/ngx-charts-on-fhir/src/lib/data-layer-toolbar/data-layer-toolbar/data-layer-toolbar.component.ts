@@ -10,6 +10,8 @@ export class DataLayerToolbarComponent implements OnChanges {
   @Input() active: string | null = null;
   @Output() activeChange = new EventEmitter<string | null>();
 
+  @Input() showAddDataLayer!: boolean;
+
   constructor(public layerManager: DataLayerManagerService) {}
 
   ngOnChanges(): void {

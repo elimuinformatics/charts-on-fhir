@@ -1,5 +1,5 @@
 <div class="layout-toolbar">
-  <data-layer-toolbar-button
+  <data-layer-toolbar-button *ngIf="showAddDataLayer"
     [active]="active === 'browser'"
     [badge]="(layerManager.availableLayers$ | async)?.length"
     icon="add"
