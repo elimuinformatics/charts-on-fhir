@@ -7,14 +7,12 @@ import { DataLayer, DataLayerManagerService } from 'ngx-charts-on-fhir';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, AfterViewChecked {
+export class AppComponent implements OnInit {
   showAddDataLayer: boolean = false;
   layers: any[] = [];
 
-  @ViewChild('sidenav') sidenav!: MatSidenav; 
 
   constructor(readonly layerManager: DataLayerManagerService) { }
-
 
   ngOnInit(): void {
     this.layerManager.retrieveAll();
@@ -22,14 +20,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.layerManager.availableLayers$.subscribe((layers) => {
       layers.map(layer => this.layerManager.select(layer.id))
     });
-    
-  }
-
-  ngAfterViewChecked(): void {
-    this.sidenav.close();
   }
  
-  sidenavPanel: string | null = 'options';
+  sidenavPanel: string | null = null;
   onToolbarChange(sidenav: MatSidenav, panel: string | null) {
     if (panel) {
       this.sidenavPanel = panel;
