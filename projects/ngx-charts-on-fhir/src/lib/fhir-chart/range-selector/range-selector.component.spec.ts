@@ -69,6 +69,17 @@ const mockLayerManager = {
   move() { },
 };
 
+const mockConfigServiceManager = {
+  timelineRange$: of({
+    min: 1578330227000,
+    max: 1650906227000
+  }),
+  remove() { },
+  update() { },
+  enable() { },
+  move() { },
+};
+
 
 describe('RangeSelectorComponent', () => {
   let component: RangeSelectorComponent;
@@ -83,6 +94,7 @@ describe('RangeSelectorComponent', () => {
       declarations: [RangeSelectorComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: mockLayerManager },
+        { provide: FhirChartConfigurationService, useValue: mockConfigServiceManager }
       ]
     }).compileComponents();
 
@@ -181,8 +193,17 @@ describe('RangeSelectorComponent', () => {
     const componentMindate = new Date();
     const monthCount = 1;
     componentMindate.setMonth(componentMindate.getMonth() - monthCount);
-    let months = component.calculateMonthDiff(componentMindate, componentMaxdate)
+    const months = component.calculateMonthDiff(componentMindate, componentMaxdate)
     expect(months).toEqual(monthCount)
+  })
+
+  it('should subscribe timelineRange when the component initializes and set minDate and maxDate', async () => {
+    mockConfigServiceManager.timelineRange$.subscribe((result: any) => {
+      expect(component.minDate).toEqual(new Date(result.min))
+      expect(component.maxDate).toEqual(new Date(result.max))
+      const months = component.calculateMonthDiff(new Date(result.min), new Date(result.max))
+      expect(component.selectedButton).toEqual(months || true)
+    })
   })
 
 });
