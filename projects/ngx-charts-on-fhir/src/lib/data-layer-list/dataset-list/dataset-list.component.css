@@ -7,7 +7,7 @@ mat-panel-title {
   white-space: nowrap;
 }
 mat-checkbox {
-  margin-right: 8px;
+  margin-right: 2px;
 }
 mat-title{
   overflow: hidden;

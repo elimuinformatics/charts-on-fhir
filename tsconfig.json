@@ -12,7 +12,9 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
-      "ngx-charts-on-fhir": ["dist/ngx-charts-on-fhir"]
+      "ngx-charts-on-fhir": [
+        "dist/ngx-charts-on-fhir"
+      ]
     },
     "declaration": false,
     "downlevelIteration": true,
@@ -20,9 +22,13 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
-    "lib": ["es2020", "dom"]
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
