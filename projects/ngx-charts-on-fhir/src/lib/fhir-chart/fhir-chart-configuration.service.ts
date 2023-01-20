@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
+import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart } from 'chart.js';
 import produce from 'immer';
 import { isNumber, mapValues, merge } from 'lodash-es';
 import { map, ReplaySubject, scan, throttleTime } from 'rxjs';
@@ -21,14 +21,16 @@ type MergedDataLayer = {
   providedIn: 'root',
 })
 export class FhirChartConfigurationService {
-  constructor(private layerManager: DataLayerManagerService, @Inject(TIME_SCALE_OPTIONS) timeScaleOptions: ScaleOptions<'time'>, private ngZone: NgZone) {
-    this.timeline = {
-      ...timeScaleOptions,
-      afterDataLimits: ({ max, min }) => this.ngZone.run(() => this.timelineRangeSubject.next({ max, min })),
-    };
-  }
+  constructor(
+    private layerManager: DataLayerManagerService,
+    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
+    private ngZone: NgZone
+  ) {}
 
-  private timeline: ScaleOptions<'time'>;
+  private timeline: ScaleOptions<'time'> = {
+    ...this.timeScaleOptions,
+    afterDataLimits: (axis) => this.ngZone.run(() => this.timelineRangeSubject.next({ max: axis.max, min: axis.min })),
+  };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
@@ -36,6 +38,16 @@ export class FhirChartConfigurationService {
     map((layers) => this.mergeLayers(layers)),
     scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration())
   );
+
+  setTimelineRange({ min, max }: NumberRange) {
+    this.timeline.min = min;
+    this.timeline.max = max;
+  }
+
+  resetTimelineRange() {
+    this.timeline.min = undefined;
+    this.timeline.max = undefined;
+  }
 
   mergeLayers(layers: ManagedDataLayer[]): MergedDataLayer {
     layers = arrangeScales(layers);
@@ -68,6 +80,24 @@ export class FhirChartConfigurationService {
         },
         plugins: {
           annotation: { annotations },
+          zoom: {
+            zoom: {
+              onZoom: ({ chart }) => {
+                const { min, max } = chart.scales['timeline'];
+                console.log('onZoomComplete', min, max);
+                this.timeline.min = min;
+                this.timeline.max = max;
+              },
+            },
+            pan: {
+              onPan: ({ chart }) => {
+                const { min, max } = chart.scales['timeline'];
+                console.log('onPanComplete', min, max);
+                this.timeline.min = min;
+                this.timeline.max = max;
+              },
+            },
+          },
           legend: {
             labels: {
               // hide legend labels for medications

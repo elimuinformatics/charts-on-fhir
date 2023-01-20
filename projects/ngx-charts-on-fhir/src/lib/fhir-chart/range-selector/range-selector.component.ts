@@ -38,11 +38,14 @@ export class RangeSelectorComponent {
       this.maxDate = new Date(this.maxDate);
     }
     let chart = Chart.getChart('baseChart');
-    chart?.zoomScale('timeline', { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() }, 'zoom');
+    const range = { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() };
+    this.configService.setTimelineRange(range);
+    chart?.zoomScale('timeline', range, 'zoom');
     chart?.update();
   }
   resetZoomData() {
     let chart = Chart.getChart('baseChart');
+    this.configService.resetTimelineRange();
     chart?.resetZoom();
     chart?.update();
     this.getMaxDateFromLayers(this.layers);
