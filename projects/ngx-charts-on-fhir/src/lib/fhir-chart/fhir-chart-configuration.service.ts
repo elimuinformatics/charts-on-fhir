@@ -1,12 +1,12 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
 import produce from 'immer';
-import { mapValues, merge } from 'lodash-es';
+import { isNumber, mapValues, merge } from 'lodash-es';
 import { map, ReplaySubject, scan, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, NumberRange } from '../utils';
+import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, isValidScatterDataPoint, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -39,6 +39,7 @@ export class FhirChartConfigurationService {
 
   mergeLayers(layers: ManagedDataLayer[]): MergedDataLayer {
     layers = arrangeScales(layers);
+    layers = setScaleBounds(layers);
     const enabledLayers = layers.filter((layer) => layer.enabled);
     const datasets = enabledLayers.flatMap((layer) => layer.datasets).filter((dataset) => !dataset.hidden);
     const scales = Object.assign({}, ...enabledLayers.map((layer) => ({ [layer.scale.id]: layer.scale })));
@@ -111,3 +112,23 @@ const arrangeScales = produce((layers: ManagedDataLayer[]) => {
 function isStackedScale(scale: ScaleOptions | undefined): scale is CartesianScaleOptions {
   return !!(scale && (scale as CartesianScaleOptions).stack);
 }
+
+/** Set the min/max for each scale based on the min/max values of the datasets and annotations.
+ * This prevents the scale ticks from changing when zooming/panning the chart. */
+const setScaleBounds = produce((layers: ManagedDataLayer[]) => {
+  const padding = 0.05; // extra space to add beyond min/max values (% of scale height)
+  for (let layer of layers) {
+    const values = layer.datasets.flatMap((dataset) => dataset.data.filter(isValidScatterDataPoint).map((point) => point.y));
+    if (layer.annotations) {
+      values.push(...layer.annotations.flatMap((anno) => [anno.yMin, anno.yMax]).filter(isNumber));
+    }
+    if (values.length > 0) {
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const base = max === min ? min : max - min;
+      const pad = base * padding;
+      layer.scale.min = min - pad;
+      layer.scale.max = max + pad;
+    }
+  }
+});

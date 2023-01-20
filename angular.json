@@ -151,6 +151,106 @@
           }
         }
       }
+    },
+    "cardiovascular-health": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/cardiovascular-health",
+      "sourceRoot": "projects/cardiovascular-health/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/cardiovascular-health",
+            "index": "projects/cardiovascular-health/src/index.html",
+            "main": "projects/cardiovascular-health/src/main.ts",
+            "polyfills": "projects/cardiovascular-health/src/polyfills.ts",
+            "tsConfig": "projects/cardiovascular-health/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/cardiovascular-health/src/favicon.ico",
+              "projects/cardiovascular-health/src/assets"
+            ],
+            "styles": [
+              "projects/cardiovascular-health/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/cardiovascular-health/src/environments/environment.ts",
+                  "with": "projects/cardiovascular-health/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "cardiovascular-health:build:production"
+            },
+            "development": {
+              "browserTarget": "cardiovascular-health:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "cardiovascular-health:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/cardiovascular-health/src/test.ts",
+            "polyfills": "projects/cardiovascular-health/src/polyfills.ts",
+            "tsConfig": "projects/cardiovascular-health/tsconfig.spec.json",
+            "karmaConfig": "projects/cardiovascular-health/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/cardiovascular-health/src/favicon.ico",
+              "projects/cardiovascular-health/src/assets"
+            ],
+            "styles": [
+              "projects/cardiovascular-health/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
     }
   }
 }
