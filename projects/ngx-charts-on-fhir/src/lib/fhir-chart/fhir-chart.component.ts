@@ -59,6 +59,9 @@ export class FhirChartComponent implements OnInit {
     // prevents the tick labels of stacked charts from overlapping
     Chart.defaults.scales.linear.offset = true;
 
+    // don't display min/max as extra ticks
+    Chart.defaults.scales.linear.ticks.includeBounds = false;
+
     // disable some distracting animations
     Chart.defaults.plugins.tooltip.animation.duration = 0;
     Chart.defaults.plugins.annotation.animations = {

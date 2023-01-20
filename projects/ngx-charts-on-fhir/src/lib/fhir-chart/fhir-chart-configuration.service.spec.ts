@@ -1,8 +1,8 @@
 import { NgZone } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
 import { hot, getTestScheduler } from 'jasmine-marbles';
 import { ManagedDataLayer } from '../data-layer/data-layer';
 import { FhirChartConfigurationService, TimelineConfiguration } from './fhir-chart-configuration.service';
-
 
 describe('FhirChartConfigurationService', () => {
   const timeScaleOptions = {
@@ -114,6 +114,47 @@ describe('FhirChartConfigurationService', () => {
               scales: jasmine.objectContaining({
                 one: { id: 'one', title: { text: 'one' } },
                 two: { id: 'two', title: { text: 'two' } },
+              }),
+            },
+          },
+        })
+      );
+    });
+
+    it('should set min/max for scales', () => {
+      const a: ManagedDataLayer[] = [
+        {
+          name: 'a1',
+          id: 'a1',
+          enabled: true,
+          datasets: [
+            {
+              label: 'one',
+              data: [
+                { x: 1, y: 1 },
+                { x: 2, y: 2 },
+              ],
+            },
+          ],
+          scale: { id: 'one', title: { text: 'one' } },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: hot('a', { a }) };
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      expect(configService.chartConfig$).toBeObservable(
+        hot('x', {
+          x: {
+            ...emptyConfig,
+            data: jasmine.anything(),
+            options: {
+              ...emptyConfig.options,
+              scales: jasmine.objectContaining({
+                one: {
+                  id: 'one',
+                  title: { text: 'one' },
+                  min: 0.95,
+                  max: 2.05
+                },
               }),
             },
           },
@@ -251,9 +292,9 @@ describe('FhirChartConfigurationService', () => {
     });
   });
 
-  xdescribe('timelineRange$', () => {
-    it('should emit when timeline scale limits change', () => {
-      const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
+  describe('timelineRange$', () => {
+    it('should emit when timeline scale limits change', waitForAsync(() => {
+      const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
@@ -264,10 +305,10 @@ describe('FhirChartConfigurationService', () => {
           x: { min: 2, max: 3 },
         })
       );
-    });
+    }));
 
-    it('should run afterDataLimits callback within NgZone', () => {
-      const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
+    it('should run afterDataLimits callback within NgZone', waitForAsync(() => {
+      const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
@@ -275,6 +316,6 @@ describe('FhirChartConfigurationService', () => {
       getTestScheduler().schedule(() => (config.options?.scales?.['timeline'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       getTestScheduler().flush();
       expect(ngZone.run).toHaveBeenCalledTimes(1);
-    });
+    }));
   });
 });
