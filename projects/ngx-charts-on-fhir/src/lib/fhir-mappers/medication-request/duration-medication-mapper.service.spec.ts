@@ -537,5 +537,28 @@ describe('DurationMedicationMapper', () => {
       const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
       expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
     });
+
+    it('should include an authoredOn property on each data point', () => {
+      const medication: BoundsDurationMedication = {
+        ...basicMedication,
+        authoredOn: '2023-01-01T00:00:00Z',
+        dosageInstruction: [
+          {
+            timing: {
+              repeat: {
+                boundsDuration: {
+                  code: 'd',
+                  value: 30,
+                },
+              },
+            },
+          },
+        ],
+      };
+      const expectedDate = new Date(medication.authoredOn).getTime();
+      expect(mapper.map(medication).datasets[0].data[0].authoredOn).toEqual(expectedDate);
+      expect(mapper.map(medication).datasets[0].data[1].authoredOn).toEqual(expectedDate);
+      expect(mapper.map(medication).datasets[0].data[2].authoredOn).toEqual(expectedDate);
+    });
   });
 });

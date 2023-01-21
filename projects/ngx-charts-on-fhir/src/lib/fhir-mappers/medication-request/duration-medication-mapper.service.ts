@@ -1,10 +1,10 @@
 import { Injectable, forwardRef } from '@angular/core';
 import { Dosage, MedicationRequest } from 'fhir/r4';
-import { DataLayer, TimelineDataPoint } from '../../data-layer/data-layer';
+import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../../fhir-converter/multi-mapper.service';
 import { MILLISECONDS_PER_DAY } from '../../utils';
 import { FhirMappersModule } from '../fhir-mappers.module';
-import { SimpleMedication, isMedication, SimpleMedicationMapper } from './simple-medication-mapper.service';
+import { SimpleMedication, isMedication, SimpleMedicationMapper, MedicationDataPoint } from './simple-medication-mapper.service';
 
 export type BoundsDurationMedication = {
   dosageInstruction: [
@@ -200,8 +200,8 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
 export class DurationMedicationMapper implements Mapper<DurationMedication> {
   constructor(private baseMapper: SimpleMedicationMapper) {}
   canMap = isDurationMedication;
-  map(resource: DurationMedication): DataLayer {
-    const layer = this.baseMapper.map(resource) as DataLayer<'line', TimelineDataPoint[]>;
+  map(resource: DurationMedication): DataLayer<'line', MedicationDataPoint[]> {
+    const layer = this.baseMapper.map(resource) as DataLayer<'line', MedicationDataPoint[]>;
     layer.datasets = layer.datasets.map((dataset) => ({
       ...dataset,
       label: dataset.label + ' (duration)',
@@ -215,6 +215,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
           // Add second datapoint for the end of the computed duration
           x: new Date(resource.authoredOn).getTime() + computeDuration(resource),
           y: dataset.data[0].y,
+          authoredOn: new Date(resource.authoredOn).getTime(),
         },
         {
           // Adding a NaN datapoint has 2 effects:
@@ -222,6 +223,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
           // 2. The sort() in DataLayerMergeService will bail out and leave this dataset unsorted
           x: NaN,
           y: dataset.data[0].y,
+          authoredOn: new Date(resource.authoredOn).getTime(),
         },
       ],
     }));
