@@ -17,7 +17,7 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   dataSource = new MatTableDataSource<DataLayer>();
-  displayedColumns = ['name', 'category', 'datapoints', 'add'];
+  displayedColumns = ['add', 'name', 'category', 'datapoints'];
   filterControl = new FormControl('');
 
   @ViewChild(MatSort) sort?: MatSort;
