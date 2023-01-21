@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use './lib/data-layer-toolbar/data-layer-toolbar/data-layer-toolbar-theme' as toolbar;
+@use './lib/data-layer-toolbar/data-layer-toolbar-theme' as toolbar;
 
 @include mat.core();
 
