@@ -6,3 +6,6 @@ coverage
 .vscode
 .dockerignore
 Dockerfile
+
+# this file will be generated during container startup
+**/assets/env.js

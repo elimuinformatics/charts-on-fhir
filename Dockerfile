@@ -15,4 +15,5 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY nginx.conf /etc/nginx/
 ARG project
 COPY --from=build /home/node/dist/${project} /usr/share/nginx/html
-CMD ["nginx"]
+# envsubst is used to replace environment variables in env.js when the container is started
+CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx"]
