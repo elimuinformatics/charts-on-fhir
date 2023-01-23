@@ -17,16 +17,16 @@ import { Component, forwardRef } from '@angular/core';
 })
 class MockColorPickerComponent implements ControlValueAccessor {
   writeValue(obj: any): void {
-    / intentionally empty stub /
+    /* intentionally empty stub */
   }
   registerOnChange(fn: any): void {
-    / intentionally empty stub /
+    /* intentionally empty stub */
   }
   registerOnTouched(fn: any): void {
-    / intentionally empty stub /
+    /* intentionally empty stub */
   }
   setDisabledState?(isDisabled: boolean): void {
-    / intentionally empty stub /
+    /* intentionally empty stub */
   }
 }
 
