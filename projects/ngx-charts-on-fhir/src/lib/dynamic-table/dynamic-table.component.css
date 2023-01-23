@@ -2,8 +2,8 @@ table {
   width: 100%;
 }
 
-td.mat-cell,
-th.mat-header-cell {
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
   text-align: end;
   justify-content: flex-end;
   white-space: nowrap;
@@ -11,8 +11,8 @@ th.mat-header-cell {
   padding-left: 8px;
 }
 
-td.mat-cell:first-child,
-th.mat-header-cell:first-child {
+td.mat-mdc-cell:first-child,
+th.mat-mdc-header-cell:first-child {
   text-align: left;
   justify-content: flex-start;
 }

@@ -1,6 +1,11 @@
 {
   "name": "ngx-charts-on-fhir",
   "version": "0.0.1",
+  "exports": {
+    "./themes/default.scss": {
+      "sass": "./themes/default.scss"
+    }
+  },
   "peerDependencies": {
     "@angular/common": "^15.1.0",
     "@angular/core": "^15.1.0"
