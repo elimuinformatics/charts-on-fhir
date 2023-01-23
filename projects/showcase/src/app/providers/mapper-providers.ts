@@ -1,5 +1,11 @@
-import { ComponentObservationMapper, Mapper, SimpleObservationMapper, SimpleMedicationMapper, DurationMedicationMapper } from 'ngx-charts-on-fhir';
-import { BloodPressureMapper } from '../datasets/blood-pressure-mapper';
+import {
+  ComponentObservationMapper,
+  Mapper,
+  SimpleObservationMapper,
+  SimpleMedicationMapper,
+  DurationMedicationMapper,
+  BloodPressureMapper,
+} from 'ngx-charts-on-fhir';
 
 /**
  * Resource Mappers for FhirConverter, listed in priority order.

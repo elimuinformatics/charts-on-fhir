@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@angular/core';
 import { merge } from 'lodash-es';
 import { Coding, Observation } from 'fhir/r4';
 import {
-  ComponentObservation,
   ANNOTATION_OPTIONS,
   ChartAnnotation,
-  isComponentObservation,
-  DataLayer,
+  ComponentObservation,
   ComponentObservationMapper,
+  DataLayer,
+  isComponentObservation,
   Mapper,
-} from 'ngx-charts-on-fhir';
+} from '../../public-api';
 
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {
