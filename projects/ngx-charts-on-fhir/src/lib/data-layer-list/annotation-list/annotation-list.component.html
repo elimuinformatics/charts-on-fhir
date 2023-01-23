@@ -1,21 +1,16 @@
-<div class="scrolling-list">
-  <mat-accordion displayMode="flat" multi="true">
-    <mat-expansion-panel *ngFor="let annotation of _annotations; let i = index; trackBy: trackByIndex" expanded="true">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-checkbox
-            (click)="$event.stopPropagation()"
-            (change)="onCheckboxChange(i, $event)"
-            [checked]="annotation.display"
-            [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"
-            color="primary"
-            [id]="i + 'annotationcheckbox'"
-          ></mat-checkbox>
-          {{ annotation.label.content }}
-        </mat-panel-title>
-        <mat-panel-description> Annotation </mat-panel-description>
-      </mat-expansion-panel-header>
-      <annotation-options [annotation]="annotation" (annotationChange)="this.onAnnotationsChange(annotation, $event)"></annotation-options>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
+<mat-accordion displayMode="flat" multi="true">
+  <mat-expansion-panel *ngFor="let annotation of _annotations; let i = index; trackBy: trackByIndex" expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="onCheckboxChange(i, $event)"
+          [checked]="annotation.display"
+          [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"
+          color="primary" [id]="i + 'annotationcheckbox'"></mat-checkbox>
+        {{ annotation.label.content }}
+      </mat-panel-title>
+      <mat-panel-description> Annotation </mat-panel-description>
+    </mat-expansion-panel-header>
+    <annotation-options [annotation]="annotation"
+      (annotationChange)="this.onAnnotationsChange(annotation, $event)"></annotation-options>
+  </mat-expansion-panel>
+</mat-accordion>
