@@ -1,9 +1,13 @@
 .range-selector {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .range-selector mat-button-toggle-group {
-    margin-top: 2px;
-  }
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.range-selector mat-button-toggle-group {
+  margin-top: 2px;
+}
+
+.range-selector mat-form-field {
+  width: 140px;
+}

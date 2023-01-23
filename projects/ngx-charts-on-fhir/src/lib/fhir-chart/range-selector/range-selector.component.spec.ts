@@ -194,12 +194,11 @@ describe('RangeSelectorComponent', () => {
   })
 
   it('should subscribe timelineRange when the component initializes and set minDate and maxDate', async () => {
-    mockConfigServiceManager.timelineRange$.subscribe((result: any) => {
-      expect(component.minDate).toEqual(new Date(result.min))
-      expect(component.maxDate).toEqual(new Date(result.max))
-      const months = component.calculateMonthDiff(new Date(result.min), new Date(result.max))
-      expect(component.selectedButton).toEqual(months || true)
-    })
+    const expectedMinDate = 1578330227000; // Jan 6, 2020
+    const expectedMaxDate = 1650906227000; // Apr 25, 2022
+    expect(component.minDate).toEqual(new Date(expectedMinDate))
+    expect(component.maxDate).toEqual(new Date(expectedMaxDate))
+    expect(component.selectedButton).toEqual(27)
   })
 
 });
