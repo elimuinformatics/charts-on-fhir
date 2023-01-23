@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     this.layerManager.retrieveAll();
 
     this.layerManager.availableLayers$.subscribe((layers) => {
-      layers.map((layer) => this.layerManager.select(layer.id))
+      layers.forEach((layer) => this.layerManager.select(layer.id))
     });
   }
 
