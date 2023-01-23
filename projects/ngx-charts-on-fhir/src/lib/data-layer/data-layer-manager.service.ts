@@ -6,9 +6,9 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { DataLayerModule } from './data-layer.module';
 import { zip } from 'lodash-es';
-import { NumberRange } from '../utils';
 
-/** A service for asynchronously retrieving DataLayers */
+
+/* A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
   abstract name: string;
   abstract retrieve: () => Observable<DataLayer>;

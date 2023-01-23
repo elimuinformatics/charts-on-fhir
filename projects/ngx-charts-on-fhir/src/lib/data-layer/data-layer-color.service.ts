@@ -1,6 +1,7 @@
 import { forwardRef, Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
 import { DataLayerModule } from './data-layer.module';
+import tinycolor from 'tinycolor2';
 
 export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
 
@@ -12,6 +13,7 @@ export class DataLayerColorService {
 
   private nextColorIndex = 0;
 
+
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
       if (!this.getColor(dataset)) {
@@ -22,22 +24,16 @@ export class DataLayerColorService {
     }
   }
 
-  setAnnotationColor(annotation: any, color?: string): void {
-    const line = annotation;
-    line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
-  }
-
   addTransparency(color: string | undefined): string | undefined {
-    if (typeof color === 'string' && !color.endsWith('33')) {
-      return color + '33';
-    }
-    return color;
+    const newcolor = tinycolor(color);  
+    newcolor.setAlpha(.5);
+    return newcolor.toString();
   }
 
   setColor(dataset: Dataset, color: string): void {
     const line = dataset as Dataset<'line'>;
     line.borderColor = color;
-    line.backgroundColor = color + '33'; // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
+    line.backgroundColor = this.addTransparency(color); // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
     line.pointBorderColor = color;
     line.pointBackgroundColor = color;
   }
@@ -50,7 +46,7 @@ export class DataLayerColorService {
     return undefined;
   }
 
-  /** build a CSS linear gradient that includes colors from all datasets in the layer */
+  //  build a CSS linear gradient that includes colors from all datasets in the layer
   getColorGradient(layer: DataLayer) {
     const percent = (i: number) => Math.floor((100 * i) / layer.datasets.length);
     const colors = layer.datasets.map(this.getColor);

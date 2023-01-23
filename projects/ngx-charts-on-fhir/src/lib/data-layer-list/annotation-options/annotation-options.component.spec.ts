@@ -17,16 +17,16 @@ import { Component, forwardRef } from '@angular/core';
 })
 class MockColorPickerComponent implements ControlValueAccessor {
   writeValue(obj: any): void {
-    /* intentionally empty stub */
+    / intentionally empty stub /
   }
   registerOnChange(fn: any): void {
-    /* intentionally empty stub */
+    / intentionally empty stub /
   }
   registerOnTouched(fn: any): void {
-    /* intentionally empty stub */
+    / intentionally empty stub /
   }
   setDisabledState?(isDisabled: boolean): void {
-    /* intentionally empty stub */
+    / intentionally empty stub /
   }
 }
 
@@ -95,7 +95,7 @@ describe('AnnotationOptionsComponent', () => {
 
   it('should emit annotation change event with updated annotations', async () => {
     let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF' };
-    let updatedAnnotation = { label: { content: 'Updated test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF33' };
+    let updatedAnnotation = { label: { content: 'Updated test' }, yMin: 100, yMax: 200, backgroundColor: 'rgba(255, 255, 255, 0.5)' };
     component.annotation = annotation;
     let emitted: any;
     component.annotationChange.subscribe((e: any) => {

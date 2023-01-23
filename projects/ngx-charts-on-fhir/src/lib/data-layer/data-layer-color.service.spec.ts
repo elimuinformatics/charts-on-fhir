@@ -27,10 +27,11 @@ describe('DataLayerColorService', () => {
       expect(setColorSpy).toHaveBeenCalled();
     }));
   });
+
   describe('addTransparency', () => {
     it('should add transparency for abritrary color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const color = '#ECF0F9';
-      expect(service.addTransparency(color)).toEqual('#ECF0F933');
+      expect(service.addTransparency(color)).toEqual('rgba(236, 240, 249, 0.5)');
     }));
   });
 
@@ -41,7 +42,6 @@ describe('DataLayerColorService', () => {
         yAxisID: 'mm[Hg]',
         data: [],
         borderColor: '#e41a1c',
-        backgroundColor: '#e41a1c33',
       };
       expect(service.getColor(dataset)).toEqual(dataset.borderColor);
     }));
@@ -52,14 +52,6 @@ describe('DataLayerColorService', () => {
       const dataset: any = { borderColor: '#e41a1c' };
       service.setColor(dataset, '#e41a1c');
       expect(dataset.borderColor).toEqual('#e41a1c');
-    }));
-  });
-
-  describe('setAnnotationColor', () => {
-    it('should set annotation color when setAnnotationColor function called', inject([DataLayerColorService], (service: DataLayerColorService) => {
-      const dataset: any = { backgroundColor: '#e41a1c33' };
-      service.setAnnotationColor(dataset, '#e41a1c');
-      expect(dataset.backgroundColor).toEqual('#e41a1c33');
     }));
   });
 });
