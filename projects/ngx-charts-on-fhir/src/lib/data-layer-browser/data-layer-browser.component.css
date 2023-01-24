@@ -9,6 +9,9 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+.filter {
+  width: 400px;
+}
 .scroll-container {
   flex: 1 1 auto;
   overflow-y: auto;
@@ -22,10 +25,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mat-column-datapoints,
-.mat-column-add {
+.mat-column-category {
+  width: 100px;
+}
+.mat-column-datapoints {
+  width: 48px;
   text-align: end;
-  justify-content: flex-end;
+}
+.mat-column-add {
+  text-align: center;
+  width: 48px;
 }
 .empty-message {
   padding: 16px;
