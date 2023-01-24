@@ -3,8 +3,8 @@ const boldPalette = ['#3969AC', '#E73F74', '#F2B701', '#80BA5A', '#E68310', '#00
 const vividPalette = ['#E58606', '#5D69B1', '#52BCA3', '#99C945', '#CC61B0', '#24796C', '#DAA51B', '#2F8AC4', '#764E9F', '#ED645A', '#CC3A8E', '#A5AA99'];
 
 // https://colorbrewer2.org/
-const brewerDarkPalette = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'];
-const brewerLightPalette = ['#8dd3c7', '#ffffb3', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9'];
+const brewerDarkPalette = ['#e83133', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff1a', '#a65628', '#f781bf', '#999999'];
+const brewerLightPalette = ['#8dd3c7', '#ffff80', '#bebada', '#fb8072', '#80b1d3', '#fdb462', '#b3de69', '#fccde5', '#d9d9d9'];
 const brewerPalette = [...brewerDarkPalette, ...brewerLightPalette];
 
 // custom palette generated with https://paletton.com/
