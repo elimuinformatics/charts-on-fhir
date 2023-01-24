@@ -2,7 +2,7 @@ import { Injectable, Inject, forwardRef } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
-import { DataLayer } from '../../data-layer/data-layer';
+import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
 import { Mapper } from '../../fhir-converter/multi-mapper.service';
 import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirMappersModule } from '../fhir-mappers.module';
@@ -18,6 +18,12 @@ export function isMedication(resource: MedicationRequest): resource is SimpleMed
   return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
 }
 
+export type MedicationDataPoint = {
+  x: number;
+  y: string;
+  authoredOn: number;
+};
+
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
 @Injectable({
   providedIn: forwardRef(() => FhirMappersModule),
@@ -28,7 +34,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
     @Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'medication'>
   ) {}
   canMap = isMedication;
-  map(resource: SimpleMedication): DataLayer {
+  map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     return {
       name: 'Medications',
       category: ['medication'],
@@ -42,6 +48,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
             {
               x: new Date(resource.authoredOn).getTime(),
               y: resource?.medicationCodeableConcept?.text,
+              authoredOn: new Date(resource.authoredOn).getTime(),
             },
           ],
         },

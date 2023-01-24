@@ -1,17 +1,14 @@
 <form [formGroup]="form">
   <color-picker formControlName="color"></color-picker>
-  <mat-button-toggle-group formControlName="type">
+  <mat-button-toggle-group formControlName="type" *ngIf=" this._dataset?.yAxisID != 'medications'">
     <mat-button-toggle value="line" aria-label="Line Chart">
       <mat-icon>show_chart</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle value="bar" aria-label="Bar Chart">
-      <mat-icon>bar_chart</mat-icon>
     </mat-button-toggle>
     <mat-button-toggle value="scatter" aria-label="Scatter Plot">
       <mat-icon>scatter_plot</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <section *ngIf="this.form.value.type === 'line'">
+  <section *ngIf="this.form.value.type === 'line'&& this._dataset?.yAxisID != 'medications' ">
     <h3>Line Chart Options</h3>
     <mat-slide-toggle formControlName="interpolation">Cubic interpolation</mat-slide-toggle>
     <mat-slide-toggle formControlName="fill">Fill area under line</mat-slide-toggle>

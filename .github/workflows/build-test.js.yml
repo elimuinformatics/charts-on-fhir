@@ -49,3 +49,14 @@ jobs:
           -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js
           -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
           
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: ${{ secrets.DEPLOY_HOOK_URL }}
+        method: 'POST'
+        

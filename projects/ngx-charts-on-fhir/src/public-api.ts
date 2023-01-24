@@ -11,6 +11,7 @@ export * from './lib/fhir-chart-summary/fhir-chart-summary/fhir-chart-summary.co
 export * from './lib/fhir-chart-summary/fhir-chart-summary.module';
 export * from './lib/fhir-chart-summary/statistics.service';
 export * from './lib/fhir-chart-summary/summary.service';
+export * from './lib/fhir-chart-summary/medication-summary.service';
 export * from './lib/dynamic-table/dynamic-table.component';
 export * from './lib/dynamic-table/dynamic-table.module';
 export * from './lib/fhir-data/fhir-data.service';
