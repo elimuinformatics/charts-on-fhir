@@ -47,8 +47,11 @@ const defaultMedicationScaleOptions: ScaleOptions<'medication'> = {
   ticks: {
     autoSkip: false,
     mirror: true,
-    labelOffset: -20,
+    labelOffset: -17,
   },
+  grid: {
+    offset: true
+  }
 } as const;
 
 export const ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Annotation Options', {
