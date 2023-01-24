@@ -17,4 +17,4 @@ COPY ./docker-entrypoint.sh /etc/nginx/
 ARG project
 COPY --from=build /home/node/dist/${project} /usr/share/nginx/html
 ENTRYPOINT ["/etc/nginx/docker-entrypoint.sh"]
-CMD ["/bin/sh", "-c", "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx"]
+CMD ["nginx"]
