@@ -68,6 +68,11 @@ router.render = (req, res) => {
 };
 
 server.use(middlewares);
+server.use(
+  jsonServer.rewriter({
+    "/*&patient=:patient": "/$1&subject.reference=:patient",
+  })
+);
 server.use(router);
 server.listen(3000, () => {
   console.log("JSON Server is running on http://localhost:3000");

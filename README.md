@@ -35,3 +35,15 @@ Run `ng build ngx-charts-on-fhir` to build the library. The build artifacts will
 ## Running unit tests
 
 Run `ng test ngx-charts-on-fhir` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running a Docker container
+
+Any of the sample applications in this workspace can be built as a self-contained Docker image that runs NGINX webserver.
+This uses a production build configuration suitable for deployment.
+The Dockerfile accepts a build-arg for the project name. To build an image for the showcase app:
+
+`docker build --build-arg project=showcase -t showcase .`
+
+To run the container on http://localhost:4200:
+
+`docker run -p 4200:80 showcase`

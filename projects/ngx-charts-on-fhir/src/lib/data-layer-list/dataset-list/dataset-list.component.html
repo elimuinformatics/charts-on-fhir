@@ -1,4 +1,3 @@
-<div class="scrolling-list">
   <mat-accordion displayMode="flat" multi="true">
     <mat-expansion-panel *ngFor="let dataset of datasetsReversed" expanded="true">
       <mat-expansion-panel-header>
@@ -19,4 +18,3 @@
       <dataset-options [dataset]="dataset" (datasetChange)="this.onDatasetOptionsChange(dataset, $event)"></dataset-options>
     </mat-expansion-panel>
   </mat-accordion>
-</div>
