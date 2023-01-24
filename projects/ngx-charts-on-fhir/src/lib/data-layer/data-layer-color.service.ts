@@ -26,14 +26,14 @@ export class DataLayerColorService {
 
   addTransparency(color: string | undefined): string | undefined {
     const newcolor = tinycolor(color);  
-    newcolor.setAlpha(.5);
+    newcolor.setAlpha(.2);
     return newcolor.toString();
   }
 
   setColor(dataset: Dataset, color: string): void {
     const line = dataset as Dataset<'line'>;
     line.borderColor = color;
-    line.backgroundColor = this.addTransparency(color); // temporary dirty hack to set opacity. assumes color is in 6-character hex format.
+    line.backgroundColor = this.addTransparency(color);
     line.pointBorderColor = color;
     line.pointBackgroundColor = color;
   }
@@ -46,7 +46,7 @@ export class DataLayerColorService {
     return undefined;
   }
 
-  //  build a CSS linear gradient that includes colors from all datasets in the layer
+  /* build a CSS linear gradient that includes colors from all datasets in the layer */
   getColorGradient(layer: DataLayer) {
     const percent = (i: number) => Math.floor((100 * i) / layer.datasets.length);
     const colors = layer.datasets.map(this.getColor);
