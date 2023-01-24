@@ -1,15 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { merge } from 'lodash-es';
 import { Coding, Observation } from 'fhir/r4';
-import {
-  ANNOTATION_OPTIONS,
-  ChartAnnotation,
-  ComponentObservation,
-  ComponentObservationMapper,
-  DataLayer,
-  isComponentObservation,
-  Mapper,
-} from '../../public-api';
+import { ComponentObservation, ComponentObservationMapper, isComponentObservation } from './component-observation-mapper.service';
+import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { ChartAnnotation } from '../../utils';
+import { DataLayer } from '../../data-layer/data-layer';
 
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {

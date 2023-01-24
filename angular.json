@@ -179,7 +179,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/cardiovascular-health/src/styles.scss"
+              "./dist/ngx-charts-on-fhir/themes/default.scss"
             ],
             "scripts": [
               {
@@ -226,14 +226,6 @@
                   "with": "projects/cardiovascular-health/src/environments/environment.logica-open.ts"
                 }
               ]
-            },
-            "mock": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/cardiovascular-health/src/environments/environment.ts",
-                  "with": "projects/cardiovascular-health/src/environments/environment.mock.ts"
-                }
-              ]
             }
           },
           "defaultConfiguration": "production"
@@ -249,9 +241,6 @@
             },
             "logica-open": {
               "browserTarget": "cardiovascular-health:build:development,logica-open"
-            },
-            "mock": {
-              "browserTarget": "cardiovascular-health:build:development,mock"
             }
           },
           "defaultConfiguration": "logica-open"
