@@ -44,7 +44,7 @@ The Dockerfile accepts a build-arg for the project name. To build an image for t
 
 `docker build --build-arg project=showcase -t showcase .`
 
-The app's SMART clientId should be provided by an environment variable when starting the container.
+The app's SMART clientId must be provided by an environment variable when starting the container.
 To run the container on http://localhost:4200:
 
 1. `export CLIENT_ID=client_id_that_is_registered_with_the_ehr`
