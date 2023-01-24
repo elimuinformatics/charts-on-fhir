@@ -31,7 +31,7 @@ describe('DataLayerColorService', () => {
   describe('addTransparency', () => {
     it('should add transparency for abritrary color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const color = '#ECF0F9';
-      expect(service.addTransparency(color)).toEqual('rgba(236, 240, 249, 0.5)');
+      expect(service.addTransparency(color)).toEqual('rgba(236, 240, 249, 0.2)');
     }));
   });
 
