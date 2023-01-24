@@ -2,7 +2,7 @@ import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
 import produce from 'immer';
 import { isNumber, mapValues, merge } from 'lodash-es';
-import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
+import { BehaviorSubject, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
@@ -35,6 +35,7 @@ export class FhirChartConfigurationService {
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
   private config: TimelineConfiguration | null = null;
+  configSubject = new BehaviorSubject<TimelineConfiguration>(this.buildConfiguration());
   chartConfig$ = this.layerManager.selectedLayers$.pipe(
     map((layers) => this.mergeLayers(layers)),
     scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
@@ -45,13 +46,13 @@ export class FhirChartConfigurationService {
 
   private lockZoomRange = false;
 
-  setTimelineRange({ min, max }: NumberRange) {
+  lockTimelineRange({ min, max }: NumberRange) {
     this.lockZoomRange = true;
     this.timeline.min = min;
     this.timeline.max = max;
   }
 
-  resetTimelineRange(datasets?: Dataset[]) {
+  unlockTimelineRange(datasets?: Dataset[]) {
     this.lockZoomRange = false;
     datasets = datasets ?? this.config?.data.datasets;
     if (datasets) {
@@ -81,7 +82,7 @@ export class FhirChartConfigurationService {
   /** Build a chart configuration object to display the given datasets, scales, and annotations */
   buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
     if (!this.lockZoomRange && datasets.length > 0) {
-      this.resetTimelineRange(datasets);
+      this.unlockTimelineRange(datasets);
     }
     return {
       type: 'line',
@@ -98,12 +99,12 @@ export class FhirChartConfigurationService {
           zoom: {
             zoom: {
               onZoomComplete: ({ chart }) => {
-                this.setTimelineRange(chart.scales['timeline']);
+                this.lockTimelineRange(chart.scales['timeline']);
               },
             },
             pan: {
               onPanComplete: ({ chart }) => {
-                this.setTimelineRange(chart.scales['timeline']);
+                this.lockTimelineRange(chart.scales['timeline']);
               },
             },
           },

@@ -6,8 +6,8 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
 
 interface LayerRange {
-  min: Date,
-  max: Date
+  min: Date;
+  max: Date;
 }
 
 @Component({
@@ -19,15 +19,14 @@ export class RangeSelectorComponent {
   layers?: DataLayer[];
   maxDate: Date;
   minDate: Date;
-  layerRange: LayerRange = { min: new Date(), max: new Date() }
-
+  layerRange: LayerRange = { min: new Date(), max: new Date() };
 
   rangeSelectorButtons = [
     { month: 1, value: '1 mo' },
     { month: 3, value: '3 mo' },
     { month: 6, value: '6 mo' },
     { month: 12, value: '1 y' },
-  ]
+  ];
   selectedButton: number | boolean = true;
 
   constructor(private layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {
@@ -42,14 +41,14 @@ export class RangeSelectorComponent {
       } else {
         this.selectedButton = months;
       }
-    })
+    });
   }
 
   ngOnInit(): void {
     this.layerManager.selectedLayers$.subscribe((layers) => {
       this.layers = layers;
       this.layerRange = this.getLayerRangeFromLayers();
-    })
+    });
   }
 
   updateRangeSelector(monthCount: number) {
@@ -59,16 +58,21 @@ export class RangeSelectorComponent {
       this.maxDate = new Date(this.maxDate);
     }
     let chart = Chart.getChart('baseChart');
-    const range = { min: new Date(this.minDate).getTime(), max: new Date(this.maxDate).getTime() };
-    this.configService.setTimelineRange(range);
-    chart?.zoomScale('timeline', range, 'zoom');
-    chart?.update();
+    if (chart) {
+      const range = {
+        min: new Date(this.minDate).getTime(),
+        max: new Date(this.maxDate).getTime(),
+      };
+      chart.zoomScale('timeline', range, 'zoom');
+      this.configService.lockTimelineRange(range);
+    }
   }
   resetZoomChart() {
     let chart = Chart.getChart('baseChart');
-    this.configService.resetTimelineRange();
-    chart?.resetZoom();
-    chart?.update();
+    if (chart) {
+      chart.resetZoom();
+      this.configService.unlockTimelineRange();
+    }
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
@@ -87,13 +91,13 @@ export class RangeSelectorComponent {
       data = this.layers.map((layersData) => layersData.datasets[0].data);
       let sortedData: any[] = [];
       for (let item of data) {
-        const xcordinates = item.map((el: any) => el.x)
-        sortedData = sortedData.concat(xcordinates)
+        const xcordinates = item.map((el: any) => el.x);
+        sortedData = sortedData.concat(xcordinates);
       }
-      sortedData = sortedData.sort((x: any, y: any) => x - y)
-      return { min: new Date(sortedData[0]), max: new Date(sortedData[sortedData.length - 1]) }
+      sortedData = sortedData.sort((x: any, y: any) => x - y);
+      return { min: new Date(sortedData[0]), max: new Date(sortedData[sortedData.length - 1]) };
     }
-    return { min: new Date(), max: new Date() }
+    return { min: new Date(), max: new Date() };
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
@@ -105,5 +109,4 @@ export class RangeSelectorComponent {
     }
     return 0;
   }
-
 }
