@@ -177,10 +177,7 @@
               "projects/cardiovascular-health/src/assets",
               "projects/cardiovascular-health/src/launch.html"
             ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "./dist/ngx-charts-on-fhir/themes/default.scss"
-            ],
+            "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-health/src/styles.scss"],
             "scripts": [
               {
                 "input": "node_modules/fhirclient/build/fhir-client.js",
@@ -259,14 +256,8 @@
             "tsConfig": "projects/cardiovascular-health/tsconfig.spec.json",
             "karmaConfig": "projects/cardiovascular-health/karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/cardiovascular-health/src/favicon.ico",
-              "projects/cardiovascular-health/src/assets"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/showcase/src/styles.scss"
-            ],
+            "assets": ["projects/cardiovascular-health/src/favicon.ico", "projects/cardiovascular-health/src/assets"],
+            "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-health/src/styles.scss"],
             "scripts": []
           }
         }
