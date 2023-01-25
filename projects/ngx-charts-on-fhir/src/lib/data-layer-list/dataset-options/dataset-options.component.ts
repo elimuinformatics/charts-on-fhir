@@ -11,7 +11,7 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
   styleUrls: ['./dataset-options.component.css'],
 })
 export class DatasetOptionsComponent implements OnInit {
-  private _dataset?: Dataset;
+   _dataset?: Dataset;
   @Input() set dataset(dataset: Dataset) {
     this._dataset = dataset;
     this.updateForm(dataset);
