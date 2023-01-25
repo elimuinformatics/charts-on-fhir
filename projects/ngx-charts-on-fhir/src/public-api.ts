@@ -35,3 +35,4 @@ export * from './lib/fhir-mappers/observation/simple-observation-mapper.service'
 export * from './lib/fhir-mappers/medication-request/simple-medication-mapper.service';
 export * from './lib/fhir-mappers/medication-request/duration-medication-mapper.service';
 export * from './lib/utils';
+export * from './lib/fhir-mappers/observation/blood-pressure-mapper';

@@ -174,12 +174,17 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/cardiovascular-health/src/favicon.ico",
-              "projects/cardiovascular-health/src/assets"
+              "projects/cardiovascular-health/src/assets",
+              "projects/cardiovascular-health/src/launch.html"
             ],
-            "styles": [
-              "projects/cardiovascular-health/src/styles.scss"
-            ],
-            "scripts": []
+            "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-health/src/styles.scss"],
+            "scripts": [
+              {
+                "input": "node_modules/fhirclient/build/fhir-client.js",
+                "inject": false,
+                "bundleName": "fhirclient"
+              }
+            ]
           },
           "configurations": {
             "production": {
@@ -187,7 +192,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -210,6 +215,14 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "logica-open": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/cardiovascular-health/src/environments/environment.ts",
+                  "with": "projects/cardiovascular-health/src/environments/environment.logica-open.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -222,9 +235,12 @@
             },
             "development": {
               "browserTarget": "cardiovascular-health:build:development"
+            },
+            "logica-open": {
+              "browserTarget": "cardiovascular-health:build:development,logica-open"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "logica-open"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -240,13 +256,8 @@
             "tsConfig": "projects/cardiovascular-health/tsconfig.spec.json",
             "karmaConfig": "projects/cardiovascular-health/karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/cardiovascular-health/src/favicon.ico",
-              "projects/cardiovascular-health/src/assets"
-            ],
-            "styles": [
-              "projects/cardiovascular-health/src/styles.scss"
-            ],
+            "assets": ["projects/cardiovascular-health/src/favicon.ico", "projects/cardiovascular-health/src/assets"],
+            "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-health/src/styles.scss"],
             "scripts": []
           }
         }
