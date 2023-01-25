@@ -2,11 +2,6 @@ import { Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
 
-interface LayerRange {
-  min: Date;
-  max: Date;
-}
-
 @Component({
   selector: 'range-selector',
   templateUrl: './range-selector.component.html',
