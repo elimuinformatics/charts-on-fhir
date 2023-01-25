@@ -57,8 +57,8 @@ export class FhirChartConfigurationService {
   zoom(range: NumberRange) {
     let chart = Chart.getChart('baseChart');
     if (chart) {
-      chart.zoomScale('timeline', range, 'zoom');
       this.lockZoomRange(range);
+      chart.zoomScale('timeline', range, 'zoom');
     }
   }
 
@@ -66,12 +66,12 @@ export class FhirChartConfigurationService {
   resetZoom() {
     let chart = Chart.getChart('baseChart');
     if (chart) {
+      this.isZoomRangeLocked = false;
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
       if (this.timeline.min != null && this.timeline.max != null) {
         chart.zoomScale('timeline', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
       }
-      this.isZoomRangeLocked = false;
     }
   }
 
@@ -116,13 +116,15 @@ export class FhirChartConfigurationService {
           annotation: { annotations },
           zoom: {
             zoom: {
-              onZoomComplete: ({ chart }) => {
+              onZoomStart: ({ chart }) => {
                 this.lockZoomRange(chart.scales['timeline']);
+                return true;
               },
             },
             pan: {
-              onPanComplete: ({ chart }) => {
+              onPanStart: ({ chart }) => {
                 this.lockZoomRange(chart.scales['timeline']);
+                return true;
               },
             },
           },
