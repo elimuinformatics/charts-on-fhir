@@ -8,7 +8,7 @@ import { DataLayerModule } from './data-layer.module';
 import { zip } from 'lodash-es';
 
 
-/* A service for asynchronously retrieving DataLayers */
+/** A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
   abstract name: string;
   abstract retrieve: () => Observable<DataLayer>;

@@ -46,7 +46,7 @@ export class DataLayerColorService {
     return undefined;
   }
 
-  /* build a CSS linear gradient that includes colors from all datasets in the layer */
+  /** build a CSS linear gradient that includes colors from all datasets in the layer */
   getColorGradient(layer: DataLayer) {
     const percent = (i: number) => Math.floor((100 * i) / layer.datasets.length);
     const colors = layer.datasets.map(this.getColor);
