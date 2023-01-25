@@ -103,7 +103,7 @@ describe('FhirChartConfigurationService', () => {
             options: {
               ...emptyConfig.options,
               scales: jasmine.objectContaining({
-                one: { id: 'one', title: { text: 'one' } },
+                one: jasmine.objectContaining({ id: 'one', title: { text: 'one' } }),
               }),
             },
           },
@@ -112,8 +112,8 @@ describe('FhirChartConfigurationService', () => {
             options: {
               ...emptyConfig.options,
               scales: jasmine.objectContaining({
-                one: { id: 'one', title: { text: 'one' } },
-                two: { id: 'two', title: { text: 'two' } },
+                one: jasmine.objectContaining({ id: 'one', title: { text: 'one' } }),
+                two: jasmine.objectContaining({ id: 'two', title: { text: 'two' } }),
               }),
             },
           },
