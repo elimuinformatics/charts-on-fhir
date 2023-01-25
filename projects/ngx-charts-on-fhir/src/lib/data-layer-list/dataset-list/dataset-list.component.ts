@@ -13,7 +13,7 @@ export class DatasetListComponent {
   private _datasets: Dataset[] | undefined;
   @Input() set datasets(datasets: Dataset[] | undefined) {
     this._datasets = datasets;
-    this.datasetsReversed = datasets?.slice().reverse();
+    this.datasetsReversed = datasets?.slice()
   }
   @Output() datasetsChange = new EventEmitter<Dataset[]>();
 
