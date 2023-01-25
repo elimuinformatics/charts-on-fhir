@@ -70,6 +70,8 @@ export class FhirChartComponent implements OnInit {
       },
     };
 
+    this.configService.chart = Chart.getChart('baseChart');
+    
     this.configService.chartConfig$.subscribe((config) => {
       this.datasets = config.data.datasets;
       this.options = config.options;

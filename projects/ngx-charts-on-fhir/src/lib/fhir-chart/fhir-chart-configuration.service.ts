@@ -46,6 +46,9 @@ export class FhirChartConfigurationService {
     return !this.isZoomRangeLocked;
   }
 
+  /** The Chart object associated with this configuration. This is required for zoom() and resetZoom() functions. */
+  public chart?: Chart;
+
   /** Lock the zoom range for timeline scale so it will not change when new data is added */
   private lockZoomRange({ min, max }: NumberRange) {
     this.isZoomRangeLocked = true;
@@ -55,28 +58,27 @@ export class FhirChartConfigurationService {
 
   /** Zoom to a specific date range and lock the zoom so it will not change when new data is added */
   zoom(range: NumberRange) {
-    let chart = Chart.getChart('baseChart');
-    if (chart) {
+    if (this.chart) {
       this.lockZoomRange(range);
-      chart.zoomScale('timeline', range, 'zoom');
+      this.chart.zoomScale('timeline', range, 'zoom');
     }
   }
 
   /** Reset the zoom so it will change automatically to fit the data */
   resetZoom() {
-    let chart = Chart.getChart('baseChart');
-    if (chart) {
+    if (this.chart) {
       this.isZoomRangeLocked = false;
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
       if (this.timeline.min != null && this.timeline.max != null) {
-        chart.zoomScale('timeline', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
+        this.chart.zoomScale('timeline', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
       }
     }
   }
 
   private updateTimelineBounds(datasets: Dataset[]) {
     this.timelineDataBounds = computeBounds('x', 0, datasets);
+    console.log(this.timelineDataBounds);
     if (!this.isZoomRangeLocked) {
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
