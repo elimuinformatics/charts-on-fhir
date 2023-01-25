@@ -76,7 +76,7 @@ export class FhirChartConfigurationService {
   }
 
   private updateTimelineBounds(datasets: Dataset[]) {
-    this.timelineDataBounds = computeBounds('x', 0.01, datasets);
+    this.timelineDataBounds = computeBounds('x', 0, datasets);
     if (!this.isZoomRangeLocked) {
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
