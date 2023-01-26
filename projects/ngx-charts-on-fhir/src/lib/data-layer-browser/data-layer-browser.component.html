@@ -7,10 +7,6 @@
       <button mat-icon-button matSuffix (click)="filterControl.setValue('')"><mat-icon fontIcon="close"></mat-icon></button>
     </mat-form-field>
   </header>
-  <section class="progress-bar-section" *ngIf="layerManager.loading$ | async">
-    <mat-progress-bar class="progress-bar-margin" mode="indeterminate"> </mat-progress-bar>
-  </section>
-
   <div class="scroll-container">
     <table
       mat-table
