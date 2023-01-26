@@ -13,7 +13,15 @@
       [options]="options ?? defaultOptions"
     ></canvas>
     <ng-template #empty>
-      <div class="empty-message"><div class="empty-message-content">No data layers are selected</div></div>
+      <div class="empty-message">
+        <div class="empty-message-content">
+          <ng-container *ngIf="layerManager.loading$ | async; else doneLoading">
+            <div>Loading data...</div>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </ng-container>
+          <ng-template #doneLoading>No data layers are selected</ng-template>
+        </div>
+      </div>
     </ng-template>
   </div>
 </div>
