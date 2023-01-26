@@ -1,6 +1,8 @@
 import { NgZone } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
+import { Chart } from 'chart.js';
 import { hot, getTestScheduler } from 'jasmine-marbles';
+import { of } from 'rxjs';
 import { ManagedDataLayer } from '../data-layer/data-layer';
 import { FhirChartConfigurationService, TimelineConfiguration } from './fhir-chart-configuration.service';
 
@@ -103,7 +105,7 @@ describe('FhirChartConfigurationService', () => {
             options: {
               ...emptyConfig.options,
               scales: jasmine.objectContaining({
-                one: { id: 'one', title: { text: 'one' } },
+                one: jasmine.objectContaining({ id: 'one', title: { text: 'one' } }),
               }),
             },
           },
@@ -112,8 +114,8 @@ describe('FhirChartConfigurationService', () => {
             options: {
               ...emptyConfig.options,
               scales: jasmine.objectContaining({
-                one: { id: 'one', title: { text: 'one' } },
-                two: { id: 'two', title: { text: 'two' } },
+                one: jasmine.objectContaining({ id: 'one', title: { text: 'one' } }),
+                two: jasmine.objectContaining({ id: 'two', title: { text: 'two' } }),
               }),
             },
           },
@@ -153,7 +155,7 @@ describe('FhirChartConfigurationService', () => {
                   id: 'one',
                   title: { text: 'one' },
                   min: 0.95,
-                  max: 2.05
+                  max: 2.05,
                 },
               }),
             },
@@ -317,5 +319,79 @@ describe('FhirChartConfigurationService', () => {
       getTestScheduler().flush();
       expect(ngZone.run).toHaveBeenCalledTimes(1);
     }));
+  });
+
+  describe('zoom', () => {
+    let configService: FhirChartConfigurationService;
+
+    beforeEach(() => {
+      const layers: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
+      const layerManager: any = { selectedLayers$: of(layers) };
+      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
+    });
+
+    it('should autoZoom by default', () => {
+      expect(configService.isAutoZoom).toBe(true);
+    });
+
+    it('should call chart.zoom', () => {
+      configService.zoom({ min: 1, max: 2 });
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 1, max: 2 }, 'zoom');
+    });
+
+    it('should lock zoom range', () => {
+      configService.zoom({ min: 1, max: 2 });
+      expect(configService.isAutoZoom).toBe(false);
+    });
+  });
+
+  describe('resetZoom', () => {
+    let configService: FhirChartConfigurationService;
+    let layers: ManagedDataLayer[];
+
+    beforeEach(() => {
+      layers = [
+        {
+          name: 'a',
+          id: 'a',
+          enabled: true,
+          datasets: [
+            {
+              data: [
+                { x: 10, y: 100 },
+                { x: 20, y: 200 },
+              ],
+            },
+          ],
+          scale: { id: 'a' },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: of(layers) };
+      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
+    });
+
+    it('should call chart.zoom with data bounds', waitForAsync(() => {
+      configService.chartConfig$.subscribe();
+      configService.resetZoom();
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 10, max: 20 }, 'zoom');
+    }));
+
+    it('should unlock zoom range', () => {
+      configService.chartConfig$.subscribe();
+      configService.zoom({ min: 1, max: 2 });
+      configService.resetZoom();
+      expect(configService.isAutoZoom).toBe(true);
+    });
+
+    it('should ignore NaN in data', waitForAsync(() => {
+      layers[0].datasets[0].data.unshift({ x: NaN, y: 0 });
+      layers[0].datasets[0].data.push({ x: NaN, y: 0 });
+      configService.chartConfig$.subscribe();
+      configService.resetZoom();
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 10, max: 20 }, 'zoom');
+    }));
+
   });
 });
