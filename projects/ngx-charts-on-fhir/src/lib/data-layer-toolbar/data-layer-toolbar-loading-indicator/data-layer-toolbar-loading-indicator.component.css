@@ -8,5 +8,5 @@
   align-items: center;
 }
 .spinner-wrapper mat-progress-spinner {
-  --mdc-circular-progress-active-indicator-color: #fff
+  --mdc-circular-progress-active-indicator-color: #fff;
 }
