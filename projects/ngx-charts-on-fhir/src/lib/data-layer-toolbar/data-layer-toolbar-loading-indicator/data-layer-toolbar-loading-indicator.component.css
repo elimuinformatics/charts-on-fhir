@@ -1,0 +1,12 @@
+.spinner-wrapper {
+  color: #ffffffbb;
+  height: 48px;
+  width: 44px;
+  margin: 8px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner-wrapper mat-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #fff;
+}
