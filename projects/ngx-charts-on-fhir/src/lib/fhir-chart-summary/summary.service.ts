@@ -16,7 +16,7 @@ export class ScatterDataPointSummaryService implements SummaryService {
   constructor(private stats: StatisticsService) {}
 
   canSummarize(layer: DataLayer): boolean {
-    return layer.scale.type === 'linear';
+    return layer.scale.type === 'linear' || layer.scale.type === "medication";
   }
   summarize(layer: DataLayer, range: NumberRange): Record<string, string>[] {
     const current = this.stats.getFormattedStatistics(layer, range);
