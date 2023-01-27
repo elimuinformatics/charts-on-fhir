@@ -1,10 +1,10 @@
 import {
-  ComponentObservationMapper,
-  Mapper,
-  SimpleObservationMapper,
-  SimpleMedicationMapper,
-  DurationMedicationMapper,
   BloodPressureMapper,
+  ComponentObservationMapper,
+  DurationMedicationMapper,
+  Mapper,
+  SimpleMedicationMapper,
+  SimpleObservationMapper,
 } from 'ngx-charts-on-fhir';
 
 /**

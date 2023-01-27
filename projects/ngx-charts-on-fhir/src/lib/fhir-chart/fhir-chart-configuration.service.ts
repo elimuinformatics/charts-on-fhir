@@ -1,12 +1,12 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { ChartConfiguration, ScaleOptions, CartesianScaleOptions } from 'chart.js';
+import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart } from 'chart.js';
 import produce from 'immer';
-import { isNumber, mapValues, merge } from 'lodash-es';
-import { map, ReplaySubject, scan, throttleTime } from 'rxjs';
+import { mapValues, merge } from 'lodash-es';
+import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, isValidScatterDataPoint, NumberRange } from '../utils';
+import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -21,21 +21,69 @@ type MergedDataLayer = {
   providedIn: 'root',
 })
 export class FhirChartConfigurationService {
-  constructor(private layerManager: DataLayerManagerService, @Inject(TIME_SCALE_OPTIONS) timeScaleOptions: ScaleOptions<'time'>, private ngZone: NgZone) {
-    this.timeline = {
-      ...timeScaleOptions,
-      afterDataLimits: ({ max, min }) => this.ngZone.run(() => this.timelineRangeSubject.next({ max, min })),
-    };
-  }
+  constructor(
+    private layerManager: DataLayerManagerService,
+    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
+    private ngZone: NgZone
+  ) {}
 
-  private timeline: ScaleOptions<'time'>;
+  private timeline: ScaleOptions<'time'> = {
+    ...this.timeScaleOptions,
+    afterDataLimits: (axis) => this.ngZone.run(() => this.timelineRangeSubject.next({ max: axis.max, min: axis.min })),
+  };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
   chartConfig$ = this.layerManager.selectedLayers$.pipe(
     map((layers) => this.mergeLayers(layers)),
-    scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration())
+    scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
+    tap((config) => this.updateTimelineBounds(config.data.datasets))
   );
+
+  private timelineDataBounds: Partial<NumberRange> = { min: undefined, max: undefined };
+  private isZoomRangeLocked = false;
+  public get isAutoZoom() {
+    return !this.isZoomRangeLocked;
+  }
+
+  /** The Chart object associated with this configuration. This is required for zoom() and resetZoom() functions. */
+  public chart?: Chart;
+
+  /** Lock the zoom range for timeline scale so it will not change when new data is added */
+  private lockZoomRange({ min, max }: NumberRange) {
+    this.isZoomRangeLocked = true;
+    this.timeline.min = min;
+    this.timeline.max = max;
+  }
+
+  /** Zoom to a specific date range and lock the zoom so it will not change when new data is added */
+  zoom(range: NumberRange) {
+    if (this.chart) {
+      this.lockZoomRange(range);
+      this.chart.zoomScale('timeline', range, 'zoom');
+    }
+  }
+
+  /** Reset the zoom so it will change automatically to fit the data */
+  resetZoom() {
+    if (this.chart) {
+      this.isZoomRangeLocked = false;
+      this.timeline.min = this.timelineDataBounds.min;
+      this.timeline.max = this.timelineDataBounds.max;
+      if (this.timeline.min != null && this.timeline.max != null) {
+        this.chart.zoomScale('timeline', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
+      }
+    }
+  }
+
+  private updateTimelineBounds(datasets: Dataset[]) {
+    this.timelineDataBounds = computeBounds('x', 0, datasets);
+    console.log(this.timelineDataBounds);
+    if (!this.isZoomRangeLocked) {
+      this.timeline.min = this.timelineDataBounds.min;
+      this.timeline.max = this.timelineDataBounds.max;
+    }
+  }
 
   mergeLayers(layers: ManagedDataLayer[]): MergedDataLayer {
     layers = arrangeScales(layers);
@@ -68,6 +116,20 @@ export class FhirChartConfigurationService {
         },
         plugins: {
           annotation: { annotations },
+          zoom: {
+            zoom: {
+              onZoomStart: ({ chart }) => {
+                this.lockZoomRange(chart.scales['timeline']);
+                return true;
+              },
+            },
+            pan: {
+              onPanStart: ({ chart }) => {
+                this.lockZoomRange(chart.scales['timeline']);
+                return true;
+              },
+            },
+          },
           legend: {
             labels: {
               // hide legend labels for medications
@@ -116,19 +178,33 @@ function isStackedScale(scale: ScaleOptions | undefined): scale is CartesianScal
 /** Set the min/max for each scale based on the min/max values of the datasets and annotations.
  * This prevents the scale ticks from changing when zooming/panning the chart. */
 const setScaleBounds = produce((layers: ManagedDataLayer[]) => {
-  const padding = 0.05; // extra space to add beyond min/max values (% of scale height)
   for (let layer of layers) {
-    const values = layer.datasets.flatMap((dataset) => dataset.data.filter(isValidScatterDataPoint).map((point) => point.y));
-    if (layer.annotations) {
-      values.push(...layer.annotations.flatMap((anno) => [anno.yMin, anno.yMax]).filter(isNumber));
-    }
-    if (values.length > 0) {
-      const min = Math.min(...values);
-      const max = Math.max(...values);
-      const base = max === min ? min : max - min;
-      const pad = base * padding;
-      layer.scale.min = min - pad;
-      layer.scale.max = max + pad;
-    }
+    const bounds = computeBounds('y', 0.05, layer.datasets, layer.annotations);
+    layer.scale.min = bounds.min;
+    layer.scale.max = bounds.max;
   }
 });
+
+function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], annotations?: ChartAnnotations): Partial<NumberRange> {
+  const values = datasets.flatMap((dataset) => dataset.data.map((point) => point[axis])).filter(isNotNaN);
+  if (annotations) {
+    const annoMin = axis === 'x' ? 'xMin' : 'yMin';
+    const annoMax = axis === 'x' ? 'xMax' : 'yMax';
+    values.push(...annotations.flatMap((anno) => [anno[annoMin], anno[annoMax]]).filter(isNotNaN));
+  }
+  if (values.length > 0) {
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const base = max === min ? min : max - min;
+    const pad = base * padding;
+    return {
+      min: min - pad,
+      max: max + pad,
+    };
+  }
+  return { min: undefined, max: undefined };
+}
+
+function isNotNaN(value: unknown): value is number {
+  return typeof value === 'number' && !Number.isNaN(value);
+}

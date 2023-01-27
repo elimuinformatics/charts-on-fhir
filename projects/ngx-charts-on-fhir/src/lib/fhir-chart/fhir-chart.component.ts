@@ -75,4 +75,8 @@ export class FhirChartComponent implements OnInit {
       this.options = config.options;
     });
   }
+
+  ngAfterViewChecked() {
+    this.configService.chart = Chart.getChart('baseChart');
+  }
 }

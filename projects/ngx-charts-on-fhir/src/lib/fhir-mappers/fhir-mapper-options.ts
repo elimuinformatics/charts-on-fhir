@@ -10,6 +10,7 @@ export const TIME_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'time'>>('Time
 const defaultTimeScaleOptions: ScaleOptions<'time'> = {
   position: 'bottom',
   type: 'time',
+  offset: true,
   // time: {
   //   unit: 'day',
   //   displayFormats: {
