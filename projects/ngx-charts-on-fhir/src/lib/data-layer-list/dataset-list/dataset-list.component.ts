@@ -13,7 +13,7 @@ export class DatasetListComponent {
   private _datasets: Dataset[] | undefined;
   @Input() set datasets(datasets: Dataset[] | undefined) {
     this._datasets = datasets;
-    if(datasets?.slice()[0].yAxisID=='medications'){
+    if(datasets?.slice()[0].yAxisID==='medications'){
       this.datasetsReversed = datasets?.slice()
     }else{
       this.datasetsReversed = datasets?.slice().reverse()
