@@ -49,7 +49,7 @@ export class DataLayerColorService {
   /** build a CSS linear gradient that includes colors from all datasets in the layer */
   getColorGradient(layer: DataLayer) {
     const percent = (i: number) => Math.floor((100 * i) / layer.datasets.length);
-    const colors = layer.datasets.map(this.getColor);
+    const colors = layer.name == 'Medications' ? layer.datasets.map(this.getColor).reverse() : layer.datasets.map(this.getColor);
     const segments = colors.map((color, i) => `${color} ${percent(i)}%, ${color} ${percent(i + 1)}%`);
     const gradient = `linear-gradient(0deg, ${segments.join(',')})`;
     return gradient;
