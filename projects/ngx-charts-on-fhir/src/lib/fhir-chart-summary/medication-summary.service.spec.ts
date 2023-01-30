@@ -47,7 +47,7 @@ describe('MedicationSummaryService', () => {
       expect(summary).toEqual([
         {
           name: 'one',
-          'Authored On': '1 Jan 2023',
+          'Date Written': '1 Jan 2023',
         },
       ]);
     });
