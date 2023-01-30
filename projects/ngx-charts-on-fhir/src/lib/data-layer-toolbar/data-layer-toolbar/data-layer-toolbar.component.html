@@ -1,5 +1,7 @@
 <div class="layout-toolbar">
-  <data-layer-toolbar-button *ngIf="showAddDataLayer"
+  <data-layer-toolbar-loading-indicator [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
+  <data-layer-toolbar-button
+    *ngIf="showAddDataLayer"
     [active]="active === 'browser'"
     [badge]="(layerManager.availableLayers$ | async)?.length"
     icon="add"

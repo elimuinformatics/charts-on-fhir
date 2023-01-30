@@ -6,10 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DataLayerToolbarLoadingIndicatorComponent } from './data-layer-toolbar-loading-indicator/data-layer-toolbar-loading-indicator.component';
 @NgModule({
-  declarations: [DataLayerToolbarComponent, DataLayerToolbarButtonComponent],
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, MatBadgeModule],
+  declarations: [DataLayerToolbarComponent, DataLayerToolbarButtonComponent, DataLayerToolbarLoadingIndicatorComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, MatBadgeModule, MatProgressSpinnerModule],
   exports: [DataLayerToolbarComponent],
 })
 export class DataLayerToolbarModule {}

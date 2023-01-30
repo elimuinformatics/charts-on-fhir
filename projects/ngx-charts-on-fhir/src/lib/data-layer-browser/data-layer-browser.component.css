@@ -39,15 +39,3 @@
 .empty-message {
   padding: 16px;
 }
-
-.progress-bar-section {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  height: 60px;
-  margin: 10px 10px 10px 10px;
-}
-
-.progress-bar-margin {
-  margin: 10px;
-}
