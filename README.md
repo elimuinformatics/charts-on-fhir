@@ -8,6 +8,7 @@ Built with [Chart.js](https://www.chartjs.org/)
 1. Run `npm run watch ngx-charts-on-fhir` to build the library and watch for changes.
 2. Run `npm start showcase` to start the local development server for the showcase app.
 2. Run `npm start cardiovascular-health` to start the local development server for the cardiovascular-health app.
+2. Run `npm start cardiovascular-patient-app` to start the local development server for the cardiovascular-patient-app.
 3. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ### Logica Open FHIR Server
@@ -35,7 +36,10 @@ Run `ng build ngx-charts-on-fhir` to build the library. The build artifacts will
 
 ## Running unit tests
 
+
+
 Run `ng test ngx-charts-on-fhir` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test cardiovascular-patient-app` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running a Docker container
 
