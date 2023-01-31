@@ -21,7 +21,7 @@ describe('ScatterDataPointSummaryService', () => {
           type: 'medication',
         },
       };
-      expect(summaryService.canSummarize(layer)).toBe(true);
+      expect(summaryService.canSummarize(layer)).toBe(false);
     });
   });
 
