@@ -1,12 +1,11 @@
-import { forwardRef, Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
-import { DataLayerModule } from './data-layer.module';
 import tinycolor from 'tinycolor2';
 
 export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
 
 @Injectable({
-  providedIn: forwardRef(() => DataLayerModule),
+  providedIn: 'root',
 })
 export class DataLayerColorService {
   constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
