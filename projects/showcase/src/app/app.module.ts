@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { dataLayerProviders } from './providers/data-layer-providers';
 import { mapperProviders } from './providers/mapper-providers';
 import paletteProvider from './providers/palette-provider';
-import { FhirChartModule, COLOR_PALETTE, FhirChartSummaryModule, FhirDataService, DataLayerManagerService, FhirChartLayoutModule } from 'ngx-charts-on-fhir';
+import { FhirChartModule, COLOR_PALETTE, FhirChartSummaryModule, FhirDataService, FhirChartLayoutModule } from 'ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 
@@ -25,7 +25,6 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     mapperProviders,
     dataLayerProviders,
     summaryProviders,
-    DataLayerManagerService,
   ],
   bootstrap: [AppComponent],
 })

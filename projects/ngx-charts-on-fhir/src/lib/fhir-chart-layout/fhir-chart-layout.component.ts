@@ -10,6 +10,7 @@ import { ToolbarButtonName } from '../../public-api';
 })
 export class FhirChartLayoutComponent {
   @Input() toolbar?: ToolbarButtonName[] = ['loading', 'browser', 'options'];
+  @Input() sidebarOpened: boolean = true;
   sidenavPanel: ToolbarButtonName | null = 'browser';
   onToolbarChange(sidenav: MatSidenav, panel: ToolbarButtonName | null) {
     if (panel) {

@@ -1,6 +1,6 @@
 <data-layer-toolbar [buttons]="toolbar" [active]="sidenavPanel" (activeChange)="onToolbarChange(sidenav, $event)"></data-layer-toolbar>
 <mat-sidenav-container autosize="true">
-  <mat-sidenav mode="side" #sidenav opened>
+  <mat-sidenav mode="side" #sidenav [opened]="sidebarOpened">
     <div class="layout-sidebar">
       <div class="layout-sidebar-content">
         <data-layer-browser [hidden]="sidenavPanel !== 'browser'"></data-layer-browser>
