@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use './lib/data-layer-toolbar/data-layer-toolbar-theme' as toolbar;
+@use './lib/fhir-chart-layout/fhir-chart-layout-theme' as layout;
 
 @include mat.core();
 
@@ -22,6 +23,7 @@ $theme: mat.define-light-theme((
 
 // Apply theme to ngx-charts-on-fhir components
 @include toolbar.theme($theme);
+@include layout.theme($theme);
 
 // Adjust density for some components
 @include mat.table-density('minimum');

@@ -19,7 +19,6 @@ mat-sidenav-container {
   height: 100vh;
   overflow: hidden;
   color: #fff;
-  background-color: #3f51b5; /* #3f51b5; /* todo: get theme color */
   border: 0px;
   padding: 0px;
   width: 16px;
