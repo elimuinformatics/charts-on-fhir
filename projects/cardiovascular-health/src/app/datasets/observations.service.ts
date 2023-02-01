@@ -41,6 +41,11 @@ export class ObservationLayerService extends DataLayerService {
     },
     {
       system: 'http://loinc.org',
+      code: '2339-0',
+      display: 'Glucose',
+    },
+    {
+      system: 'http://loinc.org',
       code: '59408-5',
       display: 'Oxygen saturation in Arterial blood by Pulse oximetry',
     },
