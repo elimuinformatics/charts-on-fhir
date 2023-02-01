@@ -67,12 +67,12 @@ describe('FhirChartSummaryComponent', () => {
     const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [], scale: { id: 'test' } };
     layerManager.selectedLayers$.next([layer, layer, layer]);
     fixture.detectChanges();
-    const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
+    const cards = fixture.debugElement.queryAll(By.css('.summary-card'));
     expect(cards.length).toBe(3);
   });
 
   it('should set inputs on fhir-chart-summary-card component', () => {
-    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } ,enabled:true };
     layerManager.selectedLayers$.next([layer]);
     fixture.detectChanges();
     const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
@@ -80,7 +80,7 @@ describe('FhirChartSummaryComponent', () => {
   });
 
   it('should set inputs on dynamic-table component', () => {
-    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' },enabled:true };
     layerManager.selectedLayers$.next([layer]);
     fixture.detectChanges();
     const statistics: DebugElement = fixture.debugElement.query(By.directive(MockDynamicTableComponent));
