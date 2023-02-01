@@ -1,1 +1,24 @@
-<h1> cardiovascular patient app</h1>
+<data-layer-toolbar [active]="sidenavPanel" [showAddDataLayer]="showAddDataLayer" (activeChange)="onToolbarChange(sidenav, $event)"></data-layer-toolbar>
+<mat-sidenav-container autosize="true">
+  <mat-sidenav mode="side" #sidenav opened>
+    <div class="layout-sidebar">
+      <div class="layout-sidebar-content">
+        <data-layer-list [hidden]="sidenavPanel !== 'options'"></data-layer-list>
+      </div>
+      <div class="layout-sidebar-close">
+        <button color="primary" class="sidebar-close-button" (click)="sidenavPanel = null" title="Close data browser"><mat-icon>arrow_left</mat-icon></button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <span>{{ appTitle }}</span>
+    </mat-toolbar>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+      <mat-tab label="Report BP">
+        <report-BP></report-BP>
+      </mat-tab>
+      <mat-tab label="See prior BPs"> </mat-tab>
+    </mat-tab-group>
+  </mat-sidenav-content>
+</mat-sidenav-container>
