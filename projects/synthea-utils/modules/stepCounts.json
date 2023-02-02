@@ -1,0 +1,104 @@
+{
+  "name": "StepCounts",
+  "remarks": ["Patients with high frequency data for Step Counts."],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "name": "Initial",
+      "direct_transition": "YearGuard"
+    },
+    "Terminal": {
+      "type": "Terminal",
+      "name": "Terminal"
+    },
+    "YearGuard": {
+      "name": "YearGuard",
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Date",
+        "operator": ">=",
+        "year": 2022
+      },
+      "direct_transition": "SetMyCounter"
+    },
+    "SetMyCounter": {
+      "type": "SetAttribute",
+      "attribute": "stepCounter",
+      "direct_transition": "EnterDeterministicLoop",
+      "name": "SetMyCounter",
+      "value": 1
+    },
+    "EnterDeterministicLoop": {
+      "type": "Simple",
+      "direct_transition": "Counter",
+      "name": "EnterDeterministicLoop"
+    },
+    "Counter": {
+      "type": "Counter",
+      "attribute": "stepCounter",
+      "action": "increment",
+      "direct_transition": "ShortDelay",
+      "name": "Counter"
+    },
+    "ShortDelay": {
+      "name": "ShortDelay",
+      "type": "Delay",
+      "exact": {
+        "quantity": 1,
+        "unit": "days"
+      },
+      "direct_transition": "AdditionalDelay"
+    },
+    "AdditionalDelay": {
+      "name": "AdditionalDelay",
+      "type": "Delay",
+      "distribution": {
+        "kind": "GAUSSIAN",
+        "round": false,
+        "parameters": {
+          "min": 0,
+          "mean": 0.5,
+          "standardDeviation": 1.0
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Record_Steps"
+    },
+    "Record_Steps": {
+      "type": "Observation",
+      "category": "social-history",
+      "codes": [
+        {
+          "system": "http://loinc.org",
+          "code": "55423-8",
+          "display": "Step Count"
+        }
+      ],
+      "unit": "steps/day",
+      "distribution": {
+        "kind": "GAUSSIAN",
+        "round": true,
+        "parameters": {
+          "min": 0,
+          "mean": 3000,
+          "standardDeviation": 1000
+        }
+      },
+      "conditional_transition": [
+        {
+          "transition": "Terminal",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "stepCounter",
+            "operator": ">",
+            "value": 300
+          }
+        },
+        {
+          "transition": "EnterDeterministicLoop"
+        }
+      ]
+    }
+  },
+  "gmf_version": 2
+}
