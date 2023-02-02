@@ -1,33 +1,49 @@
-<form [formGroup]="form" class="BPform" id="entryForm" (ngSubmit)="onSubmit()">
-  <section>
-    <div class="systolic-input">
-      <mat-form-field appearance="outline" class="input-width">
-        <mat-label> Systolic : </mat-label>
-        <input matInput formControlName="systolic" id="systolic" placeholder="Systolic" [ngClass]="{ 'is-invalid': submitted && field['systolic'].errors }" />
-      </mat-form-field>
-      <div *ngIf="field['systolic'].errors && field['systolic'].touched" class="invalid-feedback">
-        <div *ngIf="field['systolic'].errors['required']">Systolic BP is required</div>
-        <div *ngIf="field['systolic'].errors['min'] || field['systolic'].errors['max']">Systolic BP should in range 11 to 250</div>
-      </div>
-    </div>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" class="BPform" id="entryForm" (ngSubmit)="onSubmit()">
+      <section class="BPform-section">
+        <div class="systolic-input">
+          <mat-form-field appearance="outline" class="input-width">
+            <mat-label> Systolic : </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="systolic"
+              id="systolic"
+              placeholder="Systolic"
+              [ngClass]="{ 'is-invalid': submitted && field['systolic'].errors }"
+            />
+          </mat-form-field>
+          <div *ngIf="field['systolic'].errors && field['systolic'].touched" class="invalid-feedback">
+            <div *ngIf="field['systolic'].errors['required']">Systolic BP is required</div>
+            <div *ngIf="field['systolic'].errors['min'] || field['systolic'].errors['max']">Systolic BP should in range 11 to 250</div>
+          </div>
+        </div>
 
-    <div>
-      <mat-form-field appearance="outline" class="input-width">
-        <mat-label> Diastolic : </mat-label>
-        <input
-          matInput
-          formControlName="diastolic"
-          id="diastolic"
-          placeholder="diastolic"
-          [ngClass]="{ 'is-invalid': submitted && field['diastolic'].errors }"
-        />
-      </mat-form-field>
-    </div>
-    <div *ngIf="field['diastolic'].errors && field['systolic'].touched" class="invalid-feedback">
-      <div *ngIf="field['diastolic'].errors['required']">Diastolic BP is required</div>
-      <div *ngIf="field['diastolic'].errors['min'] || field['diastolic'].errors['max']">Diastolic BP should in range 11 to 250</div>
-    </div>
+        <div>
+          <mat-form-field appearance="outline" class="input-width">
+            <mat-label> Diastolic : </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="diastolic"
+              id="diastolic"
+              placeholder="diastolic"
+              [ngClass]="{ 'is-invalid': submitted && field['diastolic'].errors }"
+            />
+          </mat-form-field>
+        </div>
 
-    <button mat-raised-button color="primary" [disabled]="form.invalid">Save</button>
-  </section>
-</form>
+        <div class="invalid-feedback">
+          <div *ngIf="field['diastolic'].errors && field['systolic'].touched">
+            <div *ngIf="field['diastolic'].errors['required']">Diastolic BP is required</div>
+            <div *ngIf="field['diastolic'].errors['min'] || field['diastolic'].errors['max']">Diastolic BP should in range 11 to 250</div>
+          </div>
+          <div *ngIf="field['systolic'].value < field['diastolic'].value">Systolic must be greater than diastolic</div>
+        </div>
+
+        <button mat-raised-button color="primary" [disabled]="form.invalid || field['systolic'].value < field['diastolic'].value">Save</button>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>
