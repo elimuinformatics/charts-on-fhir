@@ -17,10 +17,6 @@ mat-slide-toggle {
 .input-width {
   width: 50%;
 }
-form {
-  display: flex;
-  flex-direction: column;
-}
 
 .invalid-feedback {
   color: red;

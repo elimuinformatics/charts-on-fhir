@@ -35,7 +35,7 @@ describe('ReportBPComponent', () => {
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('11');
     const systolicFormField = component.form.get('systolic');
-    expect(await systolicInputHarness.getValue()).toEqual(systolicFormField?.value);
+    expect(await systolicInputHarness.getValue()).toEqual((systolicFormField?.value).toString());
     expect(systolicFormField?.errors).toBeNull();
   });
 
@@ -50,7 +50,7 @@ describe('ReportBPComponent', () => {
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('11');
     const diastolicFormField = component.form.get('diastolic');
-    expect(await diastolicInputHarness.getValue()).toEqual(diastolicFormField?.value);
+    expect(await diastolicInputHarness.getValue()).toEqual((diastolicFormField?.value).toString());
     expect(diastolicFormField?.errors).toBeNull();
   });
 

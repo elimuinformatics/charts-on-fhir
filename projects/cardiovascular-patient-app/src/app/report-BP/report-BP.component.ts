@@ -28,7 +28,7 @@ export class ReportBPComponent implements OnInit {
   }
 
   private updateBPentryForm(formValue: typeof this.form.value): void {
-    console.log(this.form);
+    console.log(formValue);
   }
   get field(): { [key: string]: AbstractControl } {
     return this.form.controls;
