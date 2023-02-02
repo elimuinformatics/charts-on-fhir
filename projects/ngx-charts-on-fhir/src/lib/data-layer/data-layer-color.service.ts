@@ -12,7 +12,6 @@ export class DataLayerColorService {
 
   private nextColorIndex = 0;
 
-
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
       if (!this.getColor(dataset)) {
@@ -24,8 +23,8 @@ export class DataLayerColorService {
   }
 
   addTransparency(color: string | undefined): string | undefined {
-    const newcolor = tinycolor(color);  
-    newcolor.setAlpha(.2);
+    const newcolor = tinycolor(color);
+    newcolor.setAlpha(0.2);
     return newcolor.toString();
   }
 
