@@ -1,5 +1,4 @@
 import { Component, Inject } from '@angular/core';
-import { combineLatest } from 'rxjs';
 import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
