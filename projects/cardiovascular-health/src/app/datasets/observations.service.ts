@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from 'ngx-charts-on-fhir';
-import { from, mergeMap } from 'rxjs';
+import { from, map, mergeAll, mergeMap, toArray } from 'rxjs';
 
 interface Coding {
   system?: string;
@@ -63,7 +63,14 @@ export class ObservationLayerService extends DataLayerService {
   name = 'Observations';
 
   retrieve = () => {
-    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    const sequenceObservationArray = ['Heart rate', 'Blood Pressure', 'Glucose', 'Body Weight', 'Medications'];;
+
+    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(
+      mergeMap((bundle) => from(this.converter.convert(bundle))),
+      toArray(),
+      map(things => things.sort((a, b) => sequenceObservationArray.indexOf(a.name) - sequenceObservationArray.indexOf(b.name))),
+      mergeAll()
+    )
   };
 
   getQueryfromCoding(codings: Coding[]) {
