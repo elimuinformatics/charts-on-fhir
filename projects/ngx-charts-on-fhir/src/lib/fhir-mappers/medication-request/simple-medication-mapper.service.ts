@@ -1,11 +1,10 @@
-import { Injectable, Inject, forwardRef } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
-import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { Mapper } from '../multi-mapper.service';
 import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
-import { FhirMappersModule } from '../fhir-mappers.module';
 
 /** Required properties for mapping a MedicationRequest with [SimpleMedicationMapper] */
 export type SimpleMedication = {
@@ -26,7 +25,7 @@ export type MedicationDataPoint = {
 
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
 @Injectable({
-  providedIn: forwardRef(() => FhirMappersModule),
+  providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   constructor(

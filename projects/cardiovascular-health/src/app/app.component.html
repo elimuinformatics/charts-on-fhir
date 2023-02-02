@@ -1,25 +1,12 @@
-<data-layer-toolbar [active]="sidenavPanel" [showAddDataLayer]="showAddDataLayer" (activeChange)="onToolbarChange(sidenav, $event)"></data-layer-toolbar>
-<mat-sidenav-container autosize="true">
-  <mat-sidenav mode="side" #sidenav opened>
-    <div class="layout-sidebar">
-      <div class="layout-sidebar-content">
-        <data-layer-list [hidden]="sidenavPanel !== 'options'"></data-layer-list>
-      </div>
-      <div class="layout-sidebar-close">
-        <button color="primary" class="sidebar-close-button" (click)="sidenavPanel = null" title="Close data browser"><mat-icon>arrow_left</mat-icon></button>
-      </div>
+<fhir-chart-layout [toolbar]="['loading', 'options']" [sidebarOpened]="false">
+  <div class="layout-main">
+    <mat-card class="layout-main-chart mat-elevation-z2">
+      <mat-card-content>
+        <fhir-chart width="100%" height="calc(100vh - 48px)"></fhir-chart>
+      </mat-card-content>
+    </mat-card>
+    <div class="layout-main-summary">
+      <fhir-chart-summary></fhir-chart-summary>
     </div>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="layout-main">
-      <mat-card class="layout-main-chart mat-elevation-z2">
-        <mat-card-content>
-          <fhir-chart width="100%" height="calc(100vh - 48px)"></fhir-chart>
-        </mat-card-content>
-      </mat-card>
-      <div class="layout-main-summary">
-        <fhir-chart-summary></fhir-chart-summary>
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</fhir-chart-layout>

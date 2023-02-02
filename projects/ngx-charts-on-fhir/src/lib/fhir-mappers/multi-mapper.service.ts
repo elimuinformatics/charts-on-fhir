@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { TimelineChartType, DataLayer, TimelineDataPoint } from '../data-layer/data-layer';
-import { FhirConverterModule } from './fhir-converter.module';
 
 /** Maps properties from a single resource to properties on a DataLayer */
 export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> {
@@ -13,7 +12,7 @@ export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = Tim
  * Delegates to another [Mapper] from the provided mappers array, using the first one that is capable of mapping each resource.
  */
 @Injectable({
-  providedIn: FhirConverterModule,
+  providedIn: 'root',
 })
 export class MultiMapper implements Mapper<unknown, TimelineChartType, TimelineDataPoint[]> {
   constructor(@Inject(Mapper) private mappers: Mapper<unknown, TimelineChartType, TimelineDataPoint[]>[]) {}

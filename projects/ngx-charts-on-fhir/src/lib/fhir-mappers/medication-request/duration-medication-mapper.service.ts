@@ -1,9 +1,8 @@
-import { Injectable, forwardRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Dosage, MedicationRequest } from 'fhir/r4';
-import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
-import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { DataLayer } from '../../data-layer/data-layer';
+import { Mapper } from '../multi-mapper.service';
 import { MILLISECONDS_PER_DAY } from '../../utils';
-import { FhirMappersModule } from '../fhir-mappers.module';
 import { SimpleMedication, isMedication, SimpleMedicationMapper, MedicationDataPoint } from './simple-medication-mapper.service';
 
 export type BoundsDurationMedication = {
@@ -195,7 +194,7 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
  * Maps a FHIR MedicationRequest resource for which the supply duration can be calculated using one the supported algorthims.
  */
 @Injectable({
-  providedIn: forwardRef(() => FhirMappersModule),
+  providedIn: 'root',
 })
 export class DurationMedicationMapper implements Mapper<DurationMedication> {
   constructor(private baseMapper: SimpleMedicationMapper) {}
