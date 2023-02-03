@@ -1,0 +1,167 @@
+{
+  "name": "HypertensionPatientReportedBP",
+  "remarks": ["Patients with high frequency data for Blood Pressure."],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "name": "Initial",
+      "direct_transition": "YearGuard"
+    },
+    "Terminal": {
+      "type": "Terminal",
+      "name": "Terminal"
+    },
+    "YearGuard": {
+      "name": "YearGuard",
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Date",
+        "operator": ">=",
+        "year": 2022
+      },
+      "direct_transition": "HypertensionGuard"
+    },
+    "HypertensionGuard": {
+      "name": "HypertensionGuard",
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Attribute",
+        "attribute": "hypertension",
+        "operator": "==",
+        "value": true
+      },
+      "direct_transition": "SetMyCounter"
+    },
+    "SetMyCounter": {
+      "type": "SetAttribute",
+      "attribute": "hypertensionCounter",
+      "direct_transition": "EnterDeterministicLoop",
+      "name": "SetMyCounter",
+      "value": 1
+    },
+    "EnterDeterministicLoop": {
+      "type": "Simple",
+      "direct_transition": "Counter",
+      "name": "EnterDeterministicLoop"
+    },
+    "Counter": {
+      "type": "Counter",
+      "attribute": "hypertensionCounter",
+      "action": "increment",
+      "direct_transition": "ChooseDelayLength",
+      "name": "Counter"
+    },
+    "ChooseDelayLength": {
+      "name": "ChooseDelayLength",
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "LongDelay",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "blood_pressure_controlled",
+            "operator": "==",
+            "value": true
+          }
+        },
+        {
+          "transition": "ShortDelay"
+        }
+      ]
+    },
+    "ShortDelay": {
+      "name": "ShortDelay",
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 2,
+          "low": 1
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Encounter"
+    },
+    "LongDelay": {
+      "name": "LongDelay",
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 15,
+          "low": 5
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Encounter"
+    },
+    "Encounter": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": "185320006",
+          "display": "Encounter by computer link"
+        }
+      ],
+      "direct_transition": "Record_BP"
+    },
+    "Record_BP": {
+      "type": "MultiObservation",
+      "category": "vital-signs",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "85354-9",
+          "display": "Blood Pressure"
+        }
+      ],
+      "observations": [
+        {
+          "category": "vital-signs",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8480-6",
+              "display": "Systolic Blood Pressure"
+            }
+          ],
+          "unit": "mm[Hg]",
+          "vital_sign": "Systolic Blood Pressure"
+        },
+        {
+          "category": "vital-signs",
+          "codes": [
+            {
+              "system": "LOINC",
+              "code": "8462-4",
+              "display": "Diastolic Blood Pressure"
+            }
+          ],
+          "unit": "mm[Hg]",
+          "vital_sign": "Diastolic Blood Pressure"
+        }
+      ],
+      "direct_transition": "EncounterEnd"
+    },
+    "EncounterEnd": {
+      "type": "EncounterEnd",
+      "conditional_transition": [
+        {
+          "transition": "Terminal",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "hypertensionCounter",
+            "operator": ">",
+            "value": 500
+          }
+        },
+        {
+          "transition": "EnterDeterministicLoop"
+        }
+      ]
+    }
+  },
+  "gmf_version": 2
+}
