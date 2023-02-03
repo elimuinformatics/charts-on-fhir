@@ -1,12 +1,10 @@
-import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, mergeAll, Observable, ReplaySubject, throttleTime, toArray } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, distinctUntilChanged, map, merge, mergeAll, Observable, toArray } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
-import { DataLayerModule } from './data-layer.module';
 import { zip } from 'lodash-es';
-
 
 /** A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
@@ -29,14 +27,14 @@ const initialState: DataLayerManagerState = {
  * and provides methods for selecting and ordering the layers.
  */
 @Injectable({
-  providedIn: forwardRef(() => DataLayerModule),
+  providedIn: 'root',
 })
 export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
-    private mergeService: DataLayerMergeService,
-  ) { }
+    private mergeService: DataLayerMergeService
+  ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
   private get state() {
