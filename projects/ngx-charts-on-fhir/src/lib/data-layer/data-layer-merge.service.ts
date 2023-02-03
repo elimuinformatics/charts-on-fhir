@@ -1,14 +1,13 @@
-import { Injectable, forwardRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DataLayer, DataLayerCollection } from './data-layer';
 import produce, { castDraft } from 'immer';
-import { DataLayerModule } from './data-layer.module';
 
 /**
  * Merges a [DataLayer] into the matching layer in a [DataLayerCollection].
  * Generates an ID for each layer by hashing its non-data (a.k.a. metadata) properties.
  */
 @Injectable({
-  providedIn: forwardRef(() => DataLayerModule),
+  providedIn: 'root',
 })
 export class DataLayerMergeService {
   merge(collection: DataLayerCollection, layer: DataLayer): DataLayerCollection {

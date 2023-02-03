@@ -1,18 +1,16 @@
-import { forwardRef, Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
-import { DataLayerModule } from './data-layer.module';
 import tinycolor from 'tinycolor2';
 
 export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
 
 @Injectable({
-  providedIn: forwardRef(() => DataLayerModule),
+  providedIn: 'root',
 })
 export class DataLayerColorService {
   constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
 
   private nextColorIndex = 0;
-
 
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
@@ -25,8 +23,8 @@ export class DataLayerColorService {
   }
 
   addTransparency(color: string | undefined): string | undefined {
-    const newcolor = tinycolor(color);  
-    newcolor.setAlpha(.2);
+    const newcolor = tinycolor(color);
+    newcolor.setAlpha(0.2);
     return newcolor.toString();
   }
 

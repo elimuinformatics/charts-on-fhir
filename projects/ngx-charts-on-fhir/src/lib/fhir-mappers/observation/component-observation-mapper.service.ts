@@ -1,12 +1,11 @@
-import { Injectable, Inject, forwardRef } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { Observation, ObservationComponent } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
-import { Mapper } from '../../fhir-converter/multi-mapper.service';
+import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
-import { FhirMappersModule } from '../fhir-mappers.module';
 
 /** Required properties for mapping an Observation with [ComponentObservationMapper] */
 export type ComponentObservation = {
@@ -42,7 +41,7 @@ export function isComponentObservation(resource: Observation): resource is Compo
 }
 /** Maps a FHIR Observation resource that has multiple components */
 @Injectable({
-  providedIn: forwardRef(() => FhirMappersModule),
+  providedIn: 'root',
 })
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
