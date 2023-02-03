@@ -63,14 +63,7 @@ export class ObservationLayerService extends DataLayerService {
   name = 'Observations';
 
   retrieve = () => {
-    const sequenceObservationArray = ['Heart rate', 'Blood Pressure', 'Glucose', 'Body Weight', 'Medications'];;
-
-    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(
-      mergeMap((bundle) => from(this.converter.convert(bundle))),
-      toArray(),
-      map(things => things.sort((a, b) => sequenceObservationArray.indexOf(a.name) - sequenceObservationArray.indexOf(b.name))),
-      mergeAll()
-    )
+    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(mergeMap((bundle) => from(this.converter.convert(bundle))))
   };
 
   getQueryfromCoding(codings: Coding[]) {

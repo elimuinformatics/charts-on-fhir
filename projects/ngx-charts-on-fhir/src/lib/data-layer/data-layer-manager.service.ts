@@ -1,5 +1,5 @@
 import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject, throttleTime } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, merge, mergeAll, Observable, ReplaySubject, throttleTime, toArray } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -36,7 +36,7 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
     private mergeService: DataLayerMergeService,
-  ) {}
+  ) { }
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
   private get state() {
@@ -54,6 +54,9 @@ export class DataLayerManagerService {
 
   loading$ = new BehaviorSubject<boolean>(false);
 
+  sequenceObservationArray = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications']
+
+
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
    *
@@ -66,17 +69,22 @@ export class DataLayerManagerService {
    */
   retrieveAll() {
     this.loading$.next(true);
-    merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
-      next: (layer) =>
-        this.stateSubject.next({
-          ...this.stateSubject.value,
-          layers: this.mergeService.merge(this.state.layers, layer),
-        }),
-      error: (err) => console.error(err),
-      complete: () => {
-        this.loading$.next(false);
-      },
-    });
+    merge(...this.dataLayerServices.map((service) => service.retrieve())).pipe(
+      toArray(),
+      map(things => things.sort((a, b) => this.sequenceObservationArray.indexOf(a.name) - this.sequenceObservationArray.indexOf(b.name))),
+      mergeAll()
+    )
+      .subscribe({
+        next: (layer) =>
+          this.stateSubject.next({
+            ...this.stateSubject.value,
+            layers: this.mergeService.merge(this.state.layers, layer),
+          }),
+        error: (err) => console.error(err),
+        complete: () => {
+          this.loading$.next(false);
+        },
+      });
   }
 
   select(id: string) {
