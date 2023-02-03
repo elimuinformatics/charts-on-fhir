@@ -1,7 +1,7 @@
 <div class="layout-toolbar">
-  <data-layer-toolbar-loading-indicator [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
+  <data-layer-toolbar-loading-indicator *ngIf="showButton('loading')" [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
   <data-layer-toolbar-button
-    *ngIf="showAddDataLayer"
+    *ngIf="showButton('browser')"
     [active]="active === 'browser'"
     [badge]="(layerManager.availableLayers$ | async)?.length"
     icon="add"
@@ -9,6 +9,7 @@
     (click)="onClick('browser')"
   ></data-layer-toolbar-button>
   <data-layer-toolbar-button
+    *ngIf="showButton('options')"
     [active]="active === 'options'"
     [badge]="(layerManager.selectedLayers$ | async)?.length"
     icon="checklist"
