@@ -12,7 +12,6 @@ import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
 
 class MockLayerManager {
   enabledLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
-  selectedLayers$= new BehaviorSubject<ManagedDataLayer[]>([]);
 }
 
 class MockConfigService {
