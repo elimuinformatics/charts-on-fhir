@@ -1,7 +1,6 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgChartsModule } from 'ng2-charts';
@@ -10,26 +9,19 @@ import { dataLayerProviders } from './providers/data-layer-providers';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { mapperProviders } from './providers/mapper-providers';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import paletteProvider from './providers/palette-provider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
   FhirChartModule,
-  FhirConverterModule,
-  FhirMappersModule,
   COLOR_PALETTE,
-  DataLayerModule,
   DataLayerBrowserModule,
-  DataLayerListModule,
-  DataLayerToolbarModule,
   FhirChartSummaryModule,
   FhirDataService,
 } from 'ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
-import { ReportBPModule } from './report-BP/report-BP.module';
+import { ReportbpModule } from './report-bp/report-bp.module';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -43,21 +35,13 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     FhirChartSummaryModule,
     NgChartsModule,
     BrowserAnimationsModule,
-    MatExpansionModule,
-    DataLayerModule,
     DataLayerBrowserModule,
-    DataLayerListModule,
-    DataLayerToolbarModule,
     MatCardModule,
     MatProgressBarModule,
     MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    FhirConverterModule,
-    FhirMappersModule,
     MatToolbarModule,
     MatTabsModule,
-    ReportBPModule,
+    ReportbpModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },

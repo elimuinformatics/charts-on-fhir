@@ -1,0 +1,43 @@
+form {
+  padding: 15px;
+}
+
+mat-form-field,
+mat-slide-toggle {
+  display: block;
+}
+
+.invalid-feedback {
+  color: red;
+  margin: 5px 0 15px 0;
+}
+
+.BPform {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-widget {
+  padding: 10px;
+  display: inline-block;
+  max-width: 425px;
+  margin-bottom: 10px;
+  border: 1px solid #979797;
+  border-radius: 5px;
+}
+.card-widget p {
+  margin-bottom: 0;
+}
+.BPform-section {
+  display: inline-block;
+  max-width: 425px;
+  padding: 10px;
+  border: 1px solid #979797;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 480px) {
+  body {
+    background-color: lightgreen;
+  }
+}

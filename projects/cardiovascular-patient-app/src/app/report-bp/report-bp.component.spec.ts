@@ -2,26 +2,32 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ReportBPComponent } from './report-BP.component';
+import { ReportbpComponent } from './report-bp.component';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { By } from '@angular/platform-browser';
+import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { EMPTY } from 'rxjs';
 
-describe('ReportBPComponent', () => {
-  let component: ReportBPComponent;
-  let fixture: ComponentFixture<ReportBPComponent>;
+const mockLayerManager = {
+  availableLayers$: EMPTY,
+  selectedLayers$: EMPTY,
+};
+
+describe('ReportbpComponent', () => {
+  let component: ReportbpComponent;
+  let fixture: ComponentFixture<ReportbpComponent>;
   let loader: HarnessLoader;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule],
-      declarations: [ReportBPComponent],
-      providers: [FormBuilder],
+      declarations: [ReportbpComponent],
+      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ReportBPComponent);
+    fixture = TestBed.createComponent(ReportbpComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -35,7 +41,8 @@ describe('ReportBPComponent', () => {
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('11');
     const systolicFormField = component.form.get('systolic');
-    expect(await systolicInputHarness.getValue()).toEqual((systolicFormField?.value).toString());
+    const value = await systolicInputHarness.getValue();
+    expect(systolicFormField?.value).toEqual(parseInt(value));
     expect(systolicFormField?.errors).toBeNull();
   });
 
@@ -50,7 +57,8 @@ describe('ReportBPComponent', () => {
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('11');
     const diastolicFormField = component.form.get('diastolic');
-    expect(await diastolicInputHarness.getValue()).toEqual((diastolicFormField?.value).toString());
+    const value = await diastolicInputHarness.getValue();
+    expect(diastolicFormField?.value).toEqual(parseInt(value));
     expect(diastolicFormField?.errors).toBeNull();
   });
 
