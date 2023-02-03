@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from 'ngx-charts-on-fhir';
-import { from, map, mergeAll, mergeMap, toArray } from 'rxjs';
+import { from, mergeMap } from 'rxjs';
 
 interface Coding {
   system?: string;
