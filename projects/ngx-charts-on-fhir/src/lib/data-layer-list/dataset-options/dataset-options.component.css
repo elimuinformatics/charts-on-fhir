@@ -15,3 +15,20 @@ mat-slide-toggle {
   display: block;
   margin: 16px 4px;
 }
+mat-button-toggle-group {
+  margin: 8px;
+}
+.pointRadius {
+  width: 300px;
+}
+.form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.form-row>* {
+  flex: 0 0 auto;
+}
+.form-row>.form-row-stretch {
+  flex: 1 1 auto;
+}

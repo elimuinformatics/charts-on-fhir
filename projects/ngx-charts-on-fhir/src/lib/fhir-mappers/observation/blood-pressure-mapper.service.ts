@@ -6,7 +6,10 @@ import { Mapper } from '../multi-mapper.service';
 import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { ChartAnnotation } from '../../utils';
 import { DataLayer } from '../../data-layer/data-layer';
+import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 
+const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
+const homeEnvironmentCode = '264362003';
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {
   code: {
@@ -26,13 +29,15 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
   canMap = isBloodPressureObservation;
   map(resource: BloodPressureObservation): DataLayer {
     const layer = this.baseMapper.map(resource);
+    if (resource.meta?.extension) {
+      const measurementSetting = resource.meta.extension.find((ext) => ext.url === measurementSettingExtUrl);
+      if (measurementSetting?.valueCodeableConcept?.coding?.[0].code === homeEnvironmentCode) {
+        for (let dataset of layer.datasets) {
+          dataset.label += HOME_DATASET_LABEL_SUFFIX;
+        }
+      }
+    }
     layer.annotations = [
-      // merge({}, this.annotationOptions, {
-      //   label: { content: 'Normal blood pressure' },
-      //   yScaleID: layer.datasets[0].yAxisID,
-      //   yMax: 120,
-      //   yMin: 80,
-      // }),
       merge({}, this.annotationOptions, {
         display: true,
         label: { content: 'Systolic Blood Pressure Reference Range' },

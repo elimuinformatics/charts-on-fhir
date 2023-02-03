@@ -1,5 +1,5 @@
   <mat-accordion displayMode="flat" multi="true">
-    <mat-expansion-panel *ngFor="let dataset of datasetsReversed" expanded="true">
+    <mat-expansion-panel *ngFor="let dataset of datasetsReversed; trackBy: trackByLabel" expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-checkbox
