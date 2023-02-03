@@ -5,7 +5,8 @@
         [title]="layer.name" 
         icon="info"
         class="dataset-summary mat-elevation-z2">
-        <dynamic-table [data]="summarize(layer, range)"></dynamic-table>
+        <dynamic-table [data]="summarize(layer, range)">
+        </dynamic-table>
       </fhir-chart-summary-card>
   </ng-container>
 </div>

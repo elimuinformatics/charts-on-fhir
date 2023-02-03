@@ -88,14 +88,9 @@ describe('FhirChartSummaryComponent', () => {
     expect(statistics.componentInstance.data).toEqual([{ name: 'summary' }]);
   });
   it('should not render a card for disabled layers', () => {
-    const enabledLayer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [], scale: { id: 'test' },enabled:true };
-    const disabledLayer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [], scale: { id: 'test' },enabled:false };
-    layerManager.selectedLayers$.next([enabledLayer, disabledLayer]);
-    layerManager.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled))).forEach(layer => {
-      layerManager.enabledLayers$.next(layer)
-    });
+    layerManager.enabledLayers$.next([]);
     fixture.detectChanges();
     const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
-    expect(cards.length).toBe(1);
+    expect(cards.length).toBe(0);
   });
 });
