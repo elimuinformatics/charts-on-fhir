@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" class="bpform" id="entryForm" (ngSubmit)="onSubmit()">
+      <section class="bpform-section">
+        <div class="systolic-input">
+          <mat-form-field class="input-width">
+            <mat-label> Systolic : </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="systolic"
+              id="systolic"
+              placeholder="Systolic"
+              [ngClass]="{ 'is-invalid': submitted && form.get('systolic')?.errors }"
+            />
+          </mat-form-field>
+          <div *ngIf="form.get('systolic')?.errors && form.get('systolic')?.touched" class="invalid-feedback">
+            <div *ngIf="form.get('systolic')?.errors?.['required']">Systolic BP is required</div>
+            <div *ngIf="form.get('systolic')?.errors?.['min'] || form.get('systolic')?.errors?.['max']">Systolic BP should in range 11 to 250</div>
+          </div>
+        </div>
+
+        <div>
+          <mat-form-field class="input-width">
+            <mat-label> Diastolic : </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="diastolic"
+              id="diastolic"
+              placeholder="diastolic"
+              [ngClass]="{ 'is-invalid': submitted && form.get('diastolic')?.errors }"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="invalid-feedback">
+          <div *ngIf="form.get('diastolic')?.errors && form.get('diastolic')?.touched">
+            <div *ngIf="form.get('diastolic')?.errors?.['required']">Diastolic BP is required</div>
+            <div *ngIf="form.get('diastolic')?.errors?.['min'] || form.get('diastolic')?.errors?.['max']">Diastolic BP should in range 11 to 250</div>
+          </div>
+          <div *ngIf="form.get('systolic')?.valid && form.get('diastolic')?.valid && form?.errors && form?.errors?.['bloodPressure']">
+            Systolic should be grater than Diastolic
+          </div>
+        </div>
+
+        <button [disabled]="!form.valid" mat-raised-button color="primary">Save</button>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>
