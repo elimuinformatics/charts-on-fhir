@@ -71,6 +71,83 @@ export class FhirDataService {
       return teardownLogic;
     });
   }
+  addPatientData(reportBPValue: any) {
+    const resource = {
+      "resourceType": "Observation",
+      "status": "final",
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "vital-signs",
+              "display": "vital-signs"
+            }
+          ]
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "85354-9",
+            "display": "Blood Pressure"
+          }
+        ],
+        "text": "Blood Pressure"
+      },
+      "subject": {
+        "reference": `Patient/${this.client?.patient.id}`
+      },
+      "encounter": {
+        "reference": "Encounter/23249"
+      },
+      "effectiveDateTime": new Date(),
+      "issued": new Date(),
+      "component": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8462-4",
+                "display": "Diastolic Blood Pressure"
+              }
+            ],
+            "text": "Diastolic Blood Pressure"
+          },
+          "valueQuantity": {
+            "value": reportBPValue.diastolic,
+            "unit": "mm[Hg]",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8480-6",
+                "display": "Systolic Blood Pressure"
+              }
+            ],
+            "text": "Systolic Blood Pressure"
+          },
+          "valueQuantity": {
+            "value": reportBPValue.systolic,
+            "unit": "mm[Hg]",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        }
+      ]
+    };
+    const requestOptions = {};
+    this.client?.create(resource, requestOptions)
+      .then(() => alert('data inserted successfully'))
+      .catch((error) => { return error });
+  }
 }
 
 function addCountParam(url: string) {

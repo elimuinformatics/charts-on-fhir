@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -27,7 +27,7 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService) {}
+  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService ,private dataService:FhirDataService) {}
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
@@ -37,6 +37,7 @@ export class ReportBPComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.dataService.addPatientData(this.form.value)
     this.submitted = true;
     this.form.reset();
   }
