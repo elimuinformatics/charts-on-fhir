@@ -1,12 +1,10 @@
-import { forwardRef, Inject, Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, ReplaySubject, throttleTime } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { BehaviorSubject, distinctUntilChanged, map, merge, Observable } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
-import { DataLayerModule } from './data-layer.module';
 import { zip } from 'lodash-es';
-
 
 /** A service for asynchronously retrieving DataLayers */
 export abstract class DataLayerService {
@@ -29,13 +27,13 @@ const initialState: DataLayerManagerState = {
  * and provides methods for selecting and ordering the layers.
  */
 @Injectable({
-  providedIn: forwardRef(() => DataLayerModule),
+  providedIn: 'root',
 })
 export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
-    private mergeService: DataLayerMergeService,
+    private mergeService: DataLayerMergeService
   ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
@@ -51,7 +49,7 @@ export class DataLayerManagerService {
     distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
-
+  enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
   loading$ = new BehaviorSubject<boolean>(false);
 
   /**
