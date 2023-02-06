@@ -10,13 +10,16 @@ import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 export class AppComponent implements OnInit {
   showAddDataLayer: boolean = false;
   layers: any[] = [];
-  preSelectedLayer: string[] = ['-1586446404', '1912685368', '1871294208', '181533948', '1697167019'];
+  layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications'];
 
-
-  constructor(readonly layerManager: DataLayerManagerService) { }
+  constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.preSelectedLayer);
+    this.layerManager.retrieveAll(this.layerOrder);
+
+    this.layerManager.availableLayers$.subscribe((layers) => {
+      layers.forEach((layer) => this.layerManager.select(layer.id));
+    });
   }
 
   sidenavPanel: string | null = null;
