@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
-    <form [formGroup]="form" class="BPform" id="entryForm" (ngSubmit)="onSubmit()">
-      <section class="BPform-section">
+    <form [formGroup]="form" class="bpform" id="entryForm" (ngSubmit)="onSubmit()">
+      <section class="bpform-section">
         <div class="systolic-input">
           <mat-form-field class="input-width">
             <mat-label> Systolic : </mat-label>
@@ -39,7 +39,7 @@
             <div *ngIf="form.get('diastolic')?.errors?.['required']">Diastolic BP is required</div>
             <div *ngIf="form.get('diastolic')?.errors?.['min'] || form.get('diastolic')?.errors?.['max']">Diastolic BP should in range 11 to 250</div>
           </div>
-          <div *ngIf="form.get('diastolic')?.valid && form.get('diastolic')?.valid && form?.errors && form?.errors?.['bloodPressure']">
+          <div *ngIf="form.get('systolic')?.valid && form.get('diastolic')?.valid && form?.errors && form?.errors?.['bloodPressure']">
             Systolic should be grater than Diastolic
           </div>
         </div>

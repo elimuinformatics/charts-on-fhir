@@ -12,7 +12,7 @@ mat-slide-toggle {
   margin: 5px 0 15px 0;
 }
 
-.BPform {
+.bpform {
   display: flex;
   flex-direction: column;
 }
@@ -28,7 +28,7 @@ mat-slide-toggle {
 .card-widget p {
   margin-bottom: 0;
 }
-.BPform-section {
+.bpform-section {
   display: inline-block;
   max-width: 425px;
   padding: 10px;

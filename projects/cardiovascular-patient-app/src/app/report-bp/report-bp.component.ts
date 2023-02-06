@@ -14,7 +14,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
   templateUrl: './report-bp.component.html',
   styleUrls: ['./report-bp.component.css'],
 })
-export class ReportbpComponent implements OnInit {
+export class ReportBPComponent implements OnInit {
   submitted = false;
   min = 11;
   max = 250;
@@ -24,7 +24,7 @@ export class ReportbpComponent implements OnInit {
       systolic: [null, [Validators.required, Validators.min(this.min), Validators.max(this.max)]],
       diastolic: [null, [Validators.required, Validators.min(this.min), Validators.max(this.max)]],
     },
-    { validator: [BloodPressureRangeValidator] }
+    { validators: [BloodPressureRangeValidator] }
   );
 
   constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService) {}
