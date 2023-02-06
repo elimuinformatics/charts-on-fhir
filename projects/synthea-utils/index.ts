@@ -44,7 +44,7 @@ async function generatePatients() {
   return new Promise<string[]>((resolve, reject) => {
     const patients: string[] = [];
     const args = ['-jar', SYNTHEA_BINARY, '-c', SYNTHEA_CONFIG, '-d', MODULES_DIR, '-k', KEEP_FILE, ...process.argv.slice(2)];
-    const synthea = child_process.spawn('java', args);
+    const synthea = child_process.spawn('java', args, { stdio: [ 'inherit', 'pipe', 'inherit' ]});
     let incompleteLine = '';
     synthea.stdout.on('data', (chunk) => {
       const text = incompleteLine + String(chunk);
