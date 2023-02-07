@@ -3,7 +3,7 @@ import { StatisticsService } from './statistics.service';
 import { DataLayer } from '../data-layer/data-layer';
 import { NumberRange, previous } from '../utils';
 
-/** Maps properties from a single resource to properties on a DataLayer */
+/** Summarizes a DataLayer, looking at data within the specified date range */
 export abstract class SummaryService {
   abstract canSummarize(layer: DataLayer): boolean;
   abstract summarize(layer: DataLayer, range: NumberRange): Record<string, string>[];

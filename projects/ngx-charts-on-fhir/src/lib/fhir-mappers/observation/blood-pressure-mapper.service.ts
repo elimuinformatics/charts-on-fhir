@@ -27,12 +27,6 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
   map(resource: BloodPressureObservation): DataLayer {
     const layer = this.baseMapper.map(resource);
     layer.annotations = [
-      // merge({}, this.annotationOptions, {
-      //   label: { content: 'Normal blood pressure' },
-      //   yScaleID: layer.datasets[0].yAxisID,
-      //   yMax: 120,
-      //   yMin: 80,
-      // }),
       merge({}, this.annotationOptions, {
         display: true,
         label: { content: 'Systolic Blood Pressure Reference Range' },

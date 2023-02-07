@@ -22,6 +22,7 @@ const HOME_ENVIRONMENT = {
     ],
   },
 };
+const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
 
 await main();
 
@@ -32,6 +33,7 @@ async function main() {
 
 async function postProcessPatient(patientName: string) {
   const bundle = await loadPatientBundle(patientName);
+  keepResources(bundle, ['Patient', 'Observation', 'Encounter', 'MedicationRequest']);
   addMeasurementSetting(bundle);
   addMedicationDuration(bundle);
   await savePatientBundle(patientName, bundle);
@@ -42,7 +44,7 @@ async function generatePatients() {
   return new Promise<string[]>((resolve, reject) => {
     const patients: string[] = [];
     const args = ['-jar', SYNTHEA_BINARY, '-c', SYNTHEA_CONFIG, '-d', MODULES_DIR, '-k', KEEP_FILE, ...process.argv.slice(2)];
-    const synthea = child_process.spawn('java', args);
+    const synthea = child_process.spawn('java', args, { stdio: [ 'inherit', 'pipe', 'inherit' ]});
     let incompleteLine = '';
     synthea.stdout.on('data', (chunk) => {
       const text = incompleteLine + String(chunk);
@@ -85,13 +87,12 @@ async function savePatientBundle(patientName: string, bundle: Bundle) {
 function addMeasurementSetting(bundle: Bundle) {
   console.log('Adding Measurement Setting Extension');
   for (let entry of bundle.entry) {
-    if (entry.resource.resourceType === 'Observation') {
-      const encounter = resolveReference(bundle, entry.resource.encounter);
-      if (encounter.resourceType === 'Encounter' && encounter.type[0].coding[0].code === '185320006') {
-        entry.resource.meta = entry.resource.meta ?? {};
-        entry.resource.meta.extension = entry.resource.meta.extension ?? [];
-        entry.resource.meta.extension.push(HOME_ENVIRONMENT);
-      }
+    if (entry.resource.resourceType === 'Observation' && entry.resource.code.text.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
+      entry.resource.code.text = trimSuffix(entry.resource.code.text, HOME_DATASET_LABEL_SUFFIX);
+      entry.resource.code.coding[0].display = trimSuffix(entry.resource.code.coding[0].display, HOME_DATASET_LABEL_SUFFIX);
+      entry.resource.meta = entry.resource.meta ?? {};
+      entry.resource.meta.extension = entry.resource.meta.extension ?? [];
+      entry.resource.meta.extension.push(HOME_ENVIRONMENT);
     }
   }
 }
@@ -114,4 +115,16 @@ function resolveReference(bundle: Bundle, ref: Reference): FhirResource {
   const prefix = 'urn:uuid:';
   const id = ref.reference.startsWith(prefix) ? ref.reference.substring(prefix.length) : ref.reference;
   return bundle.entry.find((entry) => entry.resource.id === id)?.resource;
+}
+
+function trimSuffix(label: string, suffix: string) {
+  if (label.endsWith(suffix)) {
+    return label.substring(0, label.length - suffix.length);
+  }
+  return label;
+}
+
+function keepResources(bundle: Bundle, resourceTypes: FhirResource['resourceType'][]) {
+  console.log(`Removing all resources except [${resourceTypes.join(', ')}]`);
+  bundle.entry = bundle.entry.filter((entry) => resourceTypes.includes(entry.resource.resourceType));
 }

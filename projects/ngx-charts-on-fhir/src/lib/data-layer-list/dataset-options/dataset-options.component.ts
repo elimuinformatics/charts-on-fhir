@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Chart } from 'chart.js';
 import produce from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
@@ -11,7 +12,7 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
   styleUrls: ['./dataset-options.component.css'],
 })
 export class DatasetOptionsComponent implements OnInit {
-   _dataset?: Dataset;
+  _dataset?: Dataset;
   @Input() set dataset(dataset: Dataset) {
     this._dataset = dataset;
     this.updateForm(dataset);
@@ -27,6 +28,8 @@ export class DatasetOptionsComponent implements OnInit {
   form = this.fb.group({
     color: this.fb.control('', { nonNullable: true }),
     type: this.fb.control<TimelineChartType>('line', { nonNullable: true }),
+    pointStyle: this.fb.control('circle', { nonNullable: true }),
+    pointRadius: this.fb.control(1, { nonNullable: true }),
     interpolation: this.fb.control(false, { nonNullable: true }),
     fill: this.fb.control(false, { nonNullable: true }),
   });
@@ -41,6 +44,8 @@ export class DatasetOptionsComponent implements OnInit {
     if (this._dataset) {
       const props: Partial<Dataset> = {
         type: formValue.type,
+        pointStyle: formValue.pointStyle,
+        pointRadius: formValue.pointRadius,
         cubicInterpolationMode: formValue.interpolation ? 'monotone' : 'default',
         fill: formValue.fill ? 'stack' : false,
       };
@@ -58,8 +63,31 @@ export class DatasetOptionsComponent implements OnInit {
     this.form.patchValue({
       color: this.colorService.getColor(dataset),
       type: dataset.type ?? 'line',
+      pointStyle: getPointStyle(dataset),
+      pointRadius: getPointRadius(dataset),
       interpolation: line.cubicInterpolationMode === 'monotone',
       fill: !!line.fill,
     });
   }
+}
+
+function getPointStyle(dataset: Dataset) {
+  if (dataset.pointStyle == null) {
+    return 'circle';
+  }
+  if (typeof dataset.pointStyle === 'string') {
+    return dataset.pointStyle;
+  }
+  return undefined;
+}
+
+function getPointRadius(dataset: Dataset) {
+  const line = dataset as Dataset<'line'>;
+  if (line.pointRadius == null && typeof Chart.defaults.elements.point.radius === 'number') {
+    return Chart.defaults.elements.point.radius;
+  }
+  if (typeof line.pointRadius === 'number') {
+    return line.pointRadius;
+  }
+  return undefined;
 }
