@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BundleEntry, Patient } from 'fhir/r4';
-import { BehaviorSubject, filter, map, scan, shareReplay } from 'rxjs';
-import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { EMPTY, filter, map, ReplaySubject, scan, shareReplay } from 'rxjs';
 import { FhirDataService } from '../fhir-data/fhir-data.service';
 import { isDefined } from '../utils';
 
@@ -9,24 +8,31 @@ import { isDefined } from '../utils';
   providedIn: 'root',
 })
 export class PatientService {
-  constructor(private fhir: FhirDataService, private layerManager: DataLayerManagerService) {}
+  constructor(private fhir: FhirDataService) {
+    const patient = this.fhir.client?.getPatientId();
+    if (patient) {
+      this.selectedPatientSubject.next(patient);
+    };
+  }
 
-  patients$ = this.fhir.getPatientData<Patient>('Patient', false).pipe(
-    map((bundle) => bundle.entry),
-    filter(isDefined),
-    map(getPatientList),
-    scan((acc, value) => [...acc, ...value]),
-    shareReplay(1)
-  );
+  isSinglePatientContext = this.fhir.isSmartLaunch;
 
-  selectedPatientSubject = new BehaviorSubject<string | undefined>(undefined);
+  patients$ = this.isSinglePatientContext
+    ? EMPTY
+    : this.fhir.getPatientData<Patient>('Patient', false).pipe(
+        map((bundle) => bundle.entry),
+        filter(isDefined),
+        map(getPatientList),
+        scan((acc, value) => [...acc, ...value]),
+        shareReplay(1)
+      );
+
+  selectedPatientSubject = new ReplaySubject<string>();
   selectedPatient$ = this.selectedPatientSubject.asObservable();
 
   selectPatient(patientId: string) {
-    this.layerManager.reset();
     this.fhir.changePatient(patientId);
     this.selectedPatientSubject.next(patientId);
-    this.layerManager.retrieveAll();
   }
 }
 
@@ -35,8 +41,15 @@ function getPatientList(entries: BundleEntry<Patient>[]) {
     .filter(isDefined)
     .map((entry) => entry.resource)
     .filter(isDefined)
-    .map((resource) => ({
-      id: resource.id ?? '',
-      name: [...(resource.name?.[0].given ?? []), resource.name?.[0].family].join(' '),
-    }));
+    .map((patient) => getPatientDetails(patient));
+}
+
+function getPatientDetails(patient?: Patient) {
+  if (!patient) {
+    throw new Error('Patient is not defined');
+  }
+  return {
+    id: patient.id ?? '',
+    name: [...(patient.name?.[0].given ?? []), patient.name?.[0].family].join(' '),
+  };
 }

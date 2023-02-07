@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, FhirDataService, PatientService, ToolbarButtonName } from 'ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +7,23 @@ import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(readonly layerManager: DataLayerManagerService, readonly fhir: FhirDataService) {}
-  ngOnInit(): void {
-    if (this.fhir.client?.patient.id) {
-      this.layerManager.retrieveAll();
+  readonly toolbar: ToolbarButtonName[];
+  active: ToolbarButtonName | null;
+
+  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService) {
+    if (patientService.isSinglePatientContext) {
+      this.toolbar = ['loading', 'browser', 'options'];
+      this.active = 'browser';
     } else {
-      console.warn('No Patient');
+      this.toolbar = ['loading', 'patients', 'browser', 'options'];
+      this.active = 'patients';
     }
+  }
+
+  ngOnInit(): void {
+    this.patientService.selectedPatient$.subscribe(() => {
+      this.layerManager.reset();
+      this.layerManager.retrieveAll();
+    });
   }
 }

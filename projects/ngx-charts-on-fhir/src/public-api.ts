@@ -36,4 +36,5 @@ export * from './lib/fhir-mappers/medication-request/simple-medication-mapper.se
 export * from './lib/fhir-mappers/medication-request/duration-medication-mapper.service';
 export * from './lib/patient-browser/patient-browser.module';
 export * from './lib/patient-browser/patient-browser.component';
+export * from './lib/patient-browser/patient.service';
 export * from './lib/utils';

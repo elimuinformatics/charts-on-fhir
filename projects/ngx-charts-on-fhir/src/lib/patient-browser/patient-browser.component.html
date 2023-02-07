@@ -38,11 +38,11 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       <tr *matNoDataRow>
-        <td *ngIf="filterControl.value" [attr.colspan]="4">
+        <td *ngIf="filterControl.value" [attr.colspan]="3">
           <p class="empty-message">No patients match the filter.</p>
           <button mat-button color="primary" (click)="filterControl.setValue('')">SHOW ALL</button>
         </td>
-        <td *ngIf="!filterControl.value" [attr.colspan]="4">
+        <td *ngIf="!filterControl.value" [attr.colspan]="3">
           <p class="empty-message">No patients are available.</p>
         </td>
       </tr>

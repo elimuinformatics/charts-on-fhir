@@ -10,19 +10,14 @@ import { FhirDataService } from '../fhir-data/fhir-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartLayoutComponent {
-  @Input() toolbar?: ToolbarButtonName[];
-  @Input() sidebarOpened: boolean = true;
-  sidenavPanel: ToolbarButtonName | null = 'browser';
+  @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
+  @Input() active: ToolbarButtonName | null = null;
 
-  constructor(fhir: FhirDataService) {
-    if (!fhir.isSmartLaunch && !fhir.client?.getPatientId()) {
-      this.sidenavPanel = 'patients';
-    }
-  }
+  constructor(public fhir: FhirDataService) {}
 
   onToolbarChange(sidenav: MatSidenav, panel: ToolbarButtonName | null) {
     if (panel) {
-      this.sidenavPanel = panel;
+      this.active = panel;
       sidenav.open();
     } else {
       sidenav.close();
