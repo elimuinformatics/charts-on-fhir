@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, mergeAll, Observable, toArray } from 'rxjs';
-import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
+import { BehaviorSubject, distinctUntilChanged, groupBy, map, merge, mergeAll, Observable, toArray } from 'rxjs';
+import { DataLayer, DataLayerCollection, ManagedDataLayer, TimelineChartType, TimelineDataPoint } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
@@ -34,7 +34,7 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
     private mergeService: DataLayerMergeService
-  ) {}
+  ) { }
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
   private get state() {
@@ -62,39 +62,31 @@ export class DataLayerManagerService {
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
-  retrieveAll(layerOrder?: string[]) {
+  retrieveAll(layerOrder: (obserable: Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>)
+    => Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>
+    = (obserable: Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>) => obserable, isAllLayerSelected: boolean = false) {
     this.loading$.next(true);
-    if (layerOrder && layerOrder.length > 0) {
-      merge(...this.dataLayerServices.map((service) => service.retrieve()))
-        .pipe(
-          toArray(),
-          map((things) => things.sort((a, b) => layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name))),
-          mergeAll()
-        )
-        .subscribe({
-          next: (layer) =>
-            this.stateSubject.next({
-              ...this.stateSubject.value,
-              layers: this.mergeService.merge(this.state.layers, layer),
-            }),
-          error: (err) => console.error(err),
-          complete: () => {
-            this.loading$.next(false);
-          },
-        });
-    } else {
-      merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
-        next: (layer) =>
+    layerOrder(merge(...this.dataLayerServices.map((service) => service.retrieve())))
+      .subscribe({
+        next: (layer) => {
+          const layersCreation = this.mergeService.merge(this.state.layers, layer);
           this.stateSubject.next({
             ...this.stateSubject.value,
-            layers: this.mergeService.merge(this.state.layers, layer),
-          }),
+            layers: layersCreation
+          })
+          if (isAllLayerSelected) {
+            Object.keys(layersCreation).forEach(layerId => {
+              if (layersCreation[layerId] && !this.state.layers[layerId].selected) {
+                this.select(layerId);
+              }
+            });
+          }
+        },
         error: (err) => console.error(err),
         complete: () => {
           this.loading$.next(false);
         },
       });
-    }
   }
 
   select(id: string) {

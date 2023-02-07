@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { map, mergeAll, toArray } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +11,21 @@ import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 export class AppComponent implements OnInit {
   showAddDataLayer: boolean = false;
   layers: any[] = [];
-  layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications'];
+  isAllLayerSelected = true;
 
-  constructor(readonly layerManager: DataLayerManagerService) {}
+  constructor(readonly layerManager: DataLayerManagerService) { }
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.layerOrder);
+    this.layerManager.retrieveAll(this.orderLayers, this.isAllLayerSelected);
+  }
 
-    this.layerManager.availableLayers$.subscribe((layers) => {
-      layers.forEach((layer) => this.layerManager.select(layer.id));
-    });
+  orderLayers(layer: any) {
+    const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications']
+    return layer.pipe(
+      toArray(),
+      map((things: any) => things.sort((a: any, b: any) => layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name))),
+      mergeAll()
+    )
   }
 
   sidenavPanel: string | null = null;
