@@ -1,11 +1,7 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Patient } from 'fhir/r4';
-import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
-import { FhirDataService } from '../fhir-data/fhir-data.service';
-import { isDefined } from '../utils';
 import { PatientService } from './patient.service';
 
 type PatientRow = {
