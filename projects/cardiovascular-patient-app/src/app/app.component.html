@@ -1,1 +1,20 @@
-<h1> cardiovascular patient app</h1>
+<mat-toolbar>
+  <span>{{ appTitle }}</span>
+</mat-toolbar>
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab label="Report BP">
+    <report-bp></report-bp>
+  </mat-tab>
+  <mat-tab label="See prior BPs">
+    <div class="layout-main" id="layout-main">
+      <mat-card class="layout-main-chart mat-elevation-z2">
+        <mat-card-content>
+          <fhir-chart width="100%"></fhir-chart>
+        </mat-card-content>
+      </mat-card>
+      <div class="layout-main-summary">
+        <fhir-chart-summary></fhir-chart-summary>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
