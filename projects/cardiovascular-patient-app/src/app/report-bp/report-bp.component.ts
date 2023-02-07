@@ -27,7 +27,7 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService ,private dataService:FhirDataService) {}
+  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService, private dataService: FhirDataService) { }
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
@@ -37,7 +37,11 @@ export class ReportBPComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.dataService.addPatientData(this.form.value)
+    const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic }
+      const resource = this.dataService.createResourceData(bloodPressure);
+      if (resource) {
+        this.dataService.addPatientData(resource, {})
+      }
     this.submitted = true;
     this.form.reset();
   }

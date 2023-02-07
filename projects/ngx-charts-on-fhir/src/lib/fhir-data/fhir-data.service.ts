@@ -3,7 +3,12 @@ import FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
-import { Bundle, FhirResource } from 'fhir/r4';
+import { Bundle, FhirResource, Observation } from 'fhir/r4';
+
+export interface BloodPressure {
+  systolic?: number |null,
+  diastolic?: number |null
+}
 
 /**
  * A wrapper service for the SMART-on-FHIR javascript client that makes it easier to use with Angular and RxJS.
@@ -71,8 +76,15 @@ export class FhirDataService {
       return teardownLogic;
     });
   }
-  addPatientData(reportBPValue: any) {
-    const resource = {
+
+  addPatientData(resource: any, requestOptions: {}) {
+    this.client?.create(resource, requestOptions)
+      .then(() => alert('data inserted successfully'))
+      .catch((error) => { return error });
+  }
+
+  createResourceData(reportBPValue: BloodPressure): Observation {
+    return {
       "resourceType": "Observation",
       "status": "final",
       "category": [
@@ -100,10 +112,10 @@ export class FhirDataService {
         "reference": `Patient/${this.client?.patient.id}`
       },
       "encounter": {
-        "reference": "Encounter/23249"
+        "reference": `Encounter/${this.client?.encounter.id}`
       },
-      "effectiveDateTime": new Date(),
-      "issued": new Date(),
+      "effectiveDateTime": new Date().toISOString(),
+      "issued": new Date().toISOString(),
       "component": [
         {
           "code": {
@@ -117,7 +129,7 @@ export class FhirDataService {
             "text": "Diastolic Blood Pressure"
           },
           "valueQuantity": {
-            "value": reportBPValue.diastolic,
+            "value": Number(reportBPValue.diastolic),
             "unit": "mm[Hg]",
             "system": "http://unitsofmeasure.org",
             "code": "mm[Hg]"
@@ -135,7 +147,7 @@ export class FhirDataService {
             "text": "Systolic Blood Pressure"
           },
           "valueQuantity": {
-            "value": reportBPValue.systolic,
+            "value": Number(reportBPValue.systolic),
             "unit": "mm[Hg]",
             "system": "http://unitsofmeasure.org",
             "code": "mm[Hg]"
@@ -143,10 +155,7 @@ export class FhirDataService {
         }
       ]
     };
-    const requestOptions = {};
-    this.client?.create(resource, requestOptions)
-      .then(() => alert('data inserted successfully'))
-      .catch((error) => { return error });
+
   }
 }
 
