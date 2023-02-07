@@ -1,5 +1,10 @@
 <mat-card>
   <mat-card-content>
+    <mat-card class="card-widget">
+      <div>
+        Last BP reported was {{ lastReportedBPdata?.systolic?.value }}/{{ lastReportedBPdata?.diastolic?.value }} on {{ lastReportedBPdata?.systolic?.date }}
+      </div>
+    </mat-card>
     <form [formGroup]="form" class="bpform" id="entryForm" (ngSubmit)="onSubmit()">
       <section class="bpform-section">
         <div class="systolic-input">

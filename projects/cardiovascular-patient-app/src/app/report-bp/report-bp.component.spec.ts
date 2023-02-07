@@ -13,6 +13,7 @@ import { EMPTY } from 'rxjs';
 const mockLayerManager = {
   availableLayers$: EMPTY,
   selectedLayers$: EMPTY,
+  lastBPLayers$: EMPTY
 };
 
 describe('ReportBPComponent', () => {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import moment from 'moment';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -8,6 +9,11 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
 
   return systolic && diastolic && systolic.value > diastolic.value ? null : { bloodPressure: true };
 };
+
+interface lastReportedBPdata {
+  systolic: { date: string; value: number };
+  diastolic: { date: string; value: number };
+}
 
 @Component({
   selector: 'report-bp',
@@ -18,6 +24,7 @@ export class ReportBPComponent implements OnInit {
   submitted = false;
   min = 11;
   max = 250;
+  lastReportedBPdata?: lastReportedBPdata;
 
   form = this.fb.group(
     {
@@ -33,6 +40,14 @@ export class ReportBPComponent implements OnInit {
     this.form.valueChanges.subscribe((value) => {
       console.log(this.layerManager.availableLayers$);
       this.updateBPentryForm(value);
+    });
+    this.layerManager.lastBPLayers$.subscribe((data: any) => {
+      if (data.length > 0) {
+        this.lastReportedBPdata = {
+          systolic: { date: `${moment(data[0][1][0].x).format('D MMM YYYY')} at ${moment(data[0][1][0].x).format('hh:MM A')}`, value: data[0][1][0].y },
+          diastolic: { date: `${moment(data[0][0][0].x).format('D MMM YYYY')} at ${moment(data[0][0][0].x).format('hh:MM A')}`, value: data[0][0][0].y },
+        };
+      }
     });
   }
 

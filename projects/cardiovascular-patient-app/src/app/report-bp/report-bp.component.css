@@ -24,10 +24,9 @@ mat-slide-toggle {
   margin-bottom: 10px;
   border: 1px solid #979797;
   border-radius: 5px;
+  margin-left: 30px;
 }
-.card-widget p {
-  margin-bottom: 0;
-}
+
 .bpform-section {
   display: inline-block;
   max-width: 425px;
@@ -41,3 +40,4 @@ mat-slide-toggle {
     background-color: lightgreen;
   }
 }
+
