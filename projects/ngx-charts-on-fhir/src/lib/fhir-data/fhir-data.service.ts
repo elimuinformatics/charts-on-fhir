@@ -18,8 +18,8 @@ export class FhirDataService {
   client?: Client;
   private clientState?: fhirclient.ClientState;
   
-  get isSmartLaunch() {
-    return sessionStorage.getItem('SMART_KEY');
+  get isSmartLaunch(): boolean {
+    return !!sessionStorage.getItem('SMART_KEY');
   }
 
   /**
