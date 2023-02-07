@@ -30,7 +30,7 @@ class MockColorPickerComponent implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {}
 }
 
-fdescribe('DatasetOptionsComponent', () => {
+describe('DatasetOptionsComponent', () => {
   let component: DatasetOptionsComponent;
   let fixture: ComponentFixture<DatasetOptionsComponent>;
   let loader: HarnessLoader;
