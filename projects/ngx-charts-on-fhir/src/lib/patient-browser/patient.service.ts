@@ -12,7 +12,7 @@ export class PatientService {
     const patient = this.fhir.client?.getPatientId();
     if (patient) {
       this.selectedPatientSubject.next(patient);
-    };
+    }
   }
 
   isSinglePatientContext = this.fhir.isSmartLaunch;

@@ -37,7 +37,7 @@ export class PatientBrowserComponent {
 
   ngOnInit(): void {
     this.patientService.patients$.subscribe((patients) => (this.dataSource.data = patients));
-    this.patientService.selectedPatient$.subscribe((selected) => this.selectedPatient = selected);
+    this.patientService.selectedPatient$.subscribe((selected) => (this.selectedPatient = selected));
     this.filterControl.valueChanges.subscribe((filter) => (this.dataSource.filter = filter));
   }
 
