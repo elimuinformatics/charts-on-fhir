@@ -17,7 +17,7 @@
       "allow": {
         "condition_type": "Date",
         "operator": ">=",
-        "year": 2022
+        "year": 2021
       },
       "direct_transition": "HypertensionGuard"
     },

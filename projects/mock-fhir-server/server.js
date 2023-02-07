@@ -67,6 +67,16 @@ router.render = (req, res) => {
   }
 };
 
+const reload = (req, res, next) => {
+  if (req.method === "POST" && req.url.endsWith("/reload/")) {
+    router.db.setState(generateData());
+    res.sendStatus(201);
+    console.log("JSON data reloaded from disk");
+  } else {
+    next();
+  }
+}
+server.use(reload);
 server.use(middlewares);
 server.use(
   jsonServer.rewriter({

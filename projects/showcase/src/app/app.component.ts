@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +7,12 @@ import { DataLayerManagerService } from 'ngx-charts-on-fhir';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(readonly layerManager: DataLayerManagerService) {}
+  constructor(readonly layerManager: DataLayerManagerService, readonly fhir: FhirDataService) {}
   ngOnInit(): void {
-    this.layerManager.retrieveAll();
+    if (this.fhir.client?.patient.id) {
+      this.layerManager.retrieveAll();
+    } else {
+      console.warn('No Patient');
+    }
   }
 }

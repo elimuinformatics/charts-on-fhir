@@ -1,0 +1,49 @@
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Patient } from 'fhir/r4';
+import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { FhirDataService } from '../fhir-data/fhir-data.service';
+import { isDefined } from '../utils';
+import { PatientService } from './patient.service';
+
+type PatientRow = {
+  id: string;
+  family?: string;
+  given?: string;
+  birthDate?: string;
+  gender?: string;
+};
+
+@Component({
+  selector: 'patient-browser',
+  templateUrl: './patient-browser.component.html',
+  styleUrls: ['./patient-browser.component.css'],
+})
+export class PatientBrowserComponent {
+  dataSource = new MatTableDataSource<PatientRow>();
+  displayedColumns = ['select', 'id', 'name'];
+  filterControl = new FormControl('', { nonNullable: true });
+  selectedPatient?: string;
+
+  @ViewChild(MatSort) sort?: MatSort;
+  @ViewChild(MatTable) table?: MatTable<PatientRow>;
+
+  constructor(public patientService: PatientService) {}
+
+  getId = (_index: number, row: PatientRow) => row.id;
+  isSelected = (row: PatientRow) => row.id === this.selectedPatient;
+
+  ngOnInit(): void {
+    this.patientService.patients$.subscribe((patients) => (this.dataSource.data = patients));
+    this.patientService.selectedPatient$.subscribe((selected) => this.selectedPatient = selected);
+    this.filterControl.valueChanges.subscribe((filter) => (this.dataSource.filter = filter));
+  }
+
+  ngAfterViewInit() {
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
+  }
+}

@@ -6,10 +6,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { DataLayerBrowserModule } from '../data-layer-browser/data-layer-browser.module';
 import { DataLayerListModule } from '../data-layer-list/data-layer-list.module';
 import { MatIconModule } from '@angular/material/icon';
+import { PatientBrowserModule } from '../patient-browser/patient-browser.module';
 
 @NgModule({
   declarations: [FhirChartLayoutComponent],
-  imports: [CommonModule, MatSidenavModule, MatIconModule, DataLayerToolbarModule, DataLayerBrowserModule, DataLayerListModule],
+  imports: [CommonModule, MatSidenavModule, MatIconModule, DataLayerToolbarModule, PatientBrowserModule, DataLayerBrowserModule, DataLayerListModule],
   exports: [FhirChartLayoutComponent],
 })
 export class FhirChartLayoutModule {}

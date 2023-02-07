@@ -17,7 +17,7 @@
       "allow": {
         "condition_type": "Date",
         "operator": ">=",
-        "year": 2023
+        "year": 2022
       },
       "direct_transition": "DiabetesGuard"
     },
@@ -69,10 +69,21 @@
         {
           "transition": "ShortDelay",
           "condition": {
-            "condition_type": "Attribute",
-            "attribute": "diabetes",
-            "operator": "==",
-            "value": true
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetes",
+                "operator": "==",
+                "value": true
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetesCounter",
+                "operator": "<",
+                "value": 300
+              }
+            ]
           }
         },
         {
@@ -114,7 +125,7 @@
         {
           "system": "LOINC",
           "code": "2339-0",
-          "display": "Glucose"
+          "display": "Glucose (Home)"
         }
       ],
       "unit": "mg/dL",

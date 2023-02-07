@@ -3,6 +3,7 @@
   <mat-sidenav mode="side" #sidenav [opened]="sidebarOpened">
     <div class="layout-sidebar">
       <div class="layout-sidebar-content">
+        <patient-browser [hidden]="sidenavPanel !== 'patients'"></patient-browser>
         <data-layer-browser [hidden]="sidenavPanel !== 'browser'"></data-layer-browser>
         <data-layer-list [hidden]="sidenavPanel !== 'options'"></data-layer-list>
       </div>
