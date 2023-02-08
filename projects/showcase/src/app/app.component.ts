@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientService.selectedPatient$.subscribe(() => {
-      this.layerManager.reset();
       this.layerManager.retrieveAll();
     });
   }

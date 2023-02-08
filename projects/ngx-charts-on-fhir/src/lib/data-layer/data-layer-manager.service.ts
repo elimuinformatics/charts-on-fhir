@@ -65,6 +65,7 @@ export class DataLayerManagerService {
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
   retrieveAll() {
+    this.reset();
     this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve()))
       .pipe(takeUntil(this.cancel$))
