@@ -80,7 +80,7 @@
         }
       },
       "unit": "days",
-      "direct_transition": "Encounter"
+      "direct_transition": "Record_BP"
     },
     "LongDelay": {
       "name": "LongDelay",
@@ -93,18 +93,6 @@
         }
       },
       "unit": "days",
-      "direct_transition": "Encounter"
-    },
-    "Encounter": {
-      "type": "Encounter",
-      "encounter_class": "ambulatory",
-      "codes": [
-        {
-          "system": "SNOMED-CT",
-          "code": "185320006",
-          "display": "Encounter by computer link"
-        }
-      ],
       "direct_transition": "Record_BP"
     },
     "Record_BP": {
@@ -114,7 +102,7 @@
         {
           "system": "LOINC",
           "code": "85354-9",
-          "display": "Blood Pressure"
+          "display": "Blood Pressure (Home)"
         }
       ],
       "observations": [
@@ -143,10 +131,10 @@
           "vital_sign": "Diastolic Blood Pressure"
         }
       ],
-      "direct_transition": "EncounterEnd"
+      "direct_transition": "CheckCounterLimit"
     },
-    "EncounterEnd": {
-      "type": "EncounterEnd",
+    "CheckCounterLimit": {
+      "type": "Simple",
       "conditional_transition": [
         {
           "transition": "Terminal",

@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" class="bpform" id="entryForm" (ngSubmit)="onSubmit()">
+      <section class="bpform-section">
+        <div class="systolic-input">
+          <mat-form-field class="input-width">
+            <mat-label> Systolic BP </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="systolic"
+              id="systolic"
+              placeholder="Systolic BP"
+              [ngClass]="{ 'is-invalid': submitted && form.controls.systolic.errors }"
+            />
+          </mat-form-field>
+          <div *ngIf="form.controls.systolic?.errors && form.controls.systolic?.touched" class="invalid-feedback">
+            <div *ngIf="form.controls.systolic?.errors?.['required']">Systolic BP is required</div>
+            <div *ngIf="form.controls.systolic?.errors?.['min'] || form.controls.systolic?.errors?.['max']">Systolic BP should be between {{min}} and {{max}}</div>
+          </div>
+        </div>
+
+        <div>
+          <mat-form-field class="input-width">
+            <mat-label> Diastolic BP </mat-label>
+            <input
+              type="number"
+              matInput
+              formControlName="diastolic"
+              id="diastolic"
+              placeholder="Diastolic BP"
+              [ngClass]="{ 'is-invalid': submitted && form.controls.diastolic.errors }"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="invalid-feedback">
+          <div *ngIf="form.controls.diastolic?.errors && form.controls.diastolic?.touched">
+            <div *ngIf="form.controls.diastolic?.errors?.['required']">Diastolic BP is required</div>
+            <div *ngIf="form.controls.diastolic?.errors?.['min'] || form.controls.diastolic?.errors?.['max']">Diastolic BP should be between {{min}} and {{max}}</div>
+          </div>
+          <div *ngIf="form.controls.systolic?.valid && form.controls.diastolic?.valid && form?.errors && form?.errors?.['bloodPressure']">
+            Systolic BP should be greater than Diastolic BP
+          </div>
+        </div>
+
+        <button [disabled]="!form.valid" mat-raised-button color="primary">Save</button>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>

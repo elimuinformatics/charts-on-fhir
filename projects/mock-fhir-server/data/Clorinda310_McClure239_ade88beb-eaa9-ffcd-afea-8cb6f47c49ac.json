@@ -565,57 +565,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:a3b53a78-a384-d3c6-df65-7fb296dbab26",
-      "resource": {
-        "resourceType": "MedicationRequest",
-        "id": "a3b53a78-a384-d3c6-df65-7fb296dbab26",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationrequest"
-          ]
-        },
-        "status": "stopped",
-        "intent": "order",
-        "category": [
-          {
-            "coding": [
-              {
-                "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
-                "code": "community",
-                "display": "Community"
-              }
-            ],
-            "text": "Community"
-          }
-        ],
-        "medicationCodeableConcept": {
-          "coding": [
-            {
-              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
-              "code": "757594",
-              "display": "Jolivette 28 Day Pack"
-            }
-          ],
-          "text": "Jolivette 28 Day Pack"
-        },
-        "subject": {
-          "reference": "urn:uuid:ade88beb-eaa9-ffcd-afea-8cb6f47c49ac"
-        },
-        "encounter": {
-          "reference": "urn:uuid:ef0f7ce1-0ed1-867b-5ec9-36cb084338b1"
-        },
-        "authoredOn": "2019-03-03T22:14:48-05:00",
-        "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999990598",
-          "display": "Dr. Kai187 Mann644"
-        }
-      },
-      "request": {
-        "method": "POST",
-        "url": "MedicationRequest"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:99aa2728-263d-97fc-7820-952561bd81f9",
       "resource": {
         "resourceType": "Encounter",
@@ -14865,7 +14814,7 @@
                 "periodUnit": "d",
                 "boundsDuration": {
                   "code": "d",
-                  "value": 60
+                  "value": 350
                 }
               }
             },
@@ -32276,57 +32225,6 @@
       "request": {
         "method": "POST",
         "url": "Encounter"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:1cf237a6-f6b5-9c53-64c7-adee869c20b0",
-      "resource": {
-        "resourceType": "MedicationRequest",
-        "id": "1cf237a6-f6b5-9c53-64c7-adee869c20b0",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationrequest"
-          ]
-        },
-        "status": "active",
-        "intent": "order",
-        "category": [
-          {
-            "coding": [
-              {
-                "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
-                "code": "community",
-                "display": "Community"
-              }
-            ],
-            "text": "Community"
-          }
-        ],
-        "medicationCodeableConcept": {
-          "coding": [
-            {
-              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
-              "code": "1605257",
-              "display": "Liletta 52 MG Intrauterine System"
-            }
-          ],
-          "text": "Liletta 52 MG Intrauterine System"
-        },
-        "subject": {
-          "reference": "urn:uuid:ade88beb-eaa9-ffcd-afea-8cb6f47c49ac"
-        },
-        "encounter": {
-          "reference": "urn:uuid:294360e8-44b5-5a83-4523-1b3048661e8c"
-        },
-        "authoredOn": "2022-02-15T22:14:48-05:00",
-        "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999990598",
-          "display": "Dr. Kai187 Mann644"
-        }
-      },
-      "request": {
-        "method": "POST",
-        "url": "MedicationRequest"
       }
     },
     {
@@ -57897,7 +57795,7 @@
                 "periodUnit": "d",
                 "boundsDuration": {
                   "code": "d",
-                  "value": 60
+                  "value": 240
                 }
               }
             },
@@ -57971,6 +57869,39 @@
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999971598",
           "display": "Dr. Brendan864 Hintz995"
         },
+        "dosageInstruction": [
+          {
+            "sequence": 1,
+            "timing": {
+              "repeat": {
+                "frequency": 1,
+                "period": 1,
+                "periodUnit": "d",
+                "boundsDuration": {
+                  "code": "d",
+                  "value": 180
+                }
+              }
+            },
+            "asNeededBoolean": false,
+            "doseAndRate": [
+              {
+                "type": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                      "code": "ordered",
+                      "display": "Ordered"
+                    }
+                  ]
+                },
+                "doseQuantity": {
+                  "value": 1
+                }
+              }
+            ]
+          }
+        ],
         "reasonReference": [
           {
             "reference": "urn:uuid:fec17b77-d7bb-9375-cd65-153ae8b63e0d",
