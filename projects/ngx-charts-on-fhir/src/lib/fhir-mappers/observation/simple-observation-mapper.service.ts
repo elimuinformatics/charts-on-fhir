@@ -6,6 +6,7 @@ import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 
 /** Required properties for mapping an Observation with [SimpleObservationMapper] */
 export type SimpleObservation = {
@@ -46,7 +47,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: [
         {
-          label: resource.code.text,
+          label: resource.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
           data: [
             {
@@ -70,4 +71,16 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       ),
     };
   }
+}
+
+const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
+const homeEnvironmentCode = '264362003';
+export function getMeasurementSettingSuffix(resource: Observation): string {
+  if (resource.meta?.extension) {
+    const measurementSetting = resource.meta.extension.find((ext) => ext.url === measurementSettingExtUrl);
+    if (measurementSetting?.valueCodeableConcept?.coding?.[0].code === homeEnvironmentCode) {
+      return HOME_DATASET_LABEL_SUFFIX;
+    }
+  }
+  return '';
 }

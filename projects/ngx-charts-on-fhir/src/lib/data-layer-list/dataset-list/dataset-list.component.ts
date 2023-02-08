@@ -42,4 +42,8 @@ export class DatasetListComponent {
       );
     }
   }
+
+  trackByLabel(_index: number, dataset: Dataset) {
+    return dataset.label;
+  }
 }
