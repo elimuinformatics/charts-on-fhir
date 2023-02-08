@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
-import { map, mergeAll, toArray } from 'rxjs';
+import { DataLayer, DataLayerManagerService, TimelineChartType, TimelineDataPoint } from 'ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +15,12 @@ export class AppComponent implements OnInit {
   constructor(readonly layerManager: DataLayerManagerService) { }
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.orderLayers, this.isAllLayerSelected);
+    this.layerManager.retrieveAll(this.sort, this.isAllLayerSelected);
   }
 
-  orderLayers(layer: any) {
+  sort = (things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => {
     const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications']
-    return layer.pipe(
-      toArray(),
-      map((things: any) => things.sort((a: any, b: any) => layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name))),
-      mergeAll()
-    )
+    return things.sort((a: any, b: any) => layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name))
   }
 
   sidenavPanel: string | null = null;

@@ -62,11 +62,14 @@ export class DataLayerManagerService {
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
-  retrieveAll(layerOrder: (obserable: Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>)
-    => Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>
-    = (obserable: Observable<DataLayer<TimelineChartType, TimelineDataPoint[]>>) => obserable, isAllLayerSelected: boolean = false) {
+retrieveAll(sort: (things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => DataLayer<TimelineChartType, TimelineDataPoint[]>[] = (things : DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => things,
+    isAllLayerSelected: boolean = false) {
     this.loading$.next(true);
-    layerOrder(merge(...this.dataLayerServices.map((service) => service.retrieve())))
+    merge(...this.dataLayerServices.map((service) => service.retrieve())).pipe(
+      toArray(),
+      map((things) => sort(things)),
+      mergeAll()
+    )
       .subscribe({
         next: (layer) => {
           const layersCreation = this.mergeService.merge(this.state.layers, layer);
