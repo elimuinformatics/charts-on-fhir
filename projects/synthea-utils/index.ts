@@ -133,5 +133,9 @@ function keepResources(bundle: Bundle, resourceTypes: FhirResource['resourceType
 
 async function reloadMockFhirServer() {
   console.log('Requesting reload of Mock FHIR Server data');
-  await fetch(MOCK_FHIR_SERVER_RELOAD_URL, { method: 'POST' });
+  try {
+    await fetch(MOCK_FHIR_SERVER_RELOAD_URL, { method: 'POST' });
+  } catch (error) {
+    console.log('Mock FHIR Server is not running');
+  }
 }
