@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
-import moment from 'moment';
+import { formatDate, formatTime } from 'ngx-charts-on-fhir';
+import { map } from 'rxjs';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -25,6 +26,7 @@ export class ReportBPComponent implements OnInit {
   min = 11;
   max = 250;
   lastReportedBPdata?: lastReportedBPdata;
+  isLastPriorBp: boolean = true;
 
   form = this.fb.group(
     {
@@ -41,14 +43,27 @@ export class ReportBPComponent implements OnInit {
       console.log(this.layerManager.availableLayers$);
       this.updateBPentryForm(value);
     });
-    this.layerManager.lastBPLayers$.subscribe((data: any) => {
-      if (data.length > 0) {
-        this.lastReportedBPdata = {
-          systolic: { date: `${moment(data[0][1][0].x).format('D MMM YYYY')} at ${moment(data[0][1][0].x).format('hh:MM A')}`, value: data[0][1][0].y },
-          diastolic: { date: `${moment(data[0][0][0].x).format('D MMM YYYY')} at ${moment(data[0][0][0].x).format('hh:MM A')}`, value: data[0][0][0].y },
-        };
-      }
-    });
+    this.layerManager.allLayers$
+      .pipe(
+        map((layers) =>
+          layers
+            .filter((layer) => layer.name === 'Blood Pressure')
+            .map((layer) => layer.datasets.map((data) => data.data))
+            .map((layer) => layer.map((data) => data.slice(-1)))
+        )
+      )
+      .subscribe((data: any) => {
+        console.log(data);
+        if (data.length > 0) {
+          this.isLastPriorBp = true;
+          this.lastReportedBPdata = {
+            systolic: { date: `${formatDate(data[0][1][0].x)} at ${formatTime(data[0][1][0].x)}`, value: data[0][1][0].y },
+            diastolic: { date: `${formatDate(data[0][0][0].x)} at ${formatTime(data[0][0][0].x)}`, value: data[0][0][0].y },
+          };
+        } else {
+          this.isLastPriorBp = false;
+        }
+      });
   }
 
   onSubmit(): void {

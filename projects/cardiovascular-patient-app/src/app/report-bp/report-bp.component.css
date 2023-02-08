@@ -24,7 +24,7 @@ mat-slide-toggle {
   margin-bottom: 10px;
   border: 1px solid #979797;
   border-radius: 5px;
-  margin-left: 30px;
+  margin: 30px 30px 0px 30px;
 }
 
 .bpform-section {

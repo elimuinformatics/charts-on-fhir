@@ -1,10 +1,14 @@
+<mat-card class="card-widget">
+  <mat-card-content>
+    <div *ngIf="isLastPriorBp; else noPriorBp">
+      Last BP reported was {{ lastReportedBPdata?.systolic?.value }}/{{ lastReportedBPdata?.diastolic?.value }} on {{ lastReportedBPdata?.systolic?.date }}
+    </div>
+    <ng-template #noPriorBp> There is no prior BP for Patient </ng-template>
+  </mat-card-content>
+</mat-card>
+
 <mat-card>
   <mat-card-content>
-    <mat-card class="card-widget">
-      <div>
-        Last BP reported was {{ lastReportedBPdata?.systolic?.value }}/{{ lastReportedBPdata?.diastolic?.value }} on {{ lastReportedBPdata?.systolic?.date }}
-      </div>
-    </mat-card>
     <form [formGroup]="form" class="bpform" id="entryForm" (ngSubmit)="onSubmit()">
       <section class="bpform-section">
         <div class="systolic-input">
@@ -21,7 +25,9 @@
           </mat-form-field>
           <div *ngIf="form.controls.systolic?.errors && form.controls.systolic?.touched" class="invalid-feedback">
             <div *ngIf="form.controls.systolic?.errors?.['required']">Systolic BP is required</div>
-            <div *ngIf="form.controls.systolic?.errors?.['min'] || form.controls.systolic?.errors?.['max']">Systolic BP should be between {{min}} and {{max}}</div>
+            <div *ngIf="form.controls.systolic?.errors?.['min'] || form.controls.systolic?.errors?.['max']">
+              Systolic BP should be between {{ min }} and {{ max }}
+            </div>
           </div>
         </div>
 
@@ -42,7 +48,9 @@
         <div class="invalid-feedback">
           <div *ngIf="form.controls.diastolic?.errors && form.controls.diastolic?.touched">
             <div *ngIf="form.controls.diastolic?.errors?.['required']">Diastolic BP is required</div>
-            <div *ngIf="form.controls.diastolic?.errors?.['min'] || form.controls.diastolic?.errors?.['max']">Diastolic BP should be between {{min}} and {{max}}</div>
+            <div *ngIf="form.controls.diastolic?.errors?.['min'] || form.controls.diastolic?.errors?.['max']">
+              Diastolic BP should be between {{ min }} and {{ max }}
+            </div>
           </div>
           <div *ngIf="form.controls.systolic?.valid && form.controls.diastolic?.valid && form?.errors && form?.errors?.['bloodPressure']">
             Systolic BP should be greater than Diastolic BP

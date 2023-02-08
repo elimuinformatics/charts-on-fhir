@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, filter, last, map, merge, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, filter, map, merge, Observable } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -51,12 +51,6 @@ export class DataLayerManagerService {
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
   enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
   loading$ = new BehaviorSubject<boolean>(false);
-
-  lastBPLayers$ = this.allLayers$.pipe(
-    map((layers) => layers.filter((layer) => layer.name === 'Blood Pressure')),
-    map((layers) => layers.map((layer) => layer.datasets.map((data) => data.data))),
-    map((layers) => layers.map((layer) => layer.map((data) => data.slice(-1))))
-  );
 
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
