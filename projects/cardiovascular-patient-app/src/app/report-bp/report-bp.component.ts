@@ -40,7 +40,6 @@ export class ReportBPComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
-      console.log(this.layerManager.availableLayers$);
       this.updateBPentryForm(value);
     });
     this.layerManager.allLayers$
@@ -53,7 +52,6 @@ export class ReportBPComponent implements OnInit {
         )
       )
       .subscribe((data: any) => {
-        console.log(data);
         if (data.length > 0) {
           this.isLastPriorBp = true;
           this.lastReportedBPdata = {

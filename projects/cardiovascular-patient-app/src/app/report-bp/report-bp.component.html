@@ -3,7 +3,7 @@
     <div *ngIf="isLastPriorBp; else noPriorBp">
       Last BP reported was {{ lastReportedBPdata?.systolic?.value }}/{{ lastReportedBPdata?.diastolic?.value }} on {{ lastReportedBPdata?.systolic?.date }}
     </div>
-    <ng-template #noPriorBp> There is no prior BP for Patient </ng-template>
+    <ng-template #noPriorBp> There is no last reported prior BP for Patient </ng-template>
   </mat-card-content>
 </mat-card>
 
