@@ -9,7 +9,7 @@ import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 export class AppComponent implements OnInit {
   showTitle: boolean = false;
   layers: any[] = [];
-  appTitle: string = 'CDSIC Blood pressure App';
+  appTitle: string = 'CDSIC Blood Pressure App';
 
   constructor(readonly layerManager: DataLayerManagerService) {}
 
