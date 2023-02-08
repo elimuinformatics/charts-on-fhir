@@ -86,6 +86,7 @@ export class DataLayerManagerService {
   reset() {
     this.cancel$.next();
     this.stateSubject.next(initialState);
+    this.colorService.reset();
   }
 
   select(id: string) {
