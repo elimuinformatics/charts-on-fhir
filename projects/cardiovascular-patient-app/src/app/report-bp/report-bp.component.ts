@@ -11,7 +11,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
   return systolic && diastolic && systolic.value > diastolic.value ? null : { bloodPressure: true };
 };
 
-interface lastReportedBPdata {
+interface LastReportedBPdata {
   systolic: { date: string; value: number };
   diastolic: { date: string; value: number };
 }
@@ -25,7 +25,7 @@ export class ReportBPComponent implements OnInit {
   submitted = false;
   min = 11;
   max = 250;
-  lastReportedBPdata?: lastReportedBPdata;
+  lastReportedBPdata?: LastReportedBPdata;
   isLastPriorBp: boolean = true;
 
   form = this.fb.group(

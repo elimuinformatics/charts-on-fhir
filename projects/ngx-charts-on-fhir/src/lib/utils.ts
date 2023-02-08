@@ -44,7 +44,7 @@ export function formatDate(date: string | number | Date): string {
 export function formatTime(date: string | number | Date): string {
   date = new Date(date);
   let h = date.getHours();
-  let mm = date.getMinutes();
+  let mm = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   const ampm = h >= 12 ? 'PM' : 'AM';
   h = h % 12;
   h = h ? h : 12;
