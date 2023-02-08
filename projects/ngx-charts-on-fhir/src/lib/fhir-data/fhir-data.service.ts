@@ -78,9 +78,13 @@ export class FhirDataService {
   }
 
   addPatientData(resource: any) {
-    this.client?.create(resource)
-      .then(() => alert('data inserted successfully'))
-      .catch((error) => { return error });
+    if (!this.client) {
+      throw new Error('FhirClientService has not been initialized.');
+    } else {
+      this.client?.create(resource)
+        .then(() => alert('data inserted successfully'))
+        .catch((error) => { return error });
+    }
   }
 
   createResourceData(reportBPValue: BloodPressure): Observation {
