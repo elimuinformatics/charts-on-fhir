@@ -35,7 +35,7 @@ async function main() {
 
 async function postProcessPatient(patientName: string) {
   const bundle = await loadPatientBundle(patientName);
-  keepResources(bundle, ['Patient', 'Observation', 'Encounter', 'MedicationRequest']);
+  keepResources(bundle, ['Patient', 'Condition', 'Observation', 'Encounter', 'MedicationRequest']);
   addMeasurementSetting(bundle);
   addMedicationDuration(bundle);
   await savePatientBundle(patientName, bundle);
