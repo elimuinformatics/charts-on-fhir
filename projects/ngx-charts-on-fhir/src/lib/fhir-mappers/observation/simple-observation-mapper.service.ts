@@ -73,8 +73,8 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   }
 }
 
-const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
-const homeEnvironmentCode = '264362003';
+export const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
+export const homeEnvironmentCode = '264362003';
 export function getMeasurementSettingSuffix(resource: Observation): string {
   if (resource.meta?.extension) {
     const measurementSetting = resource.meta.extension.find((ext) => ext.url === measurementSettingExtUrl);

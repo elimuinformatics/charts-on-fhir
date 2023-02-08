@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 
 @Component({
@@ -19,15 +18,5 @@ export class AppComponent implements OnInit {
     this.layerManager.availableLayers$.subscribe((layers) => {
       layers.forEach((layer) => this.layerManager.select(layer.id))
     });
-  }
-
-  sidenavPanel: string | null = null;
-  onToolbarChange(sidenav: MatSidenav, panel: string | null) {
-    if (panel) {
-      this.sidenavPanel = panel;
-      sidenav.open();
-    } else {
-      sidenav.close();
-    }
   }
 }

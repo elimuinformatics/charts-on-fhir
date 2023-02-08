@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
+import { PatientService } from '../../patient-browser/patient.service';
 
-export type ToolbarButtonName = 'loading' | 'browser' | 'options';
+export type ToolbarButtonName = 'loading' | 'patients' | 'browser' | 'options';
 
 @Component({
   selector: 'data-layer-toolbar',
@@ -12,9 +13,9 @@ export class DataLayerToolbarComponent implements OnChanges {
   @Input() active: ToolbarButtonName | null = null;
   @Output() activeChange = new EventEmitter<ToolbarButtonName | null>();
 
-  @Input() buttons?: ToolbarButtonName[] | 'all' = 'all';
+  @Input() buttons?: ToolbarButtonName[];
 
-  constructor(public layerManager: DataLayerManagerService) {}
+  constructor(public layerManager: DataLayerManagerService, public patientService: PatientService) {}
 
   ngOnChanges(): void {
     this.activeChange.emit(this.active);
@@ -30,6 +31,6 @@ export class DataLayerToolbarComponent implements OnChanges {
   }
 
   showButton(name: ToolbarButtonName): boolean {
-    return !!(this.buttons === 'all' || this.buttons?.includes(name));
+    return !!(this.buttons == null || this.buttons?.includes(name));
   }
 }

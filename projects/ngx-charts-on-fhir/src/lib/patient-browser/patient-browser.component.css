@@ -1,0 +1,30 @@
+.browser-container {
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+}
+.controls {
+  flex: 0 1 auto;
+  padding-top: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.filter {
+  width: 400px;
+}
+.scroll-container {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+.patient-table {
+  width: 100%;
+}
+.ellipsis {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.empty-message {
+  padding: 16px;
+}

@@ -16,6 +16,11 @@ import { Bundle, FhirResource } from 'fhir/r4';
 })
 export class FhirDataService {
   client?: Client;
+  private clientState?: fhirclient.ClientState;
+  
+  get isSmartLaunch(): boolean {
+    return !!sessionStorage.getItem('SMART_KEY');
+  }
 
   /**
    * Initialize the FHIR Client using OAuth token response from EHR launch, if available.
@@ -23,13 +28,14 @@ export class FhirDataService {
    */
   async initialize(clientState?: fhirclient.ClientState) {
     console.info('FHIR Client Initializing...');
-    if (sessionStorage.getItem('SMART_KEY')) {
+    if (this.isSmartLaunch) {
       this.client = await FHIR.oauth2.ready();
     } else {
       console.warn('No SMART state found in session storage!');
       if (clientState) {
         console.warn('Loading SMART state from environment configuration. This should not be used in a production EHR environment!');
         this.client = FHIR.client(clientState);
+        this.clientState = clientState;
       }
     }
     if (this.client) {
@@ -37,6 +43,23 @@ export class FhirDataService {
     } else {
       console.error('FHIR Client could not be created because no launch context was found.');
     }
+  }
+
+  /** Creates a new launch context with a different patient. This only works with open FHIR servers. */
+  changePatient(patientId: string) {
+    if (this.isSmartLaunch) {
+      console.error('Patient cannot be changed for a SMART-on-FHIR launch.');
+      return;
+    }
+    if (!this.clientState) {
+      console.error('FHIR Client could not be created because no launch context was found.');
+      return;
+    }
+    if (!this.clientState.tokenResponse) {
+      this.clientState.tokenResponse = {};
+    }
+    this.clientState.tokenResponse.patient = patientId;
+    this.client = FHIR.client(this.clientState);
   }
 
   /**
@@ -47,7 +70,7 @@ export class FhirDataService {
    * - The Observable will complete when all pages have been retrieved.
    * - Unsubscribe from the Observable to stop retrieving more pages.
    */
-  getPatientData<R extends FhirResource>(url: string): Observable<Bundle<R>> {
+  getPatientData<R extends FhirResource>(url: string, currentPatientOnly = true): Observable<Bundle<R>> {
     return new Observable((subscriber) => {
       if (!this.client) {
         subscriber.error('FhirClientService has not been initialized.');
@@ -64,8 +87,8 @@ export class FhirDataService {
       };
       // use maximum page size on every request to improve performance
       url = addCountParam(url);
-      this.client.patient
-        .request(url, { pageLimit: 0, onPage })
+      const request = currentPatientOnly ? this.client.patient.request.bind(this.client.patient) : this.client.request.bind(this.client);
+      request(url, { pageLimit: 0, onPage })
         .then(() => subscriber.complete())
         .catch((error) => subscriber.error(error));
       return teardownLogic;
