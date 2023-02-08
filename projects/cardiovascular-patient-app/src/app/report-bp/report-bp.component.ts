@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
+import { MatSnackBar} from '@angular/material/snack-bar';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -12,7 +13,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
 @Component({
   selector: 'report-bp',
   templateUrl: './report-bp.component.html',
-  styleUrls: ['./report-bp.component.css'],
+  styleUrls: ['./report-bp.component.css']
 })
 export class ReportBPComponent implements OnInit {
   submitted = false;
@@ -27,7 +28,7 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService, private dataService: FhirDataService) { }
+  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
@@ -38,10 +39,24 @@ export class ReportBPComponent implements OnInit {
 
   onSubmit(): void {
     const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic }
-      const resource = this.dataService.createResourceData(bloodPressure);
-      if (resource) {
-        this.dataService.addPatientData(resource)
-      }
+    const resource = this.dataService.createResourceData(bloodPressure);
+    if (resource) {
+      this.dataService.addPatientData(resource)?.then(() => {
+        this.snackBar.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          duration: 3000,
+         panelClass:['green-snackbar']
+        });
+      }).catch((err) => {
+        this.snackBar.open('Something Wrong..!!', 'Dismiss', {
+          horizontalPosition:'end',
+          verticalPosition:'top',
+          panelClass:['red-snackbar'],
+          duration: 3000
+        });
+      })
+    }
     this.submitted = true;
     this.form.reset();
   }

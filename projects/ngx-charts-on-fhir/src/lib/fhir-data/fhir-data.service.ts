@@ -78,9 +78,7 @@ export class FhirDataService {
   }
 
   addPatientData(resource: any) {
-    this.client?.create(resource)
-      .then(() => alert('data inserted successfully'))
-      .catch((error) => { return error });
+    return this.client?.create(resource);
   }
 
   createResourceData(reportBPValue: BloodPressure): Observation {
