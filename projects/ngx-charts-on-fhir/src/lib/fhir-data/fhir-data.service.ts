@@ -77,8 +77,8 @@ export class FhirDataService {
     });
   }
 
-  addPatientData(resource: any, requestOptions: {}) {
-    this.client?.create(resource, requestOptions)
+  addPatientData(resource: any) {
+    this.client?.create(resource)
       .then(() => alert('data inserted successfully'))
       .catch((error) => { return error });
   }

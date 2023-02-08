@@ -40,7 +40,7 @@ export class ReportBPComponent implements OnInit {
     const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic }
       const resource = this.dataService.createResourceData(bloodPressure);
       if (resource) {
-        this.dataService.addPatientData(resource, {})
+        this.dataService.addPatientData(resource)
       }
     this.submitted = true;
     this.form.reset();
