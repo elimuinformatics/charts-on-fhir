@@ -6,7 +6,7 @@ import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
-import { getMeasurementSettingSuffix } from './simple-observation-mapper.service';
+import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
 
 /** Required properties for mapping an Observation with [ComponentObservationMapper] */
 export type ComponentObservation = {
@@ -61,6 +61,8 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         .map((component) => ({
           label: component.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
+          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
+          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),

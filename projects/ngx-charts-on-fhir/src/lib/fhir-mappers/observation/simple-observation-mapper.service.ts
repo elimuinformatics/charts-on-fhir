@@ -49,6 +49,8 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         {
           label: resource.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
+          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
+          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
@@ -76,11 +78,14 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
 export const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
 export const homeEnvironmentCode = '264362003';
 export function getMeasurementSettingSuffix(resource: Observation): string {
+  return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : '';
+}
+export function isHomeMeasurement(resource: Observation): boolean {
   if (resource.meta?.extension) {
     const measurementSetting = resource.meta.extension.find((ext) => ext.url === measurementSettingExtUrl);
     if (measurementSetting?.valueCodeableConcept?.coding?.[0].code === homeEnvironmentCode) {
-      return HOME_DATASET_LABEL_SUFFIX;
+      return true;
     }
   }
-  return '';
+  return false;
 }
