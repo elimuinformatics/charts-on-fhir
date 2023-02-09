@@ -85,16 +85,15 @@ async function savePatientBundle(patientName: string, bundle: Bundle) {
   await fs.writeFile(filepath, JSON.stringify(bundle, null, 2));
 }
 
-/** Add Measurement Setting extension to Observations with an associated "Encounter by computer link" */
+/** Add Measurement Setting extension to Home Observations */
 function addMeasurementSetting(bundle: Bundle) {
   console.log('Adding Measurement Setting Extension');
   for (let entry of bundle.entry) {
     if (entry.resource.resourceType === 'Observation' && entry.resource.code.text.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
       entry.resource.code.text = trimSuffix(entry.resource.code.text, HOME_DATASET_LABEL_SUFFIX);
       entry.resource.code.coding[0].display = trimSuffix(entry.resource.code.coding[0].display, HOME_DATASET_LABEL_SUFFIX);
-      entry.resource.meta = entry.resource.meta ?? {};
-      entry.resource.meta.extension = entry.resource.meta.extension ?? [];
-      entry.resource.meta.extension.push(HOME_ENVIRONMENT);
+      entry.resource.extension = entry.resource.extension ?? [];
+      entry.resource.extension.push(HOME_ENVIRONMENT);
     }
   }
 }

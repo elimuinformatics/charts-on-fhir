@@ -81,8 +81,8 @@ export function getMeasurementSettingSuffix(resource: Observation): string {
   return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : '';
 }
 export function isHomeMeasurement(resource: Observation): boolean {
-  if (resource.meta?.extension) {
-    const measurementSetting = resource.meta.extension.find((ext) => ext.url === measurementSettingExtUrl);
+  if (resource.extension) {
+    const measurementSetting = resource.extension.find((ext) => ext.url === measurementSettingExtUrl);
     if (measurementSetting?.valueCodeableConcept?.coding?.[0].code === homeEnvironmentCode) {
       return true;
     }
