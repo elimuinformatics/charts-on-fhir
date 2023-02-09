@@ -18,7 +18,7 @@ describe('DataLayerManagerService', () => {
     mergeService = jasmine.createSpyObj('DataLayerMergeService', ['merge']);
     mergeService.merge.and.callFake((collection, layer) => ({ ...collection, [layer.name]: { ...layer } as any }));
     // fake colorService sets borderColor because we can't use toHaveBeenCalledWith() for functions that are called with an immer draft
-    colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette']);
+    colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette', 'reset']);
     colorService.chooseColorsFromPalette.and.callFake((l) => l.datasets.forEach((d) => (d.borderColor = '#000000')));
   });
 

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ToolbarButtonName } from '../../public-api';
+import { ToolbarButtonName } from '../data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
+import { FhirDataService } from '../fhir-data/fhir-data.service';
 
 @Component({
   selector: 'fhir-chart-layout',
@@ -9,12 +10,14 @@ import { ToolbarButtonName } from '../../public-api';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartLayoutComponent {
-  @Input() toolbar?: ToolbarButtonName[] = ['loading', 'browser', 'options'];
-  @Input() sidebarOpened: boolean = true;
-  sidenavPanel: ToolbarButtonName | null = 'browser';
+  @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
+  @Input() active: ToolbarButtonName | null = null;
+
+  constructor(public fhir: FhirDataService) {}
+
   onToolbarChange(sidenav: MatSidenav, panel: ToolbarButtonName | null) {
     if (panel) {
-      this.sidenavPanel = panel;
+      this.active = panel;
       sidenav.open();
     } else {
       sidenav.close();

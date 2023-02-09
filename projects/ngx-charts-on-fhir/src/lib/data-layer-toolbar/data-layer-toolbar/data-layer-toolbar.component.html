@@ -1,6 +1,14 @@
 <div class="layout-toolbar">
   <data-layer-toolbar-loading-indicator *ngIf="showButton('loading')" [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
   <data-layer-toolbar-button
+    *ngIf="showButton('patients')"
+    [active]="active === 'patients'"
+    [badge]="(patientService.patients$ | async)?.length"
+    icon="person"
+    tooltip="Patient List"
+    (click)="onClick('patients')"
+  ></data-layer-toolbar-button>
+  <data-layer-toolbar-button
     *ngIf="showButton('browser')"
     [active]="active === 'browser'"
     [badge]="(layerManager.availableLayers$ | async)?.length"
