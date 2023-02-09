@@ -115,20 +115,17 @@ describe('SimpleObservationMapper', () => {
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
-        meta: {
-          extension: [
-            {
-              url: measurementSettingExtUrl,
-              valueCodeableConcept: {
-                coding: [{ code: homeEnvironmentCode }],
-              },
+        extension: [
+          {
+            url: measurementSettingExtUrl,
+            valueCodeableConcept: {
+              coding: [{ code: homeEnvironmentCode }],
             },
-          ],
-        },
+          },
+        ],
       };
       const mapper = new SimpleObservationMapper({}, {}, {});
       expect(mapper.map(observation).datasets[0].label).toBe('text' + HOME_DATASET_LABEL_SUFFIX);
     });
-
   });
 });
