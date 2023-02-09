@@ -91,7 +91,7 @@ describe('DatasetOptionsComponent', () => {
   it('should use chart default if point size is undefined', waitForAsync(async () => {
     component.dataset = { label: 'Dataset', data: [] };
     const pointRadius = await loader.getHarness(MatSliderThumbHarness.with({ selector: "[formControlName='pointRadius']" }));
-    expect(await pointRadius.getValue()).toEqual(5);
+    expect(await pointRadius.getValue()).toEqual(3);
   }));
 
 });
