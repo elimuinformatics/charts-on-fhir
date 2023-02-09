@@ -23,7 +23,7 @@
               },
               {
                 "condition_type": "Attribute",
-                "attribute": "hypertension",
+                "attribute": "blood_pressure_controlled",
                 "operator": "==",
                 "value": true
               }

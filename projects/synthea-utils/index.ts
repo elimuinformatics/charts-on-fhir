@@ -8,7 +8,8 @@ const SYNTHEA_CONFIG = 'synthea.properties';
 const MODULES_DIR = 'modules';
 const KEEP_FILE = 'keep/cardio.json';
 const SYNTHEA_OUTPUT_DIR = 'output/fhir';
-const POST_PROCESSED_OUTPUT_DIR = 'output/post-processed';
+const POST_PROCESSED_OUTPUT_DIR = '../mock-fhir-server/data';
+const MOCK_FHIR_SERVER_RELOAD_URL = 'http://localhost:3000/reload/';
 
 const HOME_ENVIRONMENT = {
   url: 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt',
@@ -28,12 +29,13 @@ await main();
 
 async function main() {
   const patients = await generatePatients();
-  Promise.all(patients.map((patientName) => postProcessPatient(patientName)));
+  await Promise.all(patients.map((patientName) => postProcessPatient(patientName)));
+  await reloadMockFhirServer();
 }
 
 async function postProcessPatient(patientName: string) {
   const bundle = await loadPatientBundle(patientName);
-  keepResources(bundle, ['Patient', 'Observation', 'Encounter', 'MedicationRequest']);
+  keepResources(bundle, ['Patient', 'Condition', 'Observation', 'Encounter', 'MedicationRequest']);
   addMeasurementSetting(bundle);
   addMedicationDuration(bundle);
   await savePatientBundle(patientName, bundle);
@@ -44,7 +46,7 @@ async function generatePatients() {
   return new Promise<string[]>((resolve, reject) => {
     const patients: string[] = [];
     const args = ['-jar', SYNTHEA_BINARY, '-c', SYNTHEA_CONFIG, '-d', MODULES_DIR, '-k', KEEP_FILE, ...process.argv.slice(2)];
-    const synthea = child_process.spawn('java', args, { stdio: [ 'inherit', 'pipe', 'inherit' ]});
+    const synthea = child_process.spawn('java', args, { stdio: ['inherit', 'pipe', 'inherit'] });
     let incompleteLine = '';
     synthea.stdout.on('data', (chunk) => {
       const text = incompleteLine + String(chunk);
@@ -127,4 +129,13 @@ function trimSuffix(label: string, suffix: string) {
 function keepResources(bundle: Bundle, resourceTypes: FhirResource['resourceType'][]) {
   console.log(`Removing all resources except [${resourceTypes.join(', ')}]`);
   bundle.entry = bundle.entry.filter((entry) => resourceTypes.includes(entry.resource.resourceType));
+}
+
+async function reloadMockFhirServer() {
+  console.log('Requesting reload of Mock FHIR Server data');
+  try {
+    await fetch(MOCK_FHIR_SERVER_RELOAD_URL, { method: 'POST' });
+  } catch (error) {
+    console.log('Mock FHIR Server is not running');
+  }
 }

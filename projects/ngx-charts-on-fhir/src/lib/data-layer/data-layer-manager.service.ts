@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, Subject, takeUntil } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -52,6 +52,8 @@ export class DataLayerManagerService {
   enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
   loading$ = new BehaviorSubject<boolean>(false);
 
+  private cancel$ = new Subject<void>();
+
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
    *
@@ -63,18 +65,28 @@ export class DataLayerManagerService {
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
   retrieveAll() {
+    this.reset();
     this.loading$.next(true);
-    merge(...this.dataLayerServices.map((service) => service.retrieve())).subscribe({
-      next: (layer) =>
-        this.stateSubject.next({
-          ...this.stateSubject.value,
-          layers: this.mergeService.merge(this.state.layers, layer),
-        }),
-      error: (err) => console.error(err),
-      complete: () => {
-        this.loading$.next(false);
-      },
-    });
+    merge(...this.dataLayerServices.map((service) => service.retrieve()))
+      .pipe(takeUntil(this.cancel$))
+      .subscribe({
+        next: (layer) =>
+          this.stateSubject.next({
+            ...this.stateSubject.value,
+            layers: this.mergeService.merge(this.state.layers, layer),
+          }),
+        error: (err) => console.error(err),
+        complete: () => {
+          this.loading$.next(false);
+        },
+      });
+  }
+
+  /** Cancels any in-progress data retrieval and resets the DataLayerManager to its initial state */
+  reset() {
+    this.cancel$.next();
+    this.stateSubject.next(initialState);
+    this.colorService.reset();
   }
 
   select(id: string) {

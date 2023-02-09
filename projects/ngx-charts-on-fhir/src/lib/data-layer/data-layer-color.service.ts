@@ -12,6 +12,10 @@ export class DataLayerColorService {
 
   private nextColorIndex = 0;
 
+  reset() {
+    this.nextColorIndex = 0;
+  }
+
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
       if (!this.getColor(dataset)) {
