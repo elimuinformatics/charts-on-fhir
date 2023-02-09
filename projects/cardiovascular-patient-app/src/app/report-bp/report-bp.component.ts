@@ -51,12 +51,12 @@ export class ReportBPComponent implements OnInit {
             .map((layer) => layer.map((data) => data.slice(-1)))
         )
       )
-      .subscribe((data: any) => {
-        if (data.length > 0) {
+      .subscribe((layers: any) => {
+        if (layers.length > 0) {
           this.isLastPriorBp = true;
           this.lastReportedBPdata = {
-            systolic: { date: `${formatDate(data[0][1][0].x)} at ${formatTime(data[0][1][0].x)}`, value: data[0][1][0].y },
-            diastolic: { date: `${formatDate(data[0][0][0].x)} at ${formatTime(data[0][0][0].x)}`, value: data[0][0][0].y },
+            systolic: { date: `${formatDate(layers[0][1][0].x)} at ${formatTime(layers[0][1][0].x)}`, value: layers[0][1][0].y },
+            diastolic: { date: `${formatDate(layers[0][0][0].x)} at ${formatTime(layers[0][0][0].x)}`, value: layers[0][0][0].y },
           };
         } else {
           this.isLastPriorBp = false;
