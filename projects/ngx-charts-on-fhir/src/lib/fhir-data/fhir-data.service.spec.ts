@@ -67,6 +67,16 @@ describe('FhirDataService', () => {
       });
     }));
 
+    it('should query the FHIR server without patient param when currentPatientOnly=false', waitForAsync(() => {
+      const request = spyOn(service.client!, 'request').and.resolveTo(null);
+      const bundles$ = service.getPatientData('Observation', false);
+      bundles$.subscribe({
+        complete: () => {
+          expect(request).toHaveBeenCalledWith(jasmine.stringMatching(/^Observation/), jasmine.anything());
+        },
+      });
+    }));
+
     it('should throw an error on request failure', waitForAsync(() => {
       spyOn(service.client!.patient, 'request').and.rejectWith('error');
       const bundles$ = service.getPatientData('Observation');
@@ -117,5 +127,30 @@ describe('FhirDataService', () => {
       expect(systolicBP).toEqual(bloodPressure.systolic)
     }
   })
+
+  describe('changePatient', () => {
+    it('should set patient ID of the FHIR Client', async () => {
+      await service.initialize({
+        serverUrl: 'http://example.com/open',
+      });
+      service.changePatient('7');
+      expect(service.client?.getPatientId()).toBe('7');
+    });
+  });
+
+  it('should not set patient ID for SMART launch', async () => {
+    await FHIR.oauth2.authorize({
+      fhirServiceUrl: 'http://example.com/ehr',
+      completeInTarget: true,
+      noRedirect: true,
+      fakeTokenResponse: {
+        serverUrl: 'http://example.com/ehr',
+        patient: 'unchanged',
+      },
+    });
+    await service.initialize();
+    service.changePatient('7');
+    expect(service.client?.getPatientId()).toBe('unchanged');
+  });
 
 });

@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { DatasetOptionsComponent } from './dataset-options.component';
+import { Chart } from 'chart.js';
 
 const mockColorService = {
   getColor: () => '#000000',
@@ -89,6 +90,7 @@ describe('DatasetOptionsComponent', () => {
   }));
 
   it('should use chart default if point size is undefined', waitForAsync(async () => {
+    Chart.defaults.elements.point.radius = 3;
     component.dataset = { label: 'Dataset', data: [] };
     const pointRadius = await loader.getHarness(MatSliderThumbHarness.with({ selector: "[formControlName='pointRadius']" }));
     expect(await pointRadius.getValue()).toEqual(3);
