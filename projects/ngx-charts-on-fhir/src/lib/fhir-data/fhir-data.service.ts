@@ -3,7 +3,7 @@ import FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
-import { Bundle, FhirResource, Observation } from 'fhir/r4';
+import { Bundle, FhirResource, Meta, Observation } from 'fhir/r4';
 
 export interface BloodPressure {
   systolic?: number |null,
@@ -77,10 +77,8 @@ export class FhirDataService {
     });
   }
 
-  addPatientData(resource: any) {
-    if (!this.client) {
-      throw new Error('FhirClientService has not been initialized.');
-    } else {
+  addPatientData(resource: Meta) {
+    if (this.client) {
       this.client?.create(resource)
         .then(() => alert('data inserted successfully'))
         .catch((error) => { return error });
@@ -114,9 +112,6 @@ export class FhirDataService {
       },
       "subject": {
         "reference": `Patient/${this.client?.patient.id}`
-      },
-      "encounter": {
-        "reference": `Encounter/${this.client?.encounter.id}`
       },
       "effectiveDateTime": new Date().toISOString(),
       "issued": new Date().toISOString(),

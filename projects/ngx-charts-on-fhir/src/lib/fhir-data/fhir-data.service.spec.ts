@@ -3,13 +3,18 @@ import { FhirDataService } from './fhir-data.service';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { cold, getTestScheduler } from 'jasmine-marbles';
+import { ReportBPComponent } from 'projects/cardiovascular-patient-app/src/app/report-bp/report-bp.component';
+
+const bloodPressure = { systolic: 89, diastolic: 63 }
 
 describe('FhirDataService', () => {
   let service: FhirDataService;
 
   beforeEach(() => {
     sessionStorage.clear();
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{ provide: ReportBPComponent, useValue: bloodPressure }]
+    });
     service = TestBed.inject(FhirDataService);
   });
 
@@ -102,4 +107,15 @@ describe('FhirDataService', () => {
       expect(() => onPage({})).toThrowError();
     }));
   });
+
+  it('shold create a fhir resource for add Blood Pressure', async () => {
+    const resource = service.createResourceData(bloodPressure);
+    if (resource.component) {
+      const diastolicBP = resource.component[0].valueQuantity?.value;
+      const systolicBP = resource.component[1].valueQuantity?.value;
+      expect(diastolicBP).toEqual(bloodPressure.diastolic)
+      expect(systolicBP).toEqual(bloodPressure.systolic)
+    }
+  })
+
 });

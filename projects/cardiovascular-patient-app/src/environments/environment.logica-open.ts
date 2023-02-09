@@ -8,8 +8,7 @@ export const environment = {
   clientState: {
     serverUrl: 'https://api.logicahealth.org/chartsonfhir/open',
     tokenResponse: {
-      patient: '22707',
-      encounter:'23249'
+      patient: '22707'
     },
   } as fhirclient.ClientState,
 };
