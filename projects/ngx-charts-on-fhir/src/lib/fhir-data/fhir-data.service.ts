@@ -3,7 +3,7 @@ import FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
-import { Bundle, FhirResource, Observation } from 'fhir/r4';
+import { Bundle, FhirResource } from 'fhir/r4';
 
 export interface BloodPressure {
   systolic?: number |null,

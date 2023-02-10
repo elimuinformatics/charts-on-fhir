@@ -7,9 +7,10 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { By } from '@angular/platform-browser';
 
 
 const mockLayerManager = {
@@ -21,12 +22,14 @@ describe('ReportBPComponent', () => {
   let component: ReportBPComponent;
   let fixture: ComponentFixture<ReportBPComponent>;
   let loader: HarnessLoader;
+  let fhirService: jasmine.SpyObj<FhirDataService>;
 
   beforeEach(async () => {
+    fhirService = jasmine.createSpyObj('FhirDataService', ['createResourceData', 'addPatientData']);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule,MatSnackBarModule],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatSnackBarModule],
       declarations: [ReportBPComponent],
-      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }],
+      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirService },],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportBPComponent);
@@ -55,6 +58,7 @@ describe('ReportBPComponent', () => {
     expect(systolicFormField?.errors).not.toBeNull();
     expect(systolicFormField?.errors?.['required']).toBeTruthy();
   });
+
   it('should bind the diastolic to its form control and for valid value there should be no error', async () => {
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('11');
@@ -80,6 +84,7 @@ describe('ReportBPComponent', () => {
     await diastolicInputHarness.setValue('252');
     expect(diastolicFormField?.errors?.['max']).toBeTruthy();
   });
+
   it('should show the error when systolic blood pressure not in range', async () => {
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('1');
@@ -88,4 +93,32 @@ describe('ReportBPComponent', () => {
     await systolicInputHarness.setValue('252');
     expect(systolicFormField?.errors?.['max']).toBeTruthy();
   });
+
+  it('should submit prioer blood pressure Form', async () => {
+    fhirService.createResourceData.and.callThrough().and.returnValue({ resource: 'resource' });
+    fhirService.addPatientData.and.callThrough();
+    spyOn(component, 'onSubmit').and.callThrough();
+    component.onSubmit();
+    expect(component.onSubmit).toHaveBeenCalled();
+    expect(fhirService).toBeDefined();
+    expect(fhirService.createResourceData).toHaveBeenCalledTimes(1);
+    expect(fhirService.addPatientData).toHaveBeenCalledWith({ resource: 'resource' });
+  })
+
+  it('should call the onSubmit method when BP form is submitted', async () => {
+    let el = fixture.debugElement.query(By.css('.btn-class'));
+    spyOn(component, 'onSubmit');
+    component.onSubmit();
+    el.triggerEventHandler('ngSubmit', null);
+    expect(component.onSubmit).toHaveBeenCalled();
+  })
+
+  it('should submit the form when save button is clicked', async () => {
+    let el = fixture.debugElement.query(By.css('.btn-class'));
+    spyOn(component, 'onSubmit');
+    component.onSubmit();
+    (el.nativeElement as HTMLButtonElement).click();
+    fixture.detectChanges()
+    expect(component.onSubmit).toHaveBeenCalled();
+  })
 });
