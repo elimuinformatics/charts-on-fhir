@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 const mockLayerManager = {
@@ -24,7 +24,7 @@ describe('ReportBPComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule,MatSnackBarModule,MatSnackBar],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule,MatSnackBarModule],
       declarations: [ReportBPComponent],
       providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
