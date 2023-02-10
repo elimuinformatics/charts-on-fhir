@@ -4,6 +4,8 @@ import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
+
+const bloodPressure = { systolic: 95, diastolic: 84 }
 describe('FhirDataService', () => {
   let service: FhirDataService;
 
@@ -137,4 +139,16 @@ describe('FhirDataService', () => {
     service.changePatient('7');
     expect(service.client?.getPatientId()).toBe('unchanged');
   });
-});
+
+  describe('createResourceData', () => {
+    it('should create a fhir resource for add Blood Pressure', async () => {
+      const resource = service.createResourceData(bloodPressure);
+      if (resource['component']) {
+        const diastolicBP = resource['component'][0].valueQuantity?.value;
+        const systolicBP = resource['component'][1].valueQuantity?.value;
+        expect(diastolicBP).toEqual(bloodPressure.diastolic)
+        expect(systolicBP).toEqual(bloodPressure.systolic)
+      }
+    });
+  })
+})
