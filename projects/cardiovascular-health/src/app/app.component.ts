@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { filter, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,17 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.layerManager.retrieveAll();
 
-    this.layerManager.availableLayers$.subscribe((layers) => {
-      layers.forEach((layer) => this.layerManager.select(layer.id))
-    });
+    // temporary fix for color service not working correctly when layers are selected while data is loading
+    this.layerManager.loading$
+      .pipe(
+        filter((loading) => !loading),
+        switchMap(() => this.layerManager.availableLayers$),
+        take(1)
+      )
+      .subscribe((layers) => {
+        layers.forEach((layer) => {
+          this.layerManager.select(layer.id);
+        });
+      });
   }
 }
