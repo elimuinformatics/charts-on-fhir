@@ -3,7 +3,6 @@ import { FhirDataService } from './fhir-data.service';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { cold, getTestScheduler } from 'jasmine-marbles';
-import { ReportBPComponent } from 'projects/cardiovascular-patient-app/src/app/report-bp/report-bp.component';
 
 const bloodPressure = { systolic: 89, diastolic: 63 }
 
