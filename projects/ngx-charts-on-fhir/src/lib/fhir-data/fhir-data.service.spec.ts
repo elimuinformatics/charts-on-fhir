@@ -151,4 +151,26 @@ describe('FhirDataService', () => {
       }
     });
   })
+  
+  describe('addPatientData', () => {
+    beforeEach(async () => {
+      await service.initialize({
+        serverUrl: 'http://example.com/open',
+        tokenResponse: {
+          patient: '123',
+        },
+      });
+      if (!service.client) {
+        throw new Error('Client should be initialized');
+      }
+    });
+
+    it('should add patient BP on FHIR server', async () => {
+      const create = spyOn(service.client!, 'create').and.resolveTo(null);
+      const resource: fhirclient.FHIR.Resource = service.createResourceData({ systolic: 1, diastolic: 2 });
+      spyOn(service, 'addPatientData').and.callThrough();
+      service.addPatientData(resource)
+      expect(create).toHaveBeenCalled();
+    })
+  })
 })
