@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatCardModule } from '@angular/material/card';
 
 
 const mockLayerManager = {
@@ -44,7 +45,7 @@ describe('ReportBPComponent', () => {
     fhirDataService.createBloodPressureResource.and.returnValue(fhirResource);
     fhirDataService.addPatientData.and.returnValue(Promise.resolve({}));
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatCardModule],
       declarations: [ReportBPComponent],
       providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
     }).compileComponents();
