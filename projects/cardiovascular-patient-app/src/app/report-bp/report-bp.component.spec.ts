@@ -46,7 +46,7 @@ describe('ReportBPComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule],
       declarations: [ReportBPComponent],
-      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService, multi: true }],
+      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportBPComponent);
@@ -110,17 +110,13 @@ describe('ReportBPComponent', () => {
   });
 
   it('should submit blood pressure Form', async () => {
-    spyOn(component, 'onSubmit');
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('50');
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
-    const bloodPressure = {
-      systolic: Number(await systolicInputHarness.getValue()),
-      diastolic: Number(await diastolicInputHarness.getValue())
-    }
+    const bloodPressure = { systolic: 100, diastolic: 50 };
     expect(component.onSubmit).toBeTruthy();
     expect(fhirDataService.createBloodPressureResource).toHaveBeenCalledWith(bloodPressure);
     expect(fhirDataService.addPatientData).toHaveBeenCalledWith(fhirResource);
