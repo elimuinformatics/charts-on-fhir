@@ -7,8 +7,5 @@ export const environment = {
   production: false,
   clientState: {
     serverUrl: 'http://localhost:3000',
-    tokenResponse: {
-      patient: '7e4eeb22-3015-7a1f-0a96-a2f3f3f02931',
-    },
   } as fhirclient.ClientState,
 };

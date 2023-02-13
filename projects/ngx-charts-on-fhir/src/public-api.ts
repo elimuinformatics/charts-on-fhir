@@ -12,6 +12,7 @@ export * from './lib/fhir-chart-summary/fhir-chart-summary.module';
 export * from './lib/fhir-chart-summary/statistics.service';
 export * from './lib/fhir-chart-summary/summary.service';
 export * from './lib/fhir-chart-summary/medication-summary.service';
+export * from './lib/fhir-chart-summary/home-measurement-summary.service';
 export * from './lib/fhir-chart-layout/fhir-chart-layout.module';
 export * from './lib/fhir-chart-layout/fhir-chart-layout.component';
 export * from './lib/dynamic-table/dynamic-table.component';
@@ -34,4 +35,7 @@ export * from './lib/fhir-mappers/observation/simple-observation-mapper.service'
 export * from './lib/fhir-mappers/observation/blood-pressure-mapper.service';
 export * from './lib/fhir-mappers/medication-request/simple-medication-mapper.service';
 export * from './lib/fhir-mappers/medication-request/duration-medication-mapper.service';
+export * from './lib/patient-browser/patient-browser.module';
+export * from './lib/patient-browser/patient-browser.component';
+export * from './lib/patient-browser/patient.service';
 export * from './lib/utils';

@@ -1,0 +1,46 @@
+{
+  "name": "keep",
+  "remarks": ["Keep patients with diabetes and hypertension"],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "conditional_transition": [
+        {
+          "transition": "Keep",
+          "condition": {
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Or",
+                "conditions": [
+                  {
+                    "condition_type": "Attribute",
+                    "attribute": "diabetes",
+                    "operator": "==",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "blood_pressure_controlled",
+                "operator": "==",
+                "value": true
+              }
+            ]
+          }
+        },
+        {
+          "transition": "Terminal"
+        }
+      ]
+    },
+    "Terminal": {
+      "type": "Terminal"
+    },
+    "Keep": {
+      "type": "Terminal"
+    }
+  },
+  "gmf_version": 2
+}

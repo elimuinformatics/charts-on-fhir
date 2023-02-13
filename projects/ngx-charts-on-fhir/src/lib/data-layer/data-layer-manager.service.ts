@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, groupBy, map, merge, mergeAll, Observable, toArray } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, groupBy, map, merge, mergeAll, Observable, toArray, Subject, takeUntil } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer, TimelineChartType, TimelineDataPoint } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -34,7 +34,7 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
     private mergeService: DataLayerMergeService
-  ) { }
+  ) {}
 
   private stateSubject = new BehaviorSubject<DataLayerManagerState>(initialState);
   private get state() {
@@ -49,8 +49,10 @@ export class DataLayerManagerService {
     distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
-
+  enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
   loading$ = new BehaviorSubject<boolean>(false);
+
+  private cancel$ = new Subject<void>();
 
   /**
    * Retrieve layers from all of the injected [DataLayerService]s.
@@ -62,23 +64,30 @@ export class DataLayerManagerService {
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
-retrieveAll(sort: (things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => DataLayer<TimelineChartType, TimelineDataPoint[]>[] = (things : DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => things,
-    isAllLayerSelected: boolean = false) {
+  retrieveAll(
+    sort: (things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]) => DataLayer<TimelineChartType, TimelineDataPoint[]>[] = (
+      things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]
+    ) => things,
+    isAllLayerSelected: boolean = false
+  ) {
+    this.reset();
     this.loading$.next(true);
-    merge(...this.dataLayerServices.map((service) => service.retrieve())).pipe(
-      toArray(),
-      map((things) => sort(things)),
-      mergeAll()
-    )
+    merge(...this.dataLayerServices.map((service) => service.retrieve()))
+      .pipe(
+        takeUntil(this.cancel$),
+        toArray(),
+        map((things) => sort(things)),
+        mergeAll()
+      )
       .subscribe({
         next: (layer) => {
           const layersCreation = this.mergeService.merge(this.state.layers, layer);
           this.stateSubject.next({
             ...this.stateSubject.value,
-            layers: layersCreation
-          })
+            layers: layersCreation,
+          });
           if (isAllLayerSelected) {
-            Object.keys(layersCreation).forEach(layerId => {
+            Object.keys(layersCreation).forEach((layerId) => {
               if (layersCreation[layerId] && !this.state.layers[layerId].selected) {
                 this.select(layerId);
               }
@@ -90,6 +99,13 @@ retrieveAll(sort: (things: DataLayer<TimelineChartType, TimelineDataPoint[]>[]) 
           this.loading$.next(false);
         },
       });
+  }
+
+  /** Cancels any in-progress data retrieval and resets the DataLayerManager to its initial state */
+  reset() {
+    this.cancel$.next();
+    this.stateSubject.next(initialState);
+    this.colorService.reset();
   }
 
   select(id: string) {

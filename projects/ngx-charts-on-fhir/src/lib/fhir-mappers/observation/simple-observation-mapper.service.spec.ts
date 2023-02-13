@@ -1,5 +1,6 @@
 import { Observation } from 'fhir/r4';
-import { SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
+import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
+import { homeEnvironmentCode, measurementSettingExtUrl, SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
 
 describe('SimpleObservationMapper', () => {
   describe('canMap', () => {
@@ -105,6 +106,26 @@ describe('SimpleObservationMapper', () => {
       };
       const mapper = new SimpleObservationMapper({}, {}, {});
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
+    });
+
+    it('should add Home suffix for Observation with Measurement Setting extension', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 7, unit: 'unit' },
+        extension: [
+          {
+            url: measurementSettingExtUrl,
+            valueCodeableConcept: {
+              coding: [{ code: homeEnvironmentCode }],
+            },
+          },
+        ],
+      };
+      const mapper = new SimpleObservationMapper({}, {}, {});
+      expect(mapper.map(observation).datasets[0].label).toBe('text' + HOME_DATASET_LABEL_SUFFIX);
     });
   });
 });

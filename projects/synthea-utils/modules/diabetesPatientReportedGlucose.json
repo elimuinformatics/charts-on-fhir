@@ -1,0 +1,157 @@
+{
+  "name": "DiabetesPatientReportedGlucose",
+  "remarks": ["Patients with high frequency data for Glucose."],
+  "states": {
+    "Initial": {
+      "type": "Initial",
+      "name": "Initial",
+      "direct_transition": "YearGuard"
+    },
+    "Terminal": {
+      "type": "Terminal",
+      "name": "Terminal"
+    },
+    "YearGuard": {
+      "name": "YearGuard",
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Date",
+        "operator": ">=",
+        "year": 2022
+      },
+      "direct_transition": "DiabetesGuard"
+    },
+    "DiabetesGuard": {
+      "name": "DiabetesGuard",
+      "type": "Guard",
+      "allow": {
+        "condition_type": "Or",
+        "conditions": [
+          {
+            "condition_type": "Attribute",
+            "attribute": "prediabetes",
+            "operator": "==",
+            "value": true
+          },
+          {
+            "condition_type": "Attribute",
+            "attribute": "diabetes",
+            "operator": "==",
+            "value": true
+          }
+        ]
+      },
+      "direct_transition": "SetMyCounter"
+    },
+    "SetMyCounter": {
+      "type": "SetAttribute",
+      "attribute": "diabetesCounter",
+      "direct_transition": "EnterDeterministicLoop",
+      "name": "SetMyCounter",
+      "value": 1
+    },
+    "EnterDeterministicLoop": {
+      "type": "Simple",
+      "direct_transition": "Counter",
+      "name": "EnterDeterministicLoop"
+    },
+    "Counter": {
+      "type": "Counter",
+      "attribute": "diabetesCounter",
+      "action": "increment",
+      "direct_transition": "ChooseDelayLength",
+      "name": "Counter"
+    },
+    "ChooseDelayLength": {
+      "name": "ChooseDelayLength",
+      "type": "Simple",
+      "conditional_transition": [
+        {
+          "transition": "ShortDelay",
+          "condition": {
+            "condition_type": "And",
+            "conditions": [
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetes",
+                "operator": "==",
+                "value": true
+              },
+              {
+                "condition_type": "Attribute",
+                "attribute": "diabetesCounter",
+                "operator": "<",
+                "value": 300
+              }
+            ]
+          }
+        },
+        {
+          "transition": "LongDelay"
+        }
+      ]
+    },
+    "ShortDelay": {
+      "name": "ShortDelay",
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 8,
+          "low": 5
+        }
+      },
+      "unit": "hours",
+      "direct_transition": "Record_Glucose"
+    },
+    "LongDelay": {
+      "name": "LongDelay",
+      "type": "Delay",
+      "distribution": {
+        "kind": "UNIFORM",
+        "parameters": {
+          "high": 21,
+          "low": 7
+        }
+      },
+      "unit": "days",
+      "direct_transition": "Record_Glucose"
+    },
+    "Record_Glucose": {
+      "type": "Observation",
+      "vital_sign": "Glucose",
+      "category": "laboratory",
+      "codes": [
+        {
+          "system": "LOINC",
+          "code": "2339-0",
+          "display": "Glucose (Home)"
+        }
+      ],
+      "unit": "mg/dL",
+      "distribution": {
+        "kind": "GAUSSIAN",
+        "round": false,
+        "parameters": {
+          "mean": 100,
+          "standardDeviation": 10
+        }
+      },
+      "conditional_transition": [
+        {
+          "transition": "Terminal",
+          "condition": {
+            "condition_type": "Attribute",
+            "attribute": "diabetesCounter",
+            "operator": ">",
+            "value": 1000
+          }
+        },
+        {
+          "transition": "EnterDeterministicLoop"
+        }
+      ]
+    }
+  },
+  "gmf_version": 2
+}

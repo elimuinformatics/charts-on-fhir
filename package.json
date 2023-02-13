@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "generate-patient": "cd projects/synthea-utils && npm start",
     "mock-fhir-install": "cd projects/mock-fhir-server && npm install",
     "mock-fhir": "cd projects/mock-fhir-server && npm start"
   },
