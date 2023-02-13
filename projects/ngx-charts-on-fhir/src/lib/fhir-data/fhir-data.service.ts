@@ -3,7 +3,7 @@ import FHIR from 'fhirclient';
 import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
-import { Bundle, FhirResource, Meta, Observation } from 'fhir/r4';
+import { Bundle, FhirResource } from 'fhir/r4';
 
 export interface BloodPressure {
   systolic?: number |null,
@@ -100,15 +100,11 @@ export class FhirDataService {
     });
   }
 
-  addPatientData(resource: Meta) {
-    if (this.client) {
-      this.client?.create(resource)
-        .then(() => alert('data inserted successfully'))
-        .catch((error) => { return error });
-    }
+  addPatientData(resource: fhirclient.FHIR.Resource) {
+    return this.client?.create(resource);
   }
 
-  createResourceData(reportBPValue: BloodPressure): Observation {
+  createResourceData(reportBPValue: BloodPressure): fhirclient.FHIR.Resource {
     return {
       "resourceType": "Observation",
       "status": "final",

@@ -118,16 +118,6 @@ describe('FhirDataService', () => {
     }));
   });
 
-  it('shold create a fhir resource for add Blood Pressure', async () => {
-    const resource = service.createResourceData(bloodPressure);
-    if (resource.component) {
-      const diastolicBP = resource.component[0].valueQuantity?.value;
-      const systolicBP = resource.component[1].valueQuantity?.value;
-      expect(diastolicBP).toEqual(bloodPressure.diastolic)
-      expect(systolicBP).toEqual(bloodPressure.systolic)
-    }
-  })
-
   describe('changePatient', () => {
     it('should set patient ID of the FHIR Client', async () => {
       await service.initialize({
@@ -152,5 +142,38 @@ describe('FhirDataService', () => {
     service.changePatient('7');
     expect(service.client?.getPatientId()).toBe('unchanged');
   });
+
+  describe('createResourceData', () => {
+    it('should create a fhir resource for add Blood Pressure', async () => {
+      const resource = service.createResourceData(bloodPressure);
+      const diastolicBP = resource['component'][0].valueQuantity?.value;
+      const systolicBP = resource['component'][1].valueQuantity?.value;
+      expect(diastolicBP).toEqual(bloodPressure.diastolic)
+      expect(systolicBP).toEqual(bloodPressure.systolic)
+
+    });
+  })
+
+  describe('addPatientData', () => {
+    beforeEach(async () => {
+      await service.initialize({
+        serverUrl: 'http://example.com/open',
+        tokenResponse: {
+          patient: '123',
+        },
+      });
+      if (!service.client) {
+        throw new Error('Client should be initialized');
+      }
+    });
+
+    it('should add patient BP on FHIR server', async () => {
+      const create = spyOn(service.client!, 'create').and.resolveTo(null);
+      const resource: fhirclient.FHIR.Resource = service.createResourceData({ systolic: 1, diastolic: 2 });
+      spyOn(service, 'addPatientData').and.callThrough();
+      service.addPatientData(resource)
+      expect(create).toHaveBeenCalled();
+    })
+  })
 
 });
