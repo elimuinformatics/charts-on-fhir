@@ -13,7 +13,7 @@ describe('FhirDataService', () => {
   beforeEach(() => {
     sessionStorage.clear();
     TestBed.configureTestingModule({
-      providers: [{ provide: ReportBPComponent, useValue: bloodPressure }]
+      providers: []
     });
     service = TestBed.inject(FhirDataService);
   });
@@ -145,7 +145,7 @@ describe('FhirDataService', () => {
 
   describe('createResourceData', () => {
     it('should create a fhir resource for add Blood Pressure', async () => {
-      const resource = service.createResourceData(bloodPressure);
+      const resource = service.createBloodPressureResource(bloodPressure);
       const diastolicBP = resource['component'][0].valueQuantity?.value;
       const systolicBP = resource['component'][1].valueQuantity?.value;
       expect(diastolicBP).toEqual(bloodPressure.diastolic)
@@ -169,8 +169,7 @@ describe('FhirDataService', () => {
 
     it('should add patient BP on FHIR server', async () => {
       const create = spyOn(service.client!, 'create').and.resolveTo(null);
-      const resource: fhirclient.FHIR.Resource = service.createResourceData({ systolic: 1, diastolic: 2 });
-      spyOn(service, 'addPatientData').and.callThrough();
+      const resource: fhirclient.FHIR.Resource = service.createBloodPressureResource(bloodPressure);
       service.addPatientData(resource)
       expect(create).toHaveBeenCalled();
     })

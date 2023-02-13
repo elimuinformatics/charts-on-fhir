@@ -104,7 +104,7 @@ export class FhirDataService {
     return this.client?.create(resource);
   }
 
-  createResourceData(reportBPValue: BloodPressure): fhirclient.FHIR.Resource {
+  createBloodPressureResource(reportBPValue: BloodPressure): fhirclient.FHIR.Resource {
     return {
       "resourceType": "Observation",
       "status": "final",
