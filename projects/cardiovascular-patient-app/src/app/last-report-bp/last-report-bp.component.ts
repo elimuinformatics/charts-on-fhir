@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DataLayerManagerService, formatDate, formatTime } from 'ngx-charts-on-fhir';
 import { map } from 'rxjs';
 
@@ -8,9 +8,9 @@ interface LastReportedBPdata {
 }
 
 @Component({
-  selector: 'lastreport-bp',
-  templateUrl: './lastreport-bp.component.html',
-  styleUrls: ['./lastreport-bp.component.css'],
+  selector: 'last-report-bp',
+  templateUrl: './last-report-bp.component.html',
+  styleUrls: ['./last-report-bp.component.css'],
 })
 export class LastReportBPComponent{
   lastReportedBPdata?: LastReportedBPdata;

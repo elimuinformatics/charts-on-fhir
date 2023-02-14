@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LastReportBPComponent } from './lastreport-bp.component';
+import { LastReportBPComponent } from './last-report-bp.component';
 import { MatCardModule } from '@angular/material/card';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 import { EMPTY, map } from 'rxjs';
@@ -15,20 +15,26 @@ describe('LastReportBPComponent', () => {
   let component: LastReportBPComponent;
   let fixture: ComponentFixture<LastReportBPComponent>;
   let scheduler: TestScheduler;
+  let myService: DataLayerManagerService;
 
   beforeEach(async () => {
     scheduler = new TestScheduler((actual, expected) => {
       expect(actual).toEqual(expected);
     });
+    const spy = jasmine.createSpyObj('DataLayerManagerService', ['allLayers$', 'availableLayers$', 'allLayers$']);
+    spy.allLayers$ = EMPTY
+    spy.availableLayers$ = EMPTY
+    spy.allLayers$ = EMPTY
     await TestBed.configureTestingModule({
       imports: [MatCardModule],
       declarations: [LastReportBPComponent],
-      providers: [{ provide: DataLayerManagerService, useValue: mockLayerManager },],
+      providers: [{ provide: DataLayerManagerService, useValue: spy }],
 
     }).compileComponents();
 
     fixture = TestBed.createComponent(LastReportBPComponent);
     component = fixture.componentInstance;
+    myService = TestBed.inject(DataLayerManagerService) as jasmine.SpyObj<DataLayerManagerService>;
     fixture.detectChanges();
   });
 
@@ -38,7 +44,7 @@ describe('LastReportBPComponent', () => {
 
   it('should extract the last data point of each dataset in the "Blood Pressure" layer', () => {
     scheduler.run(({ cold, expectObservable }) => {
-      const layers$ = cold('a', {
+      myService.allLayers$ = cold('a', {
         a: [
           {
             name: 'a',
@@ -82,7 +88,7 @@ describe('LastReportBPComponent', () => {
           }
         ],
       });
-
+      const layers$ = myService.allLayers$;
       const result$ = layers$.pipe(
         map((layers) =>
           layers
@@ -96,4 +102,5 @@ describe('LastReportBPComponent', () => {
       });
     });
   })
+
 });

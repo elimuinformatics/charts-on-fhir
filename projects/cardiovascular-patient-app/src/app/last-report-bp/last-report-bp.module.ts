@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { LastReportBPComponent } from './lastreport-bp.component';
+import { LastReportBPComponent } from './last-report-bp.component';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 
