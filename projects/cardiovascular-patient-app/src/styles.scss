@@ -26,3 +26,11 @@ body {
 .mat-tooltip {
   font-size: 14px;
 }
+.green-snackbar {
+  --mdc-snackbar-container-color: #22ae52;
+  --mat-mdc-snack-bar-button-color: #e8e9ec;
+}
+.red-snackbar {
+  --mdc-snackbar-container-color: red;
+  --mat-mdc-snack-bar-button-color: #e8e9ec;
+}
