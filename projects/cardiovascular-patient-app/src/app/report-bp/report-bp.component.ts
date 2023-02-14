@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
+import { FhirDataService } from 'ngx-charts-on-fhir';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -8,6 +8,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
 
   return systolic && diastolic && systolic.value > diastolic.value ? null : { bloodPressure: true };
 };
+
 
 @Component({
   selector: 'report-bp',
@@ -27,11 +28,10 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService, private dataService: FhirDataService) { }
+  constructor(private fb: FormBuilder, private dataService: FhirDataService) { }
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
-      console.log(this.layerManager.availableLayers$);
       this.updateBPentryForm(value);
     });
   }

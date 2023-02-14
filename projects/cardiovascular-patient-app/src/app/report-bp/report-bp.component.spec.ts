@@ -8,14 +8,16 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
-import { EMPTY } from 'rxjs';
+import { EMPTY, map } from 'rxjs';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
+import { cold } from 'jasmine-marbles';
 
 
 const mockLayerManager = {
   availableLayers$: EMPTY,
   selectedLayers$: EMPTY,
+  allLayers$: EMPTY
 };
 
 const fhirResource = {

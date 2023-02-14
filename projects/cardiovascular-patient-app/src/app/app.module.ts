@@ -22,6 +22,7 @@ import {
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 import { ReportBPModule } from './report-bp/report-bp.module';
+import { LastReportBPModule } from './lastreport-bp/lastreport-bp.module';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -41,7 +42,8 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     MatButtonModule,
     MatToolbarModule,
     MatTabsModule,
-    ReportBPModule
+    ReportBPModule,
+    LastReportBPModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },

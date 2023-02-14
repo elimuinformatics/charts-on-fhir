@@ -41,3 +41,12 @@ export function formatDate(date: string | number | Date): string {
   const yyyy = date.getFullYear();
   return `${d} ${MMM} ${yyyy}`;
 }
+export function formatTime(date: string | number | Date): string {
+  date = new Date(date);
+  let h = date.getHours();
+  let mm = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12;
+  h = h ? h : 12;
+  return `${h}:${mm} ${ampm}`;
+}
