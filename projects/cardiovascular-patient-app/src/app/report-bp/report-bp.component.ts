@@ -32,7 +32,6 @@ export class ReportBPComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
-      console.log(this.layerManager.availableLayers$);
       this.updateBPentryForm(value);
     });
   }
