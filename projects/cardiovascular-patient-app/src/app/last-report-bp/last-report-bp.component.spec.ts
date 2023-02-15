@@ -73,10 +73,10 @@ describe('LastReportBPComponent', () => {
     );
     result$.subscribe(layers => {
       const lastReportedBPdata = {
-        systolic: { date: `${formatDate(layers[0][1][0].x)} at ${formatTime(layers[0][1][0].x)}`, value: layers[0][1][0].y },
-        diastolic: { date: `${formatDate(layers[0][0][0].x)} at ${formatTime(layers[0][0][0].x)}`, value: layers[0][0][0].y },
+        systolic: { date: `${formatDate(layers[0][1][0].x)}`, value: layers[0][1][0].y },
+        diastolic: { date: `${formatDate(layers[0][0][0].x)}`, value: layers[0][0][0].y },
       };
-      expect(lastReportedBPdata).toEqual({ systolic: { date: '18 Jan 1970 at 7:35 AM', value: 78 }, diastolic: { date: '16 Jan 1970 at 9:09 PM', value: 122 } });
+      expect(lastReportedBPdata).toEqual({ systolic: { date: '18 Jan 1970', value: 78 }, diastolic: { date: '16 Jan 1970', value: 122 } });
     })
   });
 
