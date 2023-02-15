@@ -1,12 +1,16 @@
 import produce from 'immer';
+import { mapValues } from 'lodash-es';
 import { DataLayer, DataLayerCollection } from './data-layer';
+import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 
 describe('DataLayerMergeService', () => {
   let service: DataLayerMergeService;
+  let colorService: jasmine.SpyObj<DataLayerColorService>;
 
   beforeEach(() => {
-    service = new DataLayerMergeService();
+    colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette']);
+    service = new DataLayerMergeService(colorService);
   });
 
   it('should not modify the original collection', () => {
@@ -131,7 +135,7 @@ describe('DataLayerMergeService', () => {
         { label: 'one', data: [{ x: 1, y: 1 }] },
         { label: 'two', data: [{ x: 2, y: 2 }] },
       ],
-      scale: {id: 'test'},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Test',
@@ -139,7 +143,7 @@ describe('DataLayerMergeService', () => {
         { label: 'two', data: [{ x: 2, y: 22 }] },
         { label: 'one', data: [{ x: 1, y: 11 }] },
       ],
-      scale: { id: 'test'},
+      scale: { id: 'test' },
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);
@@ -170,12 +174,12 @@ describe('DataLayerMergeService', () => {
     const layer1: DataLayer = {
       name: 'Test',
       datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
-      scale: { id: 'test'},
+      scale: { id: 'test' },
     };
     const layer2: DataLayer = {
       name: 'Test',
       datasets: [{ label: 'two', data: [{ x: 2, y: 2 }] }],
-      scale: { id: 'test'},
+      scale: { id: 'test' },
     };
     collection = service.merge(collection, layer1);
     collection = service.merge(collection, layer2);
@@ -193,5 +197,24 @@ describe('DataLayerMergeService', () => {
         },
       ])
     );
+  });
+
+  it('should set layer colors when adding a new dataset to a selected layer', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
+      scale: { id: 'test' },
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [{ label: 'two', data: [{ x: 2, y: 2 }] }],
+      scale: { id: 'test' },
+    };
+    collection = service.merge(collection, layer1);
+    collection = mapValues(collection, (layer) => ({ ...layer, selected: true }));
+    expect(colorService.chooseColorsFromPalette).toHaveBeenCalledTimes(0);
+    service.merge(collection, layer2);
+    expect(colorService.chooseColorsFromPalette).toHaveBeenCalledTimes(1);
   });
 });
