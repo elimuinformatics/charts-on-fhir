@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DataLayer, DataLayerCollection } from './data-layer';
+import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import produce, { castDraft } from 'immer';
+import { DataLayerColorService } from './data-layer-color.service';
 
 /**
  * Merges a [DataLayer] into the matching layer in a [DataLayerCollection].
@@ -10,15 +11,32 @@ import produce, { castDraft } from 'immer';
   providedIn: 'root',
 })
 export class DataLayerMergeService {
+  constructor(private colorService: DataLayerColorService) {}
+
   merge(collection: DataLayerCollection, layer: DataLayer): DataLayerCollection {
     return produce(collection, (draft) => {
       const id = generateId(layer);
       if (!draft[id]) {
         draft[id] = { id, ...castDraft(layer) };
       } else {
-        mergeDatasets(draft[id], layer);
+        this.mergeDatasets(draft[id], layer);
       }
     });
+  }
+  /** Merge in place, matching datasets by label. This function mutates `mergedLayer` and its datasets. */
+  mergeDatasets(mergedLayer: ManagedDataLayer, newLayer: DataLayer) {
+    for (let newDataset of newLayer.datasets) {
+      const mergedDataset = mergedLayer.datasets.find((dataset) => dataset.label === newDataset.label);
+      if (mergedDataset) {
+        mergedDataset.data.push(...newDataset.data);
+        mergedDataset.data.sort((a, b) => a.x - b.x);
+      } else {
+        mergedLayer.datasets.push(newDataset);
+        if (mergedLayer.selected) {
+          this.colorService.chooseColorsFromPalette(mergedLayer);
+        }
+      }
+    }
   }
 }
 
@@ -41,17 +59,4 @@ function extractMetadata(layer: DataLayer): DataLayer {
     ...layer,
     datasets: [],
   };
-}
-
-/** Merge in place, matching datasets by label. This function mutates `mergedLayer` and its datasets. */
-function mergeDatasets(mergedLayer: DataLayer, newLayer: DataLayer) {
-  for (let newDataset of newLayer.datasets) {
-    const mergedDataset = mergedLayer.datasets.find((dataset) => dataset.label === newDataset.label);
-    if (mergedDataset) {
-      mergedDataset.data.push(...newDataset.data);
-      mergedDataset.data.sort((a, b) => a.x - b.x);
-    } else {
-      mergedLayer.datasets.push(newDataset);
-    }
-  }
 }
