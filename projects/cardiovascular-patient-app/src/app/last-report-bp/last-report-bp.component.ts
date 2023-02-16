@@ -21,8 +21,8 @@ export class LastReportBPComponent {
     this.layerManager.allLayers$
       .pipe(
         map((layers) => {
-          const layer = layers.find((layer) => layer.name === 'Blood Pressure');
-          return layer?.datasets.map((data) => data.data.slice(-1)[0]);
+          const bloodPressureLayer = layers.find((layer) => layer.name === 'Blood Pressure');
+          return bloodPressureLayer?.datasets.map((data) => data.data.slice(-1)[0]);
         }
         )
       )
