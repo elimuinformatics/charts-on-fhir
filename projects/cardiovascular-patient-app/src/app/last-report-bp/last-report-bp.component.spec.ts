@@ -44,14 +44,14 @@ describe('LastReportBPComponent', () => {
         datasets: [
           {
             data: [
-              { x: 1352359652, y: 120 },
-              { x: 1352359652, y: 122 },
+              { x: 1609175027000, y: 120 },
+              { x: 1609175027000, y: 122 },
             ],
           },
           {
             data: [
-              { x: 1476359652, y: 80 },
-              { x: 1476359652, y: 78 },
+              { x: 1676536294000, y: 80 },
+              { x: 1676536294000, y: 78 },
             ],
           },
         ],
@@ -59,8 +59,8 @@ describe('LastReportBPComponent', () => {
       },
     ];
     layerManager.allLayers$.next(layers);
-    expect(component.lastReportedBPdata?.systolic).toEqual({date:'18 Jan 1970 at 7:35 AM', value:78});
-    expect(component.lastReportedBPdata?.diastolic).toEqual({date:'16 Jan 1970 at 9:09 PM', value:122})
+    expect(component.lastReportedBPdata?.systolic).toEqual({date:'16 Feb 2023 at 2:01 PM', value:78});
+    expect(component.lastReportedBPdata?.diastolic).toEqual({date:'28 Dec 2020 at 10:33 PM', value:122})
 
   });
 });
