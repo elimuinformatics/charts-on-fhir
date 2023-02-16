@@ -12,31 +12,28 @@ interface LastReportedBPdata {
   templateUrl: './last-report-bp.component.html',
   styleUrls: ['./last-report-bp.component.css'],
 })
-export class LastReportBPComponent{
+export class LastReportBPComponent {
   lastReportedBPdata?: LastReportedBPdata;
-  isLastPriorBp: boolean = true;
 
-  constructor( private layerManager: DataLayerManagerService) { }
+  constructor(private layerManager: DataLayerManagerService) { }
 
   ngOnInit(): void {
     this.layerManager.allLayers$
       .pipe(
-        map((layers) =>
-          layers
-            .filter((layer) => layer.name === 'Blood Pressure')
-            .map((layer) => layer.datasets.map((data) => data.data))
-            .map((layer) => layer.map((data) => data.slice(-1)))
+        map((layers) => {
+          if (!layers) return [];
+          const layer = layers.find((layer) => layer.name === 'Blood Pressure');
+          if (!layer) return [];
+          return layer.datasets.map((data) => data.data.slice(-1)[0]);
+        }
         )
       )
       .subscribe((layers: any) => {
         if (layers.length > 0) {
-          this.isLastPriorBp = true;
           this.lastReportedBPdata = {
-            systolic: { date: `${formatDate(layers[0][1][0].x)} at ${formatTime(layers[0][1][0].x)}`, value: layers[0][1][0].y },
-            diastolic: { date: `${formatDate(layers[0][0][0].x)} at ${formatTime(layers[0][0][0].x)}`, value: layers[0][0][0].y },
+            systolic: { date: `${formatDate(layers[1].x)} at ${formatTime(layers[1].x)}`, value: layers[1].y },
+            diastolic: { date: `${formatDate(layers[0].x)} at ${formatTime(layers[0].x)}`, value: layers[0].y },
           };
-        } else {
-          this.isLastPriorBp = false;
         }
       });
   }
