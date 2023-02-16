@@ -18,7 +18,7 @@ export class HomeMeasurementSummaryService implements SummaryService {
   }
   summarize(layer: DataLayer, range: NumberRange): Record<string, string>[] {
     const groups = groupBy(layer.datasets, getOriginalLabel);
-    const datasets = Object.values(groups).map((ds) => ({ ...ds[0], data: ds.flatMap(d => d.data) }));
+    const datasets = Object.entries(groups).map(([label, ds]) => ({ ...ds[0], label, data: ds.flatMap(d => d.data) }));
     const combined = { ...layer, datasets };
     return this.baseSummaryService.summarize(combined, range);
   }
