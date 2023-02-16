@@ -65,7 +65,7 @@ export class DataLayerManagerService {
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
    */
-  retrieveAll(sortCompareFn: LayerCompareFn = () => 0, selectAll: boolean = false) {
+  retrieveAll(selectAll: boolean = false, sortCompareFn: LayerCompareFn = () => 0) {
     this.reset();
     this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve()))
@@ -86,7 +86,7 @@ export class DataLayerManagerService {
         },
       });
   }
-  
+
   /** Reducer that returns a new state with selected layers sorted by `sortCompareFn` */
   private sortLayers = produce<DataLayerManagerState, [LayerCompareFn]>((draft, sortCompareFn) => {
     draft.selected.sort((idA, idB) => sortCompareFn(draft.layers[idA], draft.layers[idB]));
@@ -94,7 +94,7 @@ export class DataLayerManagerService {
 
   /** Reducer that returns a new state with all layers selected */
   private selectAllLayers = (state: DataLayerManagerState) => {
-    return Object.keys(this.state.layers).reduce((nextState, id) => this.selectLayer(nextState, id), state);
+    return Object.keys(state.layers).reduce((nextState, id) => this.selectLayer(nextState, id), state);
   };
 
   /** Reducer that returns a new state with the given layer selected */

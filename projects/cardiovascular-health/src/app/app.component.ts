@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.sortCompareFn, this.isAllLayerSelected);
+    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn);
   }
   
   sortCompareFn = (a: DataLayer, b: DataLayer) => {
