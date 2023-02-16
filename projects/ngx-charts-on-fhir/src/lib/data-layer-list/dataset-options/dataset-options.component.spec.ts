@@ -14,11 +14,6 @@ import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-laye
 import { DatasetOptionsComponent } from './dataset-options.component';
 import { Chart } from 'chart.js';
 
-const mockColorService = {
-  getColor: () => '#000000',
-  setColor: () => {},
-};
-
 @Component({
   selector: 'color-picker',
   template: '',
@@ -35,8 +30,10 @@ describe('DatasetOptionsComponent', () => {
   let component: DatasetOptionsComponent;
   let fixture: ComponentFixture<DatasetOptionsComponent>;
   let loader: HarnessLoader;
+  let mockColorService: jasmine.SpyObj<DataLayerColorService>;
 
   beforeEach(async () => {
+    mockColorService = jasmine.createSpyObj('DataLayerColorService', ['getColor','setColor']);
     await TestBed.configureTestingModule({
       declarations: [DatasetOptionsComponent, MockColorPickerComponent],
       imports: [MatButtonModule, MatButtonToggleModule, MatSlideToggleModule, MatSliderModule, MatIconModule, ReactiveFormsModule],
@@ -96,4 +93,9 @@ describe('DatasetOptionsComponent', () => {
     expect(await pointRadius.getValue()).toEqual(3);
   }));
 
+  it('should not set dataset color to empty string', () => {
+    component.dataset = { label: 'Dataset', data: [] };
+    component.form.controls.color.setValue('');
+    expect(mockColorService.setColor).not.toHaveBeenCalled();
+  });
 });
