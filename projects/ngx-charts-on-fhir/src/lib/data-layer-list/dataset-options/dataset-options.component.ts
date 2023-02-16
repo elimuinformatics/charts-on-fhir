@@ -52,7 +52,9 @@ export class DatasetOptionsComponent implements OnInit {
       this.datasetChange.emit(
         produce(this._dataset, (draft) => {
           merge(draft, props);
-          this.colorService.setColor(draft, formValue.color ?? '');
+          if (formValue.color) {
+            this.colorService.setColor(draft, formValue.color ?? '');
+          }
         })
       );
     }

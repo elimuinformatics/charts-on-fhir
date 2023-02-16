@@ -4,12 +4,16 @@ import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
+const bloodPressure = { systolic: 89, diastolic: 63 }
+
 describe('FhirDataService', () => {
   let service: FhirDataService;
 
   beforeEach(() => {
     sessionStorage.clear();
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: []
+    });
     service = TestBed.inject(FhirDataService);
   });
 
@@ -137,4 +141,37 @@ describe('FhirDataService', () => {
     service.changePatient('7');
     expect(service.client?.getPatientId()).toBe('unchanged');
   });
+
+  describe('createResourceData', () => {
+    it('should create a fhir resource for add Blood Pressure', async () => {
+      const resource = service.createBloodPressureResource(bloodPressure);
+      const diastolicBP = resource['component'][0].valueQuantity?.value;
+      const systolicBP = resource['component'][1].valueQuantity?.value;
+      expect(diastolicBP).toEqual(bloodPressure.diastolic)
+      expect(systolicBP).toEqual(bloodPressure.systolic)
+
+    });
+  })
+
+  describe('addPatientData', () => {
+    beforeEach(async () => {
+      await service.initialize({
+        serverUrl: 'http://example.com/open',
+        tokenResponse: {
+          patient: '123',
+        },
+      });
+      if (!service.client) {
+        throw new Error('Client should be initialized');
+      }
+    });
+
+    it('should add patient BP on FHIR server', async () => {
+      const create = spyOn(service.client!, 'create').and.resolveTo(null);
+      const resource: fhirclient.FHIR.Resource = service.createBloodPressureResource(bloodPressure);
+      service.addPatientData(resource)
+      expect(create).toHaveBeenCalled();
+    })
+  })
+
 });

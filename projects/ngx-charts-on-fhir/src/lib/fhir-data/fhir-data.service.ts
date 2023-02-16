@@ -5,6 +5,11 @@ import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 
+export interface BloodPressure {
+  systolic?: number |null,
+  diastolic?: number |null
+}
+
 /**
  * A wrapper service for the SMART-on-FHIR javascript client that makes it easier to use with Angular and RxJS.
  *
@@ -93,6 +98,82 @@ export class FhirDataService {
         .catch((error) => subscriber.error(error));
       return teardownLogic;
     });
+  }
+
+  addPatientData(resource: fhirclient.FHIR.Resource) {
+    return this.client?.create(resource);
+  }
+
+  createBloodPressureResource(reportBPValue: BloodPressure): fhirclient.FHIR.Resource {
+    return {
+      "resourceType": "Observation",
+      "status": "final",
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "vital-signs",
+              "display": "vital-signs"
+            }
+          ]
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "85354-9",
+            "display": "Blood Pressure"
+          }
+        ],
+        "text": "Blood Pressure"
+      },
+      "subject": {
+        "reference": `Patient/${this.client?.patient.id}`
+      },
+      "effectiveDateTime": new Date().toISOString(),
+      "issued": new Date().toISOString(),
+      "component": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8462-4",
+                "display": "Diastolic Blood Pressure"
+              }
+            ],
+            "text": "Diastolic Blood Pressure"
+          },
+          "valueQuantity": {
+            "value": Number(reportBPValue.diastolic),
+            "unit": "mm[Hg]",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8480-6",
+                "display": "Systolic Blood Pressure"
+              }
+            ],
+            "text": "Systolic Blood Pressure"
+          },
+          "valueQuantity": {
+            "value": Number(reportBPValue.systolic),
+            "unit": "mm[Hg]",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        }
+      ]
+    };
+
   }
 }
 
