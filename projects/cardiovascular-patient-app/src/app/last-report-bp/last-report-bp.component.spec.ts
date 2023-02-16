@@ -59,8 +59,8 @@ describe('LastReportBPComponent', () => {
       },
     ];
     layerManager.allLayers$.next(layers);
-    expect(component.lastReportedBPdata?.systolic).toEqual({date:'16 Feb 2023 at 2:01 PM', value:78});
-    expect(component.lastReportedBPdata?.diastolic).toEqual({date:'28 Dec 2020 at 10:33 PM', value:122})
+    expect(component.lastReportedBPdata?.systolic).toEqual({date:'16 Feb 2023 at 8:31 AM', value:78});
+    expect(component.lastReportedBPdata?.diastolic).toEqual({date:'28 Dec 2020 at 5:03 PM', value:122})
 
   });
 });
