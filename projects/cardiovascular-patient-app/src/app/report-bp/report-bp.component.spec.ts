@@ -1,6 +1,6 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ReportBPComponent } from './report-bp.component';
 import { MatInputHarness } from '@angular/material/input/testing';
@@ -39,17 +39,12 @@ describe('ReportBPComponent', () => {
   let component: ReportBPComponent;
   let fixture: ComponentFixture<ReportBPComponent>;
   let loader: HarnessLoader;
-  let fhirDataService: jasmine.SpyObj<FhirDataService>;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   beforeEach(async () => {
-    fhirDataService = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
-    fhirDataService.createBloodPressureResource.and.returnValue(fhirResource);
-    fhirDataService.addPatientData.and.returnValue(Promise.resolve({}));
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatCardModule],
       declarations: [ReportBPComponent],
-      providers: [FormBuilder,MatSnackBar, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
+      providers: [FormBuilder,MatSnackBar, { provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportBPComponent);
@@ -111,8 +106,39 @@ describe('ReportBPComponent', () => {
     await systolicInputHarness.setValue('252');
     expect(systolicFormField?.errors?.['max']).toBeTruthy();
   });
+});
 
-  it('should submit blood pressure Form', async () => {
+
+describe('submit test', () => {
+  let component: ReportBPComponent;
+  let fixture: ComponentFixture<ReportBPComponent>;
+  let loader: HarnessLoader;
+  let fhirDataService: jasmine.SpyObj<FhirDataService>;
+  let matSnackBarSpy: jasmine.SpyObj<MatSnackBar>;
+
+  beforeEach(async () => {
+    matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
+    fhirDataService = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
+    fhirDataService.createBloodPressureResource.and.returnValue(fhirResource);
+    fhirDataService.addPatientData.and.returnValue(Promise.resolve({}));
+    await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatCardModule],
+      declarations: [ReportBPComponent],
+      providers: [FormBuilder,{ provide: MatSnackBar, useValue: matSnackBarSpy },{ provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ReportBPComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+
+  it('should submit blood pressure Form', fakeAsync(async () => {
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
@@ -123,6 +149,6 @@ describe('ReportBPComponent', () => {
     expect(component.onSubmit).toBeTruthy();
     expect(fhirDataService.createBloodPressureResource).toHaveBeenCalledWith(bloodPressure);
     expect(fhirDataService.addPatientData).toHaveBeenCalledWith(fhirResource);
-  });
+  }));
 
 });
