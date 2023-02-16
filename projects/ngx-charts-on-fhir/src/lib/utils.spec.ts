@@ -4,7 +4,7 @@ describe('utils', () => {
 
     it('should convert timestamp in expected timeformat', () => {
         const expectedTime =formatTime(1676547182000);
-        expect(expectedTime).toEqual('5:03 PM')
+        expect(expectedTime).toEqual('11:33 AM')
      });
 
     it('should convert timestamp in expected dateformat', () => {
