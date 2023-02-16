@@ -21,15 +21,13 @@ export class LastReportBPComponent {
     this.layerManager.allLayers$
       .pipe(
         map((layers) => {
-          if (!layers) return [];
           const layer = layers.find((layer) => layer.name === 'Blood Pressure');
-          if (!layer) return [];
-          return layer.datasets.map((data) => data.data.slice(-1)[0]);
+          return layer?.datasets.map((data) => data.data.slice(-1)[0]);
         }
         )
       )
       .subscribe((layers: any) => {
-        if (layers.length > 0) {
+        if (layers?.length > 0) {
           this.lastReportedBPdata = {
             systolic: { date: `${formatDate(layers[1].x)} at ${formatTime(layers[1].x)}`, value: layers[1].y },
             diastolic: { date: `${formatDate(layers[0].x)} at ${formatTime(layers[0].x)}`, value: layers[0].y },
