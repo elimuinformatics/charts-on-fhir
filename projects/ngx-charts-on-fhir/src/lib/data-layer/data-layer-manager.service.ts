@@ -64,6 +64,9 @@ export class DataLayerManagerService {
    * This method runs asynchronously and does not return anything.
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
+   * 
+   * @param selectAll When `true`, every layer that is retrieved will be automatically selected.
+   * @param sortCompareFn A comparison function for sorting auto-selected layers. This function will be passed to `Array.sort`.
    */
   retrieveAll(selectAll: boolean = false, sortCompareFn: LayerCompareFn = () => 0) {
     this.reset();
@@ -76,8 +79,8 @@ export class DataLayerManagerService {
           let nextState = { ...this.stateSubject.value, layers };
           if (selectAll) {
             nextState = this.selectAllLayers(nextState);
+            nextState = this.sortLayers(nextState, sortCompareFn);
           }
-          nextState = this.sortLayers(nextState, sortCompareFn);
           this.stateSubject.next(nextState);
         },
         error: (err) => console.error(err),
