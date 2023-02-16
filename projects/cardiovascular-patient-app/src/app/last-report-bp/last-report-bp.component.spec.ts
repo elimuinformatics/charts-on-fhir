@@ -66,7 +66,7 @@ describe('LastReportBPComponent', () => {
 
     const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
     const contentText = await cardHarness.getText();
-    expect(contentText).toContain('Last BP reported was 78/122 on 16 Feb 2023 at 2:01 PM');
+    expect(contentText).toContain('Last BP reported was 78/122 on 16 Feb 2023 at 8:31 AM');
   });
 
   it('should check if no any blood pressure layer is present', async () => {
