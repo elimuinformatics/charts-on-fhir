@@ -27,7 +27,13 @@ export class LastReportBPComponent {
         )
       )
       .subscribe((layers: any) => {
-        if (layers?.length > 0) {
+        if (layers?.length > 2) {
+          this.lastReportedBPdata = {
+            systolic: { date: `${formatDate(layers[3].x)} at ${formatTime(layers[3].x)}`, value: layers[3].y },
+            diastolic: { date: `${formatDate(layers[2].x)} at ${formatTime(layers[2].x)}`, value: layers[2].y },
+          };
+        }
+        else {
           this.lastReportedBPdata = {
             systolic: { date: `${formatDate(layers[1].x)} at ${formatTime(layers[1].x)}`, value: layers[1].y },
             diastolic: { date: `${formatDate(layers[0].x)} at ${formatTime(layers[0].x)}`, value: layers[0].y },
