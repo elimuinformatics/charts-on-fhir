@@ -16,15 +16,43 @@ describe('DataLayerColorService', () => {
   });
 
   describe('chooseColorsFromPalette', () => {
-    it('should call setColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
+    it('should cycle through the palette', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
-        datasets: [{ label: 'Diastolic Blood Pressure' }],
+        datasets: [{ label: 'One' }, { label: 'Two' }, { label: 'Three'}],
         annotations: [{ label: { display: true } }],
-        backgroundColor: '#ECF0F9',
       };
-      let setColorSpy = spyOn(service, 'setColor');
       service.chooseColorsFromPalette(layer);
-      expect(setColorSpy).toHaveBeenCalled();
+      expect(layer.datasets[0].borderColor).toEqual(palette[0]);
+      expect(layer.datasets[1].borderColor).toEqual(palette[1]);
+      expect(layer.datasets[2].borderColor).toEqual(palette[0]);
+    }));
+
+    it('should reuse color from matching dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      const layer: any = {
+        datasets: [{ label: 'One' }, { label: 'One (X)' }],
+        annotations: [{ label: { display: true } }],
+      };
+      service.chooseColorsFromPalette(layer);
+      expect(layer.datasets[0].borderColor).toEqual(palette[0]);
+      expect(layer.datasets[1].borderColor).toEqual(palette[0]);
+    }));
+
+    it('should brighten palette color by 20% for home measurements', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      const layer: any = {
+        datasets: [{ label: 'One (Home)' }],
+        annotations: [{ label: { display: true } }],
+      };
+      service.chooseColorsFromPalette(layer);
+      expect(layer.datasets[0].borderColor).toEqual('#333333');
+    }));
+
+    it('should add transparency for matching annotation color', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      const layer: any = {
+        datasets: [{ label: 'One' }],
+        annotations: [{ label: { display: true, content: 'One Annotation' } }],
+      };
+      service.chooseColorsFromPalette(layer);
+      expect(layer.annotations[0].backgroundColor).toEqual('rgba(0, 0, 0, 0.2)');
     }));
   });
 
