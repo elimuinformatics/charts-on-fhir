@@ -33,7 +33,7 @@ export class LastReportBPComponent {
             diastolic: { date: `${formatDate(layers[2].x)} at ${formatTime(layers[2].x)}`, value: layers[2].y },
           };
         }
-        else {
+        else if (layers?.length > 0) {
           this.lastReportedBPdata = {
             systolic: { date: `${formatDate(layers[1].x)} at ${formatTime(layers[1].x)}`, value: layers[1].y },
             diastolic: { date: `${formatDate(layers[0].x)} at ${formatTime(layers[0].x)}`, value: layers[0].y },
