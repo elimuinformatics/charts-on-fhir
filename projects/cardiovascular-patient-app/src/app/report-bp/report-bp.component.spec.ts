@@ -40,7 +40,6 @@ describe('ReportBPComponent', () => {
   let fixture: ComponentFixture<ReportBPComponent>;
   let loader: HarnessLoader;
   let fhirDataService: jasmine.SpyObj<FhirDataService>;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
   beforeEach(async () => {
     fhirDataService = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
