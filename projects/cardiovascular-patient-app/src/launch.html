@@ -1,0 +1,8 @@
+<script src="fhirclient.js"></script>
+<script src="assets/env.js"></script>
+<script>
+  FHIR.oauth2.authorize({
+    clientId: window.env.clientId,
+    scope: "launch openid patient/*.rs profile",
+  });
+</script>
