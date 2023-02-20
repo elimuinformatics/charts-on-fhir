@@ -11,7 +11,6 @@ import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 const mockLayerManager = {
@@ -48,7 +47,7 @@ describe('ReportBPComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatCardModule],
       declarations: [ReportBPComponent],
-      providers: [FormBuilder,MatSnackBar, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
+      providers: [FormBuilder, { provide: DataLayerManagerService, useValue: mockLayerManager }, { provide: FhirDataService, useValue: fhirDataService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportBPComponent);

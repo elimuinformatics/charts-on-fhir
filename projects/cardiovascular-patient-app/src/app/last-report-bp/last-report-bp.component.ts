@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { groupBy, mapValues } from 'lodash-es';
 import { DataLayerManagerService, formatDate, formatTime } from 'ngx-charts-on-fhir';
 import { map } from 'rxjs';
 
@@ -21,23 +22,21 @@ export class LastReportBPComponent {
     this.layerManager.allLayers$
       .pipe(
         map((layers) => {
-          const bloodPressureLayer = layers.find((layer) => layer.name === 'Blood Pressure');
-          return bloodPressureLayer?.datasets.map((data) => data.data.slice(-1)[0]);
-        }
-        )
+          const bloodPressureLayer = layers.find((layer) => layer.name === 'Blood Pressure')?.datasets;
+          const groupedData = groupBy(bloodPressureLayer, (data) => data?.label?.startsWith('Systolic') ? 'systolic' : 'diastolic');
+          const mostRecentData = mapValues(groupedData, (data) => data[data.length - 1].data.at(-1));
+          return {
+            systolic: { date: mostRecentData['systolic']?.x, value: mostRecentData['systolic']?.y },
+            diastolic: { date: mostRecentData['diastolic']?.x, value: mostRecentData['diastolic']?.y },
+          };
+        })
       )
       .subscribe((layers: any) => {
-        if (layers?.length > 2) {
+        if (layers.diastolic.date !== undefined && layers.systolic.date !== undefined) {
           this.lastReportedBPdata = {
-            systolic: { date: `${formatDate(layers[3].x)} at ${formatTime(layers[3].x)}`, value: layers[3].y },
-            diastolic: { date: `${formatDate(layers[2].x)} at ${formatTime(layers[2].x)}`, value: layers[2].y },
-          };
-        }
-        else if (layers?.length > 0) {
-          this.lastReportedBPdata = {
-            systolic: { date: `${formatDate(layers[1].x)} at ${formatTime(layers[1].x)}`, value: layers[1].y },
-            diastolic: { date: `${formatDate(layers[0].x)} at ${formatTime(layers[0].x)}`, value: layers[0].y },
-          };
+            systolic: { date: `${formatDate(layers.systolic.date)} at ${formatTime(layers.systolic.date)}`, value: layers.systolic.value },
+            diastolic: { date: `${formatDate(layers.diastolic.date)} at ${formatTime(layers.diastolic.date)}`, value: layers.diastolic.value },
+          }
         }
       });
   }

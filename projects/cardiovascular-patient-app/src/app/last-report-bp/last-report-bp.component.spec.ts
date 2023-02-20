@@ -6,7 +6,7 @@ import { LastReportBPModule } from './last-report-bp.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import {MatCardHarness} from '@angular/material/card/testing';
+import { MatCardHarness } from '@angular/material/card/testing';
 
 
 class MockLayerManager {
@@ -51,12 +51,14 @@ describe('LastReportBPComponent', () => {
               { x: 1609175027000, y: 120 },
               { x: 1609175027000, y: 122 },
             ],
+            label: "Diastolic Blood Pressure"
           },
           {
             data: [
               { x: 1676536294000, y: 80 },
               { x: 1676536294000, y: 78 },
             ],
+            label: "Systolic Blood Pressure"
           },
         ],
         scale: { id: '1' },
