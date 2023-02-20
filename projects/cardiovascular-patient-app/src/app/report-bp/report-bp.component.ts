@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DataLayerManagerService, FhirDataService } from 'ngx-charts-on-fhir';
-import { MatSnackBar} from '@angular/material/snack-bar';
+import { FhirDataService } from 'ngx-charts-on-fhir';
+import { MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -28,12 +28,16 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private layerManager: DataLayerManagerService, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
       this.updateBPentryForm(value);
     });
+  }
+
+  open(message: string, action = '', config?: MatSnackBarConfig) {
+    return this.snackBar.open(message, action, config);
   }
 
   onSubmit(): void {
