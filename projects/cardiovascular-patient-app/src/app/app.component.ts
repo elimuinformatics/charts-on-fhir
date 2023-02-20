@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { DataLayerManagerService } from 'ngx-charts-on-fhir';
 export class AppComponent implements OnInit {
   showTitle: boolean = false;
   layers: any[] = [];
-  appTitle: string = 'CDSIC Blood Pressure App';
+  appTitle: string = environment.appTitle;
 
   constructor(readonly layerManager: DataLayerManagerService) {}
 
