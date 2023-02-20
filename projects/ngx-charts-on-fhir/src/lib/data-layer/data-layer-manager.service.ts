@@ -22,6 +22,7 @@ const initialState: DataLayerManagerState = {
   selected: [],
 };
 
+type LayerCompareFn = (a: DataLayer, b: DataLayer) => number;
 /**
  * A service that retrieves [DataLayer]s from all registered [DataLayerService]s
  * and provides methods for selecting and ordering the layers.
@@ -63,24 +64,52 @@ export class DataLayerManagerService {
    * This method runs asynchronously and does not return anything.
    * You can observe the retrieved layers using one of the manager's Observable properties:
    * [allLayers$], [selectedLayers$], or [availableLayers$].
+   * 
+   * @param selectAll When `true`, every layer that is retrieved will be automatically selected.
+   * @param sortCompareFn A comparison function for sorting auto-selected layers. This function will be passed to `Array.sort`.
    */
-  retrieveAll() {
+  retrieveAll(selectAll: boolean = false, sortCompareFn: LayerCompareFn = () => 0) {
     this.reset();
     this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve()))
       .pipe(takeUntil(this.cancel$))
       .subscribe({
-        next: (layer) =>
-          this.stateSubject.next({
-            ...this.stateSubject.value,
-            layers: this.mergeService.merge(this.state.layers, layer),
-          }),
+        next: (layer) => {
+          const layers = this.mergeService.merge(this.state.layers, layer);
+          let nextState = { ...this.stateSubject.value, layers };
+          if (selectAll) {
+            nextState = this.selectAllLayers(nextState);
+            nextState = this.sortLayers(nextState, sortCompareFn);
+          }
+          this.stateSubject.next(nextState);
+        },
         error: (err) => console.error(err),
         complete: () => {
           this.loading$.next(false);
         },
       });
   }
+
+  /** Reducer that returns a new state with selected layers sorted by `sortCompareFn` */
+  private sortLayers = produce<DataLayerManagerState, [LayerCompareFn]>((draft, sortCompareFn) => {
+    draft.selected.sort((idA, idB) => sortCompareFn(draft.layers[idA], draft.layers[idB]));
+  });
+
+  /** Reducer that returns a new state with all layers selected */
+  private selectAllLayers = (state: DataLayerManagerState) => {
+    return Object.keys(state.layers).reduce((nextState, id) => this.selectLayer(nextState, id), state);
+  };
+
+  /** Reducer that returns a new state with the given layer selected */
+  private selectLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
+    if (!draft.layers[id].selected) {
+      const layer = draft.layers[id];
+      draft.selected.push(layer.id);
+      layer.selected = true;
+      layer.enabled = true;
+      this.colorService.chooseColorsFromPalette(layer);
+    }
+  });
 
   /** Cancels any in-progress data retrieval and resets the DataLayerManager to its initial state */
   reset() {
@@ -96,15 +125,7 @@ export class DataLayerManagerService {
     if (this.state.layers[id].selected) {
       throw new Error(`Layer [${id}] is already selected`);
     }
-    this.stateSubject.next(
-      produce(this.state, (draft) => {
-        const layer = draft.layers[id];
-        draft.selected.push(layer.id);
-        layer.selected = true;
-        layer.enabled = true;
-        this.colorService.chooseColorsFromPalette(layer);
-      })
-    );
+    this.stateSubject.next(this.selectLayer(this.state, id));
   }
 
   remove(id: string) {
