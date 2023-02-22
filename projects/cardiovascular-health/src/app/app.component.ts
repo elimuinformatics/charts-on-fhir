@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
-import { filter, switchMap, take } from 'rxjs';
+import { DataLayer, DataLayerManagerService } from 'ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +9,16 @@ import { filter, switchMap, take } from 'rxjs';
 export class AppComponent implements OnInit {
   showAddDataLayer: boolean = false;
   layers: any[] = [];
+  isAllLayerSelected = true;
 
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll();
-
-    // temporary fix for color service not working correctly when layers are selected while data is loading
-    this.layerManager.loading$
-      .pipe(
-        filter((loading) => !loading),
-        switchMap(() => this.layerManager.availableLayers$),
-        take(1)
-      )
-      .subscribe((layers) => {
-        layers.forEach((layer) => {
-          this.layerManager.select(layer.id);
-        });
-      });
+    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn);
   }
+  
+  sortCompareFn = (a: DataLayer, b: DataLayer) => {
+    const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications'];
+    return layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name);
+  };
 }

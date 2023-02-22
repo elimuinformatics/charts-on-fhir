@@ -9,7 +9,7 @@ describe('DataLayerManagerService', () => {
   let colorService: jasmine.SpyObj<DataLayerColorService>;
 
   // DataLayers
-  const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a'} };
+  const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
   const b: ManagedDataLayer = { name: 'b', id: 'b', datasets: [], scale: { id: 'b' } };
   const c: ManagedDataLayer = { name: 'c', id: 'c', datasets: [], scale: { id: 'c' } };
 
@@ -51,6 +51,34 @@ describe('DataLayerManagerService', () => {
         })
       );
     });
+
+    it('should select layers automatically when selectAll=true', () => {
+      const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
+      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      manager.retrieveAll(true);
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xy', {
+          x: [jasmine.objectContaining(a)],
+          y: [jasmine.objectContaining(a), jasmine.objectContaining(b)],
+        })
+      );
+    });
+
+    it('should sort selectedLayers$ when auto-selecting', () => {
+      const services = [
+        { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
+        { name: 'two', retrieve: () => cold('-a|', { a }) },
+      ];
+      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      manager.retrieveAll(true, (one, two) => one.name.localeCompare(two.name));
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xyz', {
+          x: [jasmine.objectContaining(c)],
+          y: [jasmine.objectContaining(a), jasmine.objectContaining(c)],
+          z: [jasmine.objectContaining(a), jasmine.objectContaining(b), jasmine.objectContaining(c)],
+        })
+      );
+    });
   });
 
   describe('select', () => {
@@ -81,7 +109,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should set layer color', () => {
-      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a'} };
+      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
       const manager = new DataLayerManagerService(services, colorService, mergeService);
       manager.retrieveAll();
@@ -155,7 +183,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should show datasets for the layer in allLayers$', () => {
-      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a'} };
+      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
       const manager = new DataLayerManagerService(services, colorService, mergeService);
       manager.retrieveAll();
@@ -184,7 +212,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should hide datasets for the layer in selectedLayers$ when enabled=false', () => {
-      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a'} };
+      const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
       const manager = new DataLayerManagerService(services, colorService, mergeService);
       manager.retrieveAll();
