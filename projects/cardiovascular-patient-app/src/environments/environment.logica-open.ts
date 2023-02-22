@@ -3,9 +3,6 @@ import { fhirclient } from 'fhirclient/lib/types';
 /**
  * A local test environment that uses Logica Sandbox open FHIR server with a hard-coded patient ID
  */
-declare global {
-  interface Window { env: any; }
-}
 
 export const environment = {
   production: false,

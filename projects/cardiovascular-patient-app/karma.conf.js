@@ -3,6 +3,7 @@
 
 module.exports = function (config) {
   config.set({
+   files: ['src/assets/env.js'],
     basePath: "",
     frameworks: ["jasmine", "@angular-devkit/build-angular"],
     plugins: [
