@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   clientState: undefined,
+  appTitle: window.env.appTitle
 };
 
 /*
