@@ -48,13 +48,6 @@ describe('LastReportBPComponent', () => {
         datasets: [
           {
             data: [
-              { x: 1673360018000, y: 63 },
-              { x: 1673792018000, y: 71 },
-            ],
-            label: "Diastolic Blood Pressure (Home)"
-          },
-          {
-            data: [
               { x: 1673360018000, y: 131 },
               { x: 1673792018000, y: 123 },
             ],
@@ -73,6 +66,13 @@ describe('LastReportBPComponent', () => {
               { x: 1677058286037, y: 89 },
             ],
             label: "Systolic Blood Pressure"
+          },
+          {
+            data: [
+              { x: 1673360018000, y: 63 },
+              { x: 1673792018000, y: 71 },
+            ],
+            label: "Diastolic Blood Pressure (Home)"
           },
         ],
         scale: { id: '1' },
