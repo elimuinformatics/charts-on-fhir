@@ -128,15 +128,17 @@ describe('snackbar test', () => {
   let fixture: ComponentFixture<ReportBPComponent>;
   let loader: HarnessLoader;
   let fhirDataServiceSpy: jasmine.SpyObj<FhirDataService>;
+  let matSnackBarSpy: jasmine.SpyObj<MatSnackBar>;
 
   beforeEach(async () => {
+    matSnackBarSpy = jasmine.createSpyObj<MatSnackBar>('MatSnackBar', ['open']);
     fhirDataServiceSpy = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
     fhirDataServiceSpy.createBloodPressureResource.and.returnValue(fhirResource);
     fhirDataServiceSpy.addPatientData.and.returnValue(Promise.resolve({}));
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatCardModule],
       declarations: [ReportBPComponent],
-      providers: [MatSnackBar, { provide: FhirDataService, useValue: fhirDataServiceSpy }],
+      providers: [{ provide: MatSnackBar, useValue: matSnackBarSpy }, { provide: FhirDataService, useValue: fhirDataServiceSpy }],
     }).compileComponents();
     fixture = TestBed.createComponent(ReportBPComponent);
     fixture.detectChanges();
@@ -144,7 +146,6 @@ describe('snackbar test', () => {
   });
 
   it('should display success snackbar message when form submission is successful', fakeAsync(async () => {
-    const snackBarSpy = spyOn(MatSnackBar.prototype, 'open').and.stub();
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
@@ -152,7 +153,7 @@ describe('snackbar test', () => {
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
 
-    expect(snackBarSpy).toHaveBeenCalledWith('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       duration: 5000,
@@ -161,7 +162,6 @@ describe('snackbar test', () => {
   }));
 
   it('should display error snackbar message when getting some error', fakeAsync(async () => {
-    const snackBarSpy = spyOn(MatSnackBar.prototype, 'open').and.stub();
     fhirDataServiceSpy.addPatientData.and.rejectWith(undefined);
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
@@ -170,7 +170,7 @@ describe('snackbar test', () => {
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
 
-    expect(snackBarSpy).toHaveBeenCalledWith('Something Wrong..!!', 'Dismiss', {
+    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Something Wrong..!!', 'Dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['red-snackbar'],
