@@ -39,7 +39,7 @@ describe('LastReportBPComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show correct message for systolic and diastolic of last reported prior BP with multiple measurements', async () => {
+  it('should show correct message for systolic and diastolic of last reported prior BP with multiple home/office measurements', async () => {
     const layers: ManagedDataLayer[] = [
       {
         id: '1',
@@ -48,15 +48,29 @@ describe('LastReportBPComponent', () => {
         datasets: [
           {
             data: [
-              { x: 1609175027000, y: 120 },
-              { x: 1609175027000, y: 122 },
+              { x: 1673360018000, y: 63 },
+              { x: 1673792018000, y: 71 },
+            ],
+            label: "Diastolic Blood Pressure (Home)"
+          },
+          {
+            data: [
+              { x: 1673360018000, y: 131 },
+              { x: 1673792018000, y: 123 },
+            ],
+            label: "Systolic Blood Pressure (Home)"
+          },
+          {
+            data: [
+              { x: 1677049448147, y: 41 },
+              { x: 1677058286037, y: 75 },
             ],
             label: "Diastolic Blood Pressure"
           },
           {
             data: [
-              { x: 1676536294000, y: 80 },
-              { x: 1676536294000, y: 78 },
+              { x: 1677049448147, y: 95 },
+              { x: 1677058286037, y: 89 },
             ],
             label: "Systolic Blood Pressure"
           },
@@ -70,10 +84,10 @@ describe('LastReportBPComponent', () => {
     const contentText = await cardHarness.getText();
 
     const expectedOutput: LastReportedBPdata = {
-      systolic: { date: new Date(1676536294000).toUTCString(), value: 78 },
-      diastolic: { date: new Date(1676536294000).toUTCString(), value: 122 },
+      systolic: { date: new Date(1677058286037).toUTCString(), value: 89 },
+      diastolic: { date: new Date(1677058286037).toUTCString(), value: 75 },
     };
-    expect(contentText).toContain(`Last BP reported was ${component?.lastReportedBPdata?.systolic.value }/${ component?.lastReportedBPdata?.diastolic.value } on ${component.formatDate(expectedOutput.systolic.date)} at ${component.formatTime(expectedOutput.systolic.date)}`);
+    expect(contentText).toContain(`Last BP reported was ${component?.lastReportedBPdata?.systolic.value}/${component?.lastReportedBPdata?.diastolic.value} on ${component.formatDate(expectedOutput.systolic.date)} at ${component.formatTime(expectedOutput.systolic.date)}`);
   });
 
   it('should show correct text for systolic and diastolic values of last reported prior BP if the Blood Pressure layer has no datasets', async () => {
@@ -103,6 +117,43 @@ describe('LastReportBPComponent', () => {
     const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
     const contentText = await cardHarness.getText();
     expect(contentText).toContain('There is no last reported prior BP for Patient');
+  });
+
+  it('should show correct message for systolic and diastolic of last reported prior BP with only multiple office measurements', async () => {
+    const layers: ManagedDataLayer[] = [
+      {
+        id: '1',
+        name: 'Blood Pressure',
+        category: ['C', 'D'],
+        datasets: [
+          {
+            data: [
+              { x: 1677049448147, y: 41 },
+              { x: 1677058286037, y: 75 },
+            ],
+            label: "Diastolic Blood Pressure"
+          },
+          {
+            data: [
+              { x: 1677049448147, y: 95 },
+              { x: 1677058286037, y: 89 },
+            ],
+            label: "Systolic Blood Pressure"
+          },
+        ],
+        scale: { id: '1' },
+      },
+    ];
+    layerManager.allLayers$.next(layers);
+
+    const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
+    const contentText = await cardHarness.getText();
+
+    const expectedOutput: LastReportedBPdata = {
+      systolic: { date: new Date(1677058286037).toUTCString(), value: 89 },
+      diastolic: { date: new Date(1677058286037).toUTCString(), value: 75 },
+    };
+    expect(contentText).toContain(`Last BP reported was ${component?.lastReportedBPdata?.systolic.value}/${component?.lastReportedBPdata?.diastolic.value} on ${component.formatDate(expectedOutput.systolic.date)} at ${component.formatTime(expectedOutput.systolic.date)}`);
   });
 
 })
