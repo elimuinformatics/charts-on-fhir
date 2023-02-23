@@ -45,14 +45,14 @@ export class ReportBPComponent implements OnInit {
     const resource = this.dataService.createBloodPressureResource(bloodPressure);
     if (resource) {
       this.dataService.addPatientData(resource)?.then(() => {
-        this.snackBar.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+        this.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           duration: 5000,
          panelClass:['green-snackbar']
         });
       }).catch(() => {
-        this.snackBar.open('Something Wrong..!!', 'Dismiss', {
+        this.open('Something Wrong..!!', 'Dismiss', {
           horizontalPosition:'center',
           verticalPosition:'top',
           panelClass:['red-snackbar'],

@@ -1,6 +1,6 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ReportBPComponent } from './report-bp.component';
 import { MatInputHarness } from '@angular/material/input/testing';
@@ -11,7 +11,6 @@ import { FhirDataService } from 'ngx-charts-on-fhir';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSnackBarHarness } from '@angular/material/snack-bar/testing';
 
 const fhirResource = {
   "resourceType": "Observation",
@@ -74,6 +73,7 @@ describe('ReportBPComponent', () => {
     expect(systolicFormField?.errors).not.toBeNull();
     expect(systolicFormField?.errors?.['required']).toBeTruthy();
   });
+
   it('should bind the diastolic to its form control and for valid value there should be no error', async () => {
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('11');
@@ -99,6 +99,7 @@ describe('ReportBPComponent', () => {
     await diastolicInputHarness.setValue('252');
     expect(diastolicFormField?.errors?.['max']).toBeTruthy();
   });
+
   it('should show the error when systolic blood pressure not in range', async () => {
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('1');
@@ -142,17 +143,38 @@ describe('snackbar test', () => {
     loader = TestbedHarnessEnvironment.documentRootLoader(fixture);
   });
 
-  it('should be able to get snackbar message after submit ', fakeAsync(async () => {
+  it('should display success snackbar message when form submission is successful', fakeAsync(async () => {
+    const snackBarSpy = spyOn(MatSnackBar.prototype, 'open').and.stub();
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
     await diastolicInputHarness.setValue('50');
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
-    tick(5000);
-    fixture.componentInstance.open('Blood Pressure Added Sucessfully')
-    let snackBar = await loader.getHarness(MatSnackBarHarness);
-    expect(await snackBar.getMessage()).toBe('Blood Pressure Added Sucessfully');
+
+    expect(snackBarSpy).toHaveBeenCalledWith('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 5000,
+      panelClass: ['green-snackbar']
+    })
   }));
 
+  it('should display error snackbar message when getting some error', fakeAsync(async () => {
+    const snackBarSpy = spyOn(MatSnackBar.prototype, 'open').and.stub();
+    fhirDataServiceSpy.addPatientData.and.rejectWith(undefined);
+    const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
+    await systolicInputHarness.setValue('100');
+    const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
+    await diastolicInputHarness.setValue('50');
+    const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
+    await submitButtonHarness.click();
+
+    expect(snackBarSpy).toHaveBeenCalledWith('Something Wrong..!!', 'Dismiss', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['red-snackbar'],
+      duration: 5000
+    })
+  }));
 });
