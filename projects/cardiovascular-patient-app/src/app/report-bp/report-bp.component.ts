@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from 'ngx-charts-on-fhir';
+import { MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -8,7 +9,6 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
 
   return systolic && diastolic && systolic.value > diastolic.value ? null : { bloodPressure: true };
 };
-
 
 @Component({
   selector: 'report-bp',
@@ -28,7 +28,7 @@ export class ReportBPComponent implements OnInit {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private dataService: FhirDataService) { }
+  constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
@@ -36,10 +36,30 @@ export class ReportBPComponent implements OnInit {
     });
   }
 
+  open(message: string, action = '', config?: MatSnackBarConfig) {
+    return this.snackBar.open(message, action, config);
+  }
+
   onSubmit(): void {
     const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic }
     const resource = this.dataService.createBloodPressureResource(bloodPressure);
-    this.dataService.addPatientData(resource)
+    if (resource) {
+      this.dataService.addPatientData(resource)?.then(() => {
+        this.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 5000,
+         panelClass:['green-snackbar']
+        });
+      }).catch(() => {
+        this.open('Something Wrong..!!', 'Dismiss', {
+          horizontalPosition:'center',
+          verticalPosition:'top',
+          panelClass:['red-snackbar'],
+          duration: 5000
+        });
+      })
+    }
     this.submitted = true;
     this.form.reset();
   }
