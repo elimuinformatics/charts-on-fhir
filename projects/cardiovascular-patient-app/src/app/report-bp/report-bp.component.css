@@ -21,13 +21,11 @@ mat-slide-toggle {
   padding: 10px;
   display: inline-block;
   max-width: 425px;
-  margin-bottom: 10px;
   border: 1px solid #979797;
   border-radius: 5px;
+  margin: 30px 30px 0px 30px;
 }
-.card-widget p {
-  margin-bottom: 0;
-}
+
 .bpform-section {
   display: inline-block;
   max-width: 425px;
@@ -35,7 +33,6 @@ mat-slide-toggle {
   border: 1px solid #979797;
   border-radius: 5px;
 }
-
 @media screen and (min-width: 480px) {
   body {
     background-color: lightgreen;
