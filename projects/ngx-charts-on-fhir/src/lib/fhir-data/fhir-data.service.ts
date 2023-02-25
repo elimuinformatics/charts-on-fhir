@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
-import Client from 'fhirclient/lib/Client';
-import { fhirclient } from 'fhirclient/lib/types';
 import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 
 export interface BloodPressure {
-  systolic?: number |null,
-  diastolic?: number |null
+  systolic?: number | null;
+  diastolic?: number | null;
 }
+
+type Client = ReturnType<typeof FHIR.client>;
+type ClientState = Client['state'];
+type Resource = Parameters<Client['create']>[0];
 
 /**
  * A wrapper service for the SMART-on-FHIR javascript client that makes it easier to use with Angular and RxJS.
@@ -21,8 +23,8 @@ export interface BloodPressure {
 })
 export class FhirDataService {
   client?: Client;
-  private clientState?: fhirclient.ClientState;
-  
+  private clientState?: ClientState;
+
   get isSmartLaunch(): boolean {
     return !!sessionStorage.getItem('SMART_KEY');
   }
@@ -31,7 +33,7 @@ export class FhirDataService {
    * Initialize the FHIR Client using OAuth token response from EHR launch, if available.
    * If no EHR launch context is found, it will create a Client from the provided `clientState` parameter.
    */
-  async initialize(clientState?: fhirclient.ClientState) {
+  async initialize(clientState?: ClientState) {
     console.info('FHIR Client Initializing...');
     if (this.isSmartLaunch) {
       this.client = await FHIR.oauth2.ready();
@@ -100,80 +102,79 @@ export class FhirDataService {
     });
   }
 
-  addPatientData(resource: fhirclient.FHIR.Resource) {
+  addPatientData(resource: Resource) {
     return this.client?.create(resource);
   }
 
-  createBloodPressureResource(reportBPValue: BloodPressure): fhirclient.FHIR.Resource {
+  createBloodPressureResource(reportBPValue: BloodPressure): Resource {
     return {
-      "resourceType": "Observation",
-      "status": "final",
-      "category": [
+      resourceType: 'Observation',
+      status: 'final',
+      category: [
         {
-          "coding": [
+          coding: [
             {
-              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-              "code": "vital-signs",
-              "display": "vital-signs"
-            }
-          ]
-        }
+              system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+              code: 'vital-signs',
+              display: 'vital-signs',
+            },
+          ],
+        },
       ],
-      "code": {
-        "coding": [
+      code: {
+        coding: [
           {
-            "system": "http://loinc.org",
-            "code": "85354-9",
-            "display": "Blood Pressure"
-          }
-        ],
-        "text": "Blood Pressure"
-      },
-      "subject": {
-        "reference": `Patient/${this.client?.patient.id}`
-      },
-      "effectiveDateTime": new Date().toISOString(),
-      "issued": new Date().toISOString(),
-      "component": [
-        {
-          "code": {
-            "coding": [
-              {
-                "system": "http://loinc.org",
-                "code": "8462-4",
-                "display": "Diastolic Blood Pressure"
-              }
-            ],
-            "text": "Diastolic Blood Pressure"
+            system: 'http://loinc.org',
+            code: '85354-9',
+            display: 'Blood Pressure',
           },
-          "valueQuantity": {
-            "value": Number(reportBPValue.diastolic),
-            "unit": "mm[Hg]",
-            "system": "http://unitsofmeasure.org",
-            "code": "mm[Hg]"
-          }
+        ],
+        text: 'Blood Pressure',
+      },
+      subject: {
+        reference: `Patient/${this.client?.patient.id}`,
+      },
+      effectiveDateTime: new Date().toISOString(),
+      issued: new Date().toISOString(),
+      component: [
+        {
+          code: {
+            coding: [
+              {
+                system: 'http://loinc.org',
+                code: '8462-4',
+                display: 'Diastolic Blood Pressure',
+              },
+            ],
+            text: 'Diastolic Blood Pressure',
+          },
+          valueQuantity: {
+            value: Number(reportBPValue.diastolic),
+            unit: 'mm[Hg]',
+            system: 'http://unitsofmeasure.org',
+            code: 'mm[Hg]',
+          },
         },
         {
-          "code": {
-            "coding": [
+          code: {
+            coding: [
               {
-                "system": "http://loinc.org",
-                "code": "8480-6",
-                "display": "Systolic Blood Pressure"
-              }
+                system: 'http://loinc.org',
+                code: '8480-6',
+                display: 'Systolic Blood Pressure',
+              },
             ],
-            "text": "Systolic Blood Pressure"
+            text: 'Systolic Blood Pressure',
           },
-          "valueQuantity": {
-            "value": Number(reportBPValue.systolic),
-            "unit": "mm[Hg]",
-            "system": "http://unitsofmeasure.org",
-            "code": "mm[Hg]"
-          }
-        }
-      ]
+          valueQuantity: {
+            value: Number(reportBPValue.systolic),
+            unit: 'mm[Hg]',
+            system: 'http://unitsofmeasure.org',
+            code: 'mm[Hg]',
+          },
+        },
+      ],
     };
-
   }
 }
 
