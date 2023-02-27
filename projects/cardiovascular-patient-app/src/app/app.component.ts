@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   showTitle: boolean = false;
   layers: any[] = [];
   appTitle: string = environment.appTitle;
+  selectedIndex?: number;
 
   constructor(readonly layerManager: DataLayerManagerService) {}
 
@@ -20,5 +21,9 @@ export class AppComponent implements OnInit {
     this.layerManager.availableLayers$.subscribe((layers) => {
       layers.forEach((layer) => this.layerManager.select(layer.id));
     });
+  }
+
+  getSelectedIndex(index: any) {
+    this.selectedIndex = index
   }
 }

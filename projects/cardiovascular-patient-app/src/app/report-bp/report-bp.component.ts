@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from 'ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
@@ -19,6 +19,8 @@ export class ReportBPComponent implements OnInit {
   submitted = false;
   min = 11;
   max = 250;
+  
+  @Output() selectedIndex = new EventEmitter();
 
   form = this.fb.group(
     {
@@ -51,6 +53,7 @@ export class ReportBPComponent implements OnInit {
           duration: 5000,
          panelClass:['green-snackbar']
         });
+        this.selectedIndex.emit(1);
       }).catch(() => {
         this.open('Something Wrong..!!', 'Dismiss', {
           horizontalPosition:'center',
