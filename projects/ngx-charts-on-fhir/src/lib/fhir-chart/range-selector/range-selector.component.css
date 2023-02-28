@@ -11,3 +11,15 @@
 .range-selector mat-form-field {
   width: 160px;
 }
+
+.display-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-8 {
+  gap: 8px;
+}

@@ -34,3 +34,35 @@ body {
   --mdc-snackbar-container-color: red;
   --mat-mdc-snack-bar-button-color: #e8e9ec;
 }
+
+@media (max-width:991px) {
+  #layout-main {
+    flex-wrap: wrap;
+    .summarycard-table {
+      table {
+        table-layout: fixed;
+        .mat-mdc-cell {
+          white-space: normal;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:575px) {
+  .range-selector-bx {
+    width: 100%;
+  }
+  #rangeselector {
+    width: 100%;
+  }
+  #rangeselector .mat-button-toggle, .range-selector-bx .mat-mdc-form-field {
+    flex: 1;
+  }
+  #layout-main .chart-summary {
+    padding-top: 16px;
+  }
+  #layout-main .layout-main-chart,  #layout-main .layout-main-summary {
+      height: auto;
+  }
+}

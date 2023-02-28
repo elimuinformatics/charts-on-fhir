@@ -1,4 +1,4 @@
-<div class="range-selector" *ngIf="maxDate">
+<div class="range-selector flex-wrap" *ngIf="maxDate">
   <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
     <mat-button-toggle
       *ngFor="let rangeButton of rangeSelectorButtons"
@@ -9,16 +9,18 @@
     >
     <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
   </mat-button-toggle-group>
-  <mat-form-field>
-    <mat-label>Start date</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>End date</mat-label>
-    <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
-    <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
-    <mat-datepicker #pickerDate></mat-datepicker>
-  </mat-form-field>
+  <div class="display-flex gap-8 range-selector-bx">
+    <mat-form-field>
+      <mat-label>Start date</mat-label>
+      <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>End date</mat-label>
+      <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
+      <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate></mat-datepicker>
+    </mat-form-field>
+  </div>
 </div>
