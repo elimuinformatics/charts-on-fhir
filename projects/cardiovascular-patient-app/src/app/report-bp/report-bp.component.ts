@@ -20,7 +20,7 @@ export class ReportBPComponent implements OnInit {
   min = 11;
   max = 250;
   
-  @Output() resourceCreated = new EventEmitter();
+  @Output() resourceCreated = new EventEmitter<number>();
 
   form = this.fb.group(
     {

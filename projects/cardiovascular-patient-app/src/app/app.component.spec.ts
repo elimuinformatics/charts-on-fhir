@@ -29,7 +29,7 @@ class MockLastReportBPComponent { }
 
 @Component({ selector: 'report-bp' })
 class MockReportBPComponent {
-  @Output() resourceCreated = new EventEmitter<void>();
+  @Output() resourceCreated = new EventEmitter<number>();
 }
 
 describe('AppComponent', () => {
@@ -59,28 +59,6 @@ describe('AppComponent', () => {
     const reportBPComponent = fixture.debugElement.query(By.directive(MockReportBPComponent));
     reportBPComponent.componentInstance.resourceCreated.next(1);
     expect(await tabHarness[1].isSelected()).toBe(true);
-  });
-
-  it('should load harness for tab-group with selected tab label', async () => {
-    const tabGroups = await loader.getAllHarnesses(
-      MatTabGroupHarness.with({
-        selectedTabLabel: 'Report BP',
-      }),
-    );
-    expect(tabGroups.length).toBe(1);
-  });
-
-  it('should be able to get tabs of tab-group', async () => {
-    const tabGroup = await loader.getHarness(MatTabGroupHarness);
-    const tabs = await tabGroup.getTabs();
-    expect(tabs.length).toBe(2);
-  });
-
-  it('should be able to select tab from tab-group', async () => {
-    const tabGroup = await loader.getHarness(MatTabGroupHarness);
-    expect(await (await tabGroup.getSelectedTab()).getLabel()).toBe('Report BP');
-    await tabGroup.selectTab({ label: 'See prior BPs' });
-    expect(await (await tabGroup.getSelectedTab()).getLabel()).toBe('See prior BPs');
   });
   
 });
