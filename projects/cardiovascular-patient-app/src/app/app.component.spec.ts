@@ -1,13 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
 import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatInputHarness } from '@angular/material/input/testing';
-import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatTabsModule } from '@angular/material/tabs';
+import { COLOR_PALETTE, DataLayerService } from 'ngx-charts-on-fhir';
+import { EMPTY } from 'rxjs';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import paletteProvider from './providers/palette-provider';
+import { By } from '@angular/platform-browser';
 
+class MockDataLayerService implements DataLayerService {
+  name = 'MockDataLayerService';
+  retrieve = () => EMPTY;
+}
+
+@Component({ selector: 'fhir-chart' })
+class MockFhirChartComponent { }
+
+@Component({ selector: 'fhir-chart-summary' })
+class MockFhirChartSummaryComponent { }
+
+@Component({ selector: 'last-report-bp' })
+class MockLastReportBPComponent { }
+
+@Component({ selector: 'report-bp' })
+class MockReportBPComponent {
+  @Output() resourceCreated = new EventEmitter<void>();
+}
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -16,38 +39,26 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppModule ,MatTabsModule],
+      declarations: [AppComponent, MockFhirChartComponent, MockFhirChartSummaryComponent, MockLastReportBPComponent, MockReportBPComponent],
+      imports: [NoopAnimationsModule, MatTabsModule, MatCardModule, MatToolbarModule],
+      providers: [
+        { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
+        { provide: COLOR_PALETTE, useValue: paletteProvider },
+      ],
     }).compileComponents();
-
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should have the first tab selected', async () => {
-    const tabGroup = await loader.getHarness(MatTabGroupHarness);
-    const tabHarnesses = await tabGroup.getTabs()
-    const selectedTab = await tabHarnesses[0].isSelected();
-    expect(selectedTab).toBe(true);
-  });
-
-  it('should select the second tab when clicked', async () => {
+  it('should select the second tab when BP resource is created', async () => {
     const tabGroup = await loader.getHarness(MatTabGroupHarness);
     const tabHarness = await tabGroup.getTabs();
-    const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
-    await systolicInputHarness.setValue('110');
-    const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
-    await diastolicInputHarness.setValue('70');
-    const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
-    await submitButtonHarness.click();
-    component.getSelectedIndex(1)
-    const selectedTab = await tabHarness[1].isSelected();
-    expect(selectedTab).toBe(true);
+    expect(await tabHarness[1].isSelected()).toBe(false);
+    const reportBPComponent = fixture.debugElement.query(By.directive(MockReportBPComponent));
+    reportBPComponent.componentInstance.resourceCreated.next(1);
+    expect(await tabHarness[1].isSelected()).toBe(true);
   });
 
   it('should load harness for tab-group with selected tab label', async () => {
@@ -71,4 +82,6 @@ describe('AppComponent', () => {
     await tabGroup.selectTab({ label: 'See prior BPs' });
     expect(await (await tabGroup.getSelectedTab()).getLabel()).toBe('See prior BPs');
   });
+  
 });
+

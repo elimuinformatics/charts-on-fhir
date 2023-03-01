@@ -121,6 +121,17 @@ describe('ReportBPComponent', () => {
     expect(fhirDataServiceSpy.createBloodPressureResource).toHaveBeenCalledWith(bloodPressure);
     expect(fhirDataServiceSpy.addPatientData).toHaveBeenCalledWith(fhirResource);
   });
+
+  it('should emit a 1 after submiting a form', async () => {
+    spyOn(component.resourceCreated, 'emit');
+    const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
+    await systolicInputHarness.setValue('110');
+    const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));
+    await diastolicInputHarness.setValue('70');
+    const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
+    await submitButtonHarness.click();
+    expect(component.resourceCreated.emit).toHaveBeenCalledWith(1);    
+  });
 });
 
 

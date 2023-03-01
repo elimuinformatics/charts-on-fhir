@@ -2,10 +2,10 @@
   <span>{{ appTitle }}</span>
 </mat-toolbar>
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex"
-  (selectedIndexChange)="getSelectedIndex($event)">
+  (selectedIndexChange)="selectedIndex = $event">
   <mat-tab label="Report BP">
     <last-report-bp></last-report-bp>
-    <report-bp (selectedIndex)="getSelectedIndex($event)"></report-bp>
+    <report-bp (resourceCreated)="selectedIndex = $event"></report-bp>
   </mat-tab>
   <mat-tab label="See prior BPs">
     <div class="layout-main" id="layout-main">

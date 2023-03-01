@@ -22,8 +22,4 @@ export class AppComponent implements OnInit {
       layers.forEach((layer) => this.layerManager.select(layer.id));
     });
   }
-
-  getSelectedIndex(index: any) {
-    this.selectedIndex = index
-  }
 }

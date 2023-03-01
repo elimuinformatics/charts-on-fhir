@@ -20,7 +20,7 @@ export class ReportBPComponent implements OnInit {
   min = 11;
   max = 250;
   
-  @Output() selectedIndex = new EventEmitter();
+  @Output() resourceCreated = new EventEmitter();
 
   form = this.fb.group(
     {
@@ -53,7 +53,7 @@ export class ReportBPComponent implements OnInit {
           duration: 5000,
          panelClass:['green-snackbar']
         });
-        this.selectedIndex.emit(1);
+        this.resourceCreated.emit(1);
       }).catch(() => {
         this.open('Something Wrong..!!', 'Dismiss', {
           horizontalPosition:'center',
