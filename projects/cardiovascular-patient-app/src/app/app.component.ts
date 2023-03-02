@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   showTitle: boolean = false;
   layers: any[] = [];
   appTitle: string = environment.appTitle;
+  selectedIndex?: number;
 
   constructor(readonly layerManager: DataLayerManagerService) {}
 
