@@ -34,3 +34,11 @@ body {
   --mdc-snackbar-container-color: red;
   --mat-mdc-snack-bar-button-color: #e8e9ec;
 }
+
+#summary-card-table  .mat-mdc-cell {
+  white-space: normal;
+}
+
+#summary-card-table  table {
+  table-layout: fixed;
+}

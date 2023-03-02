@@ -8,13 +8,13 @@
     <report-bp (resourceCreated)="selectedIndex = 1"></report-bp>
   </mat-tab>
   <mat-tab label="See prior BPs">
-    <div class="layout-main" id="layout-main">
-      <mat-card class="layout-main-chart mat-elevation-z2">
+    <div fxLayout="row wrap" fxFlexFill id="layout-main">
+      <mat-card class="layout-main-chart mat-elevation-z2" fxFlex="75%" fxFlex.sm="100%" fxFlex.xs="100%" fxFlex.md="50%">
         <mat-card-content>
           <fhir-chart width="100%"></fhir-chart>
         </mat-card-content>
       </mat-card>
-      <div class="layout-main-summary">
+      <div class="layout-main-summary" fxFlex="25%" fxFlex.sm="100%" fxFlex.xs="100%" fxFlex.md="50%">
         <fhir-chart-summary></fhir-chart-summary>
       </div>
     </div>

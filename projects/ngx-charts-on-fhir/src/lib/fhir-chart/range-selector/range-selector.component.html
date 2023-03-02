@@ -1,24 +1,28 @@
-<div class="range-selector" *ngIf="maxDate">
-  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
-    <mat-button-toggle
-      *ngFor="let rangeButton of rangeSelectorButtons"
-      [id]="rangeButton.value"
-      [value]="rangeButton.month"
-      (click)="updateRangeSelector(rangeButton.month)"
-      >{{ rangeButton.value }}</mat-button-toggle
-    >
-    <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
-  </mat-button-toggle-group>
-  <mat-form-field>
-    <mat-label>Start date</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>End date</mat-label>
-    <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
-    <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
-    <mat-datepicker #pickerDate></mat-datepicker>
-  </mat-form-field>
+<div class="range-selector" fxLayout="row wrap" *ngIf="maxDate">
+  <div fxFlex.xs="100%">
+    <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
+      <mat-button-toggle
+        *ngFor="let rangeButton of rangeSelectorButtons"
+        [id]="rangeButton.value"
+        [value]="rangeButton.month"
+        (click)="updateRangeSelector(rangeButton.month)"
+        >{{ rangeButton.value }}</mat-button-toggle
+      >
+      <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div fxLayout="row" fxFlex.xs="100%" fxFlex="0 1 auto" fxLayoutGap="8px">
+    <mat-form-field fxFlex="1 1 auto">
+      <mat-label>Start date</mat-label>
+      <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field fxFlex="1 1 auto">
+      <mat-label>End date</mat-label>
+      <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
+      <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDate></mat-datepicker>
+    </mat-form-field>
+  </div>
 </div>

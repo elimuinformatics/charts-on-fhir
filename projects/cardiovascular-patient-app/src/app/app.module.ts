@@ -23,6 +23,8 @@ import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 import { ReportBPModule } from './report-bp/report-bp.module';
 import { LastReportBPModule } from './last-report-bp/last-report-bp.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -43,7 +45,8 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     MatToolbarModule,
     MatTabsModule,
     ReportBPModule,
-    LastReportBPModule
+    LastReportBPModule,
+    FlexLayoutModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
