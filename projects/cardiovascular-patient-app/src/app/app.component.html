@@ -5,7 +5,7 @@
   (selectedIndexChange)="selectedIndex = $event">
   <mat-tab label="Report BP">
     <last-report-bp></last-report-bp>
-    <report-bp class="report-bp-card" (resourceCreated)="selectedIndex = 1"></report-bp>
+    <report-bp (resourceCreated)="getBpLayerdata()"></report-bp>
   </mat-tab>
   <mat-tab label="See prior BPs">
     <div fxLayout="row wrap" fxFlexFill id="layout-main">

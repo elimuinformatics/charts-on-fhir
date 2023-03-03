@@ -22,4 +22,9 @@ export class AppComponent implements OnInit {
       layers.forEach((layer) => this.layerManager.select(layer.id));
     });
   }
+  
+  getBpLayerdata() {
+    this.layerManager.retrieveAll();
+    this.selectedIndex = 1;
+  }
 }
