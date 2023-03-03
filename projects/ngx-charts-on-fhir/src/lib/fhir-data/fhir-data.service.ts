@@ -143,10 +143,10 @@ export class FhirDataService {
               {
                 system: 'http://loinc.org',
                 code: '8462-4',
-                display: 'Diastolic Blood Pressure',
+                display: 'Diastolic Blood Pressure (Home)',
               },
             ],
-            text: 'Diastolic Blood Pressure',
+            text: 'Diastolic Blood Pressure (Home)',
           },
           valueQuantity: {
             value: Number(reportBPValue.diastolic),
@@ -161,10 +161,10 @@ export class FhirDataService {
               {
                 system: 'http://loinc.org',
                 code: '8480-6',
-                display: 'Systolic Blood Pressure',
+                display: 'Systolic Blood Pressure (Home)',
               },
             ],
-            text: 'Systolic Blood Pressure',
+            text: 'Systolic Blood Pressure (Home)',
           },
           valueQuantity: {
             value: Number(reportBPValue.systolic),
