@@ -42,3 +42,23 @@ body {
 #summary-card-table  table {
   table-layout: fixed;
 }
+
+.bp-tab-group {
+  height: calc(100% - 60px);
+}
+
+.bp-tab-group .mat-mdc-tab-body-wrapper {
+  height: 100%;
+}
+
+.report-bp-card .mat-mdc-card {
+  box-shadow: none;
+}
+
+.range-selector .mat-button-toggle-group {
+  display: flex;
+}
+
+.range-selector .mat-button-toggle {
+  flex: 1;
+}
