@@ -1,11 +1,11 @@
 <mat-toolbar>
   <span>{{ appTitle }}</span>
 </mat-toolbar>
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex"
+<mat-tab-group class="bp-tab-group" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex"
   (selectedIndexChange)="selectedIndex = $event">
   <mat-tab label="Report BP">
     <last-report-bp></last-report-bp>
-    <report-bp (resourceCreated)="getBpLayerdata()"></report-bp>
+    <report-bp class="report-bp-card" (resourceCreated)="getBpLayerdata()"></report-bp>
   </mat-tab>
   <mat-tab label="See prior BPs">
     <div class="layout-main" id="layout-main">

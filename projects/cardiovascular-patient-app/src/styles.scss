@@ -34,3 +34,28 @@ body {
   --mdc-snackbar-container-color: red;
   --mat-mdc-snack-bar-button-color: #e8e9ec;
 }
+
+// This will make table fixed with so if text increases it will wrap onto next line and will not add horizotal scrollbar
+
+#summary-card-table {
+  .mat-mdc-table {
+    table-layout: fixed;
+    white-space: normal;
+    .mat-mdc-cell{
+        white-space: normal;
+    }
+  }
+}
+
+// This will minus the header height from the content to remove unnecessary scrollbar 
+
+.bp-tab-group {
+  height: calc(100% - 60px);
+  .mat-mdc-tab-body-wrapper {
+    height: 100%;
+  }
+}
+
+.report-bp-card .mat-mdc-card {
+  box-shadow: none;
+}
