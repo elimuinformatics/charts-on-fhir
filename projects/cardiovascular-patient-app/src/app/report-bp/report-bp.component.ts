@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from 'ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { CustomErrorStateMatcher } from './custom-state-matcher';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -21,6 +22,8 @@ export class ReportBPComponent implements OnInit {
   max = 250;
 
   @Output() resourceCreated = new EventEmitter<number>();
+
+  customErrorStateMatcher = new CustomErrorStateMatcher();
 
   form = this.fb.group(
     {
@@ -54,7 +57,8 @@ export class ReportBPComponent implements OnInit {
           panelClass: ['green-snackbar']
         });
         this.resourceCreated.emit(1);
-        this.formSubmited()
+        this.submitted = true;
+        this.form.reset();
       }).catch(() => {
         this.open('Something Wrong..!!', 'Dismiss', {
           horizontalPosition: 'center',
@@ -70,11 +74,4 @@ export class ReportBPComponent implements OnInit {
     console.log(formValue);
   }
 
-  formSubmited() {
-    this.submitted = true;
-    this.form.reset();
-    this.form.setErrors(null);
-    this.form.controls.systolic.setErrors(null);
-    this.form.controls.diastolic.setErrors(null);
-  }
 }
