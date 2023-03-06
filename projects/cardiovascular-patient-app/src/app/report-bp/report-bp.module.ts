@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { CustomErrorStateMatcher } from './custom-state-matcher';
+import { CustomErrorStateMatcher } from './custom-error-state-matcher';
 
 @NgModule({
   declarations: [ReportBPComponent],
