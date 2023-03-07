@@ -8,7 +8,7 @@ import { ChartAnnotation, isDefined } from '../../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 
-/** Required properties for mapping an Observation with [SimpleObservationMapper] */
+/** Required properties for mapping an Observation with `SimpleObservationMapper` */
 export type SimpleObservation = {
   code: {
     text: string;

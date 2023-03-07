@@ -8,7 +8,7 @@ import { ChartAnnotation, isDefined } from '../../utils';
 import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
 
-/** Required properties for mapping an Observation with [ComponentObservationMapper] */
+/** Required properties for mapping an Observation with `ComponentObservationMapper` */
 export type ComponentObservation = {
   code: {
     text: string;
