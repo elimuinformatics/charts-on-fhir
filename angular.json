@@ -391,9 +391,7 @@
             "outputPath": "dist/documentation",
             "index": "projects/documentation/src/index.html",
             "main": "projects/documentation/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/documentation/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -415,14 +413,9 @@
               "projects/documentation/src/favicon.ico",
               "projects/documentation/src/assets"
             ],
-            "styles": [
-              "node_modules/@ng-doc/app/styles/global.css",
-              "projects/documentation/src/styles.scss"
-            ],
+            "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "node_modules/@ng-doc/app/styles/global.css", "projects/documentation/src/styles.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": [
-              "@ng-doc/core"
-            ]
+            "allowedCommonJsDependencies": ["@ng-doc/core"]
           },
           "configurations": {
             "production": {
@@ -440,7 +433,7 @@
               ],
               "outputHashing": "all",
               "ngDoc": {
-                "pages": "projects/documentation/src"
+                "pages": "projects/documentation/src/app/pages"
               }
             },
             "development": {
@@ -451,7 +444,7 @@
               "sourceMap": true,
               "namedChunks": true,
               "ngDoc": {
-                "pages": "projects/documentation/src"
+                "pages": "projects/documentation/src/app/pages"
               }
             }
           },
@@ -484,19 +477,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/documentation/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/documentation/src/favicon.ico",
-              "projects/documentation/src/assets"
-            ],
-            "styles": [
-              "projects/documentation/src/styles.scss"
-            ],
+            "assets": ["projects/documentation/src/favicon.ico", "projects/documentation/src/assets"],
+            "styles": ["projects/documentation/src/styles.scss"],
             "scripts": []
           }
         }

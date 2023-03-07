@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --ng-doc-app-max-width: auto;
+}
+
+/* Temporary workaround for https://github.com/skoropadas/ng-doc/issues/28 */
+table.mat-mdc-table {
+  margin: 0px;
+}

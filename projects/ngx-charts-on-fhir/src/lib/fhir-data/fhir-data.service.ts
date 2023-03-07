@@ -15,8 +15,8 @@ type Resource = Parameters<Client['create']>[0];
 /**
  * A wrapper service for the SMART-on-FHIR javascript client that makes it easier to use with Angular and RxJS.
  *
- * Applications must call the [initialize] method and wait until the returned promise is resolved before calling other methods of this service.
- * An `APP_INITIALIZER` factory is a good place to call [initialize].
+ * Applications must call the `initialize` method and wait until the returned promise is resolved before calling other methods of this service.
+ * An `APP_INITIALIZER` factory is a good place to call `initialize`.
  */
 @Injectable({
   providedIn: 'root',

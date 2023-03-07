@@ -4,18 +4,37 @@ import tinycolor from 'tinycolor2';
 import { BoxAnnotationOptions } from 'chartjs-plugin-annotation';
 import { HOME_DATASET_LABEL_SUFFIX } from '../fhir-chart-summary/home-measurement-summary.service';
 
+/**
+ * Injection Token used by `DataLayerColorService` to define the available chart colors.
+ * 
+ * @usageNotes
+ * Each application should define its color palette in the AppModule providers array:
+ * ```ts
+ * // app.module.ts
+ * @NgModule({
+ *   providers: [
+ *     { provide: COLOR_PALETTE, useValue: ['#e36667', '#377eb8', '#4daf4a', '#984ea3'] },
+ *   ],
+ * })
+ * export class AppModule {}
+ * ```
+ */
 export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataLayerColorService {
+
+  /**
+   * @param palette see `COLOR_PALETTE`
+   */
   constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
 
   private lightPalette = this.palette.map((c) => tinycolor(c).brighten(20).toString());
   private nextColorIndex = 0;
 
-  /** Reset the service to its initial state so [chooseColorsFromPalette] will select the first color in the palette */
+  /** Reset the service to its initial state so `chooseColorsFromPalette` will select the first color in the palette */
   reset() {
     this.nextColorIndex = 0;
   }
