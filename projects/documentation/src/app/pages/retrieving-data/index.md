@@ -18,7 +18,9 @@ export class ObservationLayerService implements DataLayerService {
   constructor(private fhir: FhirDataService, private converter: FhirConverter) {}
   name = "Observations";
   retrieve = () => {
-    return this.fhir.getPatientData<Observation>("Observation").pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return this.fhir
+      .getPatientData<Observation>("Observation")
+      .pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
   };
 }
 ```

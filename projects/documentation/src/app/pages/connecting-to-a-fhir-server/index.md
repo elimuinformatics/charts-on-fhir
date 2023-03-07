@@ -9,7 +9,14 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
 }
 
 @NgModule({
-  providers: [{ provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true }],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeFhirClientFactory,
+      deps: [FhirDataService],
+      multi: true,
+    },
+  ],
 })
 export class AppModule {}
 ```
