@@ -2,7 +2,7 @@ import { NgDocCategory } from '@ng-doc/core';
 
 const ComponentsCategory: NgDocCategory = {
   title: 'Components',
-  order: 99,
+  order: 2,
   expanded: true,
 };
 

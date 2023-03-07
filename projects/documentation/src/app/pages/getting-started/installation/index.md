@@ -1,16 +1,14 @@
 # {{ NgDocPage.title }}
 
-This guide explains how to set up your Angular project to begin using Charts-on-FHIR.
+Before installing Charts-on-FHIR, you will need to create an Angular project.
 
-# Install Angular
+## Install Angular
 
 If you are new to Angular, see Angular's [Getting Started Guide](https://angular.io/start).
 
 To setup your local Angular environment and create a new project, follow Angular's guide to [Setting up the local environment and workspace](https://angular.io/guide/setup-local).
 
-You must create an Angular project before installing Charts-on-FHIR.
-
-# Install Charts-on-FHIR
+## Install Charts-on-FHIR
 
 Open a terminal window in your project directory and run the following command:
 
@@ -40,7 +38,7 @@ Add the default Angular Material theme to your `angular.json` file:
 }
 ```
 
-# Configure Service Providers
+## Configure Service Providers
 
 Charts-on-FHIR is a modular library that uses Angular's Dependency Injection system to configure which features will be included.
 
