@@ -19,7 +19,11 @@ import { MockDataLayerService } from './mock/mock-data-layer.service';
     BrowserAnimationsModule,
     NgDocNavbarModule,
     NgDocSidebarModule,
-    RouterModule.forRoot(NG_DOC_ROUTING),
+    RouterModule.forRoot(NG_DOC_ROUTING, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled',
+      scrollOffset: [0, 70],
+    }),
     NgDocModule.forRoot(),
     NgDocGeneratedModule.forRoot(),
   ],
