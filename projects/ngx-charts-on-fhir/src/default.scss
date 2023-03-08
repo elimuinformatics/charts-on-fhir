@@ -32,3 +32,17 @@ $theme: mat.define-light-theme(
 // Adjust density for some components
 @include mat.table-density("minimum");
 @include mat.button-toggle-density(0);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
