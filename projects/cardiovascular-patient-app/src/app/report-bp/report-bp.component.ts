@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from 'ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { CustomErrorStateMatcher } from './custom-error-state-matcher';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -22,8 +21,6 @@ export class ReportBPComponent implements OnInit {
   max = 250;
 
   @Output() resourceCreated = new EventEmitter<number>();
-
-  customErrorStateMatcher = new CustomErrorStateMatcher();
 
   form = this.fb.group(
     {

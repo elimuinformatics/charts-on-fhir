@@ -17,7 +17,7 @@ describe('CustomErrorStateMatcher', () => {
         expect(customErrorStateMatcher.isErrorState(control, form)).toBe(false);
     });
 
-    it('should return true if form is touched and invalid after being submitted', () => {
+    it('should return true if form is dirty and invalid after being submitted', () => {
         const control = new FormControl('', [Validators.required]);
         const form = {
             submitted: false
