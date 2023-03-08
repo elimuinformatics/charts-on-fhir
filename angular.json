@@ -431,10 +431,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all",
-              "ngDoc": {
-                "pages": "projects/documentation/src/app/pages"
-              }
+              "outputHashing": "all"
             },
             "development": {
               "buildOptimizer": false,
@@ -442,10 +439,7 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true,
-              "ngDoc": {
-                "pages": "projects/documentation/src/app/pages"
-              }
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -454,16 +448,10 @@
           "builder": "@ng-doc/builder:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "documentation:build:production",
-              "ngDoc": {
-                "pages": "projects/documentation/src"
-              }
+              "browserTarget": "documentation:build:production"
             },
             "development": {
-              "browserTarget": "documentation:build:development",
-              "ngDoc": {
-                "pages": "projects/documentation/src"
-              }
+              "browserTarget": "documentation:build:development"
             }
           },
           "defaultConfiguration": "development"
