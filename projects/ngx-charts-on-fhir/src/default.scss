@@ -2,6 +2,8 @@
 @use "./lib/data-layer-toolbar/data-layer-toolbar-theme" as toolbar;
 @use "./lib/fhir-chart-layout/fhir-chart-layout-theme" as layout;
 
+@import "./default-fonts.scss";
+
 @include mat.core();
 
 // Define a theme.
