@@ -3,6 +3,7 @@ import ComponentsCategory from '../ng-doc.category';
 
 const Chart: NgDocPage = {
   title: 'Chart',
+  keyword: 'Chart',
   category: ComponentsCategory,
   mdFile: './index.md',
 };
