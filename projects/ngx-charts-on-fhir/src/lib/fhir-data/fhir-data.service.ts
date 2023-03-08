@@ -131,6 +131,20 @@ export class FhirDataService {
         ],
         text: 'Blood Pressure',
       },
+      extension: [
+        {
+          url: "http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt",
+          valueCodeableConcept: {
+            coding: [
+              {
+                system: "http://snomed.info/sct",
+                code: "264362003",
+                display: "Home (environment)"
+              }
+            ]
+          }
+        }
+      ],
       subject: {
         reference: `Patient/${this.client?.patient.id}`,
       },
@@ -143,10 +157,10 @@ export class FhirDataService {
               {
                 system: 'http://loinc.org',
                 code: '8462-4',
-                display: 'Diastolic Blood Pressure (Home)',
+                display: 'Diastolic Blood Pressure',
               },
             ],
-            text: 'Diastolic Blood Pressure (Home)',
+            text: 'Diastolic Blood Pressure',
           },
           valueQuantity: {
             value: Number(reportBPValue.diastolic),
@@ -161,10 +175,10 @@ export class FhirDataService {
               {
                 system: 'http://loinc.org',
                 code: '8480-6',
-                display: 'Systolic Blood Pressure (Home)',
+                display: 'Systolic Blood Pressure',
               },
             ],
-            text: 'Systolic Blood Pressure (Home)',
+            text: 'Systolic Blood Pressure',
           },
           valueQuantity: {
             value: Number(reportBPValue.systolic),
