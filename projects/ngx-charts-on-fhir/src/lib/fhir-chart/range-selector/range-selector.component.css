@@ -1,13 +1,18 @@
 .range-selector {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 8px;
 }
 
 .range-selector mat-button-toggle-group {
   margin-top: 2px;
+  height: 52px;
 }
 
-.range-selector mat-form-field {
-  width: 160px;
+.range-selector mat-button-toggle {
+  flex:1;
+}
+
+.d-flex {
+  display: flex;
 }

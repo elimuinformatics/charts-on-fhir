@@ -59,3 +59,12 @@ body {
 .report-bp-card .mat-mdc-card {
   box-shadow: none;
 }
+
+.bp-datepicker {
+  min-width: 300px;
+}
+
+.bp-datepicker .mat-mdc-form-field-infix {
+  max-width: 180px;
+  width: 100%;
+}
