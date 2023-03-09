@@ -16,6 +16,16 @@ Open a terminal window in your project directory and run the following command:
 npm i ngx-charts-on-fhir
 ```
 
+Enable `esModuleInterop` compiler option in your `tsconfig.json` file:
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
+```
+
 Add the default Angular Material theme to your `angular.json` file:
 
 ```json
