@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from 'ngx-charts-on-fhir';
-import { MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const systolic = control.get('systolic');
@@ -19,7 +19,7 @@ export class ReportBPComponent implements OnInit {
   submitted = false;
   min = 11;
   max = 250;
-  
+
   @Output() resourceCreated = new EventEmitter<number>();
 
   form = this.fb.group(
@@ -51,23 +51,24 @@ export class ReportBPComponent implements OnInit {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           duration: 5000,
-         panelClass:['green-snackbar']
+          panelClass: ['green-snackbar']
         });
         this.resourceCreated.emit(1);
+        this.submitted = true;
+        this.form.reset();
       }).catch(() => {
         this.open('Something Wrong..!!', 'Dismiss', {
-          horizontalPosition:'center',
-          verticalPosition:'top',
-          panelClass:['red-snackbar'],
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['red-snackbar'],
           duration: 5000
         });
       })
     }
-    this.submitted = true;
-    this.form.reset();
   }
 
   private updateBPentryForm(formValue: typeof this.form.value): void {
     console.log(formValue);
   }
+
 }
