@@ -2,16 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { NgDocModule } from '@ng-doc/app';
+import { NgDocModule, NG_DOC_CONTEXT } from '@ng-doc/app';
 import { NgDocSidebarModule } from '@ng-doc/app/components/sidebar';
 import { NgDocNavbarModule } from '@ng-doc/app/components/navbar';
-import { NgDocGeneratedModule } from '@ng-doc/generated';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NoopAnimationsModule, NgDocNavbarModule, NgDocSidebarModule, NgDocModule.forRoot(), NgDocGeneratedModule.forRoot()],
+      imports: [RouterTestingModule, NoopAnimationsModule, NgDocNavbarModule, NgDocSidebarModule, NgDocModule.forRoot()],
       declarations: [AppComponent],
+      providers: [{ provide: NG_DOC_CONTEXT, useValue: { navigation: [] } }],
     }).compileComponents();
   });
 
