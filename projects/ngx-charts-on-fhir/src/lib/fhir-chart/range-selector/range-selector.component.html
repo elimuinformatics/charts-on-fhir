@@ -9,7 +9,7 @@
     >
     <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
   </mat-button-toggle-group>
-  <div class="d-flex bp-datepicker">
+  <div class="bp-datepicker">
     <mat-form-field>
       <mat-label>Start date</mat-label>
       <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />

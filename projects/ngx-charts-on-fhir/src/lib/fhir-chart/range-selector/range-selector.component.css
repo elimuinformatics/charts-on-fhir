@@ -12,7 +12,3 @@
 .range-selector mat-button-toggle {
   flex:1;
 }
-
-.d-flex {
-  display: flex;
-}

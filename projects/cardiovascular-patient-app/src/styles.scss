@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'material-icons/iconfont/material-icons.scss';
-@import '@fontsource/roboto/300.css';
-@import '@fontsource/roboto/400.css';
-@import '@fontsource/roboto/500.css';
+@import "material-icons/iconfont/material-icons.scss";
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
 
 html,
 body {
@@ -41,13 +41,13 @@ body {
   .mat-mdc-table {
     table-layout: fixed;
     white-space: normal;
-    .mat-mdc-cell{
-        white-space: normal;
+    .mat-mdc-cell {
+      white-space: normal;
     }
   }
 }
 
-// This will minus the header height from the content to remove unnecessary scrollbar 
+// This will minus the header height from the content to remove unnecessary scrollbar
 
 .bp-tab-group {
   height: calc(100% - 60px);
@@ -62,6 +62,7 @@ body {
 
 .bp-datepicker {
   min-width: 300px;
+  display: flex;
 }
 
 .bp-datepicker .mat-mdc-form-field-infix {
