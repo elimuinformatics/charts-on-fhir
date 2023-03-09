@@ -467,6 +467,7 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/documentation/tsconfig.spec.json",
+            "karmaConfig": "projects/documentation/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/documentation/src/favicon.ico", "projects/documentation/src/assets"],
             "styles": ["projects/documentation/src/styles.scss"],
