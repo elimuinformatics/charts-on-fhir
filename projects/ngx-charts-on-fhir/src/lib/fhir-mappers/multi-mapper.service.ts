@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { TimelineChartType, DataLayer, TimelineDataPoint } from '../data-layer/data-layer';
 
-/** Maps properties from a single resource to properties on a DataLayer */
+/** Maps properties from a single resource to properties on a `DataLayer` */
 export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> {
   abstract canMap(resource: unknown): resource is R;
   abstract map(resource: R): DataLayer<T, D>;
 }
 
 /**
- * Delegates to another [Mapper] from the provided mappers array, using the first one that is capable of mapping each resource.
+ * Delegates to another `Mapper` from the provided mappers array, using the first one that is capable of mapping each resource.
  */
 @Injectable({
   providedIn: 'root',

@@ -6,7 +6,7 @@ import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
 
-/** Required properties for mapping a MedicationRequest with [SimpleMedicationMapper] */
+/** Required properties for mapping a MedicationRequest with `SimpleMedicationMapper` */
 export type SimpleMedication = {
   medicationCodeableConcept: {
     text: string;

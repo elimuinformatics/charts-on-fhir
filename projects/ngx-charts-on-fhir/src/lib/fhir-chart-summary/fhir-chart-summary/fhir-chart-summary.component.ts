@@ -6,6 +6,9 @@ import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-confi
 import { NumberRange } from '../../utils';
 import { SummaryService } from '../summary.service';
 
+/**
+ * See `*ChartSummary` for example usage.
+ */
 @Component({
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
