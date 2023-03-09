@@ -46,18 +46,3 @@ body {
     }
   }
 }
-
-// This will minus the header height from the content height to remove unnecessary vertical scrollbar from body
-
-.bp-tab-group {
-  height: calc(100% - 60px);
-  .mat-mdc-tab-body-wrapper {
-    height: 100%;
-  }
-}
-
-//Used to remove box shadow effect from Report BP tab card
-.report-bp-card .mat-mdc-card {
-  box-shadow: none;
-}
-

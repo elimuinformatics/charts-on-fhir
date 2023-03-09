@@ -1,15 +1,7 @@
 .layout-main {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-rows: auto max-content;
   grid-column-gap: 4px;
-  height: 100%;
-}
-.layout-main-chart {
-  grid-column: 1 / -2;
-}
-.layout-main-chart {
-  flex: 1 1 auto;
-}
-.layout-main-summary {
-  flex: 0 1 auto;
+  height: calc(100vh - 108px);
 }

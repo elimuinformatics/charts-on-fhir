@@ -1,4 +1,4 @@
-<mat-card class="card-widget">
+<mat-card appearance="outlined" class="card-widget">
   <mat-card-content>
     <div *ngIf="lastReportedBPdata !=null ; else noPriorBp">
       Last BP reported was {{ lastReportedBPdata.systolic.value }}/{{ lastReportedBPdata.diastolic.value }} on {{formatDate(lastReportedBPdata.systolic.date)}} at {{formatTime(lastReportedBPdata.systolic.date)}}
