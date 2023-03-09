@@ -4,6 +4,9 @@
   "exports": {
     "./themes/default.scss": {
       "sass": "./themes/default.scss"
+    },
+    "./themes/default-fonts.scss": {
+      "sass": "./themes/default-fonts.scss"
     }
   },
   "peerDependencies": {
