@@ -35,7 +35,7 @@ body {
   --mat-mdc-snack-bar-button-color: #e8e9ec;
 }
 
-// This will make table fixed with so if text increases it will wrap onto next line and will not add horizotal scrollbar
+// This will make table fixed width so if text increases in column it will wrap onto next line and will not add horizotal scrollbar to the table
 
 #summary-card-table {
   .mat-mdc-table {
@@ -47,7 +47,7 @@ body {
   }
 }
 
-// This will minus the header height from the content to remove unnecessary scrollbar
+// This will minus the header height from the content height to remove unnecessary vertical scrollbar from body
 
 .bp-tab-group {
   height: calc(100% - 60px);
@@ -56,16 +56,8 @@ body {
   }
 }
 
+//Used to remove box shadow effect from Report BP tab card
 .report-bp-card .mat-mdc-card {
   box-shadow: none;
 }
 
-.bp-datepicker {
-  min-width: 300px;
-  display: flex;
-}
-
-.bp-datepicker .mat-mdc-form-field-infix {
-  max-width: 180px;
-  width: 100%;
-}
