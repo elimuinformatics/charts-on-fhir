@@ -131,6 +131,20 @@ export class FhirDataService {
         ],
         text: 'Blood Pressure',
       },
+      extension: [
+        {
+          url: "http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt",
+          valueCodeableConcept: {
+            coding: [
+              {
+                system: "http://snomed.info/sct",
+                code: "264362003",
+                display: "Home (environment)"
+              }
+            ]
+          }
+        }
+      ],
       subject: {
         reference: `Patient/${this.client?.patient.id}`,
       },
