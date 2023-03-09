@@ -29,7 +29,7 @@
           "options": {
             "main": "projects/ngx-charts-on-fhir/src/test.ts",
             "tsConfig": "projects/ngx-charts-on-fhir/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js"
+            "karmaConfig": "projects/ngx-charts-on-fhir/karma.conf.js"
           }
         }
       }
@@ -143,7 +143,7 @@
             "main": "projects/showcase/src/test.ts",
             "polyfills": "projects/showcase/src/polyfills.ts",
             "tsConfig": "projects/showcase/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "karmaConfig": "projects/showcase/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/showcase/src/favicon.ico", "projects/showcase/src/assets"],
             "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/showcase/src/styles.scss"],
@@ -254,7 +254,7 @@
             "main": "projects/cardiovascular-health/src/test.ts",
             "polyfills": "projects/cardiovascular-health/src/polyfills.ts",
             "tsConfig": "projects/cardiovascular-health/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "karmaConfig": "projects/cardiovascular-health/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/cardiovascular-health/src/favicon.ico", "projects/cardiovascular-health/src/assets"],
             "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-health/src/styles.scss"],
@@ -365,7 +365,7 @@
             "main": "projects/cardiovascular-patient-app/src/test.ts",
             "polyfills": "projects/cardiovascular-patient-app/src/polyfills.ts",
             "tsConfig": "projects/cardiovascular-patient-app/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "karmaConfig": "projects/cardiovascular-patient-app/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/cardiovascular-patient-app/src/favicon.ico", "projects/cardiovascular-patient-app/src/assets"],
             "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "projects/cardiovascular-patient-app/src/styles.scss"],
@@ -467,7 +467,6 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/documentation/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/documentation/src/favicon.ico", "projects/documentation/src/assets"],
             "styles": ["projects/documentation/src/styles.scss"],
