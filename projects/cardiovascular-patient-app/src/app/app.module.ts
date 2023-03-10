@@ -18,7 +18,7 @@ import {
   DataLayerBrowserModule,
   FhirChartSummaryModule,
   FhirDataService,
-} from 'ngx-charts-on-fhir';
+} from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 import { ReportBPModule } from './report-bp/report-bp.module';

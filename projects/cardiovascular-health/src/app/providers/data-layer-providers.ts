@@ -1,4 +1,4 @@
-import { DataLayerService } from 'ngx-charts-on-fhir';
+import { DataLayerService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MedicationLayerService } from '../datasets/medications.service';
 import { ObservationLayerService } from '../datasets/observations.service';
 

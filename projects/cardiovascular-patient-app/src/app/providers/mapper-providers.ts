@@ -1,4 +1,4 @@
-import { BloodPressureMapper, Mapper } from 'ngx-charts-on-fhir';
+import { BloodPressureMapper, Mapper } from '@elimuinformatics/ngx-charts-on-fhir';
 
 /**
  * Resource Mappers for FhirConverter, listed in priority order.

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayer, DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { DataLayer, DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',

@@ -5,7 +5,7 @@ import {
   SimpleMedicationMapper,
   DurationMedicationMapper,
   BloodPressureMapper,
-} from 'ngx-charts-on-fhir';
+} from '@elimuinformatics/ngx-charts-on-fhir';
 
 /**
  * Resource Mappers for FhirConverter, listed in priority order.
