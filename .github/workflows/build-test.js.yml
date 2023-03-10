@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Build Test Scan
+name: Build Test Scan Deploy
 
 on:
   push:
@@ -12,29 +12,68 @@ on:
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
+env:
+  NODE_VERSION: 18.x
+
 jobs:
-  build:
+
+  build-ngx-charts-on-fhir:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js $NODE_VERSION
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: $NODE_VERSION
           cache: "npm"
       - run: npm ci
       - run: npm run build ngx-charts-on-fhir
-      - run: npm run build showcase
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist/ngx-charts-on-fhir
+          path: dist/ngx-charts-on-fhir
+
+  build-apps:
+    runs-on: ubuntu-latest
+    needs: build-ngx-charts-on-fhir
+    strategy:
+      matrix:
+        project:
+          - showcase
+          - cardiovascular-health
+          - cardiovascular-patient-app
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist/ngx-charts-on-fhir
+          path: dist/ngx-charts-on-fhir
+      - name: Use Node.js $NODE_VERSION
+        uses: actions/setup-node@v3
+        with:
+          node-version: $NODE_VERSION
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build ${{ matrix.project }}
+
+  test-and-scan:
+    runs-on: ubuntu-latest
+    needs: build-ngx-charts-on-fhir
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist/ngx-charts-on-fhir
+          path: dist/ngx-charts-on-fhir
+      - name: Use Node.js $NODE_VERSION
+        uses: actions/setup-node@v3
+        with:
+          node-version: $NODE_VERSION
+          cache: "npm"
+      - run: npm ci
       - run: npm test -- --no-watch --code-coverage
       - name: Analyze with SonarCloud
-        # You can pin the exact commit or the version.
-        uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
@@ -48,10 +87,37 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
             -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js,projects/synthea-utils/*,projects/documentation/**/*
             -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
+    
+  publish-docs:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: 
+      - build-ngx-charts-on-fhir
+      - build-apps
+      - test-and-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist/ngx-charts-on-fhir
+          path: dist/ngx-charts-on-fhir
+      - name: Use Node.js $NODE_VERSION
+        uses: actions/setup-node@v3
+        with:
+          node-version: $NODE_VERSION
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build documentation
+      - uses: actions/upload-pages-artifact@main
+        with:
+          path: dist/documentation
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: build
+    needs: 
+      - build-ngx-charts-on-fhir
+      - build-apps
+      - test-and-scan
     runs-on: ubuntu-latest
     steps:
       - name: Deploy
