@@ -88,7 +88,7 @@ jobs:
             -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js,projects/synthea-utils/*,projects/documentation/**/*
             -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
     
-  publish-docs:
+  build-docs:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: 
       - build-ngx-charts-on-fhir
@@ -113,7 +113,7 @@ jobs:
           path: dist/documentation
 
   deploy-docs:
-    needs: publish-docs
+    needs: build-docs
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
