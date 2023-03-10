@@ -34,6 +34,6 @@ export class ObservationLayerService extends DataLayerService {
   getQueryfromCoding(codings: Coding[]) {
     let finalUrl = '?code=';
     codings.forEach((coding: any) => (finalUrl += `${coding.system}|${coding.code},`));
-    return finalUrl;
+    return finalUrl+'&_sort=-date';
   }
 }
