@@ -18,7 +18,7 @@
       "@ng-doc/generated/*": [
         ".ng-doc/documentation/*"
       ],
-      "ngx-charts-on-fhir": [
+      "@elimuinformatics/ngx-charts-on-fhir": [
         "dist/ngx-charts-on-fhir"
       ]
     },

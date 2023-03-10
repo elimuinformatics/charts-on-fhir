@@ -1,4 +1,4 @@
-import { HomeMeasurementSummaryService, ScatterDataPointSummaryService, SummaryService } from 'ngx-charts-on-fhir';
+import { HomeMeasurementSummaryService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
 
 export const summaryProviders = [
   { provide: SummaryService, useExisting: HomeMeasurementSummaryService, multi: true },

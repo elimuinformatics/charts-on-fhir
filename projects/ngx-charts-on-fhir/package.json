@@ -1,6 +1,6 @@
 {
-  "name": "ngx-charts-on-fhir",
-  "version": "0.0.1",
+  "name": "@elimuinformatics/ngx-charts-on-fhir",
+  "version": "1.0.0",
   "exports": {
     "./themes/default.scss": {
       "sass": "./themes/default.scss"

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'example-chart-demo',

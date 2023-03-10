@@ -4,7 +4,7 @@ import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTabsModule } from '@angular/material/tabs';
-import { COLOR_PALETTE, DataLayerService } from 'ngx-charts-on-fhir';
+import { COLOR_PALETTE, DataLayerService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
