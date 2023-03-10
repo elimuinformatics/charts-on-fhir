@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js $NODE_VERSION
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
       - run: npm run build ngx-charts-on-fhir
@@ -48,10 +48,10 @@ jobs:
         with:
           name: dist/ngx-charts-on-fhir
           path: dist/ngx-charts-on-fhir
-      - name: Use Node.js $NODE_VERSION
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
       - run: npm run build ${{ matrix.project }}
@@ -65,10 +65,10 @@ jobs:
         with:
           name: dist/ngx-charts-on-fhir
           path: dist/ngx-charts-on-fhir
-      - name: Use Node.js $NODE_VERSION
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
       - run: npm test -- --no-watch --code-coverage
@@ -101,10 +101,10 @@ jobs:
         with:
           name: dist/ngx-charts-on-fhir
           path: dist/ngx-charts-on-fhir
-      - name: Use Node.js $NODE_VERSION
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v3
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
       - run: npm run build documentation
