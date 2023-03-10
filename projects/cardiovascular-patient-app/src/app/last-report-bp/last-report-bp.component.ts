@@ -15,7 +15,7 @@ export interface LastReportedBPdata {
 })
 export class LastReportBPComponent {
   lastReportedBPdata?: LastReportedBPdata;
-  constructor(private layerManager: DataLayerManagerService) { }
+  constructor(public layerManager: DataLayerManagerService) { }
 
   ngOnInit(): void {
     this.layerManager.allLayers$

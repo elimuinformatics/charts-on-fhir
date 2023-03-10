@@ -15,8 +15,8 @@ type Resource = Parameters<Client['create']>[0];
 /**
  * A wrapper service for the SMART-on-FHIR javascript client that makes it easier to use with Angular and RxJS.
  *
- * Applications must call the [initialize] method and wait until the returned promise is resolved before calling other methods of this service.
- * An `APP_INITIALIZER` factory is a good place to call [initialize].
+ * Applications must call the `initialize` method and wait until the returned promise is resolved before calling other methods of this service.
+ * An `APP_INITIALIZER` factory is a good place to call `initialize`.
  */
 @Injectable({
   providedIn: 'root',
@@ -131,6 +131,20 @@ export class FhirDataService {
         ],
         text: 'Blood Pressure',
       },
+      extension: [
+        {
+          url: "http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt",
+          valueCodeableConcept: {
+            coding: [
+              {
+                system: "http://snomed.info/sct",
+                code: "264362003",
+                display: "Home (environment)"
+              }
+            ]
+          }
+        }
+      ],
       subject: {
         reference: `Patient/${this.client?.patient.id}`,
       },

@@ -4,7 +4,7 @@ import produce, { castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
 
 /**
- * Merges a [DataLayer] into the matching layer in a [DataLayerCollection].
+ * Merges a `DataLayer` into the matching layer in a `DataLayerCollection`.
  * Generates an ID for each layer by hashing its non-data (a.k.a. metadata) properties.
  */
 @Injectable({

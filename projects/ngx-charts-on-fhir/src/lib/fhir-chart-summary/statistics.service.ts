@@ -26,7 +26,7 @@ type CombinedStats = {
   providedIn: 'root',
 })
 export class StatisticsService {
-  /** Get a string-formatted set of statistics for datapoints in the given [DataLayer] that fall within the given date range */
+  /** Get a string-formatted set of statistics for datapoints in the given `DataLayer` that fall within the given date range */
   getFormattedStatistics(layer: DataLayer, range: NumberRange): Record<string, string> {
     const datasets = layer.datasets.filter(dataset => !dataset.hidden);
     const precision = this.estimatePrecision(datasets);

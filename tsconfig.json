@@ -12,6 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
+      "@ng-doc/generated": [
+        ".ng-doc/documentation/index.ts"
+      ],
+      "@ng-doc/generated/*": [
+        ".ng-doc/documentation/*"
+      ],
       "ngx-charts-on-fhir": [
         "dist/ngx-charts-on-fhir"
       ]

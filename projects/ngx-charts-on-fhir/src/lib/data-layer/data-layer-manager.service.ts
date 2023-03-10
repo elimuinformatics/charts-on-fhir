@@ -6,7 +6,41 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { zip } from 'lodash-es';
 
-/** A service for asynchronously retrieving DataLayers */
+/**
+ * A service for asynchronously retrieving data layers.
+ * 
+ * This abstract class is used as both an interface and an injection token.
+ * Applications should implement a `DataLayerService` that retrieves data and converts it into `DataLayer` objects (see usage notes below).
+ * `DataLayerManagerService` will call the `retrieve` method to get the available Data Layers from each provided `DataLayerService`.
+ * 
+ * @usageNotes
+ * Applications should implement a `DataLayerService` that retrieves data and converts it into `DataLayer` objects:
+ * ```ts
+ * // observation-layer.service.ts
+ * @Injectable({ providedIn: 'root' })
+ * export class ObservationLayerService implements DataLayerService {
+ *   constructor(private fhir: FhirDataService, private converter: FhirConverter) {}
+ *   name = 'Observations';
+ *   retrieve = () => {
+ *     return this.fhir.getPatientData<Observation>('Observation').pipe(
+ *       mergeMap((bundle) =>
+ *         from(this.converter.convert(bundle))
+ *       )
+ *     );
+ *   };
+ * }
+ * ```
+ * And then provide it as a `DataLayerService` in the root injector:
+ * ```ts
+ * // app.module.ts
+ * @NgModule({
+ *   providers: [
+ *     { provide: DataLayerService, useExisting: ObservationLayerService, multi: true },
+ *   ],
+ * })
+ * export class AppModule {}
+ * ```
+ */
 export abstract class DataLayerService {
   abstract name: string;
   abstract retrieve: () => Observable<DataLayer>;
@@ -24,8 +58,20 @@ const initialState: DataLayerManagerState = {
 
 type LayerCompareFn = (a: DataLayer, b: DataLayer) => number;
 /**
- * A service that retrieves [DataLayer]s from all registered [DataLayerService]s
+ * A service that retrieves data layers from all provided `DataLayerService` implementations
  * and provides methods for selecting and ordering the layers.
+ * 
+ * Applications should inject this service and call the `retrieveAll()` method to load the data.
+ * 
+ * ```ts
+ * @Component({...})
+ * export class AppComponent implements OnInit {
+ *   constructor(private layerManager: DataLayerManagerService) {}
+ *   ngOnInit(): void {
+ *     this.layerManager.retrieveAll();
+ *   }
+ * }
+ * ```
  */
 @Injectable({
   providedIn: 'root',
@@ -56,14 +102,14 @@ export class DataLayerManagerService {
   private cancel$ = new Subject<void>();
 
   /**
-   * Retrieve layers from all of the injected [DataLayerService]s.
+   * Retrieve layers from all of the injected `DataLayerService` implementations.
    *
    * This method subscribes to the Observables returned by each service's `retrieve()` method
-   * and merges each emitted [DataLayer] with the previously emitted layers using the injected [DataLayerMergeService].
+   * and merges each emitted `DataLayer` with the previously emitted layers using the injected `DataLayerMergeService`.
    *
    * This method runs asynchronously and does not return anything.
    * You can observe the retrieved layers using one of the manager's Observable properties:
-   * [allLayers$], [selectedLayers$], or [availableLayers$].
+   * `allLayers$`, `selectedLayers$`, or `availableLayers$`.
    * 
    * @param selectAll When `true`, every layer that is retrieved will be automatically selected.
    * @param sortCompareFn A comparison function for sorting auto-selected layers. This function will be passed to `Array.sort`.

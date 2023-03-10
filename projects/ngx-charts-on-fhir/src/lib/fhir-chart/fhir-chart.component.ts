@@ -10,6 +10,9 @@ import { FhirChartConfigurationService } from './fhir-chart-configuration.servic
 import { MedicationScale } from './medication-scale';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
+/**
+ * See `*Chart` for example usage.
+ */
 @Component({
   selector: 'fhir-chart',
   templateUrl: './fhir-chart.component.html',

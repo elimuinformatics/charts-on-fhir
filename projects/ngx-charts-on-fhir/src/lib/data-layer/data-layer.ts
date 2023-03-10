@@ -22,7 +22,7 @@ export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataP
 
 export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = ChartDataset<T, D>;
 
-/** A [DataLayer] with additional state controlled by a DataLayerManager */
+/** A `DataLayer` with additional state controlled by a `DataLayerManagerService` */
 export type ManagedDataLayer = DataLayer & {
   id: string;
   selected?: boolean;
