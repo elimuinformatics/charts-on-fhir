@@ -16,7 +16,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build ngx-charts-on-fhir
-      - run: cd dist/ngx-charts-on-fhir
-      - run: npm publish --access public
+      - run: npm publish dist/ngx-charts-on-fhir --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
