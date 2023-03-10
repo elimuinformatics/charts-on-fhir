@@ -1,4 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@import "material-icons/iconfont/material-icons.scss";
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* TODO: find a better way to customize material styles within ngx-charts-on-fhir */
+.mat-badge-content {
+  background: none;
+}
 
 .green-snackbar {
   --mdc-snackbar-container-color: #22ae52;
@@ -7,4 +30,16 @@
 .red-snackbar {
   --mdc-snackbar-container-color: red;
   --mat-mdc-snack-bar-button-color: #e8e9ec;
+}
+
+// This will make table fixed width so if text increases in column it will wrap onto next line and will not add horizotal scrollbar to the table
+
+#summary-card-table {
+  .mat-mdc-table {
+    table-layout: fixed;
+    white-space: normal;
+    .mat-mdc-cell {
+      white-space: normal;
+    }
+  }
 }
