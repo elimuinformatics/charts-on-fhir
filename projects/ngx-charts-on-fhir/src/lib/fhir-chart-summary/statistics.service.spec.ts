@@ -45,6 +45,7 @@ describe('StatisticsService', () => {
         'Outside Goal': '67% (2/3 days)',
         Average: '3',
         Median: '3',
+        Timespan: '4 days'
       });
     });
 
@@ -81,6 +82,7 @@ describe('StatisticsService', () => {
         'Outside Goal': 'N/A',
         Average: 'N/A',
         Median: 'N/A',
+        Timespan: '4 days'
       });
     });
 
@@ -163,6 +165,7 @@ describe('StatisticsService', () => {
         'Outside Goal': '67% (2/3 days)',
         Average: '13 / 3',
         Median: '13 / 3',
+        Timespan: '4 days'
       });
     });
 
@@ -199,6 +202,7 @@ describe('StatisticsService', () => {
         'Days Reported': '75% (3/4 days)',
         Average: '3',
         Median: '3',
+        Timespan: '4 days'
       });
     });
   });
