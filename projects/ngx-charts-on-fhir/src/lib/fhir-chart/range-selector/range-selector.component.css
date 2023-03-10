@@ -1,22 +1,10 @@
 /* Used to make filter responsive for mobile view*/
 .range-selector {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  align-items: start;
+  display: flex;
+  align-items: flex-start;
   gap: 8px;
 }
 
 .range-selector mat-button-toggle-group {
   margin-top: 2px;
-}
-
-/* Used to make range selector group buttons responsive for mobile size */
-.range-selector mat-button-toggle {
-  flex:1;
-}
-
-/* Used to make the datepicker form fields same width as range selector for mobile view */
-.bp-datepicker {
-  min-width: 300px;
-  display: flex;
 }

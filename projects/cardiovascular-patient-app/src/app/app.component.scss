@@ -5,3 +5,9 @@
   grid-column-gap: 4px;
   height: calc(100vh - 108px);
 }
+
+//Added this css as we have to maintain 60 40 width on desktop size as earlier
+
+.layout-main-chart {
+  grid-column: 1 / -2;
+}
