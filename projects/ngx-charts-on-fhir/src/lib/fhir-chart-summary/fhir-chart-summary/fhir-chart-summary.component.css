@@ -1,6 +1,5 @@
 .chart-summary {
   height: 100%;
-  padding-top: 48px; /* todo: vertical padding should be dynamic based on chartArea to accomodate varying legend and x-axis label height */
   display: flex;
   flex-direction: column;
   gap: 8px;
