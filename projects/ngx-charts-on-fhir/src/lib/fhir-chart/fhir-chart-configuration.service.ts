@@ -47,7 +47,23 @@ export class FhirChartConfigurationService {
   }
 
   /** The Chart object associated with this configuration. This is required for zoom() and resetZoom() functions. */
-  public chart?: Chart;
+  private _chart?: Chart;
+  get chart() {
+    return this._chart;
+  }
+  set chart(value: Chart | undefined) {
+    if (this._chart !== value) {
+      this._chart = value;
+      if (this.chart && this.isZoomRangeLocked && this.timeline.min != null && this.timeline.max != null) {
+        // set initial zoom range if zoom() was called before the chart was initialized
+        const range = {
+          min: Number(this.timeline.min),
+          max: Number(this.timeline.max),
+        };
+        this.chart.zoomScale('timeline', range, 'zoom');
+      }
+    }
+  }
 
   /** Lock the zoom range for timeline scale so it will not change when new data is added */
   private lockZoomRange({ min, max }: NumberRange) {
@@ -58,8 +74,8 @@ export class FhirChartConfigurationService {
 
   /** Zoom to a specific date range and lock the zoom so it will not change when new data is added */
   zoom(range: NumberRange) {
+    this.lockZoomRange(range);
     if (this.chart) {
-      this.lockZoomRange(range);
       this.chart.zoomScale('timeline', range, 'zoom');
     }
   }
