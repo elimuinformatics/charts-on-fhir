@@ -21,10 +21,12 @@ export class ScatterDataPointSummaryService implements SummaryService {
   summarize(layer: DataLayer, range: NumberRange): Record<string, string>[] {
     const current = this.stats.getFormattedStatistics(layer, range);
     const prev = this.stats.getFormattedStatistics(layer, previous(range));
+    let timeSpan = current['Days Reported'].split('/');
+    timeSpan = timeSpan[1].split(')')
     const summary = Object.keys(current).map((name) => ({
       name,
-      current: current[name],
-      previous: prev[name],
+      [`current ${timeSpan[0]}`]: current[name],
+      [`previous ${timeSpan[0]}`]: prev[name],
     }));
     return summary;
   }

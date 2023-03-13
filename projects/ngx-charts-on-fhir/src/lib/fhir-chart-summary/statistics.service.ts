@@ -67,7 +67,6 @@ export class StatisticsService {
       ...(outOfRange == null ? {} : { 'Outside Goal': formatFraction(outOfRange.length, reported.length) }),
       Average: formatMultipleValues(average, precision),
       Median: formatMultipleValues(median, precision),
-      Timespan: `${days}`+' days'
     };
   }
 
