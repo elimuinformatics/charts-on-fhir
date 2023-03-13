@@ -40,4 +40,6 @@ export * from './lib/fhir-mappers/medication-request/duration-medication-mapper.
 export * from './lib/patient-browser/patient-browser.module';
 export * from './lib/patient-browser/patient-browser.component';
 export * from './lib/patient-browser/patient.service';
+export * from './lib/range-selector/range-selector.module';
+export * from './lib/range-selector/range-selector.component';
 export * from './lib/utils';

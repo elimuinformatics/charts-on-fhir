@@ -328,22 +328,32 @@ describe('FhirChartConfigurationService', () => {
       const layers: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: of(layers) };
       configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
-      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
     });
 
     it('should autoZoom by default', () => {
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
       expect(configService.isAutoZoom).toBe(true);
     });
 
     it('should call chart.zoom', () => {
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
       configService.zoom({ min: 1, max: 2 });
       expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 1, max: 2 }, 'zoom');
     });
 
     it('should lock zoom range', () => {
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
       configService.zoom({ min: 1, max: 2 });
       expect(configService.isAutoZoom).toBe(false);
     });
+
+    it('should set initial zoom if called before chart is initialized', () => {
+      configService.zoom({ min: 1, max: 2 });
+      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
+      expect(configService.isAutoZoom).toBe(false);
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 1, max: 2 }, 'zoom');
+    });
+
   });
 
   describe('resetZoom', () => {

@@ -1,12 +1,7 @@
 <fhir-chart-layout [toolbar]="['loading', 'options']">
   <div class="layout-main">
-    <mat-card class="layout-main-chart mat-elevation-z2">
-      <mat-card-content>
-        <fhir-chart width="100%" height="calc(100vh - 48px)"></fhir-chart>
-      </mat-card-content>
-    </mat-card>
-    <div class="layout-main-summary">
-      <fhir-chart-summary></fhir-chart-summary>
-    </div>
+    <range-selector class="layout-main-range"></range-selector>
+    <fhir-chart class="layout-main-chart" width="100%" height="100%"></fhir-chart>
+    <fhir-chart-summary class="layout-main-summary"></fhir-chart-summary>
   </div>
 </fhir-chart-layout>

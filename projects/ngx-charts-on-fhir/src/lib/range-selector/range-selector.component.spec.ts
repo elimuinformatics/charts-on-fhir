@@ -12,7 +12,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
-import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
+import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 
 const max = 1650906227000; // Apr 25, 2022
 const min = 1578330227000; // Jan 6, 2020
