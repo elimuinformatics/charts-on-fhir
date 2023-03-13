@@ -89,7 +89,7 @@ jobs:
             -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
     
   build-docs:
-    # if: ${{ github.ref == 'refs/heads/main' }} # temporarily commented out for testing in PR branch
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: 
       - build-ngx-charts-on-fhir
       - build-apps
