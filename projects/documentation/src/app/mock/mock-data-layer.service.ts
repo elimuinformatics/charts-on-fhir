@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
-import { MILLISECONDS_PER_DAY, DataLayerService, DataLayer } from 'ngx-charts-on-fhir';
+import { MILLISECONDS_PER_DAY, DataLayerService, DataLayer } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Injectable()
 export class MockDataLayerService implements DataLayerService {

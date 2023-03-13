@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { groupBy, mapValues, sortBy } from 'lodash-es';
-import { DataLayerManagerService, formatDate, formatTime } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, formatDate, formatTime } from '@elimuinformatics/ngx-charts-on-fhir';
 import { map } from 'rxjs';
 
 export interface LastReportedBPdata {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MedicationRequest } from 'fhir/r4';
-import { DataLayerService, FhirDataService, FhirConverter } from 'ngx-charts-on-fhir';
+import { DataLayerService, FhirDataService, FhirConverter } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
 
 @Injectable({

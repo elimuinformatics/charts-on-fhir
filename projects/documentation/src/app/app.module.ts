@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { COLOR_PALETTE, DataLayerService, ScatterDataPointSummaryService, SummaryService } from 'ngx-charts-on-fhir';
+import { COLOR_PALETTE, DataLayerService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MockDataLayerService } from './mock/mock-data-layer.service';
 
 @NgModule({

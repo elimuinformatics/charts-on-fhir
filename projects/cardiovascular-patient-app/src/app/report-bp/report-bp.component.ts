@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { FhirDataService } from 'ngx-charts-on-fhir';
+import { FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

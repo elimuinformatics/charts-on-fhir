@@ -7,7 +7,7 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FhirDataService } from 'ngx-charts-on-fhir';
+import { FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';

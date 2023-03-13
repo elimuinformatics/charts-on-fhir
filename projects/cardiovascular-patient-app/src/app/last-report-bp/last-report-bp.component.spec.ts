@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LastReportBPComponent, LastReportedBPdata } from './last-report-bp.component';
-import { DataLayerManagerService, ManagedDataLayer } from 'ngx-charts-on-fhir';
+import { DataLayerManagerService, ManagedDataLayer } from '@elimuinformatics/ngx-charts-on-fhir';
 import { BehaviorSubject, EMPTY } from 'rxjs';
 import { LastReportBPModule } from './last-report-bp.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';

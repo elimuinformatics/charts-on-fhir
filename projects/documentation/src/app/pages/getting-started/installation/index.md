@@ -13,7 +13,17 @@ To setup your local Angular environment and create a new project, follow Angular
 Open a terminal window in your project directory and run the following command:
 
 ```console
-npm i ngx-charts-on-fhir
+npm i @elimuinformatics/ngx-charts-on-fhir
+```
+
+Enable `esModuleInterop` compiler option in your `tsconfig.json` file:
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
 ```
 
 Add the default Angular Material theme to your `angular.json` file:
@@ -27,7 +37,7 @@ Add the default Angular Material theme to your `angular.json` file:
         "build": {
           "options": {
             "styles": [
-              "node_modules/ngx-charts-on-fhir/themes/default.scss", // <- add this line
+              "node_modules/@elimuinformatics/ngx-charts-on-fhir/themes/default.scss", // <- add this line
               "src/styles.css"
             ]
           }
@@ -36,6 +46,15 @@ Add the default Angular Material theme to your `angular.json` file:
     }
   }
 }
+```
+
+Apply Angular Material's global typography styles by adding the `mat-typography` class to the `body` element in `index.html`. This is optional, but it will make fonts more consistent throughout the app:
+
+```html
+<!-- index.html -->
+<body class="mat-typography">
+  <app-root></app-root>
+</body>
 ```
 
 ## Configure Service Providers

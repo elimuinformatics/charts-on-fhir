@@ -10,7 +10,7 @@ A stack of summary cards that display information about each data layer on the c
 
 ```ts
 // app.module.ts
-import { FhirChartModule, FhirChartSummaryModule } from "ngx-charts-on-fhir";
+import { FhirChartModule, FhirChartSummaryModule } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @NgModule({
   imports: [, /* ... */ FhirChartModule, FhirChartSummaryModule],
