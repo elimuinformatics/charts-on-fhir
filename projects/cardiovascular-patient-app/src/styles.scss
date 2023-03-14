@@ -8,3 +8,15 @@
   --mdc-snackbar-container-color: red;
   --mat-mdc-snack-bar-button-color: #e8e9ec;
 }
+
+// This will make table fixed width so if text increases in column it will wrap onto next line and will not add horizotal scrollbar to the table
+
+#summary-card-table {
+  .mat-mdc-table {
+    table-layout: fixed;
+    white-space: normal;
+    .mat-mdc-cell {
+      white-space: normal;
+    }
+  }
+}
