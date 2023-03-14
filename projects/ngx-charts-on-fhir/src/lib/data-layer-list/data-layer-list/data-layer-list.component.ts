@@ -12,7 +12,7 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 })
 export class DataLayerListComponent {
 
-  @Input() showRemoveButton?: boolean = false;
+  @Input() hideRemoveLayerButton?: boolean = false;
 
   constructor(readonly layerManager: DataLayerManagerService) { }
 
