@@ -8,8 +8,8 @@ import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configur
   styleUrls: ['./range-selector.component.css'],
 })
 export class RangeSelectorComponent {
-  maxDate?: Date;
-  minDate?: Date;
+  maxDate?: Date = new Date();
+  minDate?: Date = new Date();
 
   rangeSelectorButtons = [
     { month: 1, value: '1 mo' },
@@ -63,7 +63,7 @@ export class RangeSelectorComponent {
       }
     }
   }
-  
+
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
     let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
     months -= minDateValue.getMonth();
