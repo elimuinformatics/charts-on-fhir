@@ -1,13 +1,19 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material/card';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { AppComponent } from './app.component';
 import { dataLayerProviders } from './providers/data-layer-providers';
 import { mapperProviders } from './providers/mapper-providers';
 import paletteProvider from './providers/palette-provider';
-import { FhirChartModule, COLOR_PALETTE, FhirChartSummaryModule, FhirDataService, FhirChartLayoutModule } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  FhirChartModule,
+  COLOR_PALETTE,
+  FhirChartSummaryModule,
+  FhirDataService,
+  FhirChartLayoutModule,
+  RangeSelectorModule,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 
@@ -17,7 +23,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, MatCardModule, FhirChartLayoutModule, FhirChartModule, FhirChartSummaryModule],
+  imports: [BrowserModule, BrowserAnimationsModule, FhirChartLayoutModule, FhirChartModule, FhirChartSummaryModule, RangeSelectorModule],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
