@@ -107,7 +107,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
-      - run: npm run build documentation
+      - run: npm run build documentation -- --base-href=/charts-on-fhir/
       - uses: actions/upload-pages-artifact@main
         with:
           path: dist/documentation

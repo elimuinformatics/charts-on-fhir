@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { FhirChartConfigurationService } from '../fhir-chart-configuration.service';
+import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 
 @Component({
   selector: 'range-selector',
