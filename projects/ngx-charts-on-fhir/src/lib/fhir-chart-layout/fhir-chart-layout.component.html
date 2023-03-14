@@ -5,7 +5,7 @@
       <div class="layout-sidebar-content">
         <patient-browser *ngIf="toolbar.includes('patients')" [hidden]="active !== 'patients'"></patient-browser>
         <data-layer-browser *ngIf="toolbar.includes('browser')" [hidden]="active !== 'browser'"></data-layer-browser>
-        <data-layer-list *ngIf="toolbar.includes('options')" [hidden]="active !== 'options'"></data-layer-list>
+        <data-layer-list *ngIf="toolbar.includes('options')" [hidden]="active !== 'options'" [showRemoveButton]="showRemoveButton"></data-layer-list>
       </div>
       <div class="layout-sidebar-close">
         <button color="primary" class="sidebar-close-button" (click)="active = null" title="Close data browser"><mat-icon>arrow_left</mat-icon></button>

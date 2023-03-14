@@ -10,6 +10,7 @@ import { FhirDataService } from '../fhir-data/fhir-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartLayoutComponent {
+  @Input() showRemoveButton: boolean = false;
   @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
   @Input() active: ToolbarButtonName | null = null;
 
