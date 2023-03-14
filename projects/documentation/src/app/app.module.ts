@@ -19,6 +19,8 @@ import { MockDataLayerService } from './mock/mock-data-layer.service';
     BrowserAnimationsModule,
     NgDocNavbarModule,
     NgDocSidebarModule,
+    NgDocModule.forRoot(),
+    NgDocGeneratedModule.forRoot(),
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
@@ -34,8 +36,6 @@ import { MockDataLayerService } from './mock/mock-data-layer.service';
         scrollOffset: [0, 70],
       }
     ),
-    NgDocModule.forRoot(),
-    NgDocGeneratedModule.forRoot(),
   ],
   providers: [
     { provide: COLOR_PALETTE, useValue: ['#e36667', '#377eb8', '#4daf4a', '#984ea3'] },
