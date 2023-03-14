@@ -63,7 +63,6 @@ export class RangeSelectorComponent {
       }
     }
   }
-
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
     let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
     months -= minDateValue.getMonth();
