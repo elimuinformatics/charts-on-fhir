@@ -37,13 +37,13 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summary).toEqual([
         {
           name: 'min',
-          current: '10',
-          previous: '4',
+          [`current ${1}${'days'}`]: '10',
+          [`previous ${1}${'days'}`]: '4',
         },
         {
           name: 'max',
-          current: '15',
-          previous: '9',
+          [`current ${1}${'days'}`]: '15',
+          [`previous ${1}${'days'}`]: '9',
         },
       ]);
     });
