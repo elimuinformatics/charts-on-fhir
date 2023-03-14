@@ -92,8 +92,8 @@ jobs:
     #if: ${{ github.ref == 'refs/heads/main' }} # temporarily commented out for testing
     needs: 
       - build-ngx-charts-on-fhir
-      - build-apps
-      - test-and-scan
+#      - build-apps
+#      - test-and-scan # temporarily commented out for testing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
