@@ -25,7 +25,7 @@ import { MockDataLayerService } from './mock/mock-data-layer.service';
       [
         ...NG_DOC_ROUTING,
         {
-          path: '**',
+          path: '',
           redirectTo: 'introduction',
           pathMatch: 'full',
         },
