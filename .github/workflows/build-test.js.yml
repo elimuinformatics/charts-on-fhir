@@ -108,6 +108,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build documentation -- --base-href=/charts-on-fhir/
+      - run: cp dist/documentation/index.html dist/documentation/404.html # Needed for Angular routing
       - uses: actions/upload-pages-artifact@main
         with:
           path: dist/documentation
