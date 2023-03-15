@@ -1,14 +1,15 @@
-<mat-toolbar>
-  <span>{{ appTitle }}</span>
-</mat-toolbar>
+<div class="banner" #banner>
+  <img class="banner-logo" *ngIf="cdsicLogo" src="assets/cdsic-logo.png" alt="CDS Innovation Collaborative" />
+  <div class="banner-title">{{ appTitle }}</div>
+</div>
 <mat-tab-group class="bp-tab-group" mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedIndex"
-  (selectedIndexChange)="selectedIndex = $event">
+  (selectedIndexChange)="onTabChange($event)">
   <mat-tab label="Report BP">
     <last-report-bp></last-report-bp>
     <report-bp class="report-bp-card" (resourceCreated)="getBpLayerdata()"></report-bp>
   </mat-tab>
   <mat-tab label="See prior BPs">
-    <div class="layout-main" id="layout-main">
+    <div class="layout-main" id="layout-main" [style.height]="layoutMainHeight">
       <fhir-chart class="layout-main-chart" width="100%" height="100%"></fhir-chart>
       <fhir-chart-summary id="summary-card-table"></fhir-chart-summary>
     </div>

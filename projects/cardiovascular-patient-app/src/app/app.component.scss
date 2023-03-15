@@ -3,11 +3,26 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   grid-template-rows: auto max-content;
   grid-column-gap: 4px;
-  height: calc(100vh - 108px);
 }
 
 //Added this css as we have to maintain 60 40 width on desktop size as earlier
-
 .layout-main-chart {
   grid-column: 1 / -2;
+}
+
+.banner {
+  min-height: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+.banner-logo {
+  height: 60px;
+}
+.banner-title {
+  margin: 16px;
+  color: #0063A7;
+  font-size: 20px;
+  font-weight: 500;
 }
