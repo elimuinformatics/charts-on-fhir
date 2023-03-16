@@ -35,7 +35,7 @@
       </mat-expansion-panel-header>
       <data-layer-options [layer]="layer" (layerChange)="onLayerChange($event)"></data-layer-options>
       <mat-action-row>
-        <button mat-button color="primary" (click)="onLayerRemove(layer)" title="Remove this layer"><mat-icon fontIcon="delete"></mat-icon> REMOVE LAYER</button>
+        <button mat-button color="primary" (click)="onLayerRemove(layer)" title="Remove this layer" [hidden]="hideRemoveLayerButton"><mat-icon fontIcon="delete"></mat-icon> REMOVE LAYER</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
