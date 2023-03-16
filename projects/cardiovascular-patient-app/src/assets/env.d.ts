@@ -3,6 +3,7 @@ declare global {
       env: {
         clientId: string;
         appTitle: string;
+        cdsicLogo: boolean;
       };
     }
   }

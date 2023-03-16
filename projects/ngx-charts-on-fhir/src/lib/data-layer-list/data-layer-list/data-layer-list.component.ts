@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -11,7 +11,10 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
   styleUrls: ['./data-layer-list.component.css'],
 })
 export class DataLayerListComponent {
-  constructor(readonly layerManager: DataLayerManagerService) {}
+
+  @Input() hideRemoveLayerButton?: boolean = false;
+
+  constructor(readonly layerManager: DataLayerManagerService) { }
 
   getLayerId(_index: number, layer: ManagedDataLayer) {
     return layer.id;

@@ -4,5 +4,6 @@
 
 window.env = {
   clientId: "2dd5083f-85ba-4966-8b04-3c99dcd26601",
-  appTitle: "CDSIC Blood Pressure",
+  appTitle: "CDSiC Blood Pressure",
+  cdsicLogo: true
 };

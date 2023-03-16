@@ -8,9 +8,8 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  showTitle: boolean = false;
-  layers: any[] = [];
-  appTitle: string = environment.appTitle;
+  appTitle: string = environment.env.appTitle;
+  cdsicLogo = environment.env.cdsicLogo;
   selectedIndex?: number;
 
   constructor(readonly layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {}

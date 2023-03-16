@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -31,7 +31,7 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService, public changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
@@ -78,4 +78,9 @@ export class FhirChartComponent implements OnInit {
   ngAfterViewChecked() {
     this.configService.chart = Chart.getChart('baseChart');
   }
+
+  ngAfterContentChecked() {
+    this.changeDetector.detectChanges();
+  }
+
 }
