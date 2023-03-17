@@ -18,7 +18,7 @@ const max = 1650906227000; // Apr 25, 2022
 const min = 1578330227000; // Jan 6, 2020
 
 class MockConfigService {
-  timelineRange$ = of({ min, max }).pipe(delay(0));
+  timelineRange$ = of({ min, max })
   zoom = jasmine.createSpy('zoom');
   resetZoom = jasmine.createSpy('resetZoom');
 }
