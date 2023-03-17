@@ -5,6 +5,7 @@ import { mapValues, merge } from 'lodash-es';
 import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, NumberRange } from '../utils';
 
@@ -157,6 +158,14 @@ export class FhirChartConfigurationService {
               },
             },
           },
+          tooltip: {
+            callbacks: {
+              beforeFooter: (context: any) => {
+                const refRange = findReferenceRangeForDataset(annotations, context[0].dataset)
+                return `Reference Range ${refRange?.yMin} - ${refRange?.yMax}`;
+              }
+            }
+          }
         },
       },
     };
