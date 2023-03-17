@@ -1,6 +1,14 @@
-import { DataLayer } from '../data-layer/data-layer';
+import { DataLayer } from '@elimuinformatics/ngx-charts-on-fhir';
 import { StatisticsService } from './statistics.service';
 import { ScatterDataPointSummaryService } from './summary.service';
+
+const mockLayer: DataLayer = {
+  name: 'Blood pressure',
+  category: ['Vital Signs'],
+  scale: { id: 'Blood pressure (mmHg)' },
+  datasets: [],
+  annotations: [],
+};
 
 describe('ScatterDataPointSummaryService', () => {
   describe('canSummarize', () => {
@@ -29,19 +37,19 @@ describe('ScatterDataPointSummaryService', () => {
     it('should include statistics for current and previous timespan', () => {
       const statisticsService = jasmine.createSpyObj<StatisticsService>('StatisticsService', ['getFormattedStatistics']);
       const summaryService = new ScatterDataPointSummaryService(statisticsService);
-      statisticsService.getFormattedStatistics.and.callFake((layer, { min, max }) => ({
+      statisticsService.getFormattedStatistics.and.callFake((mockLayer, { min, max }) => ({
         min: String(min),
         max: String(max),
       }));
-      const summary = summaryService.summarize({} as DataLayer, { min: 10, max: 15 });
+      const summary = summaryService.summarize(mockLayer, { min: 10, max: 15 });
       expect(summary).toEqual([
         {
-          name: 'min',
+          [`${mockLayer.name}`]: 'min',
           [`current ${1}${'days'}`]: '10',
           [`previous ${1}${'days'}`]: '4',
         },
         {
-          name: 'max',
+          [`${mockLayer.name}`]: 'max',
           [`current ${1}${'days'}`]: '15',
           [`previous ${1}${'days'}`]: '9',
         },
