@@ -1,0 +1,11 @@
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px;
+}
+.legend-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

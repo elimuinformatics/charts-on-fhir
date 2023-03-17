@@ -12,17 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import paletteProvider from './providers/palette-provider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
-import {
-  FhirChartModule,
-  COLOR_PALETTE,
-  DataLayerBrowserModule,
-  FhirChartSummaryModule,
-  FhirDataService,
-} from '@elimuinformatics/ngx-charts-on-fhir';
+import { FhirChartModule, COLOR_PALETTE, DataLayerBrowserModule, FhirChartSummaryModule, FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
 import { ReportBPModule } from './report-bp/report-bp.module';
 import { LastReportBPModule } from './last-report-bp/last-report-bp.module';
+import { OptionsMenuModule } from './options-menu/options-menu.module';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -43,7 +38,8 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     MatToolbarModule,
     MatTabsModule,
     ReportBPModule,
-    LastReportBPModule
+    LastReportBPModule,
+    OptionsMenuModule,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },

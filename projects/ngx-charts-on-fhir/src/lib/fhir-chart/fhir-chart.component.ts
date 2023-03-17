@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -31,7 +31,11 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  // @ViewChild(FhirChartLegendToggleComponent) legendToggle?: FhirChartLegendToggleComponent;
+
+  @Input() showLegend = true;
+  
+  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
@@ -69,6 +73,9 @@ export class FhirChartComponent implements OnInit {
       },
     };
 
+    // we use a custom legend component instead
+    Chart.defaults.plugins.legend.display = false;
+
     this.configService.chartConfig$.subscribe((config) => {
       this.datasets = config.data.datasets;
       this.options = config.options;
@@ -77,5 +84,9 @@ export class FhirChartComponent implements OnInit {
 
   ngAfterViewChecked() {
     this.configService.chart = Chart.getChart('baseChart');
+  }
+
+  toggleLegend(value?: boolean) {
+    this.showLegend = value ?? !this.showLegend;
   }
 }

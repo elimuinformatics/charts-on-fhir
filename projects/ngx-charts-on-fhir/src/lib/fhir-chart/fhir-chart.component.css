@@ -18,3 +18,12 @@
   justify-content: center;
   align-items: center;
 }
+
+.legend {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 4px;
+}
