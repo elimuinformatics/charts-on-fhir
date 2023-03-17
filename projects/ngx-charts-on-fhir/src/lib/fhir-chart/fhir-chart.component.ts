@@ -31,7 +31,7 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService, public changeDetector: ChangeDetectorRef) { }
+  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) { }
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
@@ -77,10 +77,6 @@ export class FhirChartComponent implements OnInit {
 
   ngAfterViewChecked() {
     this.configService.chart = Chart.getChart('baseChart');
-  }
-
-  ngAfterContentChecked() {
-    this.changeDetector.detectChanges();
   }
 
 }
