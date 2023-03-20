@@ -4,7 +4,7 @@ import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTabsModule } from '@angular/material/tabs';
-import { COLOR_PALETTE, DataLayerService, FhirChartComponent } from '@elimuinformatics/ngx-charts-on-fhir';
+import { COLOR_PALETTE, DataLayerService, FhirChartComponent, LegendPosition } from '@elimuinformatics/ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +20,7 @@ class MockDataLayerService implements DataLayerService {
 
 @Component({ selector: 'fhir-chart' })
 class MockFhirChartComponent {
-  @Input() showLegend?: boolean;
+  @Input() legendPosition?: LegendPosition;
 }
 
 @Component({ selector: 'fhir-chart-summary' })
