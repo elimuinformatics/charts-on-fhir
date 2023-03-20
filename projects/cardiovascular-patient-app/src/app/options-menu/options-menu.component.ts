@@ -7,4 +7,9 @@ import { FhirChartComponent } from '@elimuinformatics/ngx-charts-on-fhir';
 })
 export class OptionsMenuComponent {
   @Input() chart?: FhirChartComponent;
+  toggleLegend(value: boolean) {
+    if (this.chart) {
+      this.chart.legendPosition = value ? 'float' : 'none';
+    }
+  }
 }

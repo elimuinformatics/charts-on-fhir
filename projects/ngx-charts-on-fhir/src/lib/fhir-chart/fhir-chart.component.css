@@ -1,4 +1,9 @@
+.legend-container {
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+}
 .chart-container {
+  grid-row: 2;
   position: relative;
 }
 
@@ -19,7 +24,7 @@
   align-items: center;
 }
 
-.legend {
+.legend-float {
   position: absolute;
   top: 0;
   left: 60px;
