@@ -2,6 +2,14 @@ import { DataLayer } from '../data-layer/data-layer';
 import { StatisticsService } from './statistics.service';
 import { ScatterDataPointSummaryService } from './summary.service';
 
+const mockLayer: DataLayer = {
+  name: 'Blood pressure',
+  category: ['Vital Signs'],
+  scale: { id: 'Blood pressure (mmHg)' },
+  datasets: [],
+  annotations: [],
+};
+
 describe('ScatterDataPointSummaryService', () => {
   describe('canSummarize', () => {
     it('should return true for layer with linear scale', () => {
@@ -33,17 +41,17 @@ describe('ScatterDataPointSummaryService', () => {
         min: String(min),
         max: String(max),
       }));
-      const summary = summaryService.summarize({} as DataLayer, { min: 10, max: 15 });
+      const summary = summaryService.summarize(mockLayer, { min: 10, max: 15 });
       expect(summary).toEqual([
         {
-          name: 'min',
-          [`current ${1}${'days'}`]: '10',
-          [`previous ${1}${'days'}`]: '4',
+          [`${mockLayer.name}`]: 'min',
+          [`current ${1} days`]: '10',
+          [`previous ${1} days`]: '4',
         },
         {
-          name: 'max',
-          [`current ${1}${'days'}`]: '15',
-          [`previous ${1}${'days'}`]: '9',
+          [`${mockLayer.name}`]: 'max',
+          [`current ${1} days`]: '15',
+          [`previous ${1} days`]: '9',
         },
       ]);
     });

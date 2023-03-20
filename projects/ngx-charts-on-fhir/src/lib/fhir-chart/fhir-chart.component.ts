@@ -35,7 +35,7 @@ export class FhirChartComponent implements OnInit {
 
   @Input() showLegend = true;
   
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService, private elementRef: ElementRef) {}
+  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
@@ -89,4 +89,5 @@ export class FhirChartComponent implements OnInit {
   toggleLegend(value?: boolean) {
     this.showLegend = value ?? !this.showLegend;
   }
+
 }
