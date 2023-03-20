@@ -162,8 +162,11 @@ export class FhirChartConfigurationService {
             callbacks: {
               beforeFooter: (context: any) => {
                 const refRange = findReferenceRangeForDataset(annotations, context[0].dataset)
-                return `Reference Range ${refRange?.yMin} - ${refRange?.yMax}`;
-              }
+                if (refRange) {
+                  return `Reference Range ${refRange?.yMin} - ${refRange?.yMax}`;
+                }
+                return '';
+              },
             }
           }
         },
