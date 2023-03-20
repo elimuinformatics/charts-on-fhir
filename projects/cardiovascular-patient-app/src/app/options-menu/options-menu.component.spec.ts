@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OptionsMenuComponent } from './options-menu.component';
+import { OptionsMenuModule } from './options-menu.module';
 
 describe('OptionsMenuComponent', () => {
   let component: OptionsMenuComponent;
@@ -8,7 +8,7 @@ describe('OptionsMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OptionsMenuComponent],
+      imports: [OptionsMenuModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OptionsMenuComponent);

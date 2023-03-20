@@ -4,9 +4,9 @@ import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTabsModule } from '@angular/material/tabs';
-import { COLOR_PALETTE, DataLayerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { COLOR_PALETTE, DataLayerService, FhirChartComponent } from '@elimuinformatics/ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,17 +19,24 @@ class MockDataLayerService implements DataLayerService {
 }
 
 @Component({ selector: 'fhir-chart' })
-class MockFhirChartComponent { }
+class MockFhirChartComponent {
+  @Input() showLegend?: boolean;
+}
 
 @Component({ selector: 'fhir-chart-summary' })
-class MockFhirChartSummaryComponent { }
+class MockFhirChartSummaryComponent {}
 
 @Component({ selector: 'last-report-bp' })
-class MockLastReportBPComponent { }
+class MockLastReportBPComponent {}
 
 @Component({ selector: 'report-bp' })
 class MockReportBPComponent {
   @Output() resourceCreated = new EventEmitter<number>();
+}
+
+@Component({ selector: 'options-menu' })
+class MockOptionsMenuComponent {
+  @Input() chart?: FhirChartComponent;
 }
 
 describe('AppComponent', () => {
@@ -39,7 +46,14 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, MockFhirChartComponent, MockFhirChartSummaryComponent, MockLastReportBPComponent, MockReportBPComponent],
+      declarations: [
+        AppComponent,
+        MockFhirChartComponent,
+        MockFhirChartSummaryComponent,
+        MockLastReportBPComponent,
+        MockReportBPComponent,
+        MockOptionsMenuComponent,
+      ],
       imports: [NoopAnimationsModule, MatTabsModule, MatCardModule, MatToolbarModule],
       providers: [
         { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
@@ -60,6 +74,4 @@ describe('AppComponent', () => {
     reportBPComponent.componentInstance.resourceCreated.next(1);
     expect(await tabHarness[1].isSelected()).toBe(true);
   });
-  
 });
-
