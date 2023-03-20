@@ -24,8 +24,8 @@ export class ScatterDataPointSummaryService implements SummaryService {
     const days = Math.ceil((range.max - range.min) / MILLISECONDS_PER_DAY);
     const summary = Object.keys(current).map((name) => ({
       [layer.name]: name,
-      [`current ${days}${'days'}`]: current[name],
-      [`previous ${days}${'days'}`]: prev[name],
+      [`current ${days} days`]: current[name],
+      [`previous ${days} days`]: prev[name],
     }));
     return summary;
   }

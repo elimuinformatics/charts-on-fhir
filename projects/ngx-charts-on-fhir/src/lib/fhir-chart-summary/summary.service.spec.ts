@@ -1,4 +1,4 @@
-import { DataLayer } from '@elimuinformatics/ngx-charts-on-fhir';
+import { DataLayer } from '../data-layer/data-layer';
 import { StatisticsService } from './statistics.service';
 import { ScatterDataPointSummaryService } from './summary.service';
 
@@ -37,7 +37,7 @@ describe('ScatterDataPointSummaryService', () => {
     it('should include statistics for current and previous timespan', () => {
       const statisticsService = jasmine.createSpyObj<StatisticsService>('StatisticsService', ['getFormattedStatistics']);
       const summaryService = new ScatterDataPointSummaryService(statisticsService);
-      statisticsService.getFormattedStatistics.and.callFake((mockLayer, { min, max }) => ({
+      statisticsService.getFormattedStatistics.and.callFake((layer, { min, max }) => ({
         min: String(min),
         max: String(max),
       }));
@@ -45,13 +45,13 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summary).toEqual([
         {
           [`${mockLayer.name}`]: 'min',
-          [`current ${1}${'days'}`]: '10',
-          [`previous ${1}${'days'}`]: '4',
+          [`current ${1} days`]: '10',
+          [`previous ${1} days`]: '4',
         },
         {
           [`${mockLayer.name}`]: 'max',
-          [`current ${1}${'days'}`]: '15',
-          [`previous ${1}${'days'}`]: '9',
+          [`current ${1} days`]: '15',
+          [`previous ${1} days`]: '9',
         },
       ]);
     });
