@@ -43,6 +43,7 @@ describe('RangeSelectorComponent', () => {
     element = fixture.debugElement;
     loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -50,6 +51,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should display the range selector', () => {
+    fixture.detectChanges();
     const rangeSelector = element.query(By.css(".range-selector"));
     expect(rangeSelector).toBeTruthy();
   });
