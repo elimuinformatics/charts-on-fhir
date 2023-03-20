@@ -4,7 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
-import { delay, of } from 'rxjs';
+import { of } from 'rxjs';
 import { RangeSelectorComponent } from './range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -18,7 +18,7 @@ const max = 1650906227000; // Apr 25, 2022
 const min = 1578330227000; // Jan 6, 2020
 
 class MockConfigService {
-  timelineRange$ = of({ min, max })
+  timelineRange$ = of({ min, max });
   zoom = jasmine.createSpy('zoom');
   resetZoom = jasmine.createSpy('resetZoom');
 }
