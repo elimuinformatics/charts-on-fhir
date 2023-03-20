@@ -4,7 +4,7 @@ import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
-import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotation, ChartAnnotations } from '../utils';
+import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
 
 type Stats = {
   days: number;
