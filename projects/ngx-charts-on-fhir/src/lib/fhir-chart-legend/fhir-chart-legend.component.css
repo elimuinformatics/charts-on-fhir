@@ -1,3 +1,8 @@
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 8px;
+}
 .legend-item {
   display: flex;
   align-items: center;
