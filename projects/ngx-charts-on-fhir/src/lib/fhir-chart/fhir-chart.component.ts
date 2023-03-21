@@ -10,6 +10,8 @@ import { FhirChartConfigurationService } from './fhir-chart-configuration.servic
 import { MedicationScale } from './medication-scale';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
+export type LegendPosition = 'none' | 'float' | 'top' | 'bottom';
+
 /**
  * See `*Chart` for example usage.
  */
@@ -31,7 +33,10 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) { }
+  @Input() legendPosition: LegendPosition = 'float';
+  readonly gridRow = { top: 1, bottom: 3 } as const;
+
+  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
@@ -69,6 +74,9 @@ export class FhirChartComponent implements OnInit {
       },
     };
 
+    // we use a custom legend component instead
+    Chart.defaults.plugins.legend.display = false;
+
     this.configService.chartConfig$.subscribe((config) => {
       this.datasets = config.data.datasets;
       this.options = config.options;
@@ -78,5 +86,4 @@ export class FhirChartComponent implements OnInit {
   ngAfterViewChecked() {
     this.configService.chart = Chart.getChart('baseChart');
   }
-
 }
