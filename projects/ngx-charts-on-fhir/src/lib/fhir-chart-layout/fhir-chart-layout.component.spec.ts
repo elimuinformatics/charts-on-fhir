@@ -15,7 +15,9 @@ class MockDataLayerToolbarComponent {
 class MockDataLayerBrowserComponent {}
 
 @Component({ selector: 'data-layer-list', template: '' })
-class MockDataLayerListComponent {}
+class MockDataLayerListComponent {
+  @Input() hideRemoveLayerButton?: boolean = false;
+}
 
 describe('FhirChartLayoutComponent', () => {
   let component: FhirChartLayoutComponent;
