@@ -1,9 +1,10 @@
 import { NgZone } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
-import { Chart } from 'chart.js';
+import { Chart, TooltipItem } from 'chart.js';
 import { hot, getTestScheduler } from 'jasmine-marbles';
-import { of } from 'rxjs';
-import { ManagedDataLayer } from '../data-layer/data-layer';
+import { EMPTY, of } from 'rxjs';
+import { Dataset, ManagedDataLayer, TimelineChartType } from '../data-layer/data-layer';
+import { ChartAnnotations } from '../utils';
 import { FhirChartConfigurationService, TimelineConfiguration } from './fhir-chart-configuration.service';
 
 describe('FhirChartConfigurationService', () => {
@@ -403,5 +404,32 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 10, max: 20 }, 'zoom');
     }));
 
+  });
+
+  it('should return the correct tooltip footer text when reference range is defined', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [
+        { x: 10, y: 100 },
+        { x: 20, y: 200 },
+      ],
+    };
+    const scale = { id: 'scale', type: 'linear' } as const;
+    const annotations: ChartAnnotations = [
+      {
+        label: { content: 'Test Reference Range' },
+        yScaleID: 'scale',
+        yMax: 20,
+        yMin: 10,
+      },
+    ];
+    const layerManager: any = { selectedLayers$: EMPTY }
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, annotations);
+    const tooltipItems = [{ dataset }] as TooltipItem<TimelineChartType>[];
+    const beforeFooter = config.options!.plugins!.tooltip!.callbacks!.beforeFooter!.bind({} as any);
+    const footerText = beforeFooter(tooltipItems);
+    expect(footerText).toEqual('Reference Range 10 - 20');
   });
 });
