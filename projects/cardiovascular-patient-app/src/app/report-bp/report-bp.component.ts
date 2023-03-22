@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -15,7 +15,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
   templateUrl: './report-bp.component.html',
   styleUrls: ['./report-bp.component.css'],
 })
-export class ReportBPComponent implements OnInit {
+export class ReportBPComponent {
   submitted = false;
   min = 11;
   max = 250;
@@ -31,12 +31,6 @@ export class ReportBPComponent implements OnInit {
   );
 
   constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
-
-  ngOnInit(): void {
-    this.form.valueChanges.subscribe((value) => {
-      this.updateBPentryForm(value);
-    });
-  }
 
   open(message: string, action = '', config?: MatSnackBarConfig) {
     return this.snackBar.open(message, action, config);
@@ -65,10 +59,6 @@ export class ReportBPComponent implements OnInit {
         });
       })
     }
-  }
-
-  private updateBPentryForm(formValue: typeof this.form.value): void {
-    console.log(formValue);
   }
 
 }
