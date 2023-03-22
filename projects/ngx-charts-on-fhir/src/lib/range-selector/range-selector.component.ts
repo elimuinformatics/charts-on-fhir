@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class RangeSelectorComponent {
   constructor(private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
-    this.configService.timelineRange$.subscribe((timelineRange) => {
+    this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
       this.maxDate = new Date(timelineRange.max);
       this.minDate = new Date(timelineRange.min);
       if (this.configService.isAutoZoom) {
@@ -63,7 +64,6 @@ export class RangeSelectorComponent {
       }
     }
   }
-  
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
     let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
     months -= minDateValue.getMonth();

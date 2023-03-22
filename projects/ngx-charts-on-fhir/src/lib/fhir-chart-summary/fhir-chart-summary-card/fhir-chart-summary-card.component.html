@@ -1,11 +1,3 @@
-<mat-card class="summary-card" [style.background]="getBackgroundStyle()">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-subtitle *ngIf="subtitle">{{ subtitle }}</mat-card-subtitle>
-      <mat-card-title *ngIf="title" [matTooltip]="title">{{ title }}</mat-card-title>
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-card-content>
+<div class="card summary-card" [style.background]="getBackgroundStyle()">
     <ng-content></ng-content>
-  </mat-card-content>
-</mat-card>
+</div>

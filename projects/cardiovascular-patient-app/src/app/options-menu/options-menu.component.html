@@ -1,0 +1,8 @@
+<button mat-icon-button aria-label="Options" [matMenuTriggerFor]="optionsMenu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #optionsMenu="matMenu">
+  <div mat-menu-item>
+    <mat-slide-toggle (change)="toggleLegend($event.checked)" [checked]="chart?.legendPosition !== 'none'">Legend</mat-slide-toggle>
+  </div>
+</mat-menu>

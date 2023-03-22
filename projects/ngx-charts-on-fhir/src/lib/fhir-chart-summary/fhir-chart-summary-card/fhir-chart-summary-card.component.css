@@ -2,13 +2,3 @@
   border-left: 4px solid transparent;
   min-height: 100%;
 }
-.mat-card-subtitle .mat-icon {
-  margin: -8px 0px;
-}
-.mat-card-title {
-  font-size: 20px;
-  max-width: 350px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}

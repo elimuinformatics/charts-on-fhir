@@ -30,7 +30,7 @@ describe('MedicationSummaryService', () => {
       const summaryService = new MedicationSummaryService();
       const authoredOn = new Date('2023-01-01T00:00:00').getTime();
       const layer: DataLayer<'line', MedicationDataPoint[]> = {
-        name: 'Test',
+        name: 'Medications',
         datasets: [
           {
             label: 'one',
@@ -46,7 +46,7 @@ describe('MedicationSummaryService', () => {
       const summary = summaryService.summarize(layer);
       expect(summary).toEqual([
         {
-          name: 'one',
+          'Medications': 'one',
           'Date Written': '1 Jan 2023',
         },
       ]);
