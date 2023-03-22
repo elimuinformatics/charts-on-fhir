@@ -4,7 +4,7 @@ import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
-import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined } from '../utils';
+import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
 
 type Stats = {
   days: number;
@@ -98,25 +98,17 @@ export class StatisticsService {
     return maxPrecision;
   }
 
-  /** Factory for generating functions that check if any given annotation is a reference range for the bound dataset */
-  isReferenceRangeFor(dataset: Dataset) {
-    return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
-      return (
-        (annotation as BoxAnnotationOptions)?.label?.content === `${dataset.label} Reference Range` &&
-        typeof annotation.yMax === 'number' &&
-        typeof annotation.yMin === 'number' &&
-        typeof annotation.yScaleID === 'string'
-      );
-    };
-  }
+
 
   /** Get an array of days from the [data] array that are outside of the reference range for the given [dataset].
    * Returns null if there is no matching reference range. */
   getDaysOutOfRange(layer: DataLayer, dataset: Dataset, data: ScatterDataPoint[]): string[] | null {
-    const refRange = layer?.annotations?.find(this.isReferenceRangeFor(dataset));
-    if (refRange) {
-      const groups = groupBy(data, getDay);
-      return Object.keys(groups).filter((day) => groups[day].some(isOutOfRange(refRange)));
+    if (layer.annotations) {
+      const refRange = findReferenceRangeForDataset(layer.annotations, dataset)
+      if (refRange) {
+        const groups = groupBy(data, getDay);
+        return Object.keys(groups).filter((day) => groups[day].some(isOutOfRange(refRange)));
+      }
     }
     return null;
   }
@@ -186,4 +178,21 @@ function isOutOfRange(refRange: ReferenceRange) {
 function getDay(point: ScatterDataPoint): string {
   const date = new Date(point.x);
   return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`;
+}
+
+
+/** Factory for generating functions that check if any given annotation is a reference range for the bound dataset */
+function isReferenceRangeFor(dataset: Dataset) {
+  return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
+    return (
+      (annotation as BoxAnnotationOptions)?.label?.content === `${dataset.label} Reference Range` &&
+      typeof annotation.yMax === 'number' &&
+      typeof annotation.yMin === 'number' &&
+      typeof annotation.yScaleID === 'string'
+    );
+  };
+}
+
+export function findReferenceRangeForDataset(annotations: ChartAnnotations, dataset: Dataset) {
+  return annotations?.find(isReferenceRangeFor(dataset));
 }

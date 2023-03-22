@@ -1,3 +1,4 @@
+import { findReferenceRangeForDataset } from '@elimuinformatics/ngx-charts-on-fhir';
 import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
@@ -203,23 +204,26 @@ describe('StatisticsService', () => {
     });
   });
 
-  describe('isReferenceRangeFor', () => {
+  describe('findReferenceRangeForDataset', () => {
     it("should return true for dataset's reference range", () => {
-      const dataset: Dataset = { label: 'Test', data: [] };
-      const annotation: DeepPartial<AnnotationOptions> = {
-        label: { content: 'Test Reference Range' },
-        yMin: 0,
-        yMax: 10,
-        yScaleID: 'Scale',
-      };
-      expect(service.isReferenceRangeFor(dataset)(annotation)).toBeTrue();
+      const dataset: Dataset = { label: 'Test Dataset', data: [] };
+      const annotations: DeepPartial<AnnotationOptions>[] = [
+        { label : { content: 'Test Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', value: 10 },
+        { label : { content: 'Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 20, yMax: 30 },
+        { label : { content: 'Test Dataset Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 40, yMax: 50 },
+      ];
+      const result: DeepPartial<AnnotationOptions> | undefined  = findReferenceRangeForDataset(annotations, dataset);
+      expect(result).toEqual(annotations[2]);
+
     });
-    it('should return false for other annotation', () => {
+    it('should return undefine for other annotation', () => {
       const dataset: Dataset = { label: 'Test', data: [] };
-      const annotation: DeepPartial<AnnotationOptions> = {
-        label: { content: 'Nope' },
-      };
-      expect(service.isReferenceRangeFor(dataset)(annotation)).toBeFalse();
+      const annotations: DeepPartial<AnnotationOptions> [] = [
+        { label : { content: 'Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 20, yMax: 30 },
+      ];
+      const result: DeepPartial<AnnotationOptions> | undefined  = findReferenceRangeForDataset(annotations, dataset);
+      expect(result).toBeUndefined()
+
     });
   });
 
