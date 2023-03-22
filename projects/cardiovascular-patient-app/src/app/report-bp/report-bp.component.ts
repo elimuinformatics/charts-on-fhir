@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
