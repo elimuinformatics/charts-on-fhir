@@ -1,6 +1,6 @@
 <div class="legend">
   <ng-container *ngFor="let layer of layerManager.enabledLayers$ | async">
-    <ng-container *ngFor="let dataset of layer.datasets">
+    <ng-container *ngFor="let dataset of layer.datasets|sortBy:'desc':'label'">
       <div class="legend-item" *ngIf="!dataset.hidden">
         <div class="legend-icon" [ngSwitch]="dataset.pointStyle" [style.color]="colorService.getColor(dataset)">
           <mat-icon *ngSwitchCase="'circle'">circle</mat-icon>
