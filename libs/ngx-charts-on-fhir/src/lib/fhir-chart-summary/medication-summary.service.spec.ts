@@ -1,5 +1,6 @@
-import { MedicationDataPoint, MILLISECONDS_PER_DAY } from '../../public-api';
 import { DataLayer } from '../data-layer/data-layer';
+import { MedicationDataPoint } from '../fhir-mappers/medication-request/simple-medication-mapper.service';
+import { MILLISECONDS_PER_DAY } from '../utils';
 import { MedicationSummaryService } from './medication-summary.service';
 
 describe('MedicationSummaryService', () => {
