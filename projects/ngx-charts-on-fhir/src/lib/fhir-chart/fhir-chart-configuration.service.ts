@@ -55,14 +55,6 @@ export class FhirChartConfigurationService {
   set chart(value: Chart | undefined) {
     if (this._chart !== value) {
       this._chart = value;
-      if (this.chart && this.isZoomRangeLocked && this.timeline.min != null && this.timeline.max != null) {
-        // set initial zoom range if zoom() was called before the chart was initialized
-        const range = {
-          min: Number(this.timeline.min),
-          max: Number(this.timeline.max),
-        };
-        this.chart.zoomScale('timeline', range, 'zoom');
-      }
     }
   }
 
