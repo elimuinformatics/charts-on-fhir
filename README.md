@@ -1,7 +1,13 @@
 # Charts-on-FHIR
 
-A data visualization library for SMART-on-FHIR apps.
-Built with [Chart.js](https://www.chartjs.org/)
+A data visualization library for SMART-on-FHIR healthcare applications.
+
+## Building your own app
+
+Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) for
+[Getting Started](https://elimuinformatics.github.io/charts-on-fhir/getting-started/installation) guides,
+[API docs](https://elimuinformatics.github.io/charts-on-fhir/api), and
+[examples](https://elimuinformatics.github.io/charts-on-fhir/components/chart).
 
 ## Running the Showcase app
 
