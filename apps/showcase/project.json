@@ -1,0 +1,119 @@
+{
+  "name": "showcase",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "apps/showcase/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/showcase",
+        "index": "apps/showcase/src/index.html",
+        "main": "apps/showcase/src/main.ts",
+        "polyfills": "apps/showcase/src/polyfills.ts",
+        "tsConfig": "apps/showcase/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets", "apps/showcase/src/launch.html"],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/showcase/src/styles.scss"],
+        "scripts": [
+          {
+            "input": "node_modules/fhirclient/build/fhir-client.js",
+            "inject": false,
+            "bundleName": "fhirclient"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "2.0mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/showcase/src/environments/environment.ts",
+              "with": "apps/showcase/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "logica-open": {
+          "fileReplacements": [
+            {
+              "replace": "apps/showcase/src/environments/environment.ts",
+              "with": "apps/showcase/src/environments/environment.logica-open.ts"
+            }
+          ]
+        },
+        "mock": {
+          "fileReplacements": [
+            {
+              "replace": "apps/showcase/src/environments/environment.ts",
+              "with": "apps/showcase/src/environments/environment.mock.ts"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "showcase:build:production"
+        },
+        "development": {
+          "browserTarget": "showcase:build:development"
+        },
+        "logica-open": {
+          "browserTarget": "showcase:build:development,logica-open"
+        },
+        "mock": {
+          "browserTarget": "showcase:build:development,mock"
+        }
+      },
+      "defaultConfiguration": "logica-open"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "showcase:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/showcase/src/test.ts",
+        "polyfills": "apps/showcase/src/polyfills.ts",
+        "tsConfig": "apps/showcase/tsconfig.spec.json",
+        "karmaConfig": "apps/showcase/karma.conf.js",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/showcase/src/styles.scss"],
+        "scripts": []
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "cardiovascular-health",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "apps/cardiovascular-health/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/cardiovascular-health",
+        "index": "apps/cardiovascular-health/src/index.html",
+        "main": "apps/cardiovascular-health/src/main.ts",
+        "polyfills": "apps/cardiovascular-health/src/polyfills.ts",
+        "tsConfig": "apps/cardiovascular-health/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/cardiovascular-health/src/favicon.ico", "apps/cardiovascular-health/src/assets", "apps/cardiovascular-health/src/launch.html"],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-health/src/styles.scss"],
+        "scripts": [
+          {
+            "input": "node_modules/fhirclient/build/fhir-client.js",
+            "inject": false,
+            "bundleName": "fhirclient"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "2.0mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/cardiovascular-health/src/environments/environment.ts",
+              "with": "apps/cardiovascular-health/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        },
+        "logica-open": {
+          "fileReplacements": [
+            {
+              "replace": "apps/cardiovascular-health/src/environments/environment.ts",
+              "with": "apps/cardiovascular-health/src/environments/environment.logica-open.ts"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "cardiovascular-health:build:production"
+        },
+        "development": {
+          "browserTarget": "cardiovascular-health:build:development"
+        },
+        "logica-open": {
+          "browserTarget": "cardiovascular-health:build:development,logica-open"
+        }
+      },
+      "defaultConfiguration": "logica-open"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "cardiovascular-health:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/cardiovascular-health/src/test.ts",
+        "polyfills": "apps/cardiovascular-health/src/polyfills.ts",
+        "tsConfig": "apps/cardiovascular-health/tsconfig.spec.json",
+        "karmaConfig": "apps/cardiovascular-health/karma.conf.js",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/cardiovascular-health/src/favicon.ico", "apps/cardiovascular-health/src/assets"],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-health/src/styles.scss"],
+        "scripts": []
+      }
+    }
+  }
+}

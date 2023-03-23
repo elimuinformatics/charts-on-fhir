@@ -1,0 +1,14 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngx-charts-on-fhir",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "assets": [
+    {
+      "input": "src",
+      "glob": "**/*.scss",
+      "output": "themes"
+    }
+  ]
+}

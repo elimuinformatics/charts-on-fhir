@@ -1,0 +1,103 @@
+{
+  "name": "documentation",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "apps/documentation/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@ng-doc/builder:browser",
+      "options": {
+        "outputPath": "dist/documentation",
+        "index": "projects/documentation/src/index.html",
+        "main": "projects/documentation/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "projects/documentation/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "node_modules/@ng-doc/app/assets",
+            "output": "assets/ng-doc/app"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/@ng-doc/ui-kit/assets",
+            "output": "assets/ng-doc/ui-kit"
+          },
+          {
+            "glob": "**/*",
+            "input": ".ng-doc/documentation/assets",
+            "output": "assets/ng-doc"
+          },
+          "projects/documentation/src/favicon.ico",
+          "projects/documentation/src/assets"
+        ],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "node_modules/@ng-doc/app/styles/global.css", "projects/documentation/src/styles.scss"],
+        "scripts": [],
+        "allowedCommonJsDependencies": ["@ng-doc/core"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "2mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@ng-doc/builder:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "documentation:build:production"
+        },
+        "development": {
+          "browserTarget": "documentation:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "documentation:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "polyfills": ["zone.js", "zone.js/testing"],
+        "tsConfig": "apps/documentation/tsconfig.spec.json",
+        "karmaConfig": "apps/documentation/karma.conf.js",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/documentation/src/favicon.ico", "apps/documentation/src/assets"],
+        "styles": ["apps/documentation/src/styles.scss"],
+        "scripts": []
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<data-layer-toolbar [buttons]="toolbar" [active]="active" (activeChange)="onToolbarChange(sidenav, $event)"></data-layer-toolbar>
+<mat-sidenav-container autosize="true">
+  <mat-sidenav mode="side" #sidenav [opened]="!!active">
+    <div class="layout-sidebar">
+      <div class="layout-sidebar-content">
+        <patient-browser *ngIf="toolbar.includes('patients')" [hidden]="active !== 'patients'"></patient-browser>
+        <data-layer-browser *ngIf="toolbar.includes('browser')" [hidden]="active !== 'browser'"></data-layer-browser>
+        <data-layer-list
+          *ngIf="toolbar.includes('options')"
+          [hidden]="active !== 'options'"
+          [hideRemoveLayerButton]="!toolbar.includes('browser')"
+        ></data-layer-list>
+      </div>
+      <div class="layout-sidebar-close">
+        <button color="primary" class="sidebar-close-button" (click)="active = null" title="Close data browser"><mat-icon>arrow_left</mat-icon></button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

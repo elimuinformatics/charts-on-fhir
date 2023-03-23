@@ -1,0 +1,32 @@
+{
+  "name": "ngx-charts-on-fhir",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/ngx-charts-on-fhir/src",
+  "prefix": "lib",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:package",
+      "options": {
+        "project": "libs/ngx-charts-on-fhir/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "libs/ngx-charts-on-fhir/src/test.ts",
+        "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.spec.json",
+        "karmaConfig": "libs/ngx-charts-on-fhir/karma.conf.js"
+      }
+    }
+  }
+}
