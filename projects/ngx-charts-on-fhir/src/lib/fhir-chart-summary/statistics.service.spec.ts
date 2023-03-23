@@ -1,6 +1,6 @@
 import { findReferenceRangeForDataset } from '@elimuinformatics/ngx-charts-on-fhir';
 import { ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/types/utils';
+import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset, TimelineChartType } from '../data-layer/data-layer';
 import { StatisticsService } from './statistics.service';
