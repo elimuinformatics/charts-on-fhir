@@ -17,7 +17,7 @@
         "index": "apps/cardiovascular-patient-app/src/index.html",
         "main": "apps/cardiovascular-patient-app/src/main.ts",
         "polyfills": "apps/cardiovascular-patient-app/src/polyfills.ts",
-        "tsConfig": "apps/cardiovascular-patient-app/tsconfig.app.json",
+        "tsConfig": "apps/cardiovascular-patient-app/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/cardiovascular-patient-app/src/favicon.ico",

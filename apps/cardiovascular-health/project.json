@@ -17,7 +17,7 @@
         "index": "apps/cardiovascular-health/src/index.html",
         "main": "apps/cardiovascular-health/src/main.ts",
         "polyfills": "apps/cardiovascular-health/src/polyfills.ts",
-        "tsConfig": "apps/cardiovascular-health/tsconfig.app.json",
+        "tsConfig": "apps/cardiovascular-health/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardiovascular-health/src/favicon.ico", "apps/cardiovascular-health/src/assets", "apps/cardiovascular-health/src/launch.html"],
         "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-health/src/styles.scss"],

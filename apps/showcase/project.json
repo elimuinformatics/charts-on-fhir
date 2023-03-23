@@ -17,7 +17,7 @@
         "index": "apps/showcase/src/index.html",
         "main": "apps/showcase/src/main.ts",
         "polyfills": "apps/showcase/src/polyfills.ts",
-        "tsConfig": "apps/showcase/tsconfig.app.json",
+        "tsConfig": "apps/showcase/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets", "apps/showcase/src/launch.html"],
         "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/showcase/src/styles.scss"],

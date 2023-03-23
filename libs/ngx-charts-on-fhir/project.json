@@ -12,10 +12,10 @@
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.prod.json"
+          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.prod.json"
         },
         "development": {
-          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.json"
+          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.json"
         }
       },
       "defaultConfiguration": "production"
