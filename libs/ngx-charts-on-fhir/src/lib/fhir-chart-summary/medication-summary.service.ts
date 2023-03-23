@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { formatDate, MedicationDataPoint } from '../../public-api';
+import { formatDate } from '../utils';
+import { MedicationDataPoint } from '../fhir-mappers/medication-request/simple-medication-mapper.service';
 import { DataLayer, TimelineChartType } from '../data-layer/data-layer';
 import { SummaryService } from './summary.service';
 

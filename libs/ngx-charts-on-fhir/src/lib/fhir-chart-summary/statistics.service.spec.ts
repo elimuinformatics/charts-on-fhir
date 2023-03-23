@@ -1,4 +1,4 @@
-import { findReferenceRangeForDataset } from '@elimuinformatics/ngx-charts-on-fhir';
+import { findReferenceRangeForDataset } from './statistics.service';
 import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
