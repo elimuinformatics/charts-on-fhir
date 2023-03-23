@@ -20,7 +20,7 @@
         "tsConfig": "apps/showcase/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets", "apps/showcase/src/launch.html"],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/showcase/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/showcase/src/styles.scss"],
         "scripts": [
           {
             "input": "node_modules/fhirclient/build/fhir-client.js",
@@ -111,7 +111,7 @@
         "karmaConfig": "apps/showcase/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/showcase/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/showcase/src/styles.scss"],
         "scripts": []
       }
     }

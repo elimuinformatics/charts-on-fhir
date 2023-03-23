@@ -24,7 +24,7 @@
           "apps/cardiovascular-patient-app/src/assets",
           "apps/cardiovascular-patient-app/src/launch.html"
         ],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-patient-app/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardiovascular-patient-app/src/styles.scss"],
         "scripts": [
           {
             "input": "node_modules/fhirclient/build/fhir-client.js",
@@ -104,7 +104,7 @@
         "karmaConfig": "apps/cardiovascular-patient-app/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardiovascular-patient-app/src/favicon.ico", "apps/cardiovascular-patient-app/src/assets"],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-patient-app/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardiovascular-patient-app/src/styles.scss"],
         "scripts": []
       }
     }

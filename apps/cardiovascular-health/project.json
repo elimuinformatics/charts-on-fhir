@@ -20,7 +20,7 @@
         "tsConfig": "apps/cardiovascular-health/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardiovascular-health/src/favicon.ico", "apps/cardiovascular-health/src/assets", "apps/cardiovascular-health/src/launch.html"],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-health/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardiovascular-health/src/styles.scss"],
         "scripts": [
           {
             "input": "node_modules/fhirclient/build/fhir-client.js",
@@ -100,7 +100,7 @@
         "karmaConfig": "apps/cardiovascular-health/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardiovascular-health/src/favicon.ico", "apps/cardiovascular-health/src/assets"],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "apps/cardiovascular-health/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardiovascular-health/src/styles.scss"],
         "scripts": []
       }
     }
