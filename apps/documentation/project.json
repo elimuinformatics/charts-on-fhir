@@ -13,11 +13,11 @@
     "build": {
       "executor": "@ng-doc/builder:browser",
       "options": {
-        "outputPath": "dist/documentation",
-        "index": "projects/documentation/src/index.html",
-        "main": "projects/documentation/src/main.ts",
-        "polyfills": ["zone.js"],
-        "tsConfig": "projects/documentation/tsconfig.app.json",
+        "outputPath": "dist/apps/documentation",
+        "index": "apps/documentation/src/index.html",
+        "main": "apps/documentation/src/main.ts",
+        "polyfills": "apps/documentation/src/polyfills.ts",
+        "tsConfig": "apps/documentation/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
@@ -35,10 +35,10 @@
             "input": ".ng-doc/documentation/assets",
             "output": "assets/ng-doc"
           },
-          "projects/documentation/src/favicon.ico",
-          "projects/documentation/src/assets"
+          "apps/documentation/src/favicon.ico",
+          "apps/documentation/src/assets"
         ],
-        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "node_modules/@ng-doc/app/styles/global.css", "projects/documentation/src/styles.scss"],
+        "styles": ["./dist/ngx-charts-on-fhir/themes/default.scss", "node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
         "scripts": [],
         "allowedCommonJsDependencies": ["@ng-doc/core"]
       },
