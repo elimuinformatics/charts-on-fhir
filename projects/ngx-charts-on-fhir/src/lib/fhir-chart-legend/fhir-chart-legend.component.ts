@@ -16,7 +16,7 @@ export class FhirChartLegendComponent {
     public layerManager: DataLayerManagerService,
     public colorService: DataLayerColorService,
     iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
+    sanitizer: DomSanitizer,
   ) {
     iconRegistry.addSvgIconLiteral('triangle', sanitizer.bypassSecurityTrustHtml(SVG_TRIANGLE));
   }

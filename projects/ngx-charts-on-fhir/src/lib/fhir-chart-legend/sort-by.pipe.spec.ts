@@ -3,15 +3,64 @@ import { SortByPipe } from "./sort-by.pipe";
 describe('sortByPipe', () => {
     it('should sort in ascending order', () => {
         const pipe = new SortByPipe();
-        const result = pipe.transform([4,3,2,1], 'asc');
-    
-        expect(result).toEqual([1,2,3,4]);
+        const dataset: any = [{
+            data: [{
+                x: 1677841517844,
+                y: 110
+            }],
+            label: "Diastolic Blood Pressure (Home)",
+        },
+        {
+            data: [{
+                x: 1677841517844,
+                y: 140
+            }],
+            label: "Systolic Blood Pressure (Home)",
+        },
+        {
+            data: [{
+                x: 1678355029160,
+                y: 90
+            }],
+            label: "Diastolic Blood Pressure",
+        },
+        {
+            data: [{
+                x: 1678355029160,
+                y: 120
+            }],
+            label: "Systolic Blood Pressure",
+        }]
+        const result = pipe.transform(dataset);
+
+        expect(result).toEqual([
+            {
+                data: [{
+                    x: 1677841517844,
+                    y: 140
+                }],
+                label: "Systolic Blood Pressure (Home)",
+            },
+            {
+                data: [{
+                    x: 1678355029160,
+                    y: 120
+                }],
+                label: "Systolic Blood Pressure",
+            },
+            {
+                data: [{
+                    x: 1677841517844,
+                    y: 110
+                }],
+                label: "Diastolic Blood Pressure (Home)",
+            }, {
+                data: [{
+                    x: 1678355029160,
+                    y: 90
+                }],
+                label: "Diastolic Blood Pressure",
+            },]);
     })
 
-    it('should sort in descending order', () => {
-        const pipe = new SortByPipe();
-        const result = pipe.transform([1,2,3,4], 'desc');
-    
-        expect(result).toEqual([4,3,2,1]);
-    })
-  });
+});
