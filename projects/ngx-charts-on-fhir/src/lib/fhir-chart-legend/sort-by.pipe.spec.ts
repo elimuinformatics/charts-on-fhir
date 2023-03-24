@@ -1,7 +1,7 @@
 import { SortByPipe } from "./sort-by.pipe";
 
 describe('sortByPipe', () => {
-    it('should sort in ascending order', () => {
+    it('should sort the dataset for multiple legend  using Y value', () => {
         const pipe = new SortByPipe();
         const dataset: any = [{
             data: [{
@@ -63,4 +63,33 @@ describe('sortByPipe', () => {
             },]);
     })
 
+    it('should sort the dataset for single legend using Y value', () => {
+        const pipe = new SortByPipe();
+        const dataset: any = [{
+            data: [{
+                x: 1677841517844,
+                y: 110
+            }],
+            label: "Diastolic Blood Pressure (Home)",
+        }]
+        const result = pipe.transform(dataset);
+
+        expect(result).toEqual([
+            {
+                data: [{
+                    x: 1677841517844,
+                    y: 110
+                }],
+                label: "Diastolic Blood Pressure (Home)",
+            }]);
+    })
+
+    it('should sort the empty dataset', () => {
+        const pipe = new SortByPipe();
+        const dataset: any = []
+
+        const result = pipe.transform(dataset);
+
+        expect(result).toEqual([]);
+    })
 });
