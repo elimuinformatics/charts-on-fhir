@@ -348,12 +348,14 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.isAutoZoom).toBe(false);
     });
 
-    it('should set initial zoom if called before chart is initialized', () => {
+    it('should set initial zoom if called before chart is initialized', waitForAsync(() => {
       configService.zoom({ min: 1, max: 2 });
-      configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
-      expect(configService.isAutoZoom).toBe(false);
-      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 1, max: 2 }, 'zoom');
-    });
+      configService.chartConfig$.subscribe((config) => {
+        expect(configService.isAutoZoom).toBe(false);
+        expect(config.options?.scales?.['timeline']?.min).toBe(1);
+        expect(config.options?.scales?.['timeline']?.max).toBe(2);
+      });
+    }));
 
   });
 
