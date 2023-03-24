@@ -5,16 +5,15 @@ WORKDIR /home/node
 COPY --chown=node package*.json ./
 RUN npm ci
 COPY --chown=node . .
-RUN npm run build ngx-charts-on-fhir
-ARG project
-RUN npm run build ${project}
+ARG app
+RUN npm run build ${app}
 
 ### STAGE 2: Run on nginx ###
 FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 COPY nginx.conf /etc/nginx/
 COPY ./docker-entrypoint.sh /etc/nginx/
-ARG project
-COPY --from=build /home/node/dist/${project} /usr/share/nginx/html
+ARG app
+COPY --from=build /home/node/dist/apps/${app} /usr/share/nginx/html
 ENTRYPOINT ["/etc/nginx/docker-entrypoint.sh"]
 CMD ["nginx"]

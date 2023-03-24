@@ -64,9 +64,9 @@ Run `npm test <project>` to execute the unit tests via [Karma](https://karma-run
 
 Any of the sample applications in this workspace can be built as a self-contained Docker image that runs NGINX webserver.
 This uses a production build configuration suitable for deployment.
-The Dockerfile accepts a build-arg for the project name. To build an image for the showcase app:
+The Dockerfile accepts a build-arg for the app name. To build an image for the showcase app:
 
-`docker build --build-arg project=showcase -t showcase .`
+`docker build --build-arg app=showcase -t showcase .`
 
 The app's SMART clientId must be provided by an environment variable when starting the container.
 To run the container on http://localhost:4200:
