@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
 import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
+import { delay, retry } from 'rxjs/operators';
 
 export interface BloodPressure {
   systolic?: number | null;
@@ -36,7 +37,7 @@ export class FhirDataService {
   async initialize(clientState?: ClientState) {
     console.info('FHIR Client Initializing...');
     if (this.isSmartLaunch) {
-      this.client = await FHIR.oauth2.ready();
+      this.client = await FHIR.oauth2.ready({});
     } else {
       console.warn('No SMART state found in session storage!');
       if (clientState) {
@@ -94,16 +95,69 @@ export class FhirDataService {
       };
       // use maximum page size on every request to improve performance
       url = addCountParam(url);
+      const MAX_RETRIES = 3;
+      let retries = 0;
       const request = currentPatientOnly ? this.client.patient.request.bind(this.client.patient) : this.client.request.bind(this.client);
-      request(url, { pageLimit: 0, onPage })
-        .then(() => subscriber.complete())
-        .catch((error) => subscriber.error(error));
+
+      const requestObservable = new Observable((subscriber) => {
+        request(url, { pageLimit: 0, onPage })
+          .then(() => {
+            subscriber.complete();
+          })
+          .catch((error: any) => {
+            if (retries < MAX_RETRIES && this.errorStatusCheck(error)) {
+              retries++;
+              console.log(`Retrying request... (retry attempt ${retries})`);
+              subscriber.error(error);
+            } else {
+              subscriber.error(`Request failed after ${MAX_RETRIES} retries: ${error}`);
+            }
+          });
+      });
+
+      requestObservable.pipe(retry(MAX_RETRIES), delay(100000)).subscribe();
       return teardownLogic;
     });
   }
 
+  errorStatusCheck(error: any) {
+    switch (error.status) {
+      case 400:
+        return true;
+      case 502:
+        return true;
+      case 503:
+        return true;
+      case 504:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   addPatientData(resource: Resource) {
-    return this.client?.create(resource);
+    const request = this.client?.create(resource);
+    const MAX_RETRIES = 3;
+    let retries = 0;
+    const requestObservable = new Observable((subscriber) => {
+      if (request)
+        request
+          .then(() => {
+            subscriber.complete();
+          })
+          .catch((error: any) => {
+            if (retries < MAX_RETRIES && this.errorStatusCheck(error)) {
+              retries++;
+              console.log(`Retrying request... (retry attempt ${retries})`);
+              subscriber.error(error);
+            } else {
+              subscriber.error(`Request failed after ${MAX_RETRIES} retries: ${error}`);
+            }
+          });
+    });
+
+    requestObservable.pipe(retry(MAX_RETRIES), delay(100000)).subscribe();
+    return request;
   }
 
   createBloodPressureResource(reportBPValue: BloodPressure): Resource {
@@ -133,17 +187,17 @@ export class FhirDataService {
       },
       extension: [
         {
-          url: "http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt",
+          url: 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt',
           valueCodeableConcept: {
             coding: [
               {
-                system: "http://snomed.info/sct",
-                code: "264362003",
-                display: "Home (environment)"
-              }
-            ]
-          }
-        }
+                system: 'http://snomed.info/sct',
+                code: '264362003',
+                display: 'Home (environment)',
+              },
+            ],
+          },
+        },
       ],
       subject: {
         reference: `Patient/${this.client?.patient.id}`,
