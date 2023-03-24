@@ -12,13 +12,13 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 ## Projects in this repository
 
 ### Library
-- [ngx-charts-on-fhir](projects/ngx-charts-on-fhir): An Angular component library that you can use to build applications
+- [ngx-charts-on-fhir](libs/ngx-charts-on-fhir): An Angular component library that you can use to build applications
 
 ### Applications
-- [showcase](projects/showcase): A customizable clinical dashboard that demonstrates all of the library's features
-- [cardiovascular-health](projects/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
-- [cardiovascular-patient-app](projects/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
-- [documentation](projects/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
+- [showcase](apps/showcase): A customizable clinical dashboard that demonstrates all of the library's features
+- [cardiovascular-health](apps/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
+- [cardiovascular-patient-app](apps/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
+- [documentation](apps/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
 
 ### Utilities
 - [synthea-utils](projects/synthea-utils): Modules and utility scripts for creating patient-generated data with [Synthea](https://github.com/synthetichealth/synthea)
@@ -54,11 +54,11 @@ To test an EHR launch with the Angular development server, you need an EHR simul
 
 ## Building the library
 
-Run `ng build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/ngx-charts-on-fhir` directory.
+Run `npm run build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/ngx-charts-on-fhir` directory.
 
 ## Running unit tests
 
-Run `ng test <project>` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test <project>` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running a Docker container
 
