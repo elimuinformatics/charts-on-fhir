@@ -75,7 +75,7 @@ const reload = (req, res, next) => {
   } else {
     next();
   }
-}
+};
 server.use(reload);
 server.use(middlewares);
 server.use(

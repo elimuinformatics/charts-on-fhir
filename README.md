@@ -12,15 +12,18 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 ## Projects in this repository
 
 ### Library
+
 - [ngx-charts-on-fhir](libs/ngx-charts-on-fhir): An Angular component library that you can use to build applications
 
 ### Applications
+
 - [showcase](apps/showcase): A customizable clinical dashboard that demonstrates all of the library's features
 - [cardiovascular-health](apps/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
 - [cardiovascular-patient-app](apps/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
 - [documentation](apps/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
 
 ### Utilities
+
 - [synthea-utils](projects/synthea-utils): Modules and utility scripts for creating patient-generated data with [Synthea](https://github.com/synthetichealth/synthea)
 - [mock-fhir-server](projects/mock-fhir-server/): A simple mock server to aid in development on the showcase app
 
@@ -28,7 +31,7 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 
 1. Run `npm run watch ngx-charts-on-fhir` to build the library and watch for changes.
 2. Run `npm start <project>` to start the local development server. For example: `npm start showcase` will start the showcase app.
-5. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+3. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ### Logica Open FHIR Server
 
