@@ -42,7 +42,6 @@ export class DataLayerColorService {
   /** Chooses colors for all of the datasets and annotations in the Layer by cycling through the palette */
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
-      console.log(`chooseColorsFromPalette dataset=[${dataset.label}]`);
       if (!this.getColor(dataset)) {
         const colorIndex = this.getMatchingDatasetColorIndex(layer, dataset) ?? this.getNextPaletteIndex();
         const palette = this.getPalette(dataset);
