@@ -96,6 +96,12 @@
       },
       "defaultConfiguration": "logica-open"
     },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "curl -X POST \"$WEBHOOK_URL?job=showcase-web-build&token=$WEBHOOK_TOKEN\""
+      }
+    },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
