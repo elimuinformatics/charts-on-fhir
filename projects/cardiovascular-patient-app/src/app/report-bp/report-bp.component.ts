@@ -41,7 +41,7 @@ export class ReportBPComponent {
     const resource = this.dataService.createBloodPressureResource(bloodPressure);
     if (resource) {
       this.dataService.addPatientData(resource)?.then(() => {
-        this.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+        this.open('Blood Pressure Added Sucessfully', 'Dismiss', {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           duration: 5000,
@@ -51,7 +51,7 @@ export class ReportBPComponent {
         this.submitted = true;
         this.form.reset();
       }).catch(() => {
-        this.open('Something Wrong..!!', 'Dismiss', {
+        this.open('Something Wrong', 'Dismiss', {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           panelClass: ['red-snackbar'],
