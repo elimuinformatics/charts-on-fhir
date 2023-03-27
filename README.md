@@ -29,9 +29,8 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 
 ## Running the Applications
 
-1. Run `npm run watch ngx-charts-on-fhir` to build the library and watch for changes.
-2. Run `npm start <project>` to start the local development server. For example: `npm start showcase` will start the showcase app.
-3. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. Run `npm start <project>` to start the local development server. For example: `npm start showcase` will start the showcase app.
+2. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ### Logica Open FHIR Server
 
