@@ -56,7 +56,7 @@ To test an EHR launch with the Angular development server, you need an EHR simul
 
 ## Building the library
 
-Run `npm run build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/ngx-charts-on-fhir` directory.
+Run `npm run build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/libs/ngx-charts-on-fhir` directory.
 
 ## Running unit tests
 
