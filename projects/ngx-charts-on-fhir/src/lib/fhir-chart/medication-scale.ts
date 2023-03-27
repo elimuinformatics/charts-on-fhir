@@ -1,4 +1,4 @@
-import { CategoryScale } from 'chart.js';
+import { CategoryScale, CategoryScaleOptions } from 'chart.js';
 
 /** Use declaration merging to add a scale type to the type registry */
 declare module 'chart.js' {
