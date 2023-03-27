@@ -1,8 +1,8 @@
-import { SortByPipe } from "./sort-by.pipe";
+import { SortDatasets } from "./sort-by.pipe";
 
-describe('sortByPipe', () => {
+describe('sortDatasets', () => {
     it('should sort the dataset for multiple legend  using Y value', () => {
-        const pipe = new SortByPipe();
+        const pipe = new SortDatasets();
         const dataset: any = [{
             data: [{
                 x: 1677841517844,
@@ -64,7 +64,7 @@ describe('sortByPipe', () => {
     })
 
     it('should sort the dataset for single legend using Y value', () => {
-        const pipe = new SortByPipe();
+        const pipe = new SortDatasets();
         const dataset: any = [{
             data: [{
                 x: 1677841517844,
@@ -85,7 +85,7 @@ describe('sortByPipe', () => {
     })
 
     it('should sort the empty dataset', () => {
-        const pipe = new SortByPipe();
+        const pipe = new SortDatasets();
         const dataset: any = []
 
         const result = pipe.transform(dataset);
@@ -94,7 +94,7 @@ describe('sortByPipe', () => {
     })
 
     it('should sort the medication dataset for multiple legend', () => {
-        const pipe = new SortByPipe();
+        const pipe = new SortDatasets();
         const dataset: any = [{
             data: [{
                 x: 1581959027000,
