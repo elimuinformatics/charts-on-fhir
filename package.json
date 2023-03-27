@@ -2,10 +2,8 @@
   "name": "charts-on-fhir",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "nx serve",
     "build": "nx build",
-    "watch": "nx build --watch --configuration development",
     "test": "nx test",
     "generate-patient": "cd projects/synthea-utils && npm start",
     "mock-fhir-install": "cd projects/mock-fhir-server && npm install",
