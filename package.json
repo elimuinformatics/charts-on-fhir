@@ -9,7 +9,8 @@
     "test": "ng test",
     "generate-patient": "cd projects/synthea-utils && npm start",
     "mock-fhir-install": "cd projects/mock-fhir-server && npm install",
-    "mock-fhir": "cd projects/mock-fhir-server && npm start"
+    "mock-fhir": "cd projects/mock-fhir-server && npm start",
+    "preinstall": "npx npm-force-resolutions"
   },
   "private": true,
   "dependencies": {
@@ -61,5 +62,10 @@
     "ng-packagr": "^15.1.1",
     "prettier": "2.7.1",
     "typescript": "~4.9.4"
+  },
+  "resolutions": {
+    "json5": "2.2.2",
+    "qs": "6.10.3",
+    "webpack": "5.76.0"
   }
 }
