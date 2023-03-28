@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SortDatasets } from './sort-datasets.pipe';
 
 @NgModule({
-  declarations: [FhirChartLegendComponent,SortDatasets],
+  declarations: [FhirChartLegendComponent, SortDatasets],
   imports: [CommonModule, MatIconModule, MatButtonModule, OverlayModule],
   exports: [FhirChartLegendComponent],
 })
