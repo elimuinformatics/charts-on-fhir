@@ -6,7 +6,7 @@ const Api: NgDocApi = {
     {
       name: 'ngx-charts-on-fhir',
       route: 'ngx-charts-on-fhir',
-      include: 'projects/ngx-charts-on-fhir/src/public-api.ts',
+      include: 'libs/ngx-charts-on-fhir/src/index.ts',
     },
     // {
     //   name: 'chart.js',
