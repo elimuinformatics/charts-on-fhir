@@ -4,7 +4,7 @@ import { FhirChartLegendComponent } from './fhir-chart-legend.component';
 import { MatIconModule } from '@angular/material/icon';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatButtonModule } from '@angular/material/button';
-import { SortDatasets } from './sort-by.pipe';
+import { SortDatasets } from './sort-datasets.pipe';
 
 @NgModule({
   declarations: [FhirChartLegendComponent,SortDatasets],

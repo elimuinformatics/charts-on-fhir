@@ -1,4 +1,4 @@
-import { SortDatasets } from "./sort-by.pipe";
+import { SortDatasets } from "./sort-datasets.pipe";
 
 describe('sortDatasets', () => {
     it('should sort the dataset for multiple legend  using Y value', () => {
