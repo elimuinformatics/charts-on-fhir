@@ -111,7 +111,7 @@ describe('RangeSelectorComponent', () => {
   it('should check month difference between two dates', async () => {
     const componentMaxdate = new Date();
     const componentMindate = new Date();
-    const monthCount = 1;
+    const monthCount = 11;
     componentMindate.setMonth(componentMindate.getMonth() - monthCount);
     const months = component.calculateMonthDiff(componentMindate, componentMaxdate);
     expect(months).toEqual(monthCount);
