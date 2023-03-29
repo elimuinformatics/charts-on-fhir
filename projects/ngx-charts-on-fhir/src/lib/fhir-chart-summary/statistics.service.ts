@@ -153,7 +153,7 @@ function computeMedian(values: number[]): number {
 }
 
 /** Comparison function that can be used to sort Datasets by their most recent y-value, descending */
-function byMostRecentValue(a: Dataset, b: Dataset) {
+export function byMostRecentValue(a: Dataset, b: Dataset) {
   const ay = a.data.at(-1)?.y;
   const by = b.data.at(-1)?.y;
   if (ay == null || by == null) {
