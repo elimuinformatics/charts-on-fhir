@@ -40,8 +40,8 @@ export class ReportBPComponent {
     const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic };
     const resource = this.dataService.createBloodPressureResource(bloodPressure);
     if (resource) {
-      this.dataService.addPatientData(resource)?.subscribe(
-        (result) => {
+      this.dataService.addPatientData(resource).subscribe({
+        next: (result) => {
           this.open('Blood Pressure Added Sucessfully', 'Dismiss', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -52,15 +52,15 @@ export class ReportBPComponent {
           this.submitted = true;
           this.form.reset();
         },
-        (error) => {
+        error: (error) => {
           this.open('Something Wrong', 'Dismiss', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
             panelClass: ['red-snackbar'],
             duration: 5000,
           });
-        }
-      );
+        },
+      });
     }
   }
 }
