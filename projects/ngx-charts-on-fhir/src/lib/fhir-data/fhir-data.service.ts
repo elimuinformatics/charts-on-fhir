@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
 import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
-import { delay, retry } from 'rxjs/operators';
+import { retryBackoff } from 'backoff-rxjs';
 
 export interface BloodPressure {
   systolic?: number | null;
@@ -25,6 +25,8 @@ type Resource = Parameters<Client['create']>[0];
 export class FhirDataService {
   client?: Client;
   private clientState?: ClientState;
+  private MAX_RETRIES: number = 3;
+  private INITIAL_INTERVAL: number = 100;
 
   get isSmartLaunch(): boolean {
     return !!sessionStorage.getItem('SMART_KEY');
@@ -53,7 +55,7 @@ export class FhirDataService {
     }
   }
 
-  /** Creates a new launch context with a different patient. This only works with open FHIR servers. */
+  /* Creates a new launch context with a different patient. This only works with open FHIR servers. */
   changePatient(patientId: string) {
     if (this.isSmartLaunch) {
       console.error('Patient cannot be changed for a SMART-on-FHIR launch.');
@@ -79,7 +81,7 @@ export class FhirDataService {
    * - Unsubscribe from the Observable to stop retrieving more pages.
    */
   getPatientData<R extends FhirResource>(url: string, currentPatientOnly = true): Observable<Bundle<R>> {
-    return new Observable((subscriber) => {
+    return new Observable<Bundle<R>>((subscriber) => {
       if (!this.client) {
         subscriber.error('FhirClientService has not been initialized.');
         return;
@@ -95,29 +97,22 @@ export class FhirDataService {
       };
       // use maximum page size on every request to improve performance
       url = addCountParam(url);
-      const MAX_RETRIES = 3;
-      let retries = 0;
       const request = currentPatientOnly ? this.client.patient.request.bind(this.client.patient) : this.client.request.bind(this.client);
 
-      const requestObservable = new Observable((subscriber) => {
-        request(url, { pageLimit: 0, onPage })
-          .then(() => {
-            subscriber.complete();
-          })
-          .catch((error: any) => {
-            if (retries < MAX_RETRIES && this.errorStatusCheck(error)) {
-              retries++;
-              console.log(`Retrying request... (retry attempt ${retries})`);
-              subscriber.error(error);
-            } else {
-              subscriber.error(`Request failed after ${MAX_RETRIES} retries: ${error}`);
-            }
-          });
-      });
-
-      requestObservable.pipe(retry(MAX_RETRIES), delay(100000)).subscribe();
+      request(url, { pageLimit: 0, onPage })
+        .then(() => subscriber.complete())
+        .catch((error) => subscriber.error(error));
       return teardownLogic;
-    });
+    }).pipe(
+      retryBackoff({
+        initialInterval: this.INITIAL_INTERVAL,
+        maxRetries: this.MAX_RETRIES,
+        resetOnSuccess: true,
+        shouldRetry: (error) => {
+          return this.errorStatusCheck(error); // always retry
+        },
+      })
+    );
   }
 
   errorStatusCheck(error: any) {
@@ -135,29 +130,30 @@ export class FhirDataService {
     }
   }
 
-  addPatientData(resource: Resource) {
-    const request = this.client?.create(resource);
-    const MAX_RETRIES = 3;
-    let retries = 0;
-    const requestObservable = new Observable((subscriber) => {
+  addPatientData<T extends Resource>(resource: T): Observable<T> {
+    return new Observable<T>((subscriber) => {
+      if (!this.client) {
+        subscriber.error('FhirClientService has not been initialized.');
+        return;
+      }
+      const request = this.client?.create<T>(resource);
       if (request)
         request
-          .then(() => {
+          .then((resource) => {
+            subscriber.next(resource);
             subscriber.complete();
           })
-          .catch((error: any) => {
-            if (retries < MAX_RETRIES && this.errorStatusCheck(error)) {
-              retries++;
-              console.log(`Retrying request... (retry attempt ${retries})`);
-              subscriber.error(error);
-            } else {
-              subscriber.error(`Request failed after ${MAX_RETRIES} retries: ${error}`);
-            }
-          });
-    });
-
-    requestObservable.pipe(retry(MAX_RETRIES), delay(100000)).subscribe();
-    return request;
+          .catch((error) => subscriber.error(error));
+    }).pipe(
+      retryBackoff({
+        initialInterval: this.INITIAL_INTERVAL,
+        maxRetries: this.MAX_RETRIES,
+        resetOnSuccess: true,
+        shouldRetry: (error) => {
+          return this.errorStatusCheck(error); // always retry
+        },
+      })
+    );
   }
 
   createBloodPressureResource(reportBPValue: BloodPressure): Resource {
