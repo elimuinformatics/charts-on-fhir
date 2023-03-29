@@ -11,7 +11,7 @@ import { FhirDataService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 const fhirResource = {
   resourceType: 'Observation',
@@ -40,7 +40,7 @@ describe('ReportBPComponent', () => {
     matSnackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     fhirDataServiceSpy = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
     fhirDataServiceSpy.createBloodPressureResource.and.returnValue(fhirResource);
-    fhirDataServiceSpy.addPatientData.and.returnValue(of({}));
+    fhirDataServiceSpy.addPatientData.and.returnValue(of(fhirResource));
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, MatCardModule],
       declarations: [ReportBPComponent],
@@ -144,7 +144,7 @@ describe('snackbar test', () => {
     matSnackBarSpy = jasmine.createSpyObj<MatSnackBar>('MatSnackBar', ['open']);
     fhirDataServiceSpy = jasmine.createSpyObj('FhirDataService', ['createBloodPressureResource', 'addPatientData']);
     fhirDataServiceSpy.createBloodPressureResource.and.returnValue(fhirResource);
-    fhirDataServiceSpy.addPatientData.and.returnValue(of({}));
+    fhirDataServiceSpy.addPatientData.and.returnValue(of(fhirResource));
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatCardModule],
       declarations: [ReportBPComponent],
@@ -175,7 +175,7 @@ describe('snackbar test', () => {
   }));
 
   it('should display error snackbar message when getting some error', fakeAsync(async () => {
-    fhirDataServiceSpy.addPatientData.and.rejectWith(undefined);
+    fhirDataServiceSpy.addPatientData.and.returnValue(throwError(() => new Error('error')))
     const systolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='systolic']" }));
     await systolicInputHarness.setValue('100');
     const diastolicInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='diastolic']" }));

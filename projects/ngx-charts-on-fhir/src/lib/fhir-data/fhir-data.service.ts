@@ -117,7 +117,9 @@ export class FhirDataService {
 
   errorStatusCheck(error: any) {
     switch (error.status) {
-      case 400:
+      case 500:
+        return true;
+      case 501:
         return true;
       case 502:
         return true;
