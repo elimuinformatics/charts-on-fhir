@@ -42,7 +42,7 @@ export class ReportBPComponent {
     if (resource) {
       this.dataService.addPatientData(resource)?.subscribe(
         (result) => {
-          this.open('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+          this.open('Blood Pressure Added Sucessfully', 'Dismiss', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
             duration: 5000,
@@ -53,7 +53,7 @@ export class ReportBPComponent {
           this.form.reset();
         },
         (error) => {
-          this.open('Something Wrong..!!', 'Dismiss', {
+          this.open('Something Wrong', 'Dismiss', {
             horizontalPosition: 'center',
             verticalPosition: 'top',
             panelClass: ['red-snackbar'],

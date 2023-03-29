@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { COLOR_PALETTE, DataLayerService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MockDataLayerService } from './mock/mock-data-layer.service';
+import { NgDocIconModule } from '@ng-doc/ui-kit';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { MockDataLayerService } from './mock/mock-data-layer.service';
     BrowserAnimationsModule,
     NgDocNavbarModule,
     NgDocSidebarModule,
+    NgDocIconModule,
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,

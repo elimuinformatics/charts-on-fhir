@@ -1,6 +1,14 @@
 {
   "name": "@elimuinformatics/ngx-charts-on-fhir",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "description": "Charts-on-FHIR: A data visualization library for SMART-on-FHIR healthcare applications",
+  "license": "Apache-2.0",
+  "homepage": "https://elimuinformatics.github.io/charts-on-fhir",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elimuinformatics/charts-on-fhir.git",
+    "directory": "projects/ngx-charts-on-fhir"
+  },
   "exports": {
     "./themes/default.scss": {
       "sass": "./themes/default.scss"

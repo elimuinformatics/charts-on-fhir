@@ -164,7 +164,7 @@ describe('snackbar test', () => {
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
 
-    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Blood Pressure Added Sucessfully..!!', 'Dismiss', {
+    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Blood Pressure Added Sucessfully', 'Dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       duration: 5000,
@@ -181,7 +181,7 @@ describe('snackbar test', () => {
     const submitButtonHarness = await loader.getHarness(MatButtonHarness.with({ selector: "[id='submit']" }));
     await submitButtonHarness.click();
 
-    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Something Wrong..!!', 'Dismiss', {
+    expect(matSnackBarSpy.open).toHaveBeenCalledWith('Something Wrong', 'Dismiss', {
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: ['red-snackbar'],
