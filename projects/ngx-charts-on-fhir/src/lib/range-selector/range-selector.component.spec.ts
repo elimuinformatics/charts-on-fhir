@@ -23,7 +23,7 @@ class MockConfigService {
   resetZoom = jasmine.createSpy('resetZoom');
 }
 
-fdescribe('RangeSelectorComponent', () => {
+describe('RangeSelectorComponent', () => {
   let component: RangeSelectorComponent;
   let fixture: ComponentFixture<RangeSelectorComponent>;
   let element: DebugElement;
