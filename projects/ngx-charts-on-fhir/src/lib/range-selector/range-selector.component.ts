@@ -36,8 +36,7 @@ export class RangeSelectorComponent {
 
   updateRangeSelector(monthCount: number) {
     if (this.maxDate && monthCount) {
-      this.minDate = new Date(this.maxDate);
-      this.minDate.setMonth(new Date(this.maxDate).getMonth() - monthCount);
+      this.minDate = subtractMonths(this.maxDate, monthCount);
       this.configService.zoom({
         min: this.minDate.getTime(),
         max: this.maxDate.getTime(),
@@ -73,4 +72,16 @@ export class RangeSelectorComponent {
     }
     return 0;
   }
+}
+
+function subtractMonths(oldDate: Date, months: number): Date {
+  const newDate = new Date(oldDate);
+  newDate.setMonth(oldDate.getMonth() - months);
+  // If day-of-the-month (getDate) has changed, it's because the day did not exist 
+  // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
+  // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
+  if (newDate.getDate() < oldDate.getDate()) {
+    newDate.setDate(0);
+  }
+  return newDate;
 }
