@@ -77,7 +77,7 @@ export class RangeSelectorComponent {
 function subtractMonths(oldDate: Date, months: number): Date {
   const newDate = new Date(oldDate);
   newDate.setMonth(oldDate.getMonth() - months);
-  // If day-of-the-month (getDate) has changed, it's because the day did not exist 
+  // If day-of-the-month (getDate) has changed, it's because the day did not exist
   // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
   // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
   if (newDate.getDate() < oldDate.getDate()) {
