@@ -109,7 +109,7 @@ export class FhirDataService {
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return this.errorStatusCheck(error); // always retry
+          return this.errorStatusCheck(error);
         },
       })
     );
@@ -132,27 +132,26 @@ export class FhirDataService {
     }
   }
 
-  addPatientData<T extends Resource>(resource: T): Observable<T> {
-    return new Observable<T>((subscriber) => {
+  addPatientData<R extends Resource>(resource: R): Observable<R> {
+    return new Observable<R>((subscriber) => {
       if (!this.client) {
         subscriber.error('FhirClientService has not been initialized.');
         return;
       }
-      const request = this.client?.create<T>(resource);
-      if (request)
-        request
-          .then((resource) => {
-            subscriber.next(resource);
-            subscriber.complete();
-          })
-          .catch((error) => subscriber.error(error));
+      this.client
+        .create<R>(resource)
+        .then((resource) => {
+          subscriber.next(resource);
+          subscriber.complete();
+        })
+        .catch((error) => subscriber.error(error));
     }).pipe(
       retryBackoff({
         initialInterval: this.INITIAL_INTERVAL,
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return this.errorStatusCheck(error); // always retry
+          return this.errorStatusCheck(error);
         },
       })
     );
