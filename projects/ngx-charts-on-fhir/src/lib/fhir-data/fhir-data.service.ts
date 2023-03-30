@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
-import { Observable } from 'rxjs';
+import { firstValueFrom, from, Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 import { retryBackoff } from 'backoff-rxjs';
 
@@ -39,7 +39,18 @@ export class FhirDataService {
   async initialize(clientState?: ClientState) {
     console.info('FHIR Client Initializing...');
     if (this.isSmartLaunch) {
-      this.client = await FHIR.oauth2.ready({});
+      this.client = await firstValueFrom(
+        from(FHIR.oauth2.ready({})).pipe(
+          retryBackoff({
+            initialInterval: this.INITIAL_INTERVAL,
+            maxRetries: this.MAX_RETRIES,
+            resetOnSuccess: true,
+            shouldRetry: (error) => {
+              return this.errorStatusCheck(error);
+            },
+          })
+        )
+      );
     } else {
       console.warn('No SMART state found in session storage!');
       if (clientState) {
