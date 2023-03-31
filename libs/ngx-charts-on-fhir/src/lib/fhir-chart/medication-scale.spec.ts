@@ -44,11 +44,11 @@ describe('MedicationScale', () => {
         scales: {
           category: {
             type: 'category',
-            axis:'y'
+            axis: 'y',
           },
           medication: {
             type: 'medication',
-            axis:'y'
+            axis: 'y',
           },
         },
       },
