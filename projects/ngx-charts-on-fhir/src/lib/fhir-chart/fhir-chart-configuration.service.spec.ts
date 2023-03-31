@@ -302,7 +302,7 @@ describe('FhirChartConfigurationService', () => {
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
       configService.chartConfig$.subscribe((c) => (config = c));
-      getTestScheduler().schedule(() => (config.options?.scales?.['timeline'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
+      getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       expect(configService.timelineRange$).toBeObservable(
         hot('--x', {
           x: { min: 2, max: 3 },
@@ -316,7 +316,7 @@ describe('FhirChartConfigurationService', () => {
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
       let config = {} as TimelineConfiguration;
       configService.chartConfig$.subscribe((c) => (config = c));
-      getTestScheduler().schedule(() => (config.options?.scales?.['timeline'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
+      getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       getTestScheduler().flush();
       expect(ngZone.run).toHaveBeenCalledTimes(1);
     }));
@@ -339,7 +339,7 @@ describe('FhirChartConfigurationService', () => {
     it('should call chart.zoom', () => {
       configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
       configService.zoom({ min: 1, max: 2 });
-      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 1, max: 2 }, 'zoom');
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('x', { min: 1, max: 2 }, 'zoom');
     });
 
     it('should lock zoom range', () => {
@@ -352,8 +352,8 @@ describe('FhirChartConfigurationService', () => {
       configService.zoom({ min: 1, max: 2 });
       configService.chartConfig$.subscribe((config) => {
         expect(configService.isAutoZoom).toBe(false);
-        expect(config.options?.scales?.['timeline']?.min).toBe(1);
-        expect(config.options?.scales?.['timeline']?.max).toBe(2);
+        expect(config.options?.scales?.['x']?.min).toBe(1);
+        expect(config.options?.scales?.['x']?.max).toBe(2);
       });
     }));
 
@@ -388,7 +388,7 @@ describe('FhirChartConfigurationService', () => {
     it('should call chart.zoom with data bounds', waitForAsync(() => {
       configService.chartConfig$.subscribe();
       configService.resetZoom();
-      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 10, max: 20 }, 'zoom');
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('x', { min: 10, max: 20 }, 'zoom');
     }));
 
     it('should unlock zoom range', () => {
@@ -403,7 +403,7 @@ describe('FhirChartConfigurationService', () => {
       layers[0].datasets[0].data.push({ x: NaN, y: 0 });
       configService.chartConfig$.subscribe();
       configService.resetZoom();
-      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('timeline', { min: 10, max: 20 }, 'zoom');
+      expect(configService.chart?.zoomScale).toHaveBeenCalledWith('x', { min: 10, max: 20 }, 'zoom');
     }));
 
   });
