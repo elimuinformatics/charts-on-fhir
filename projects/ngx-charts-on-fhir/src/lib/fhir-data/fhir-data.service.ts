@@ -151,8 +151,8 @@ export class FhirDataService {
       }
       this.client
         .create<R>(resource)
-        .then((resource) => {
-          subscriber.next(resource);
+        .then((res) => {
+          subscriber.next(res);
           subscriber.complete();
         })
         .catch((error) => subscriber.error(error));
