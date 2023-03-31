@@ -1,5 +1,5 @@
 import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, ScaleChartOptions, ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/types/utils';
+import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
 export type NumberRange = { min: number; max: number };

@@ -69,7 +69,7 @@ export class FhirChartConfigurationService {
   zoom(range: NumberRange) {
     this.lockZoomRange(range);
     if (this.chart) {
-      this.chart.zoomScale('timeline', range, 'zoom');
+      this.chart.zoomScale('x', range, 'zoom');
     }
   }
 
@@ -80,7 +80,7 @@ export class FhirChartConfigurationService {
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
       if (this.timeline.min != null && this.timeline.max != null) {
-        this.chart.zoomScale('timeline', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
+        this.chart.zoomScale('x', { min: this.timeline.min, max: this.timeline.max }, 'zoom');
       }
     }
   }
@@ -120,20 +120,20 @@ export class FhirChartConfigurationService {
       options: {
         scales: {
           ...scales,
-          timeline: this.timeline,
+          x: this.timeline,
         },
         plugins: {
           annotation: { annotations },
           zoom: {
             zoom: {
               onZoomStart: ({ chart }) => {
-                this.lockZoomRange(chart.scales['timeline']);
+                this.lockZoomRange(chart.scales['x']);
                 return true;
               },
             },
             pan: {
               onPanStart: ({ chart }) => {
-                this.lockZoomRange(chart.scales['timeline']);
+                this.lockZoomRange(chart.scales['x']);
                 return true;
               },
             },
