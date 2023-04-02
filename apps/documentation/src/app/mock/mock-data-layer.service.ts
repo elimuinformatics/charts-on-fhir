@@ -18,6 +18,7 @@ export function xy(daysAgo: number, value: number) {
 
 const heartRateLayer: DataLayer = {
   name: 'Heart Rate',
+  category: ['Observation'],
   datasets: [
     {
       yAxisID: 'Heart Rate',
@@ -37,6 +38,7 @@ const heartRateLayer: DataLayer = {
 
 const bloodPressureLayer: DataLayer = {
   name: 'Blood Pressure',
+  category: ['Observation'],
   datasets: [
     {
       yAxisID: 'Blood Pressure',
