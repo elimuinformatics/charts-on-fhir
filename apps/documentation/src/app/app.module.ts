@@ -8,8 +8,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { COLOR_PALETTE, DataLayerService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { COLOR_PALETTE, DataLayerService, PatientService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MockDataLayerService } from './mock/mock-data-layer.service';
+import { MockPatientService } from './mock/mock-patient.service';
 import { NgDocIconModule } from '@ng-doc/ui-kit';
 
 @NgModule({
@@ -43,6 +44,7 @@ import { NgDocIconModule } from '@ng-doc/ui-kit';
     { provide: COLOR_PALETTE, useValue: ['#e36667', '#377eb8', '#4daf4a', '#984ea3'] },
     { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
     { provide: SummaryService, useClass: ScatterDataPointSummaryService, multi: true },
+    { provide: PatientService, useClass: MockPatientService },
   ],
   bootstrap: [AppComponent],
 })
