@@ -3,6 +3,7 @@ import FHIR from 'fhirclient';
 import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 import { retryBackoff } from 'backoff-rxjs';
+import { errorStatusCheck} from '../utils';
 
 export interface BloodPressure {
   systolic?: number | null;
@@ -109,28 +110,12 @@ export class FhirDataService {
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return this.errorStatusCheck(error);
+          return errorStatusCheck(error);
         },
       })
     );
   }
 
-  errorStatusCheck(error: any) {
-    switch (error.status) {
-      case 500:
-        return true;
-      case 501:
-        return true;
-      case 502:
-        return true;
-      case 503:
-        return true;
-      case 504:
-        return true;
-      default:
-        return false;
-    }
-  }
 
   addPatientData<R extends Resource>(resource: R): Observable<R> {
     return new Observable<R>((subscriber) => {
@@ -151,7 +136,7 @@ export class FhirDataService {
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return this.errorStatusCheck(error);
+          return errorStatusCheck(error);
         },
       })
     );
