@@ -39,18 +39,7 @@ export class FhirDataService {
   async initialize(clientState?: ClientState) {
     console.info('FHIR Client Initializing...');
     if (this.isSmartLaunch) {
-      this.client = await firstValueFrom(
-        from(FHIR.oauth2.ready({})).pipe(
-          retryBackoff({
-            initialInterval: this.INITIAL_INTERVAL,
-            maxRetries: this.MAX_RETRIES,
-            resetOnSuccess: true,
-            shouldRetry: (error) => {
-              return this.errorStatusCheck(error);
-            },
-          })
-        )
-      );
+      this.client = await FHIR.oauth2.ready();
     } else {
       console.warn('No SMART state found in session storage!');
       if (clientState) {
