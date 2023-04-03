@@ -50,20 +50,3 @@ export function formatTime(date: string | number | Date): string {
   h = h ? h : 12;
   return `${h}:${mm} ${ampm}`;
 }
-
-export function errorStatusCheck(error: any) {
-  switch (error.status) {
-    case 500:
-      return true;
-    case 501:
-      return true;
-    case 502:
-      return true;
-    case 503:
-      return true;
-    case 504:
-      return true;
-    default:
-      return false;
-  }
-}
