@@ -1,4 +1,4 @@
-import { NgDocModule } from '@ng-doc/app';
+import { NgDocDefaultSearchEngine, NgDocModule, provideSearchEngine } from '@ng-doc/app';
 import { NG_DOC_ROUTING, NgDocGeneratedModule } from '@ng-doc/generated';
 import { RouterModule } from '@angular/router';
 import { NgDocSidebarModule } from '@ng-doc/app/components/sidebar';
@@ -41,6 +41,7 @@ import { NgDocIconModule } from '@ng-doc/ui-kit';
     NgDocGeneratedModule.forRoot(),
   ],
   providers: [
+    provideSearchEngine(NgDocDefaultSearchEngine),
     { provide: COLOR_PALETTE, useValue: ['#e36667', '#377eb8', '#4daf4a', '#984ea3'] },
     { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
     { provide: SummaryService, useClass: ScatterDataPointSummaryService, multi: true },
