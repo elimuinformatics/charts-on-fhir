@@ -1,9 +1,7 @@
-This example takes up the full browser window.
-<button (click)="isDemoOpen=true">Open Example</button>
-<div *ngIf="isDemoOpen" class="example-full-page">
+<full-page-demo>
   <!-- NgDocHTMLSnippetStart(HTML) -->
-  <fhir-chart-layout [toolbar]="['loading', 'patients', 'browser', 'options']" active="patients">
-    <div class="example-layout-content"><button (click)="isDemoOpen=false">Return to Documentation</button></div>
+  <fhir-chart-layout [toolbar]="['loading', 'patients', 'browser', 'options']">
+    <div class="example-main-content">Main content</div>
   </fhir-chart-layout>
   <!-- NgDocHTMLSnippetEnd(HTML) -->
-</div>
+</full-page-demo>

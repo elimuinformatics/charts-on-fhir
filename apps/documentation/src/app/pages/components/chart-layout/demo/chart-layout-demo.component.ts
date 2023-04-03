@@ -11,5 +11,4 @@ export class ChartLayoutDemoComponent implements OnInit {
   ngOnInit(): void {
     this.layerManager.retrieveAll();
   }
-  isDemoOpen = false;
 }

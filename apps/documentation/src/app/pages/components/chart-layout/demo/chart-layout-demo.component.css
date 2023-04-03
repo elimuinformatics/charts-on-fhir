@@ -1,12 +1,4 @@
-.example-full-page {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-}
-.example-layout-content {
+.example-main-content {
   height: 100%;
   display: flex;
   align-items: center;
