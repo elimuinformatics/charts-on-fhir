@@ -11,7 +11,7 @@ export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
   providedIn: 'root',
 })
 export class HomeMeasurementSummaryService implements SummaryService {
-  constructor(private baseSummaryService: ScatterDataPointSummaryService) { }
+  constructor(private baseSummaryService: ScatterDataPointSummaryService) {}
 
   canSummarize(layer: DataLayer): boolean {
     return this.baseSummaryService.canSummarize(layer) && layer.datasets.some((dataset) => dataset.label?.endsWith(HOME_DATASET_LABEL_SUFFIX));
