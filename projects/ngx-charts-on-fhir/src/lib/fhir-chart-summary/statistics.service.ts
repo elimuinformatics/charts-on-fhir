@@ -5,6 +5,7 @@ import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotati
 import { DataLayer, Dataset } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
 import { DeepPartial } from 'chart.js/dist/types/utils';
+import { getOriginalLabel } from './home-measurement-summary.service';
 
 type Stats = {
   days: number;
@@ -183,7 +184,7 @@ function getDay(point: ScatterDataPoint): string {
 
 /** Factory for generating functions that check if any given annotation is a reference range for the bound dataset */
 function isReferenceRangeFor(dataset: Dataset) {
-  const datasetLabel = dataset.label?.includes('(Home)') ? dataset.label.split('(Home)')[0].trim() : dataset.label;
+  const datasetLabel = getOriginalLabel(dataset);
   return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
     return (
       (annotation as BoxAnnotationOptions)?.label?.content === `${datasetLabel} Reference Range` &&
