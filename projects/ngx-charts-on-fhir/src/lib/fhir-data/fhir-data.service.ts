@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
-import { firstValueFrom, from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 import { retryBackoff } from 'backoff-rxjs';
 
