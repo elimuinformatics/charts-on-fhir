@@ -64,3 +64,57 @@ export class AppModule {}
 - `SimpleObservationMapper`
 - `DurationMedicationMapper`
 - `SimpleMedicationMapper`
+
+## Manage Data Layers
+
+All of the Charts-on-FHIR components rely on `DataLayerManagerService`, which is responsible for retrieving, selecting, and modifying `DataLayer` objects. This service is provided in the root injector, so all components share a single instance of the service and your application can inject this same instance to access and modify the layers. To retrieve all data layers when the application starts, your main AppComponent should call the `retrieveAll()` method from `ngOnInit`.
+
+```ts
+// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent implements OnInit {
+  constructor(private layerManager: DataLayerManagerService) {}
+  ngOnInit(): void {
+    this.layerManager.retrieveAll();
+  }
+}
+```
+
+### Automatically Selecting All Layers
+
+If you want to add all layers to the chart as they are retrieved, you can pass in `true` for the first parameter to `retrieveAll()`. Before doing this, make sure that your `DataLayerService` implementations are querying a limited set of data from the FHIR server. You can also pass a sort comparison function as the second parameter to `retrieveAll()` to customize the initial sort order of the layers.
+
+```ts
+// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent implements OnInit {
+  constructor(private layerManager: DataLayerManagerService) {}
+  ngOnInit(): void {
+    this.layerManager.retrieveAll(true, this.sortCompareFn);
+  }
+  sortCompareFn = (a: DataLayer, b: DataLayer) => {
+    const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'Medications'];
+    return layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name);
+  };
+}
+```
+
+### API Reference
+
+- `DataLayerManagerService`
+
+## Next Steps
+
+Now you are ready to select some components and build an application. See the *Components* list at left for usage examples of each component.
