@@ -6,12 +6,12 @@ import { PatientService } from './patient.service';
 
 type PatientRow = {
   id: string;
-  family?: string;
-  given?: string;
-  birthDate?: string;
-  gender?: string;
+  name: string;
 };
 
+/**
+ * See `*PatientBrowser` for example usage.
+ */
 @Component({
   selector: 'patient-browser',
   templateUrl: './patient-browser.component.html',
