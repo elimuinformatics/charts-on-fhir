@@ -92,7 +92,7 @@ jobs:
       - run: npm ci
       - run: |
           echo $WEBHOOK_URL
-          npx nx affected -t deploy --parallel=5
+          npx nx affected -t deploy --parallel=5 --verbose
         env:
           WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
