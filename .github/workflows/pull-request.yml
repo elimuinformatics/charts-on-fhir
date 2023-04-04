@@ -74,7 +74,7 @@ jobs:
 
   deploy-affected:
     name: Deploy Applications
-#    if: ${{ github.ref == 'refs/heads/main' }}
+    #    if: ${{ github.ref == 'refs/heads/main' }}
     needs:
       - format
       - test-affected
