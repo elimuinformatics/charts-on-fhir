@@ -90,8 +90,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
-      - name: "Test Env Vars"
-        run: echo url "${WEBHOOK_URL}" test "${TEST_VAR}"
+      - run: npx nx affected -t deploy --parallel=5
         env:
           WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
