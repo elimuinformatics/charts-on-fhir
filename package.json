@@ -28,6 +28,7 @@
     "@ng-doc/builder": "15.7.12",
     "@ng-doc/core": "15.7.12",
     "@ng-doc/ui-kit": "15.7.12",
+    "backoff-rxjs": "^7.0.0",
     "chart.js": "^4.2.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-annotation": "^2.2.1",

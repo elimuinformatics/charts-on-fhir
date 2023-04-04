@@ -30,35 +30,37 @@ export class ReportBPComponent {
     { validators: [BloodPressureRangeValidator] }
   );
 
-  constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) { }
+  constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) {}
 
   open(message: string, action = '', config?: MatSnackBarConfig) {
     return this.snackBar.open(message, action, config);
   }
 
   onSubmit(): void {
-    const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic }
+    const bloodPressure = { systolic: this.form.value.systolic, diastolic: this.form.value.diastolic };
     const resource = this.dataService.createBloodPressureResource(bloodPressure);
     if (resource) {
-      this.dataService.addPatientData(resource)?.then(() => {
-        this.open('Blood Pressure Added Sucessfully', 'Dismiss', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          duration: 5000,
-          panelClass: ['green-snackbar']
-        });
-        this.resourceCreated.emit(1);
-        this.submitted = true;
-        this.form.reset();
-      }).catch(() => {
-        this.open('Something Wrong', 'Dismiss', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['red-snackbar'],
-          duration: 5000
-        });
-      })
+      this.dataService.addPatientData(resource).subscribe({
+        next: () => {
+          this.open('Blood Pressure Added Sucessfully', 'Dismiss', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 5000,
+            panelClass: ['green-snackbar'],
+          });
+          this.resourceCreated.emit(1);
+          this.submitted = true;
+          this.form.reset();
+        },
+        error: () => {
+          this.open('Something Wrong', 'Dismiss', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['red-snackbar'],
+            duration: 5000,
+          });
+        },
+      });
     }
   }
-
 }
