@@ -172,5 +172,48 @@ describe('FhirDataService', () => {
       await firstValueFrom(service.addPatientData(resource));
       expect(create).toHaveBeenCalled();
     });
+
+    it('should call the FHIR client create method and return the created resource', (done) => {
+      const patientResource = {
+        resourceType: 'Patient',
+        id: '123',
+        name: [{ given: ['John'], family: 'Doe' }],
+      };
+      const expectedResponse = {
+        ...patientResource,
+        meta: { versionId: '1', lastUpdated: '2023-04-03T00:00:00.000Z' },
+      };
+      spyOn(service.client!, 'create').and.returnValue(Promise.resolve(expectedResponse));
+
+      service.addPatientData(patientResource).subscribe((response) => {
+        expect(response).toEqual(expectedResponse);
+        expect(service.client?.create).toHaveBeenCalledWith(patientResource);
+        done();
+      });
+    });
+
+    it('should return an error if the FHIR client has not been initialized', (done) => {
+      service.client = undefined;
+      service.addPatientData({} as any).subscribe({
+        error: (error) => {
+          expect(error).toEqual('FhirClientService has not been initialized.');
+          done();
+        },
+      });
+    });
+
+    it('should retry if the FHIR server returns a 5xx error', (done) => {
+      const patientResource = {
+        resourceType: 'Patient',
+        id: '123',
+        name: [{ given: ['John'], family: 'Doe' }],
+      };
+      const errorResponse = { status: 503 };
+      spyOn(service.client!, 'create').and.returnValues(Promise.reject(errorResponse), Promise.reject(errorResponse), Promise.resolve(patientResource));
+      service.addPatientData(patientResource).subscribe(() => {
+        expect(service.client?.create).toHaveBeenCalledTimes(3);
+        done();
+      });
+    });
   });
 });
