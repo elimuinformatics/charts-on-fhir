@@ -109,12 +109,11 @@ export class FhirDataService {
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return error.status > 500 && error.status < 505;
+          return error.status >= 500 && error.status < 505;
         },
       })
     );
   }
-
 
   addPatientData<R extends Resource>(resource: R): Observable<R> {
     return new Observable<R>((subscriber) => {
@@ -135,7 +134,7 @@ export class FhirDataService {
         maxRetries: this.MAX_RETRIES,
         resetOnSuccess: true,
         shouldRetry: (error) => {
-          return error.status > 500 && error.status < 505;
+          return error.status >= 500 && error.status < 505;
         },
       })
     );
