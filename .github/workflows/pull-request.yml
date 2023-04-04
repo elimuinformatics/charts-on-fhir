@@ -91,7 +91,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: |
-          echo $WEBHOOK_URL
+          echo url ${{ env.WEBHOOK_URL }}
           npx nx affected -t deploy --parallel=5 --verbose
         env:
           WEBHOOK_URL: ${{ env.WEBHOOK_URL }}
