@@ -93,5 +93,5 @@ jobs:
       - name: "Test Env Vars"
         run: echo url "${WEBHOOK_URL}" test "${TEST_VAR}"
         env:
-          TEST_VAR: Hello
+          WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}
           WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
