@@ -1,0 +1,93 @@
+name: Pull Request
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+
+env:
+  NODE_VERSION: 18.x
+
+jobs:
+  format:
+    name: Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npx nx format:check
+
+  build-affected:
+    name: Production Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npx nx affected -t build --parallel=5
+
+  test-affected:
+    name: Test and Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npx nx affected -t test --parallel=5 --no-watch --code-coverage
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+        with:
+          args:
+            # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+            # mandatory
+            -Dsonar.projectKey=elimuinformatics_charts-on-fhir
+            -Dsonar.organization=elimuinformatics-1
+            -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
+            -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js,projects/synthea-utils/*,apps/documentation/**/*
+            -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
+
+  deploy-affected:
+    name: Deploy Applications
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs:
+      - format
+      - test-affected
+      - build-affected
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npx nx affected -t deploy --parallel=5

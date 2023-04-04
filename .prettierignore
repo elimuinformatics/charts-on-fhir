@@ -3,3 +3,6 @@ dist
 coverage
 node_modules
 .github/pull_request_template.md
+.ng-doc
+**/synthea-utils/**/*.json
+**/mock-fhir-server/**/*.json

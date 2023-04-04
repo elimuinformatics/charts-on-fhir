@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+  text-align: end;
+  justify-content: flex-end;
+  white-space: nowrap;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+td.mat-mdc-cell:first-child,
+th.mat-mdc-header-cell:first-child {
+  text-align: left;
+  justify-content: flex-start;
+}

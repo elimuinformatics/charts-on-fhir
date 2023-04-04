@@ -12,23 +12,25 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 ## Projects in this repository
 
 ### Library
-- [ngx-charts-on-fhir](projects/ngx-charts-on-fhir): An Angular component library that you can use to build applications
+
+- [ngx-charts-on-fhir](libs/ngx-charts-on-fhir): An Angular component library that you can use to build applications
 
 ### Applications
-- [showcase](projects/showcase): A customizable clinical dashboard that demonstrates all of the library's features
-- [cardiovascular-health](projects/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
-- [cardiovascular-patient-app](projects/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
-- [documentation](projects/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
+
+- [showcase](apps/showcase): A customizable clinical dashboard that demonstrates all of the library's features
+- [cardiovascular-health](apps/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
+- [cardiovascular-patient-app](apps/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
+- [documentation](apps/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
 
 ### Utilities
+
 - [synthea-utils](projects/synthea-utils): Modules and utility scripts for creating patient-generated data with [Synthea](https://github.com/synthetichealth/synthea)
 - [mock-fhir-server](projects/mock-fhir-server/): A simple mock server to aid in development on the showcase app
 
 ## Running the Applications
 
-1. Run `npm run watch ngx-charts-on-fhir` to build the library and watch for changes.
-2. Run `npm start <project>` to start the local development server. For example: `npm start showcase` will start the showcase app.
-5. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. Run `npm start <project>` to start the local development server. For example: `npm start showcase` will start the showcase app.
+2. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ### Logica Open FHIR Server
 
@@ -54,19 +56,19 @@ To test an EHR launch with the Angular development server, you need an EHR simul
 
 ## Building the library
 
-Run `ng build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/ngx-charts-on-fhir` directory.
+Run `npm run build ngx-charts-on-fhir` to build the library. The build artifacts will be stored in the `dist/libs/ngx-charts-on-fhir` directory.
 
 ## Running unit tests
 
-Run `ng test <project>` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test <project>` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running a Docker container
 
 Any of the sample applications in this workspace can be built as a self-contained Docker image that runs NGINX webserver.
 This uses a production build configuration suitable for deployment.
-The Dockerfile accepts a build-arg for the project name. To build an image for the showcase app:
+The Dockerfile accepts a build-arg for the app name. To build an image for the showcase app:
 
-`docker build --build-arg project=showcase -t showcase .`
+`docker build --build-arg app=showcase -t showcase .`
 
 The app's SMART clientId must be provided by an environment variable when starting the container.
 To run the container on http://localhost:4200:
