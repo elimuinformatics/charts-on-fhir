@@ -75,10 +75,10 @@ jobs:
   deploy-affected:
     name: Deploy Applications
     #    if: ${{ github.ref == 'refs/heads/main' }}
-    needs:
-      - format
-      - test-affected
-      - build-affected
+    # needs:
+    # - format
+    # - test-affected
+    # - build-affected
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
