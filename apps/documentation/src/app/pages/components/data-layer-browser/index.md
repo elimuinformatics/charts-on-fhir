@@ -13,7 +13,7 @@ A list of all data layers that have been retrieved and are available to add to t
 import { DataLayerBrowserModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ DataLayerBrowserModule],
+  imports: [/* ... */ DataLayerBrowserModule],
 })
 export class AppModule {}
 ```

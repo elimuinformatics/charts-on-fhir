@@ -13,7 +13,7 @@ A list of all data layers that have been added to the chart. The layers can be r
 import { DataLayerListModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ DataLayerListModule],
+  imports: [/* ... */ DataLayerListModule],
 })
 export class AppModule {}
 ```

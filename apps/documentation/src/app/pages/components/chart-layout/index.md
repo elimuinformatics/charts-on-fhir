@@ -22,7 +22,7 @@ A full-page layout with a toolbar and collapsible panels on the left side of the
 import { FhirChartLayoutModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ FhirChartLayoutModule],
+  imports: [/* ... */ FhirChartLayoutModule],
 })
 export class AppModule {}
 ```

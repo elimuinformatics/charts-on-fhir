@@ -13,7 +13,7 @@ A list of all patients that are available on the FHIR server. This can be used d
 import { PatientBrowserModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ PatientBrowserModule],
+  imports: [/* ... */ PatientBrowserModule],
 })
 export class AppModule {}
 ```

@@ -13,7 +13,7 @@ A dynamic chart that displays multiple Data Layers along a single time scale.
 import { FhirChartModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ FhirChartModule],
+  imports: [/* ... */ FhirChartModule],
 })
 export class AppModule {}
 ```

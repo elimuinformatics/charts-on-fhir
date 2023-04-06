@@ -13,7 +13,7 @@ A group of buttons and date selectors for adjusting the time range that is displ
 import { RangeSelectorModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ RangeSelectorModule],
+  imports: [/* ... */ RangeSelectorModule],
 })
 export class AppModule {}
 ```
