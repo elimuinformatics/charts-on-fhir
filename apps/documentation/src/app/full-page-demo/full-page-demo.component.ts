@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./full-page-demo.component.css'],
 })
 export class FullPageDemoComponent {
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) {}
   readonly demoRoute = 'demo';
-  isDemo$ = this.route.url.pipe(map(url => url.at(-1)?.path === this.demoRoute));
+  isDemo$ = this.route.url.pipe(map((url) => url.at(-1)?.path === this.demoRoute));
 }

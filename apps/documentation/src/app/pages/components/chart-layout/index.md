@@ -6,12 +6,12 @@ A full-page layout with a toolbar and collapsible panels on the left side of the
 
 ### Toolbar Buttons
 
-| Name       | Description
-| ---------- | -----------
-| `loading`  | Displays a loading/completed icon. There is no associated panel.
-| `patients` | Opens a `*PatientBrowser` panel
-| `browser`  | Opens a `*DataLayerBrowser` panel
-| `options`  | Opens a `*DataLayerList` panel
+| Name       | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `loading`  | Displays a loading/completed icon. There is no associated panel. |
+| `patients` | Opens a `*PatientBrowser` panel                                  |
+| `browser`  | Opens a `*DataLayerBrowser` panel                                |
+| `options`  | Opens a `*DataLayerList` panel                                   |
 
 ## Example
 

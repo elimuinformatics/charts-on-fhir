@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService, FhirChartConfigurationService } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  DataLayerManagerService,
+  FhirChartConfigurationService,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'example-range-selector-demo',

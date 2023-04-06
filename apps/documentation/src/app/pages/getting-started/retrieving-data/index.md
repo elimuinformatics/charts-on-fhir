@@ -71,12 +71,12 @@ All of the Charts-on-FHIR components rely on `DataLayerManagerService`, which is
 
 ```ts
 // app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { Component, OnInit } from "@angular/core";
+import { DataLayerManagerService } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+  selector: "app-root",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
@@ -92,12 +92,12 @@ If you want to add all layers to the chart as they are retrieved, you can pass i
 
 ```ts
 // app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { Component, OnInit } from "@angular/core";
+import { DataLayerManagerService } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+  selector: "app-root",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
     this.layerManager.retrieveAll(true, this.sortCompareFn);
   }
   sortCompareFn = (a: DataLayer, b: DataLayer) => {
-    const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'Medications'];
+    const layerOrder: string[] = ["Heart rate", "Blood Pressure", "Medications"];
     return layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name);
   };
 }
@@ -117,4 +117,4 @@ export class AppComponent implements OnInit {
 
 ## Next Steps
 
-Now you are ready to select some components and build an application. See the *Components* list at left for usage examples of each component.
+Now you are ready to select some components and build an application. See the _Components_ list at left for usage examples of each component.
