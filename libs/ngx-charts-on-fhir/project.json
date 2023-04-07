@@ -27,6 +27,13 @@
         "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.spec.json",
         "karmaConfig": "libs/ngx-charts-on-fhir/karma.conf.js"
       }
+    },
+    "test-npm-package": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "command": "libs/ngx-charts-on-fhir/test-npm-package.sh"
+      }
     }
   }
 }
