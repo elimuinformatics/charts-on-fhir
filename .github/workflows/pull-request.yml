@@ -71,7 +71,7 @@ jobs:
             -Dsonar.javascript.lcov.reportPaths=coverage/**/lcov.info
             -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js,projects/synthea-utils/*,apps/documentation/**/*
             -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
-  
+
   test-npm-package:
     name: Test NPM Package
     runs-on: ubuntu-latest
