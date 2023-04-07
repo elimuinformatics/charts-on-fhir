@@ -3,6 +3,9 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { ToolbarButtonName } from '../data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
 import { FhirDataService } from '../fhir-data/fhir-data.service';
 
+/**
+ * See `*ChartLayout` for example usage.
+ */
 @Component({
   selector: 'fhir-chart-layout',
   templateUrl: './fhir-chart-layout.component.html',

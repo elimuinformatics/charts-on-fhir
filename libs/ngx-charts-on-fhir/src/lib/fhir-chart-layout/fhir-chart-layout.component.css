@@ -11,6 +11,7 @@ mat-sidenav-container {
 }
 .layout-sidebar-content {
   flex: 1 1 auto;
+  height: 100vh;
 }
 .layout-sidebar-close {
   flex: 0 0 auto;

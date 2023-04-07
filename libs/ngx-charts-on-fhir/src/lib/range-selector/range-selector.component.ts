@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 
+/**
+ * See `*RangeSelector` for example usage.
+ */
 @Component({
   selector: 'range-selector',
   templateUrl: './range-selector.component.html',
@@ -20,7 +23,7 @@ export class RangeSelectorComponent {
   ];
   selectedButton: number | 'All' = 'All';
 
-  constructor(private configService: FhirChartConfigurationService) {}
+  constructor(private configService: FhirChartConfigurationService, private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
@@ -31,6 +34,7 @@ export class RangeSelectorComponent {
       } else {
         this.selectedButton = this.calculateMonthDiff(this.minDate, this.maxDate);
       }
+      this.changeDetectorRef.markForCheck();
     });
   }
 

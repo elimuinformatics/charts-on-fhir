@@ -5,6 +5,9 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ManagedDataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 
+/**
+ * See `*DataLayerList` for example usage.
+ */
 @Component({
   selector: 'data-layer-list',
   templateUrl: './data-layer-list.component.html',

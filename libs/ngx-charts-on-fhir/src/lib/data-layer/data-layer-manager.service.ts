@@ -164,6 +164,7 @@ export class DataLayerManagerService {
     this.colorService.reset();
   }
 
+  /** Add a layer to the chart */
   select(id: string) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -174,6 +175,7 @@ export class DataLayerManagerService {
     this.stateSubject.next(this.selectLayer(this.state, id));
   }
 
+  /** Remove a layer from the chart */
   remove(id: string) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -191,6 +193,8 @@ export class DataLayerManagerService {
     );
   }
 
+  /** Enable or disable a layer. A disabled layer will still show up in
+   * the list of selected layers, but will not be visible on the chart. */
   enable(id: string, enabled = true) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -206,6 +210,9 @@ export class DataLayerManagerService {
     );
   }
 
+  /** Modify a layer's properties.
+   * This method must be used to propagate the changes to other components.
+   */
   update(layer: ManagedDataLayer) {
     if (!this.state.layers[layer.id]) {
       throw new Error(`Layer [${layer.id}] not found`);
@@ -217,6 +224,7 @@ export class DataLayerManagerService {
     );
   }
 
+  /** Change the sort order of a layer */
   move(previousIndex: number, newIndex: number) {
     if (previousIndex < 0 || previousIndex > this.state.selected.length) {
       throw new RangeError(`Index [${previousIndex}] is out of range [0 - ${this.state.selected.length}]`);

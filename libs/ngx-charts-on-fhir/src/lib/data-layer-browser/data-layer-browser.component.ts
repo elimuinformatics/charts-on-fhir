@@ -6,6 +6,9 @@ import { sum } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 
+/**
+ * See `*DataLayerBrowser` for example usage.
+ */
 @Component({
   selector: 'data-layer-browser',
   templateUrl: './data-layer-browser.component.html',

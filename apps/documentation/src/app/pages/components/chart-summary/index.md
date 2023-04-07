@@ -13,7 +13,7 @@ A stack of summary cards that display information about each data layer on the c
 import { FhirChartModule, FhirChartSummaryModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [, /* ... */ FhirChartModule, FhirChartSummaryModule],
+  imports: [/* ... */ FhirChartModule, FhirChartSummaryModule],
   providers: [{ provide: SummaryService, useClass: ScatterDataPointSummaryService, multi: true }],
 })
 export class AppModule {}
