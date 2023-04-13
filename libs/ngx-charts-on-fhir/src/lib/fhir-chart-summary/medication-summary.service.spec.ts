@@ -47,7 +47,7 @@ describe('MedicationSummaryService', () => {
       const summary = summaryService.summarize(layer);
       expect(summary).toEqual([
         {
-          Medications: 'one',
+          'Medication Prescriptions': 'one',
           'Date Written': '1 Jan 2023',
         },
       ]);
