@@ -13,7 +13,7 @@ export class MedicationSummaryService implements SummaryService {
   }
   summarize(layer: DataLayer<TimelineChartType, MedicationDataPoint[]>): Record<string, string>[] {
     return layer.datasets.map((dataset) => ({
-      'Medication Prescriptions': dataset.label ?? '(unknown)',
+      [layer.name]: dataset.label ?? '(unknown)',
       'Date Written': formatDate(Math.max(...dataset.data.map((point) => point.authoredOn))),
     }));
   }

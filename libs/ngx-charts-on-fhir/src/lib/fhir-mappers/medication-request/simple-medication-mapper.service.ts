@@ -35,7 +35,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     return {
-      name: 'Medications',
+      name: 'Medication Prescriptions',
       category: ['medication'],
       datasets: [
         {
@@ -54,7 +54,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       ],
       scale: merge({}, this.medicationScaleOptions, {
         id: 'medications',
-        title: { text: 'Medications' },
+        title: { text: 'Medication Prescriptions' },
       }),
     };
   }
