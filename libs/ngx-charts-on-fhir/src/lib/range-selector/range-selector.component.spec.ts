@@ -13,8 +13,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { subtractMonths } from './range-selector.component';
 
-const max = new Date('2022-03-30T00:00').getTime();
+const max = new Date().getTime();
 const min = new Date('2022-01-06T00:00').getTime();
 
 class MockConfigService {
@@ -59,28 +60,28 @@ describe('RangeSelectorComponent', () => {
   it('should calculate proper 1 month ago date from max layer date', async () => {
     let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 mo']" }));
     await ButtonInputGroup.check();
-    const expectedMinDate = new Date('2022-02-28T00:00');
+    const expectedMinDate = subtractMonths(component.maxDate!, 1);
     expect(component.minDate).toEqual(expectedMinDate);
   });
 
   it('should calculate proper 3 month ago date from max layer date', async () => {
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-12-30T00:00');
+    const expectedMinDate = subtractMonths(component.maxDate!, 3);
     expect(component.minDate).toEqual(expectedMinDate);
   });
 
   it('should calculate proper 6 month ago date from max layer date', async () => {
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-09-30T00:00');
+    const expectedMinDate = subtractMonths(component.maxDate!, 6);
     expect(component.minDate).toEqual(expectedMinDate);
   });
 
   it('should calculate proper 12 month ago date from max layer date', async () => {
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-03-30T00:00');
+    const expectedMinDate = subtractMonths(component.maxDate!, 12);
     expect(component.minDate).toEqual(expectedMinDate);
   });
 
@@ -112,8 +113,11 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should subscribe timelineRange when the component initializes and set minDate and maxDate', async () => {
-    expect(component.minDate).toEqual(new Date(min));
-    expect(component.maxDate).toEqual(new Date(max));
-    expect(component.selectedButton).toEqual(2);
+    const componentMindate = new Date(new Date(min).setHours(0, 0, 0, 0));
+    const componentMaxdate = new Date(new Date(max).setHours(0, 0, 0, 0));
+    expect(component.minDate?.toDateString()).toEqual(componentMindate.toDateString());
+    expect(component.maxDate?.toDateString()).toEqual(componentMaxdate.toDateString());
+    const months = component.calculateMonthDiff(componentMindate, componentMaxdate);
+    expect(component.selectedButton).toEqual(months);
   });
 });
