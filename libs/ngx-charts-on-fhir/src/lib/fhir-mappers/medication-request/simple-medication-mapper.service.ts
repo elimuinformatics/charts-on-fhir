@@ -30,10 +30,7 @@ export type MedicationDataPoint = {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(
-    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'medication'>
-  ) {}
+  constructor(@Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'medication'>) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
