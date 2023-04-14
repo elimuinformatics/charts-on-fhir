@@ -33,7 +33,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
     return {
-      name: 'Medications',
+      name: 'Medication Prescriptions',
       category: ['medication'],
       datasets: [
         {
@@ -59,7 +59,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       ],
       scale: merge({}, this.medicationScaleOptions, {
         id: 'medications',
-        title: { text: 'Medications' },
+        title: { text: 'Medication Prescriptions' },
       }),
       // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
       annotations: [

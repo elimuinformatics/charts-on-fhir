@@ -70,7 +70,7 @@ describe('SimpleMedicationMapper', () => {
       expect(mapper.map(medication).scale).toEqual({
         id: 'medications',
         type: 'category',
-        title: { text: 'Medications' },
+        title: { text: 'Medication Prescriptions' },
       });
     });
   });
