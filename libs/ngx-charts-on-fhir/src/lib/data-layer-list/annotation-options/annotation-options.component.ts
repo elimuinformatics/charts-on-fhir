@@ -55,7 +55,7 @@ export class AnnotationOptionsComponent implements OnInit {
   private updateForm(annotation: any): void {
     if (this._annotation) {
       this.form.patchValue({
-        label: annotation.label.content,
+        label: annotation.label?.content,
         yMax: annotation.yMax,
         yMin: annotation.yMin,
         color: annotation.backgroundColor,

@@ -5,7 +5,7 @@ import { ChartAnnotations } from '../utils';
 export type TimelineChartType = 'line' | 'bar' | 'scatter' | 'radar';
 
 export type TimelineDataPoint = {
-  x: number;
+  x: number | [number, number];
   y: number | string;
 };
 
@@ -16,11 +16,21 @@ export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataP
   name: string;
   category?: string[];
   scale: ScaleOptions & { id: string };
-  datasets: ChartDataset<T, D>[];
+  datasets: Dataset<T, D>[];
   annotations?: ChartAnnotations;
 };
 
-export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = ChartDataset<T, D>;
+/** Extends the Chart.js `ChartDataset` type with additional options that are used by Charts-on-FHIR Angular services */
+export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = ChartDataset<T, D> & {
+  /** Custom chart options for Charts-on-FHIR */
+  chartsOnFhir?: {
+    /**
+     * When set to `transparent`, `DataLayerColorService` will apply partial transparency to the fill color of chart elements.
+     * When set to `solid` (default), the same color will be used for both stroke and fill colors.
+     */
+    backgroundStyle?: 'solid' | 'transparent';
+  };
+};
 
 /** A `DataLayer` with additional state controlled by a `DataLayerManagerService` */
 export type ManagedDataLayer = DataLayer & {

@@ -50,3 +50,6 @@ export function formatTime(date: string | number | Date): string {
   h = h ? h : 12;
   return `${h}:${mm} ${ampm}`;
 }
+export function formatDateTime(date: string | number | Date): string {
+  return `${formatDate(date)} ${formatTime(date)}`;
+}

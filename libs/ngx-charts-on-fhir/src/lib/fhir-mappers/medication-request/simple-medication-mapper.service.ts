@@ -5,6 +5,7 @@ import { merge } from 'lodash-es';
 import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { formatDate } from '../../utils';
 
 /** Required properties for mapping a MedicationRequest with `SimpleMedicationMapper` */
 export type SimpleMedication = {
@@ -18,9 +19,10 @@ export function isMedication(resource: MedicationRequest): resource is SimpleMed
 }
 
 export type MedicationDataPoint = {
-  x: number;
+  x: number | [number, number];
   y: string;
   authoredOn: number;
+  tooltip?: string | string[];
 };
 
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
@@ -34,6 +36,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   ) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
+    const authoredOn = new Date(resource.authoredOn).getTime();
     return {
       name: 'Medications',
       category: ['medication'],
@@ -43,13 +46,20 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           label: resource?.medicationCodeableConcept?.text,
           yAxisID: 'medications',
           indexAxis: 'y',
+          pointRadius: 10,
+          pointHoverRadius: 10,
+          pointBorderWidth: 1,
           data: [
             {
-              x: new Date(resource.authoredOn).getTime(),
+              x: authoredOn,
               y: resource?.medicationCodeableConcept?.text,
-              authoredOn: new Date(resource.authoredOn).getTime(),
+              authoredOn: authoredOn,
+              tooltip: `Prescribed: ${formatDate(authoredOn)}`,
             },
           ],
+          chartsOnFhir: {
+            backgroundStyle: 'transparent',
+          },
         },
       ],
       scale: merge({}, this.medicationScaleOptions, {

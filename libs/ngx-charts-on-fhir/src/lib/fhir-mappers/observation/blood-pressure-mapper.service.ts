@@ -28,6 +28,7 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
     const layer = this.baseMapper.map(resource);
     layer.annotations = [
       merge({}, this.annotationOptions, {
+        id: 'Systolic Blood Pressure Reference Range',
         display: true,
         label: { content: 'Systolic Blood Pressure Reference Range' },
         yScaleID: layer.datasets[0].yAxisID,
@@ -35,6 +36,7 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
         yMin: 90,
       }),
       merge({}, this.annotationOptions, {
+        id: 'Diastolic Blood Pressure Reference Range',
         display: true,
         label: { content: 'Diastolic Blood Pressure Reference Range' },
         yScaleID: layer.datasets[0].yAxisID,

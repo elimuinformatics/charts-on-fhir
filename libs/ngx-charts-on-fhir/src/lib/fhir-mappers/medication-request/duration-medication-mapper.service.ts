@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Dosage, MedicationRequest } from 'fhir/r4';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { MILLISECONDS_PER_DAY } from '../../utils';
+import { MILLISECONDS_PER_DAY, formatDate } from '../../utils';
 import { SimpleMedication, isMedication, SimpleMedicationMapper, MedicationDataPoint } from './simple-medication-mapper.service';
 
 export type BoundsDurationMedication = {
@@ -199,33 +199,51 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
 export class DurationMedicationMapper implements Mapper<DurationMedication> {
   constructor(private baseMapper: SimpleMedicationMapper) {}
   canMap = isDurationMedication;
-  map(resource: DurationMedication): DataLayer<'line', MedicationDataPoint[]> {
-    const layer = this.baseMapper.map(resource) as DataLayer<'line', MedicationDataPoint[]>;
+  map(resource: DurationMedication): DataLayer<'bar', MedicationDataPoint[]> {
+    const duration = computeDuration(resource);
+    const durationDays = Math.round(duration / MILLISECONDS_PER_DAY);
+    const authoredOn = new Date(resource.authoredOn).getTime();
+    const endDate = authoredOn + duration;
+    const layer = this.baseMapper.map(resource) as DataLayer<'bar', MedicationDataPoint[]>;
     layer.datasets = layer.datasets.map((dataset) => ({
       ...dataset,
       label: dataset.label + ' *',
-      type: 'line',
-      pointRadius: 0,
-      pointHoverRadius: 0,
-      borderWidth: 20, // width of the line
+      type: 'bar',
+      borderWidth: 1,
+      borderSkipped: false,
+      barPercentage: 1,
+      grouped: false,
       data: [
-        ...dataset.data,
         {
-          // Add second datapoint for the end of the computed duration
-          x: new Date(resource.authoredOn).getTime() + computeDuration(resource),
+          x: [authoredOn, endDate],
           y: dataset.data[0].y,
-          authoredOn: new Date(resource.authoredOn).getTime(),
-        },
-        {
-          // Adding a NaN datapoint has 2 effects:
-          // 1. Chart.js will render a gap in the line between each MedicationRequest
-          // 2. The sort() in DataLayerMergeService will bail out and leave this dataset unsorted
-          x: NaN,
-          y: dataset.data[0].y,
-          authoredOn: new Date(resource.authoredOn).getTime(),
+          authoredOn,
+          tooltip: [`Prescribed: ${formatDate(authoredOn)}`, `Est. supply: ${durationDays} days`, `Est. end date: ${formatDate(endDate)}`],
         },
       ],
     }));
+    // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
+    layer.annotations = [
+      {
+        id: resource?.medicationCodeableConcept?.text,
+        type: 'line',
+        borderWidth: 0,
+        label: {
+          display: true,
+          content: [resource?.medicationCodeableConcept?.text],
+          position: 'start',
+          color: 'black',
+          backgroundColor: 'transparent',
+          padding: 0,
+          font: {
+            size: 14,
+            weight: 'normal',
+          },
+        },
+        value: resource?.medicationCodeableConcept?.text,
+        scaleID: 'medications',
+      },
+    ];
     return layer;
   }
 }

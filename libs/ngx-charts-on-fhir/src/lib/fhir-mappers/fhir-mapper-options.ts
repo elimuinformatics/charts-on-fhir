@@ -11,12 +11,7 @@ const defaultTimeScaleOptions: ScaleOptions<'time'> = {
   position: 'bottom',
   type: 'time',
   offset: true,
-  // time: {
-  //   unit: 'day',
-  //   displayFormats: {
-  //     day: 'd MMM yyyy',
-  //   },
-  // },
+  stacked: true,
 } as const;
 
 export const LINEAR_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'linear'>>('Linear scale options', {
@@ -39,19 +34,13 @@ const defaultMedicationScaleOptions: ScaleOptions<'medication'> = {
   display: 'auto',
   position: 'left',
   type: 'medication',
-  offset: true,
   stack: 'all',
   stackWeight: 0.7,
   title: {
     display: true,
   },
   ticks: {
-    autoSkip: false,
-    mirror: true,
-    labelOffset: -17,
-  },
-  grid: {
-    offset: true,
+    display: false,
   },
 } as const;
 
