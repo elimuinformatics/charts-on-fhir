@@ -2,9 +2,9 @@ import { Injectable, Inject } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
-import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
+import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { formatDate } from '../../utils';
 
 /** Required properties for mapping a MedicationRequest with `SimpleMedicationMapper` */
@@ -18,11 +18,9 @@ export function isMedication(resource: MedicationRequest): resource is SimpleMed
   return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
 }
 
-export type MedicationDataPoint = {
-  x: number | [number, number];
+export type MedicationDataPoint = TimelineDataPoint & {
   y: string;
   authoredOn: number;
-  tooltip?: string | string[];
 };
 
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */

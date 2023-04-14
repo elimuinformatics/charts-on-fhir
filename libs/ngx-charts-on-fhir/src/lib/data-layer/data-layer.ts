@@ -7,6 +7,7 @@ export type TimelineChartType = 'line' | 'bar' | 'scatter' | 'radar';
 export type TimelineDataPoint = {
   x: number | [number, number];
   y: number | string;
+  tooltip?: string | string[];
 };
 
 export type TimelineScaleType = 'linear' | 'category';
