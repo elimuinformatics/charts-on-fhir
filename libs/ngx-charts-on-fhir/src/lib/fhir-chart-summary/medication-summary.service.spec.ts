@@ -5,11 +5,11 @@ import { MedicationSummaryService } from './medication-summary.service';
 
 describe('MedicationSummaryService', () => {
   describe('canSummarize', () => {
-    it('should return true for layer with medication scale', () => {
+    it('should return true for layer with category scale', () => {
       const summaryService = new MedicationSummaryService();
       const layer: any = {
         scale: {
-          type: 'medication',
+          type: 'category',
         },
       };
       expect(summaryService.canSummarize(layer)).toBe(true);
@@ -42,7 +42,7 @@ describe('MedicationSummaryService', () => {
             ],
           },
         ],
-        scale: { id: 'medications', type: 'medication' },
+        scale: { id: 'medications', type: 'category' },
       };
       const summary = summaryService.summarize(layer);
       expect(summary).toEqual([

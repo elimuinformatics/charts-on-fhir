@@ -213,7 +213,7 @@ describe('FhirChartConfigurationService', () => {
           enabled: true,
           datasets: [],
           scale: { id: 'a1' },
-          annotations: [{ label: { content: 'one' } }],
+          annotations: [{ id: 'one', label: { content: 'one' } }],
         },
       ];
       const b: ManagedDataLayer[] = [
@@ -224,7 +224,7 @@ describe('FhirChartConfigurationService', () => {
           enabled: true,
           datasets: [],
           scale: { id: 'b1' },
-          annotations: [{ label: { content: 'two' } }],
+          annotations: [{ id: 'two', label: { content: 'two' } }],
         },
       ];
       const layerManager: any = { selectedLayers$: hot('eab', { e, a, b }) };
@@ -238,7 +238,7 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ label: { content: 'one' } }],
+                  annotations: [{ id: 'one', label: { content: 'one' } }],
                 },
               }),
             },
@@ -249,7 +249,10 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ label: { content: 'one' } }, { label: { content: 'two' } }],
+                  annotations: [
+                    { id: 'one', label: { content: 'one' } },
+                    { id: 'two', label: { content: 'two' } },
+                  ],
                 },
               }),
             },

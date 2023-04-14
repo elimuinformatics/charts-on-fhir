@@ -66,10 +66,10 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({ type: 'medication' });
+      const mapper = new SimpleMedicationMapper({ type: 'category' });
       expect(mapper.map(medication).scale).toEqual({
         id: 'medications',
-        type: 'medication',
+        type: 'category',
         title: { text: 'Medications' },
       });
     });

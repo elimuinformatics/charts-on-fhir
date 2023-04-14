@@ -7,7 +7,6 @@ import { merge } from 'lodash-es';
 import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
-import { MedicationScale } from './medication-scale';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
 export type LegendPosition = 'none' | 'float' | 'top' | 'bottom';
@@ -40,7 +39,6 @@ export class FhirChartComponent implements OnInit {
 
   ngOnInit(): void {
     Chart.register(annotationPlugin, zoomPlugin, scaleStackDividerPlugin);
-    Chart.register(MedicationScale);
 
     // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
     Chart.defaults.maintainAspectRatio = false;

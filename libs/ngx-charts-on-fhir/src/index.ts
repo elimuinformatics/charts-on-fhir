@@ -4,7 +4,6 @@
 
 export * from './lib/fhir-chart/fhir-chart.component';
 export * from './lib/fhir-chart/fhir-chart.module';
-export * from './lib/fhir-chart/medication-scale';
 export * from './lib/fhir-chart/scale-stack-divider-plugin';
 export * from './lib/fhir-chart/fhir-chart-configuration.service';
 export * from './lib/fhir-chart-summary/fhir-chart-summary-card/fhir-chart-summary-card.component';

@@ -9,7 +9,7 @@ import { SummaryService } from './summary.service';
 })
 export class MedicationSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
-    return layer.scale.type === 'medication';
+    return layer.scale.type === 'category';
   }
   summarize(layer: DataLayer<TimelineChartType, MedicationDataPoint[]>): Record<string, string>[] {
     return layer.datasets.map((dataset) => ({

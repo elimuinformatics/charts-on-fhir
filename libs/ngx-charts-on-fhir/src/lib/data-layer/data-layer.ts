@@ -9,7 +9,7 @@ export type TimelineDataPoint = {
   y: number | string;
 };
 
-export type TimelineScaleType = 'linear' | 'category' | 'medication';
+export type TimelineScaleType = 'linear' | 'category';
 
 /** A collection of closely-related data, metadata, and annotations */
 export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = {

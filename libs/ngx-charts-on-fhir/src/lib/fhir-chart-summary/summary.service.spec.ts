@@ -22,11 +22,11 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summaryService.canSummarize(layer)).toBe(true);
     });
 
-    it('should return false for layer with medication scale', () => {
+    it('should return false for layer with category scale', () => {
       const summaryService = new ScatterDataPointSummaryService({} as StatisticsService);
       const layer: any = {
         scale: {
-          type: 'medication',
+          type: 'category',
         },
       };
       expect(summaryService.canSummarize(layer)).toBe(false);
