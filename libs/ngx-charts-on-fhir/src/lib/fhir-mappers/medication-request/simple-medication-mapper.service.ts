@@ -63,6 +63,28 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
         id: 'medications',
         title: { text: 'Medications' },
       }),
+      // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
+      annotations: [
+        {
+          id: resource?.medicationCodeableConcept?.text,
+          type: 'line',
+          borderWidth: 0,
+          label: {
+            display: true,
+            content: [resource?.medicationCodeableConcept?.text],
+            position: 'start',
+            color: 'black',
+            backgroundColor: 'transparent',
+            padding: 0,
+            font: {
+              size: 14,
+              weight: 'normal',
+            },
+          },
+          value: resource?.medicationCodeableConcept?.text,
+          scaleID: 'medications',
+        },
+      ],
     };
   }
 }
