@@ -27,7 +27,7 @@ export class RangeSelectorComponent {
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
-      this.maxDate = new Date();
+      this.maxDate = new Date(timelineRange.max);
       this.minDate = new Date(timelineRange.min);
       if (this.configService.isAutoZoom) {
         this.selectedButton = 'All';
@@ -40,10 +40,11 @@ export class RangeSelectorComponent {
 
   updateRangeSelector(monthCount: number) {
     if (this.maxDate && monthCount) {
+      this.maxDate = new Date();
       this.minDate = subtractMonths(this.maxDate, monthCount);
       this.configService.zoom({
         min: this.minDate.getTime(),
-        max: this.maxDate.getTime(),
+        max: new Date().getTime(),
       });
     }
   }
@@ -78,7 +79,7 @@ export class RangeSelectorComponent {
   }
 }
 
-export function subtractMonths(oldDate: Date, months: number): Date {
+function subtractMonths(oldDate: Date, months: number): Date {
   const newDate = new Date(oldDate);
   newDate.setMonth(oldDate.getMonth() - months);
   // If day-of-the-month (getDate) has changed, it's because the day did not exist
