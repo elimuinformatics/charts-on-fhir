@@ -11,7 +11,9 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
 })
 export class AnnotationOptionsComponent implements OnInit {
   private _annotation?: any;
-
+  get annotation() {
+    return this._annotation;
+  }
   @Input() set annotation(annotation: any) {
     this._annotation = annotation;
     this.updateForm(annotation);

@@ -5,7 +5,7 @@
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="onCheckboxChange(i, $event)"
-          [checked]="annotation.display"
+          [checked]="annotation.display ?? true"
           [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"
           color="primary"
           [id]="i + 'annotationcheckbox'"
