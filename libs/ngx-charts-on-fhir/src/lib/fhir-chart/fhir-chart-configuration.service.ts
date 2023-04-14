@@ -191,7 +191,8 @@ const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) =>
     throw new TypeError('Record-based annotation configuration is not yet supported. Use an Array instead.');
   }
 };
-const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).id === (other as any).id;
+const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) =>
+  (anno as any).id ?? (anno as any).label?.content === (other as any).id ?? (other as any).label?.content;
 
 /** Arrange stacked scales in the same order as the layers array by modifying the `weight` option for each scale */
 const arrangeScales = produce((layers: ManagedDataLayer[]) => {
@@ -217,7 +218,11 @@ const setScaleBounds = produce((layers: ManagedDataLayer[]) => {
 });
 
 function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], annotations?: ChartAnnotations): Partial<NumberRange> {
-  const values = datasets.flatMap((dataset) => dataset.data.map((point) => point[axis])).filter(isNotNaN);
+  const values = datasets
+    .flatMap((dataset) => dataset.data.map((point) => point[axis]))
+    .flat()
+    .filter(isNotNaN);
+  console.log(values);
   if (annotations) {
     const annoMin = axis === 'x' ? 'xMin' : 'yMin';
     const annoMax = axis === 'x' ? 'xMax' : 'yMax';

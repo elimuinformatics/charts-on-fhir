@@ -66,7 +66,7 @@ describe('AnnotationOptionsComponent', () => {
 
   it('should update annotation yMax when input is changed', async () => {
     let emitted: any = null;
-    component.annotation = { color: 'color', label: { content: 'Old' }, yMax: 100, yMin: 50 };
+    component.annotation = { color: 'color', label: { content: 'Old' }, type: 'box', yMax: 100, yMin: 50 };
     component.annotationChange.subscribe((e) => (emitted = e));
     const yMaxInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMax']" }));
     await yMaxInputHarness.setValue('110');
@@ -75,7 +75,7 @@ describe('AnnotationOptionsComponent', () => {
 
   it('should update annotation yMin when input is changed', async () => {
     let emitted: any = null;
-    component.annotation = { color: 'color', label: { content: 'Old' }, yMax: 100, yMin: 50 };
+    component.annotation = { color: 'color', label: { content: 'Old' }, type: 'box', yMax: 100, yMin: 50 };
     component.annotationChange.subscribe((e) => (emitted = e));
     let yMinInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMin']" }));
     await yMinInputHarness.setValue('60');
@@ -83,7 +83,7 @@ describe('AnnotationOptionsComponent', () => {
   });
 
   it('should update form when input is change', async () => {
-    let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200 };
+    let annotation = { label: { content: 'Test' }, type: 'box', yMin: 100, yMax: 200 };
     component.annotation = annotation;
     let labelInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='annotationLabel']" }));
     let yMinInputHarness = await loader.getHarness(MatInputHarness.with({ selector: "[id='yMin']" }));
@@ -94,8 +94,8 @@ describe('AnnotationOptionsComponent', () => {
   });
 
   it('should emit annotation change event with updated annotations', async () => {
-    let annotation = { label: { content: 'Test' }, yMin: 100, yMax: 200, backgroundColor: '#FFFFFF' };
-    let updatedAnnotation = { label: { content: 'Updated test' }, yMin: 100, yMax: 200, backgroundColor: 'rgba(255, 255, 255, 0.2)' };
+    let annotation = { label: { content: 'Test' }, type: 'box', yMin: 100, yMax: 200, backgroundColor: '#FFFFFF' };
+    let updatedAnnotation = { label: { content: 'Updated test' }, type: 'box', yMin: 100, yMax: 200, backgroundColor: 'rgba(255, 255, 255, 0.2)' };
     component.annotation = annotation;
     let emitted: any;
     component.annotationChange.subscribe((e: any) => {

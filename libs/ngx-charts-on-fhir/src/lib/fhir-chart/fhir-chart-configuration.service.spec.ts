@@ -165,6 +165,45 @@ describe('FhirChartConfigurationService', () => {
       );
     });
 
+    it('timeline scale bounds should support floating bar chart', () => {
+      const a: ManagedDataLayer[] = [
+        {
+          name: 'a1',
+          id: 'a1',
+          enabled: true,
+          datasets: [
+            {
+              label: 'one',
+              data: [
+                { x: [1, 2], y: 'med1' },
+                { x: [3, 5], y: 'med2' },
+              ],
+            },
+          ],
+          scale: { id: 'one', title: { text: 'one' } },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: hot('a', { a }) };
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      expect(configService.chartConfig$).toBeObservable(
+        hot('x', {
+          x: {
+            ...emptyConfig,
+            data: jasmine.anything(),
+            options: {
+              ...emptyConfig.options,
+              scales: jasmine.objectContaining({
+                x: jasmine.objectContaining({
+                  min: 1,
+                  max: 5,
+                }),
+              }),
+            },
+          },
+        })
+      );
+    });
+
     it('should add annotations when layers are selected', () => {
       const e: ManagedDataLayer[] = [];
       const a: ManagedDataLayer[] = [
