@@ -5,6 +5,7 @@ import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { zip } from 'lodash-es';
+import { DatasetTagsService } from '../dataset-tags/dataset-tags.service';
 
 /**
  * A service for asynchronously retrieving data layers.
@@ -80,6 +81,7 @@ export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
+    private tagsService: DatasetTagsService,
     private mergeService: DataLayerMergeService
   ) {}
 
@@ -154,6 +156,9 @@ export class DataLayerManagerService {
       layer.selected = true;
       layer.enabled = true;
       this.colorService.chooseColorsFromPalette(layer);
+      for (let dataset of layer.datasets) {
+        this.tagsService.applyTagStyles(dataset);
+      }
     }
   });
 

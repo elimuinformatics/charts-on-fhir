@@ -33,6 +33,7 @@ export class FhirChartComponent implements OnInit {
   @Input() height: string = '300px';
 
   @Input() legendPosition: LegendPosition = 'float';
+  @Input() tagLegendPosition: LegendPosition = 'none';
   readonly gridRow = { top: 1, bottom: 3 } as const;
 
   constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}

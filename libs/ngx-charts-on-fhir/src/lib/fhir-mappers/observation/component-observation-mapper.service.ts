@@ -5,7 +5,7 @@ import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
-import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
 
 /** Required properties for mapping an Observation with `ComponentObservationMapper` */
@@ -46,7 +46,6 @@ export function isComponentObservation(resource: Observation): resource is Compo
 })
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
-    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
     @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
   ) {}
@@ -69,6 +68,9 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
               y: component.valueQuantity.value,
             },
           ],
+          chartsOnFhir: {
+            tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+          },
         })),
       scale: merge({}, this.linearScaleOptions, {
         id: scaleName,

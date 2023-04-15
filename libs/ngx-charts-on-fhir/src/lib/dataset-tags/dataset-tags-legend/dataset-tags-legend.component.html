@@ -1,0 +1,16 @@
+<div class="legend" *ngIf="enabledTags$ | async as enabledTags">
+  <ng-container *ngFor="let tagStyle of this.tagsService.tagStyles$ | async | keyvalue">
+    <div class="legend-item" *ngIf="enabledTags.includes(tagStyle.key)">
+      <div class="legend-icon" [ngSwitch]="tagStyle.value.pointStyle">
+        <mat-icon *ngSwitchCase="'circle'">circle</mat-icon>
+        <mat-icon *ngSwitchCase="'rect'">square</mat-icon>
+        <mat-icon *ngSwitchCase="'rectRot'" style="rotate: 45deg; scale: 0.8">square</mat-icon>
+        <mat-icon *ngSwitchCase="'triangle'" svgIcon="triangle"></mat-icon>
+        <mat-icon *ngSwitchDefault>square</mat-icon>
+      </div>
+      <div>
+        {{ tagStyle.key }}
+      </div>
+    </div>
+  </ng-container>
+</div>
