@@ -18,7 +18,7 @@ import {
   DataLayerBrowserModule,
   FhirChartSummaryModule,
   FhirDataService,
-  DatasetTagsModule,
+  FhirChartLegendModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
@@ -35,6 +35,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
   imports: [
     BrowserModule,
     FhirChartModule,
+    FhirChartLegendModule,
     FhirChartSummaryModule,
     NgChartsModule,
     BrowserAnimationsModule,
@@ -47,7 +48,6 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     ReportBPModule,
     LastReportBPModule,
     OptionsMenuModule,
-    DatasetTagsModule,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },

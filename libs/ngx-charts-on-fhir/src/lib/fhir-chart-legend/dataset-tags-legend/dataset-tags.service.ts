@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Dataset, TimelineChartType } from '../data-layer/data-layer';
+import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { ChartType, ChartTypeRegistry } from 'chart.js';
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { merge } from 'lodash-es';

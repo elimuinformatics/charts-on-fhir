@@ -5,7 +5,7 @@ import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { zip } from 'lodash-es';
-import { DatasetTagsService } from '../dataset-tags/dataset-tags.service';
+import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dataset-tags.service';
 
 /**
  * A service for asynchronously retrieving data layers.
