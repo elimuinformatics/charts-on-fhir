@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataLayer, DataLayerCollection, ManagedDataLayer, TimelineDataPoint } from './data-layer';
 import produce, { castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
-import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dataset-tags.service';
+import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 
 /**
  * Merges a `DataLayer` into the matching layer in a `DataLayerCollection`.
@@ -12,7 +12,7 @@ import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dat
   providedIn: 'root',
 })
 export class DataLayerMergeService {
-  constructor(private colorService: DataLayerColorService, private tagsService: DatasetTagsService) {}
+  constructor(private colorService: DataLayerColorService, private tagsService: FhirChartTagsService) {}
 
   merge(collection: DataLayerCollection, layer: DataLayer): DataLayerCollection {
     return produce(collection, (draft) => {

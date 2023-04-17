@@ -3,12 +3,12 @@ import { mapValues } from 'lodash-es';
 import { DataLayer, DataLayerCollection } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
-import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dataset-tags.service';
+import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 
 describe('DataLayerMergeService', () => {
   let service: DataLayerMergeService;
   let colorService: jasmine.SpyObj<DataLayerColorService>;
-  let tagsService: jasmine.SpyObj<DatasetTagsService>;
+  let tagsService: jasmine.SpyObj<FhirChartTagsService>;
 
   beforeEach(() => {
     colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette']);

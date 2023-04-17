@@ -3,12 +3,12 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import { cold, hot, getTestScheduler } from 'jasmine-marbles';
 import { DataLayerColorService } from './data-layer-color.service';
 import { ManagedDataLayer } from './data-layer';
-import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dataset-tags.service';
+import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 
 describe('DataLayerManagerService', () => {
   let mergeService: jasmine.SpyObj<DataLayerMergeService>;
   let colorService: jasmine.SpyObj<DataLayerColorService>;
-  let tagsService: jasmine.SpyObj<DatasetTagsService>;
+  let tagsService: jasmine.SpyObj<FhirChartTagsService>;
   // DataLayers
   const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
   const b: ManagedDataLayer = { name: 'b', id: 'b', datasets: [], scale: { id: 'b' } };

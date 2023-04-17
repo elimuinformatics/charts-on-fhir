@@ -5,7 +5,7 @@ import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { zip } from 'lodash-es';
-import { DatasetTagsService } from '../fhir-chart-legend/dataset-tags-legend/dataset-tags.service';
+import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 
 /**
  * A service for asynchronously retrieving data layers.
@@ -81,7 +81,7 @@ export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private colorService: DataLayerColorService,
-    private tagsService: DatasetTagsService,
+    private tagsService: FhirChartTagsService,
     private mergeService: DataLayerMergeService
   ) {}
 

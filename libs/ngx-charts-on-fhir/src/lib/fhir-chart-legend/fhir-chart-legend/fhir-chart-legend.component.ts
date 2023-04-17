@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DataLayerColorService } from '../data-layer/data-layer-color.service';
-import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 
 @Component({
   selector: 'fhir-chart-legend',

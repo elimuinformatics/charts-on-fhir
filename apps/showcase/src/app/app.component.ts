@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService, DatasetTagsService, PatientService, ToolbarButtonName } from '@elimuinformatics/ngx-charts-on-fhir';
+import { DataLayerManagerService, FhirChartTagsService, PatientService, ToolbarButtonName } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   readonly toolbar: ToolbarButtonName[];
   active: ToolbarButtonName | null;
 
-  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService, private tagsService: DatasetTagsService) {
+  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService, private tagsService: FhirChartTagsService) {
     if (patientService.isSinglePatientContext) {
       this.toolbar = ['loading', 'browser', 'options'];
       this.active = 'browser';

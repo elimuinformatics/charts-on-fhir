@@ -19,7 +19,7 @@
     <div class="layout-main" id="layout-main">
       <fhir-chart class="layout-main-chart" width="100%" height="100%" [floatingContent]="showLegend ? legend : undefined"></fhir-chart>
       <ng-template #legend>
-        <dataset-tags-legend></dataset-tags-legend>
+        <fhir-chart-tags-legend></fhir-chart-tags-legend>
       </ng-template>
       <fhir-chart-summary id="summary-card-table"></fhir-chart-summary>
     </div>

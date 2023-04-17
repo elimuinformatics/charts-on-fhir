@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DatasetTagsLegendComponent } from './dataset-tags-legend.component';
+import { FhirChartTagsLegendComponent } from './fhir-chart-tags-legend.component';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { EMPTY } from 'rxjs';
 
@@ -7,17 +7,17 @@ const mockLayerManager = {
   enabledLayers$: EMPTY,
 };
 
-describe('DatasetTagsLegendComponent', () => {
-  let component: DatasetTagsLegendComponent;
-  let fixture: ComponentFixture<DatasetTagsLegendComponent>;
+describe('FhirChartTagsLegendComponent', () => {
+  let component: FhirChartTagsLegendComponent;
+  let fixture: ComponentFixture<FhirChartTagsLegendComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatasetTagsLegendComponent],
+      declarations: [FhirChartTagsLegendComponent],
       providers: [{ provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DatasetTagsLegendComponent);
+    fixture = TestBed.createComponent(FhirChartTagsLegendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

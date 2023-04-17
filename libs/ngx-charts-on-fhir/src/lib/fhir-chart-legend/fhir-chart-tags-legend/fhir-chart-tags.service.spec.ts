@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { DatasetTagsService } from './dataset-tags.service';
+import { FhirChartTagsService } from './fhir-chart-tags.service';
 
-describe('DatasetTagsService', () => {
-  let service: DatasetTagsService;
+describe('FhirChartTagsService', () => {
+  let service: FhirChartTagsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DatasetTagsService);
+    service = TestBed.inject(FhirChartTagsService);
   });
 
   it('should be created', () => {

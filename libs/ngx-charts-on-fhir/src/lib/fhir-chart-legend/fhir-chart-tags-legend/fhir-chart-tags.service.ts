@@ -15,7 +15,7 @@ type TagStyles = Record<string, DatasetOptions>;
 @Injectable({
   providedIn: 'root',
 })
-export class DatasetTagsService {
+export class FhirChartTagsService {
   private tagStyles = new BehaviorSubject<TagStyles>({
     Home: {
       pointStyle: 'triangle',
