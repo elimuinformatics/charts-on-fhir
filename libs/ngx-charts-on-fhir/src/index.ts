@@ -16,6 +16,7 @@ export * from './lib/fhir-chart-summary/home-measurement-summary.service';
 export * from './lib/fhir-chart-layout/fhir-chart-layout.module';
 export * from './lib/fhir-chart-layout/fhir-chart-layout.component';
 export * from './lib/fhir-chart-legend/fhir-chart-legend.module';
+export * from './lib/fhir-chart-legend/fhir-chart-legend/fhir-chart-legend.component';
 export * from './lib/fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 export * from './lib/fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags-legend.component';
 export * from './lib/dynamic-table/dynamic-table.component';
