@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   readonly toolbar: ToolbarButtonName[];
   active: ToolbarButtonName | null;
 
-  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService, private tagsService: FhirChartTagsService) {
+  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService) {
     if (patientService.isSinglePatientContext) {
       this.toolbar = ['loading', 'browser', 'options'];
       this.active = 'browser';
