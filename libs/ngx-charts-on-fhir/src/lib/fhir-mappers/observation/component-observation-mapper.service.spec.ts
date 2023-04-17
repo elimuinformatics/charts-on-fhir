@@ -16,7 +16,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(true);
     });
 
@@ -27,7 +27,7 @@ describe('ComponentObservationMapper', () => {
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(false);
     });
   });
@@ -50,7 +50,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets).toEqual([jasmine.objectContaining({ label: 'one' }), jasmine.objectContaining({ label: 'two' })]);
     });
 
@@ -68,7 +68,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -85,7 +85,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
@@ -102,7 +102,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, { type: 'linear' }, {});
+      const mapper = new ComponentObservationMapper({ type: 'linear' }, {});
       expect(mapper.map(observation).scale).toEqual(
         jasmine.objectContaining({
           id: 'text (unit)',
@@ -131,7 +131,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, { type: 'box' });
+      const mapper = new ComponentObservationMapper({}, { type: 'box' });
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
@@ -156,7 +156,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {}, {});
+      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
   });
