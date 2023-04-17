@@ -45,7 +45,7 @@ const bloodPressureLayer: DataLayer = {
   datasets: [
     {
       yAxisID: 'Blood Pressure',
-      label: 'Systolic Blood Pressure',
+      label: 'Systolic',
       data: [xy(10, 105), xy(5, 125), xy(0, 119)],
       fill: '+1',
       chartsOnFhir: {
@@ -54,7 +54,7 @@ const bloodPressureLayer: DataLayer = {
     },
     {
       yAxisID: 'Blood Pressure',
-      label: 'Diastolic Blood Pressure',
+      label: 'Diastolic',
       data: [xy(10, 66), xy(5, 69), xy(0, 60)],
       chartsOnFhir: {
         tags: ['Clinic'],
