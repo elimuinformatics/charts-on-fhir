@@ -9,8 +9,6 @@ import { DataLayerManagerService } from '../data-layer/data-layer-manager.servic
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
-export type LegendPosition = 'none' | 'float' | 'top' | 'bottom';
-
 /**
  * See `*Chart` for example usage.
  */

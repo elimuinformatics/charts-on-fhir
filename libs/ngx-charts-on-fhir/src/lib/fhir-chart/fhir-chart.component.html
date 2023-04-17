@@ -2,8 +2,10 @@
   <div class="chart-container-resize-fix">
     <ng-container *ngIf="datasets && datasets.length > 0; else empty">
       <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
-      <div *ngIf="floatingContent" class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
-        <ng-container [ngTemplateOutlet]="floatingContent"></ng-container>
+      <div class="floating-content-container">
+        <div *ngIf="floatingContent" class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
+          <ng-container [ngTemplateOutlet]="floatingContent"></ng-container>
+        </div>
       </div>
     </ng-container>
     <ng-template #empty>
