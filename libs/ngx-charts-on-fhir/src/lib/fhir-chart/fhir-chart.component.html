@@ -1,37 +1,21 @@
-<div class="legend-container" [style.width]="width" [style.height]="height">
-  <fhir-chart-legend
-    class="legend-top"
-    *ngIf="legendPosition === 'top' || legendPosition === 'bottom'"
-    [style.gridRow]="gridRow[legendPosition]"
-  ></fhir-chart-legend>
-  <div class="chart-container">
-    <div class="chart-container-resize-fix">
-      <ng-container *ngIf="datasets && datasets.length > 0; else empty">
-        <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
-        <fhir-chart-legend
-          *ngIf="legendPosition == 'float'"
-          class="legend-float mat-elevation-z2"
-          cdkDrag
-          cdkDragBoundary=".chart-container"
-        ></fhir-chart-legend>
-        <dataset-tags-legend
-          *ngIf="tagLegendPosition == 'float'"
-          class="legend-float mat-elevation-z2"
-          cdkDrag
-          cdkDragBoundary=".chart-container"
-        ></dataset-tags-legend>
-      </ng-container>
-      <ng-template #empty>
-        <div class="empty-message">
-          <div class="empty-message-content">
-            <ng-container *ngIf="layerManager.loading$ | async; else doneLoading">
-              <div>Loading data...</div>
-              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </ng-container>
-            <ng-template #doneLoading>No data layers are selected</ng-template>
-          </div>
+<div class="chart-container" [style.width]="width" [style.height]="height">
+  <div class="chart-container-resize-fix">
+    <ng-container *ngIf="datasets && datasets.length > 0; else empty">
+      <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
+      <div *ngIf="floatingContent" class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
+        <ng-container [ngTemplateOutlet]="floatingContent"></ng-container>
+      </div>
+    </ng-container>
+    <ng-template #empty>
+      <div class="empty-message">
+        <div class="empty-message-content">
+          <ng-container *ngIf="layerManager.loading$ | async; else doneLoading">
+            <div>Loading data...</div>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </ng-container>
+          <ng-template #doneLoading>No data layers are selected</ng-template>
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
   </div>
 </div>

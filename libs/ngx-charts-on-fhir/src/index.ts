@@ -29,6 +29,8 @@ export * from './lib/data-layer/data-layer-merge.service';
 export * from './lib/data-layer/data-layer-color.service';
 export * from './lib/data-layer/data-layer';
 export * from './lib/dataset-tags/dataset-tags.service';
+export * from './lib/dataset-tags/dataset-tags.module';
+export * from './lib/dataset-tags/dataset-tags-legend/dataset-tags-legend.component';
 export * from './lib/fhir-mappers/fhir-converter.service';
 export * from './lib/fhir-mappers/multi-mapper.service';
 export * from './lib/fhir-mappers/fhir-mapper-options';

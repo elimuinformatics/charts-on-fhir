@@ -16,7 +16,14 @@ type TagStyles = Record<string, DatasetOptions>;
   providedIn: 'root',
 })
 export class DatasetTagsService {
-  private tagStyles = new BehaviorSubject<TagStyles>({});
+  private tagStyles = new BehaviorSubject<TagStyles>({
+    Home: {
+      pointStyle: 'triangle',
+    },
+    Clinic: {
+      pointStyle: 'circle',
+    },
+  });
 
   tagStyles$ = this.tagStyles.asObservable();
 

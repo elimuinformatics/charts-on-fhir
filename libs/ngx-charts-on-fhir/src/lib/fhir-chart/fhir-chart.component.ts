@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ContentChild, Directive, Input, OnInit, TemplateRef } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -10,6 +10,11 @@ import { FhirChartConfigurationService } from './fhir-chart-configuration.servic
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
 export type LegendPosition = 'none' | 'float' | 'top' | 'bottom';
+
+@Directive({ selector: '[floatingContent]' })
+export class FloatingContentDirective {
+  constructor(public templateRef: TemplateRef<unknown>) {}
+}
 
 /**
  * See `*Chart` for example usage.
@@ -32,9 +37,7 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  @Input() legendPosition: LegendPosition = 'float';
-  @Input() tagLegendPosition: LegendPosition = 'none';
-  readonly gridRow = { top: 1, bottom: 3 } as const;
+  @Input() floatingContent?: TemplateRef<unknown>;
 
   constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 
