@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService, FhirChartTagsService, PatientService, ToolbarButtonName } from '@elimuinformatics/ngx-charts-on-fhir';
+import { DataLayerManagerService, PatientService, ToolbarButtonName } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
