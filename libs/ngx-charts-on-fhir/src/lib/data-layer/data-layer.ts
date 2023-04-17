@@ -26,7 +26,7 @@ export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoi
   /** Custom chart options for Charts-on-FHIR */
   chartsOnFhir?: {
     /**
-     * When set to `transparent`, `DataLayerColorService` will apply partial transparency to the fill color of chart elements.
+     * When set to `transparent`, `DataLayerColorService` will apply partial transparency to the fill color of points.
      * When set to `solid` (default), the same color will be used for both stroke and fill colors.
      */
     backgroundStyle?: 'solid' | 'transparent';
