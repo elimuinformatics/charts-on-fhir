@@ -1,4 +1,4 @@
-import { Component, ContentChild, Directive, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Directive, Input, OnInit, TemplateRef } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
