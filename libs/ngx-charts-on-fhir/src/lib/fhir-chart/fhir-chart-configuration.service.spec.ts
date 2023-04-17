@@ -165,6 +165,45 @@ describe('FhirChartConfigurationService', () => {
       );
     });
 
+    it('timeline scale bounds should support floating bar chart', () => {
+      const a: ManagedDataLayer[] = [
+        {
+          name: 'a1',
+          id: 'a1',
+          enabled: true,
+          datasets: [
+            {
+              label: 'one',
+              data: [
+                { x: [1, 2], y: 'med1' },
+                { x: [3, 5], y: 'med2' },
+              ],
+            },
+          ],
+          scale: { id: 'one', title: { text: 'one' } },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: hot('a', { a }) };
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      expect(configService.chartConfig$).toBeObservable(
+        hot('x', {
+          x: {
+            ...emptyConfig,
+            data: jasmine.anything(),
+            options: {
+              ...emptyConfig.options,
+              scales: jasmine.objectContaining({
+                x: jasmine.objectContaining({
+                  min: 1,
+                  max: 5,
+                }),
+              }),
+            },
+          },
+        })
+      );
+    });
+
     it('should add annotations when layers are selected', () => {
       const e: ManagedDataLayer[] = [];
       const a: ManagedDataLayer[] = [
@@ -174,7 +213,7 @@ describe('FhirChartConfigurationService', () => {
           enabled: true,
           datasets: [],
           scale: { id: 'a1' },
-          annotations: [{ label: { content: 'one' } }],
+          annotations: [{ id: 'one', label: { content: 'one' } }],
         },
       ];
       const b: ManagedDataLayer[] = [
@@ -185,7 +224,7 @@ describe('FhirChartConfigurationService', () => {
           enabled: true,
           datasets: [],
           scale: { id: 'b1' },
-          annotations: [{ label: { content: 'two' } }],
+          annotations: [{ id: 'two', label: { content: 'two' } }],
         },
       ];
       const layerManager: any = { selectedLayers$: hot('eab', { e, a, b }) };
@@ -199,7 +238,7 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ label: { content: 'one' } }],
+                  annotations: [{ id: 'one', label: { content: 'one' } }],
                 },
               }),
             },
@@ -210,7 +249,10 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ label: { content: 'one' } }, { label: { content: 'two' } }],
+                  annotations: [
+                    { id: 'one', label: { content: 'one' } },
+                    { id: 'two', label: { content: 'two' } },
+                  ],
                 },
               }),
             },
@@ -431,5 +473,66 @@ describe('FhirChartConfigurationService', () => {
     const beforeFooter = config.options!.plugins!.tooltip!.callbacks!.beforeFooter!.bind({} as any);
     const footerText = beforeFooter(tooltipItems);
     expect(footerText).toEqual('Reference Range 10 - 20');
+  });
+
+  it('should use tooltip property from data point as the tooltip label', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [{ x: new Date('2023-01-01T00:00').getTime(), y: 1, tooltip: 'My Tooltip' }],
+    };
+    const scale = { id: 'scale', type: 'linear' } as const;
+    const layerManager: any = { selectedLayers$: EMPTY };
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, []);
+    const tooltipItem = { raw: dataset.data[0] } as TooltipItem<TimelineChartType>;
+    const callback = config.options!.plugins!.tooltip!.callbacks!.label!.bind({} as any);
+    expect(callback(tooltipItem)).toEqual('My Tooltip');
+  });
+
+  it('should use default tooltip label if data point does not have a tooltip property', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [{ x: new Date('2023-01-01T00:00').getTime(), y: 1 }],
+    };
+    const scale = { id: 'scale', type: 'linear' } as const;
+    const layerManager: any = { selectedLayers$: EMPTY };
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, []);
+    const tooltipItem = { raw: dataset.data[0] } as TooltipItem<TimelineChartType>;
+    spyOn(Chart.defaults.plugins.tooltip.callbacks, 'label').and.returnValue('Default Label');
+    const callback = config.options!.plugins!.tooltip!.callbacks!.label!.bind({} as any);
+    expect(callback(tooltipItem)).toEqual('Default Label');
+  });
+
+  it('should use y-value as tooltip title if y-value is a string', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [{ x: new Date('2023-01-01T00:00').getTime(), y: 'Y Value' }],
+    };
+    const scale = { id: 'scale', type: 'category' } as const;
+    const layerManager: any = { selectedLayers$: EMPTY };
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, []);
+    const tooltipItems = [{ raw: dataset.data[0] }] as TooltipItem<TimelineChartType>[];
+    const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
+    expect(callback(tooltipItems)).toEqual(['Y Value']);
+  });
+
+  it('should use date as tooltip title if y-value is not a string', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [{ x: new Date('2023-01-01T00:00').getTime(), y: 1 }],
+    };
+    const scale = { id: 'scale', type: 'category' } as const;
+    const layerManager: any = { selectedLayers$: EMPTY };
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, []);
+    const tooltipItems = [{ raw: dataset.data[0] }] as TooltipItem<TimelineChartType>[];
+    const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
+    expect(callback(tooltipItems)).toEqual(['1 Jan 2023 12:00 AM']);
   });
 });

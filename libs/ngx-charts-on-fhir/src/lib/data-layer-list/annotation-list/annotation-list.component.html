@@ -5,12 +5,12 @@
         <mat-checkbox
           (click)="$event.stopPropagation()"
           (change)="onCheckboxChange(i, $event)"
-          [checked]="annotation.display"
+          [checked]="annotation.display ?? true"
           [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"
           color="primary"
           [id]="i + 'annotationcheckbox'"
         ></mat-checkbox>
-        {{ annotation.label.content }}
+        {{ annotation.label?.content }}
       </mat-panel-title>
       <mat-panel-description> Annotation </mat-panel-description>
     </mat-expansion-panel-header>

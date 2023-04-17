@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
+import { DataLayer, DataLayerCollection, ManagedDataLayer, TimelineDataPoint } from './data-layer';
 import produce, { castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
 
@@ -20,6 +20,7 @@ export class DataLayerMergeService {
         draft[id] = { id, ...castDraft(layer) };
       } else {
         this.mergeDatasets(draft[id], layer);
+        this.mergeAnnotations(draft[id], layer);
       }
     });
   }
@@ -29,7 +30,7 @@ export class DataLayerMergeService {
       const mergedDataset = mergedLayer.datasets.find((dataset) => dataset.label === newDataset.label);
       if (mergedDataset) {
         mergedDataset.data.push(...newDataset.data);
-        mergedDataset.data.sort((a, b) => a.x - b.x);
+        mergedDataset.data.sort(sortData);
       } else {
         mergedLayer.datasets.push(newDataset);
         if (mergedLayer.selected) {
@@ -38,6 +39,22 @@ export class DataLayerMergeService {
       }
     }
   }
+  /** Adds annotations from newLayer that do not already exist in the mergedLayer, matching annotations by ID. This function mutates `mergedLayer`. */
+  mergeAnnotations(mergedLayer: ManagedDataLayer, newLayer: DataLayer) {
+    if (!mergedLayer.annotations) {
+      mergedLayer.annotations = newLayer.annotations;
+    } else if (newLayer.annotations) {
+      for (let newAnno of newLayer.annotations) {
+        if (!mergedLayer.annotations.some((anno) => anno.id === newAnno.id)) {
+          mergedLayer.annotations.push(newAnno);
+        }
+      }
+    }
+  }
+}
+
+function sortData(a: TimelineDataPoint, b: TimelineDataPoint) {
+  return (Array.isArray(a.x) ? a.x[0] : a.x) - (Array.isArray(b.x) ? b.x[0] : b.x);
 }
 
 function generateId(layer: DataLayer): string {
@@ -58,5 +75,6 @@ function extractMetadata(layer: DataLayer): DataLayer {
   return {
     ...layer,
     datasets: [],
+    annotations: [],
   };
 }

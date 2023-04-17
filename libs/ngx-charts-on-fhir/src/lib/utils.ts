@@ -28,7 +28,7 @@ export function isValidScatterDataPoint<P>(point: P): point is P & ScatterDataPo
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 export function isCartesianScale(scale: Scale<CoreScaleOptions>): scale is Scale<CartesianScaleOptions> {
-  return scale.type === 'linear' || scale.type === 'logarithmic' || scale.type === 'category' || scale.type === 'medication';
+  return scale.type === 'linear' || scale.type === 'logarithmic' || scale.type === 'category';
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -49,4 +49,7 @@ export function formatTime(date: string | number | Date): string {
   h = h % 12;
   h = h ? h : 12;
   return `${h}:${mm} ${ampm}`;
+}
+export function formatDateTime(date: string | number | Date): string {
+  return `${formatDate(date)} ${formatTime(date)}`;
 }

@@ -217,4 +217,116 @@ describe('DataLayerMergeService', () => {
     service.merge(collection, layer2);
     expect(colorService.chooseColorsFromPalette).toHaveBeenCalledTimes(1);
   });
+
+  it('should add annotation to a collection that had no annotations', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+      annotations: [
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+      ],
+    };
+    collection = service.merge(collection, layer1);
+    collection = service.merge(collection, layer2);
+    const layers = Object.values(collection);
+    expect(layers.length).toBe(1);
+    expect(layers[0].annotations).toEqual(
+      jasmine.arrayWithExactContents([
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+      ])
+    );
+  });
+
+  it('should add annotations with distinct IDs', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+      annotations: [
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+      ],
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+      annotations: [
+        {
+          id: '2',
+          label: { content: 'Two' },
+        },
+      ],
+    };
+    collection = service.merge(collection, layer1);
+    collection = service.merge(collection, layer2);
+    const layers = Object.values(collection);
+    expect(layers.length).toBe(1);
+    expect(layers[0].annotations).toEqual(
+      jasmine.arrayWithExactContents([
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+        {
+          id: '2',
+          label: { content: 'Two' },
+        },
+      ])
+    );
+  });
+
+  it('should ignore annotations with duplicate IDs', () => {
+    let collection: DataLayerCollection = {};
+    const layer1: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+      annotations: [
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+      ],
+    };
+    const layer2: DataLayer = {
+      name: 'Test',
+      datasets: [],
+      scale: { id: 'test' },
+      annotations: [
+        {
+          id: '1',
+          label: { content: 'Duplicate' },
+        },
+      ],
+    };
+    collection = service.merge(collection, layer1);
+    collection = service.merge(collection, layer2);
+    const layers = Object.values(collection);
+    expect(layers.length).toBe(1);
+    expect(layers[0].annotations).toEqual(
+      jasmine.arrayWithExactContents([
+        {
+          id: '1',
+          label: { content: 'One' },
+        },
+      ])
+    );
+  });
 });

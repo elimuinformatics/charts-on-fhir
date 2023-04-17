@@ -229,7 +229,6 @@ describe('DurationMedicationMapper', () => {
     it('should compute duration for a BoundsDurationMedication', () => {
       const medication: BoundsDurationMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dosageInstruction: [
           {
             timing: {
@@ -243,14 +242,14 @@ describe('DurationMedicationMapper', () => {
           },
         ],
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for a BoundsPeriodMedication', () => {
       const medication: BoundsPeriodMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dosageInstruction: [
           {
             timing: {
@@ -264,14 +263,14 @@ describe('DurationMedicationMapper', () => {
           },
         ],
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for an ExpectedSupplyMedication', () => {
       const medication: ExpectedSupplyMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dispenseRequest: {
           expectedSupplyDuration: {
             code: 'd',
@@ -279,14 +278,14 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for a daily TimingScheduleMedication', () => {
       const medication: TimingScheduleMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dosageInstruction: [
           {
             timing: {
@@ -315,14 +314,14 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for an hourly TimingScheduleMedication', () => {
       const medication: TimingScheduleMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dosageInstruction: [
           {
             timing: {
@@ -351,14 +350,14 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for a weekly TimingScheduleMedication', () => {
       const medication: TimingScheduleMedication = {
         ...basicMedication,
-        authoredOn: '2023-01-01T00:00:00Z',
         dosageInstruction: [
           {
             timing: {
@@ -387,8 +386,9 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should compute duration for a TimingCodeMedication', () => {
@@ -429,8 +429,9 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should throw an error for invalid Timing code', () => {
@@ -467,7 +468,7 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      expect(() => mapper.map(medication).datasets[0].data[1].x).toThrowError();
+      expect(() => mapper.map(medication)).toThrowError();
     });
 
     it('should throw an error if initialFill has a different quantity code', () => {
@@ -504,7 +505,7 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      expect(() => mapper.map(medication).datasets[0].data[1].x).toThrowError();
+      expect(() => mapper.map(medication)).toThrowError();
     });
 
     it('should compute duration for a TimingTextMedication', () => {
@@ -534,8 +535,9 @@ describe('DurationMedicationMapper', () => {
           },
         },
       };
-      const expectedDate = new Date('2023-01-31T00:00:00Z').getTime();
-      expect(mapper.map(medication).datasets[0].data[1].x).toBe(expectedDate);
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
     it('should include an authoredOn property on each data point', () => {
@@ -557,8 +559,6 @@ describe('DurationMedicationMapper', () => {
       };
       const expectedDate = new Date(medication.authoredOn).getTime();
       expect(mapper.map(medication).datasets[0].data[0].authoredOn).toEqual(expectedDate);
-      expect(mapper.map(medication).datasets[0].data[1].authoredOn).toEqual(expectedDate);
-      expect(mapper.map(medication).datasets[0].data[2].authoredOn).toEqual(expectedDate);
     });
   });
 });
