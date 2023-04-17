@@ -60,8 +60,6 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         .map((component) => ({
           label: component.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
-          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
-          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),

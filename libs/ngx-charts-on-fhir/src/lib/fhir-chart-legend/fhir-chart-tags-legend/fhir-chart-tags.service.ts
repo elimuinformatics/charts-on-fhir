@@ -18,10 +18,13 @@ type TagStyles = Record<string, DatasetOptions>;
 export class FhirChartTagsService {
   private tagStyles = new BehaviorSubject<TagStyles>({
     Home: {
-      pointStyle: 'triangle',
+      pointStyle: 'rectRot',
+      pointRadius: 3,
+      borderWidth: 1,
     },
     Clinic: {
       pointStyle: 'circle',
+      pointRadius: 5,
     },
   });
 

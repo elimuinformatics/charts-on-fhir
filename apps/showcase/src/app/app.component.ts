@@ -21,14 +21,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tagsService.setTagStyles({
-      Home: {
-        pointStyle: 'triangle',
-      },
-      Clinic: {
-        pointStyle: 'rect',
-      },
-    });
     this.patientService.selectedPatient$.subscribe(() => {
       this.layerManager.retrieveAll();
     });

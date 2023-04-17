@@ -48,8 +48,6 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         {
           label: resource.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
-          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
-          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
