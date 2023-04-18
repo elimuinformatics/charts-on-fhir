@@ -1,0 +1,12 @@
+<div class="legend-item">
+  <div class="legend-icon" [ngSwitch]="icon" [style.color]="color">
+    <mat-icon *ngSwitchCase="'circle'">circle</mat-icon>
+    <mat-icon *ngSwitchCase="'rect'">square</mat-icon>
+    <mat-icon *ngSwitchCase="'rectRot'" style="rotate: 45deg; scale: 0.8">square</mat-icon>
+    <mat-icon *ngSwitchCase="'triangle'" svgIcon="triangle"></mat-icon>
+    <mat-icon *ngSwitchDefault>square</mat-icon>
+  </div>
+  <div>
+    {{ label }}
+  </div>
+</div>

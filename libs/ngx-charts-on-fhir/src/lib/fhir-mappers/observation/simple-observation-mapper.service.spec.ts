@@ -12,7 +12,7 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(true);
     });
 
@@ -23,7 +23,7 @@ describe('SimpleObservationMapper', () => {
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(false);
     });
   });
@@ -38,7 +38,7 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: date.toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -50,7 +50,7 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
@@ -62,7 +62,7 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, { type: 'linear' }, {});
+      const mapper = new SimpleObservationMapper({ type: 'linear' }, {});
       expect(mapper.map(observation).scale).toEqual({
         id: 'text (unit)',
         type: 'linear',
@@ -84,7 +84,7 @@ describe('SimpleObservationMapper', () => {
           },
         ],
       };
-      const mapper = new SimpleObservationMapper({}, {}, { type: 'box' });
+      const mapper = new SimpleObservationMapper({}, { type: 'box' });
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
@@ -104,7 +104,7 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
 
@@ -124,7 +124,7 @@ describe('SimpleObservationMapper', () => {
           },
         ],
       };
-      const mapper = new SimpleObservationMapper({}, {}, {});
+      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].label).toBe('text' + HOME_DATASET_LABEL_SUFFIX);
     });
   });

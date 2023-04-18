@@ -5,7 +5,7 @@ import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
-import { TIME_SCALE_OPTIONS, LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
@@ -35,7 +35,6 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
 })
 export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
-    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
     @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
   ) {}
@@ -49,14 +48,15 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         {
           label: resource.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
-          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
-          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
               y: resource.valueQuantity.value,
             },
           ],
+          chartsOnFhir: {
+            tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+          },
         },
       ],
       scale: merge({}, this.linearScaleOptions, {

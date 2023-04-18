@@ -3,11 +3,12 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import { cold, hot, getTestScheduler } from 'jasmine-marbles';
 import { DataLayerColorService } from './data-layer-color.service';
 import { ManagedDataLayer } from './data-layer';
+import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 
 describe('DataLayerManagerService', () => {
   let mergeService: jasmine.SpyObj<DataLayerMergeService>;
   let colorService: jasmine.SpyObj<DataLayerColorService>;
-
+  let tagsService: jasmine.SpyObj<FhirChartTagsService>;
   // DataLayers
   const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
   const b: ManagedDataLayer = { name: 'b', id: 'b', datasets: [], scale: { id: 'b' } };
@@ -20,6 +21,8 @@ describe('DataLayerManagerService', () => {
     // fake colorService sets borderColor because we can't use toHaveBeenCalledWith() for functions that are called with an immer draft
     colorService = jasmine.createSpyObj('DataLayerColorService', ['chooseColorsFromPalette', 'reset']);
     colorService.chooseColorsFromPalette.and.callFake((l) => l.datasets.forEach((d) => (d.borderColor = '#000000')));
+    // fake tagsService does nothing
+    tagsService = jasmine.createSpyObj('DatasetTagsService', ['applyTagStyles']);
   });
 
   describe('retrieveAll', () => {
@@ -28,7 +31,7 @@ describe('DataLayerManagerService', () => {
         { name: 'one', retrieve: () => cold('a-c|', { a, c }) },
         { name: 'two', retrieve: () => cold('-b|', { b }) },
       ];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       expect(manager.allLayers$).toBeObservable(
         hot('xyz', {
@@ -41,7 +44,7 @@ describe('DataLayerManagerService', () => {
 
     it('should not change selectedLayers$ when a new layer is retrieved', () => {
       const services = [{ name: 'one', retrieve: () => cold('a-b|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
@@ -54,7 +57,7 @@ describe('DataLayerManagerService', () => {
 
     it('should select layers automatically when selectAll=true', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll(true);
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
@@ -69,7 +72,7 @@ describe('DataLayerManagerService', () => {
         { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
         { name: 'two', retrieve: () => cold('-a|', { a }) },
       ];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll(true, (one, two) => one.name.localeCompare(two.name));
       expect(manager.selectedLayers$).toBeObservable(
         hot('xyz', {
@@ -84,7 +87,7 @@ describe('DataLayerManagerService', () => {
   describe('select', () => {
     it('should emit selectedLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
@@ -97,7 +100,7 @@ describe('DataLayerManagerService', () => {
 
     it('should enable the layer', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
@@ -111,7 +114,7 @@ describe('DataLayerManagerService', () => {
     it('should set layer color', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
@@ -129,7 +132,7 @@ describe('DataLayerManagerService', () => {
 
     it('should throw an error if layer is already selected', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().flush();
       manager.select('a');
@@ -137,7 +140,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
       expect(() => manager.select('a')).toThrowError(/not found/);
     });
   });
@@ -145,7 +148,7 @@ describe('DataLayerManagerService', () => {
   describe('remove', () => {
     it('should remove the layer from selectedLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('(ab|)', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 0);
       getTestScheduler().schedule(() => manager.select('b'), 0);
@@ -161,7 +164,7 @@ describe('DataLayerManagerService', () => {
 
     it('should throw an error if layer is not selected', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().flush();
       expect(() => manager.remove('a')).toThrowError(/not selected/);
@@ -171,7 +174,7 @@ describe('DataLayerManagerService', () => {
   describe('enable', () => {
     it('should enable the layer in allLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.enable('a'), 10);
       expect(manager.allLayers$).toBeObservable(
@@ -185,7 +188,7 @@ describe('DataLayerManagerService', () => {
     it('should show datasets for the layer in allLayers$', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.enable('a'), 10);
       expect(manager.allLayers$).toBeObservable(
@@ -198,7 +201,7 @@ describe('DataLayerManagerService', () => {
 
     it('should disable the layer in selectedLayers$ when enabled=false', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       getTestScheduler().schedule(() => manager.enable('a', false), 20);
@@ -214,7 +217,7 @@ describe('DataLayerManagerService', () => {
     it('should hide datasets for the layer in selectedLayers$ when enabled=false', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       getTestScheduler().schedule(() => manager.enable('a', false), 20);
@@ -228,7 +231,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
       expect(() => manager.enable('a')).toThrowError(/not found/);
     });
   });
@@ -237,7 +240,7 @@ describe('DataLayerManagerService', () => {
     it('should emit updated layer in allLayers$', () => {
       const updatedLayer = { name: 'updated', id: 'a', datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
       expect(manager.allLayers$).toBeObservable(
@@ -249,7 +252,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
       expect(() => manager.enable('a')).toThrowError(/not found/);
     });
   });
@@ -257,7 +260,7 @@ describe('DataLayerManagerService', () => {
   describe('move', () => {
     it('should emit selectedLayers$ in new order', () => {
       const services = [{ name: 'one', retrieve: () => cold('(abc|)', { a, b, c }) }];
-      const manager = new DataLayerManagerService(services, colorService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 0);
       getTestScheduler().schedule(() => manager.select('b'), 0);
@@ -272,7 +275,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should throw an error if previousIndex is invalid', () => {
-      const manager = new DataLayerManagerService([], colorService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
       expect(() => manager.move(1, 0)).toThrowError(/out of range/);
     });
   });

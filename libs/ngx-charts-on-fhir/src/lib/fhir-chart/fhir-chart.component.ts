@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -8,8 +8,6 @@ import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
-
-export type LegendPosition = 'none' | 'float' | 'top' | 'bottom';
 
 /**
  * See `*Chart` for example usage.
@@ -32,8 +30,7 @@ export class FhirChartComponent implements OnInit {
   @Input() width: string = '600px';
   @Input() height: string = '300px';
 
-  @Input() legendPosition: LegendPosition = 'float';
-  readonly gridRow = { top: 1, bottom: 3 } as const;
+  @Input() floatingContent?: TemplateRef<unknown>;
 
   constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 

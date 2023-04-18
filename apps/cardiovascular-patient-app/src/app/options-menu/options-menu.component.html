@@ -3,6 +3,6 @@
 </button>
 <mat-menu #optionsMenu="matMenu">
   <div mat-menu-item>
-    <mat-slide-toggle (change)="toggleLegend($event.checked)" [checked]="chart?.legendPosition !== 'none'">Legend</mat-slide-toggle>
+    <mat-slide-toggle (change)="legendChange.next($event.checked)" [checked]="legend">Legend</mat-slide-toggle>
   </div>
 </mat-menu>
