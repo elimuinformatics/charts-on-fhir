@@ -33,7 +33,7 @@ describe('ComponentObservationMapper', () => {
   });
 
   describe('map', () => {
-    it('should map each component to a dataset', () => {
+    it('should map each component to a dataset with Clinic label with suffix', () => {
       const observation: ComponentObservation = {
         resourceType: 'Observation',
         status: 'final',
@@ -51,7 +51,45 @@ describe('ComponentObservationMapper', () => {
         ],
       };
       const mapper = new ComponentObservationMapper({}, {}, {});
-      expect(mapper.map(observation).datasets).toEqual([jasmine.objectContaining({ label: 'one' }), jasmine.objectContaining({ label: 'two' })]);
+      expect(mapper.map(observation).datasets).toEqual([
+        jasmine.objectContaining({ label: 'one (Clinic)' }),
+        jasmine.objectContaining({ label: 'two (Clinic)' }),
+      ]);
+    });
+
+    it('should map each component to a dataset with Home label with suffix', () => {
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveDateTime: new Date().toISOString(),
+        extension: [
+          {
+            url: 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt',
+            valueCodeableConcept: {
+              coding: [
+                {
+                  system: 'http://snomed.info/sct',
+                  code: '264362003',
+                  display: 'Home (environment)',
+                },
+              ],
+            },
+          },
+        ],
+        component: [
+          {
+            code: { text: 'one' },
+            valueQuantity: { value: 7, unit: 'unit' },
+          },
+          {
+            code: { text: 'two' },
+            valueQuantity: { value: 8, unit: 'unit' },
+          },
+        ],
+      };
+      const mapper = new ComponentObservationMapper({}, {}, {});
+      expect(mapper.map(observation).datasets).toEqual([jasmine.objectContaining({ label: 'one (Home)' }), jasmine.objectContaining({ label: 'two (Home)' })]);
     });
 
     it('should map effectiveDateTime to x value in milliseconds', () => {
