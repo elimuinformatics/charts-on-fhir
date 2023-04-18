@@ -40,6 +40,7 @@ export type ManagedDataLayer = DataLayer & {
   id: string;
   selected?: boolean;
   enabled?: boolean;
+  focused?: boolean;
 };
 
 export type DataLayerCollection = { [id: string]: ManagedDataLayer };

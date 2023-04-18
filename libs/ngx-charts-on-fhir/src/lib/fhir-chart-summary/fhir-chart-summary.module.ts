@@ -6,10 +6,11 @@ import { FhirChartSummaryComponent } from './fhir-chart-summary/fhir-chart-summa
 import { DynamicTableModule } from '../dynamic-table/dynamic-table.module';
 import { FhirChartSummaryCardComponent } from './fhir-chart-summary-card/fhir-chart-summary-card.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [FhirChartSummaryComponent, FhirChartSummaryCardComponent],
-  imports: [CommonModule, MatCardModule, MatIconModule, MatTooltipModule, DynamicTableModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, DynamicTableModule],
   exports: [FhirChartSummaryComponent],
 })
 export class FhirChartSummaryModule {}

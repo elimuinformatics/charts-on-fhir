@@ -2,9 +2,13 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
 .dataset-summary {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   overflow-y: auto;
+}
+.card-button {
+  position: absolute;
+  margin-left: -48px;
 }

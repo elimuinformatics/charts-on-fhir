@@ -1,13 +1,26 @@
-<div class="chart-summary">
-  <ng-container *ngIf="configService.timelineRange$ | async as range">
-    <fhir-chart-summary-card
-      *ngFor="let layer of layerManager.enabledLayers$ | async"
-      [color]="colorService.getColorGradient(layer)"
-      [title]="layer.name"
-      icon="info"
-      class="dataset-summary mat-elevation-z2"
-    >
-      <dynamic-table [data]="summarize(layer, range)"> </dynamic-table>
-    </fhir-chart-summary-card>
+<ng-container *ngIf="configService.timelineRange$ | async as range">
+  <ng-container *ngIf="scalePositions$ | async as positions">
+    <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
+      <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'">
+        <fhir-chart-summary-card
+          *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
+          [color]="colorService.getColorGradient(layer)"
+          [title]="layer.name"
+          icon="info"
+          class="dataset-summary mat-elevation-z2"
+          [style.top]="positions[layer.scale.id].top + 'px'"
+          [style.height]="positions[layer.scale.id].height - 5 + 'px'"
+          #card
+        >
+          <button mat-icon-button color="primary" class="card-button" *ngIf="!layer.focused" matTooltip="Expand this chart" (click)="onCardClick(layer, index)">
+            <mat-icon>unfold_more</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" class="card-button" *ngIf="layer.focused" matTooltip="Shrink this chart" (click)="onCardClick(layer, index)">
+            <mat-icon>unfold_less</mat-icon>
+          </button>
+          <dynamic-table [data]="summarize(layer, range)" #table></dynamic-table>
+        </fhir-chart-summary-card>
+      </div>
+    </ng-container>
   </ng-container>
-</div>
+</ng-container>
