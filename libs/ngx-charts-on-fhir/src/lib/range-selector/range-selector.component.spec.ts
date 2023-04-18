@@ -57,6 +57,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 1 month ago date from max layer date', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 mo']" }));
     await ButtonInputGroup.check();
     const expectedMinDate = new Date('2022-02-28T00:00');
@@ -64,6 +65,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 3 month ago date from max layer date', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-12-30T00:00');
@@ -71,6 +73,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 6 month ago date from max layer date', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-09-30T00:00');
@@ -78,6 +81,7 @@ describe('RangeSelectorComponent', () => {
   });
 
   it('should calculate proper 12 month ago date from max layer date', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-03-30T00:00');

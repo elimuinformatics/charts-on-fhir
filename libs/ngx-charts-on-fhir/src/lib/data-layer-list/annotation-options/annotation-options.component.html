@@ -1,21 +1,25 @@
 <form [formGroup]="form" id="annotationform">
   <section>
-    <mat-label>Annotation Color : </mat-label>
-    <color-picker formControlName="color"></color-picker>
-    <mat-form-field class="input-width">
-      <mat-label>Annotation Label : </mat-label>
+    <ng-container *ngIf="annotation?.type === 'box'">
+      <mat-label>Color</mat-label>
+      <color-picker formControlName="color"></color-picker>
+    </ng-container>
+    <mat-form-field>
+      <mat-label>Label</mat-label>
       <input matInput formControlName="label" id="annotationLabel" placeholder="Annotation name" />
     </mat-form-field>
-    <mat-label>Annotation Range : </mat-label>
-    <section>
-      <mat-form-field class="input-width">
-        <mat-label>Annotation yMax : </mat-label>
-        <input type="number" matInput placeholder="yMax value" formControlName="yMax" id="yMax" />
-      </mat-form-field>
-      <mat-form-field class="input-width">
-        <mat-label>Annotation yMin : </mat-label>
-        <input type="number" matInput placeholder="yMin value" formControlName="yMin" id="yMin" />
-      </mat-form-field>
-    </section>
+    <ng-container *ngIf="annotation?.type === 'box'">
+      <mat-label>Range</mat-label>
+      <section>
+        <mat-form-field class="input-width">
+          <mat-label>Upper Bound</mat-label>
+          <input type="number" matInput formControlName="yMax" id="yMax" />
+        </mat-form-field>
+        <mat-form-field class="input-width">
+          <mat-label>Lower Bound</mat-label>
+          <input type="number" matInput formControlName="yMin" id="yMin" />
+        </mat-form-field>
+      </section>
+    </ng-container>
   </section>
 </form>

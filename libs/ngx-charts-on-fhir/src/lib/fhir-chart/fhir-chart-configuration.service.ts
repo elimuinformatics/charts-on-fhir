@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart } from 'chart.js';
+import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import produce from 'immer';
 import { mapValues, merge } from 'lodash-es';
 import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
@@ -7,7 +7,7 @@ import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from 
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
 import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, isDefined, NumberRange } from '../utils';
+import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -138,20 +138,10 @@ export class FhirChartConfigurationService {
               },
             },
           },
-          legend: {
-            labels: {
-              // hide legend labels for medications
-              filter(item, data) {
-                const dataset = data.datasets.find(({ label }) => label === item.text) as Dataset<'line'>;
-                if (dataset?.yAxisID) {
-                  return scales[dataset.yAxisID]?.type !== 'medication';
-                }
-                return true;
-              },
-            },
-          },
           tooltip: {
             callbacks: {
+              title: (items) => items.map(getTooltipTitle),
+              label: (item) => (item.raw as any)['tooltip'] ?? (Chart.defaults.plugins.tooltip.callbacks as any).label(item),
               beforeFooter: (context: any) => {
                 const refRange = findReferenceRangeForDataset(annotations, context[0].dataset);
                 if (refRange) {
@@ -166,6 +156,16 @@ export class FhirChartConfigurationService {
     };
   }
 }
+
+const getTooltipTitle = (item: TooltipItem<TimelineChartType>) => {
+  const dataPoint = item.raw as TimelineDataPoint;
+  if (typeof dataPoint.y === 'string') {
+    return dataPoint.y;
+  }
+  const x = Array.isArray(dataPoint.x) ? dataPoint.x : [dataPoint.x];
+  return x.map(formatDateTime).join(' - ');
+};
+
 const findDataset = (config: TimelineConfiguration, dataset: Dataset) => config.data.datasets.find(datasetEquals(dataset));
 const datasetEquals = (dataset: Dataset) => (other: Dataset) => dataset.label === other.label;
 
@@ -179,7 +179,7 @@ const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) =>
     throw new TypeError('Record-based annotation configuration is not yet supported. Use an Array instead.');
   }
 };
-const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).label?.content === (other as any).label.content;
+const annotationEquals = (anno: ChartAnnotation) => (other: ChartAnnotation) => (anno as any).id === (other as any).id;
 
 /** Arrange stacked scales in the same order as the layers array by modifying the `weight` option for each scale */
 const arrangeScales = produce((layers: ManagedDataLayer[]) => {
@@ -205,7 +205,10 @@ const setScaleBounds = produce((layers: ManagedDataLayer[]) => {
 });
 
 function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], annotations?: ChartAnnotations): Partial<NumberRange> {
-  const values = datasets.flatMap((dataset) => dataset.data.map((point) => point[axis])).filter(isNotNaN);
+  const values = datasets
+    .flatMap((dataset) => dataset.data.map((point) => point[axis]))
+    .flat()
+    .filter(isNotNaN);
   if (annotations) {
     const annoMin = axis === 'x' ? 'xMin' : 'yMin';
     const annoMax = axis === 'x' ? 'xMax' : 'yMax';

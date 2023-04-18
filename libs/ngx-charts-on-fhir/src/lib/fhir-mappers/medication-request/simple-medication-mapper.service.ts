@@ -2,9 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
-import { DataLayer, TimelineChartType } from '../../data-layer/data-layer';
+import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { TIME_SCALE_OPTIONS, MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { formatDate } from '../../utils';
 
 /** Required properties for mapping a MedicationRequest with `SimpleMedicationMapper` */
 export type SimpleMedication = {
@@ -17,8 +18,7 @@ export function isMedication(resource: MedicationRequest): resource is SimpleMed
   return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
 }
 
-export type MedicationDataPoint = {
-  x: number;
+export type MedicationDataPoint = TimelineDataPoint & {
   y: string;
   authoredOn: number;
 };
@@ -28,12 +28,10 @@ export type MedicationDataPoint = {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(
-    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'medication'>
-  ) {}
+  constructor(@Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'category'>) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
+    const authoredOn = new Date(resource.authoredOn).getTime();
     return {
       name: 'Medication Prescriptions',
       category: ['medication'],
@@ -43,19 +41,48 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           label: resource?.medicationCodeableConcept?.text,
           yAxisID: 'medications',
           indexAxis: 'y',
+          pointRadius: 10,
+          pointHoverRadius: 10,
+          pointBorderWidth: 1,
           data: [
             {
-              x: new Date(resource.authoredOn).getTime(),
+              x: authoredOn,
               y: resource?.medicationCodeableConcept?.text,
-              authoredOn: new Date(resource.authoredOn).getTime(),
+              authoredOn: authoredOn,
+              tooltip: `Prescribed: ${formatDate(authoredOn)}`,
             },
           ],
+          chartsOnFhir: {
+            backgroundStyle: 'transparent',
+          },
         },
       ],
       scale: merge({}, this.medicationScaleOptions, {
         id: 'medications',
         title: { text: 'Medication Prescriptions' },
       }),
+      // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
+      annotations: [
+        {
+          id: resource?.medicationCodeableConcept?.text,
+          type: 'line',
+          borderWidth: 0,
+          label: {
+            display: true,
+            content: [resource?.medicationCodeableConcept?.text],
+            position: 'start',
+            color: 'black',
+            backgroundColor: 'transparent',
+            padding: 0,
+            font: {
+              size: 14,
+              weight: 'normal',
+            },
+          },
+          value: resource?.medicationCodeableConcept?.text,
+          scaleID: 'medications',
+        },
+      ],
     };
   }
 }

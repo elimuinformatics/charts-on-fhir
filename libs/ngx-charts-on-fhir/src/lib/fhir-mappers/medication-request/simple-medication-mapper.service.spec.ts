@@ -12,7 +12,7 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({}, {});
+      const mapper = new SimpleMedicationMapper({});
       expect(mapper.canMap(medication)).toBe(true);
     });
 
@@ -24,7 +24,7 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({}, {});
+      const mapper = new SimpleMedicationMapper({});
       expect(mapper.canMap(medication)).toBe(false);
     });
   });
@@ -40,7 +40,7 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({}, {});
+      const mapper = new SimpleMedicationMapper({});
       expect(mapper.map(medication).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -53,7 +53,7 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({}, {});
+      const mapper = new SimpleMedicationMapper({});
       expect(mapper.map(medication).datasets[0].data[0].y).toEqual('text');
     });
 
@@ -66,10 +66,10 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({}, { type: 'medication' });
+      const mapper = new SimpleMedicationMapper({ type: 'category' });
       expect(mapper.map(medication).scale).toEqual({
         id: 'medications',
-        type: 'medication',
+        type: 'category',
         title: { text: 'Medication Prescriptions' },
       });
     });

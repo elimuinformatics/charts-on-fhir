@@ -40,10 +40,11 @@ export class RangeSelectorComponent {
 
   updateRangeSelector(monthCount: number) {
     if (this.maxDate && monthCount) {
+      this.maxDate = new Date();
       this.minDate = subtractMonths(this.maxDate, monthCount);
       this.configService.zoom({
         min: this.minDate.getTime(),
-        max: this.maxDate.getTime(),
+        max: new Date().getTime(),
       });
     }
   }

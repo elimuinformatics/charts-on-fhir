@@ -102,12 +102,16 @@ export class DataLayerColorService {
     return newcolor.toString();
   }
 
+  /**
+   * Sets the border and background color of all chart elements in the given dataset (point, line, bar, etc.).
+   * Transparency will be applied to the point background color if the dataset defines the custom property `chartsOnFhir.backgroundStyle = 'transparent'`
+   */
   setColor(dataset: Dataset, color: string): void {
     const line = dataset as Dataset<'line'>;
     line.borderColor = color;
     line.backgroundColor = this.addTransparency(color);
     line.pointBorderColor = color;
-    line.pointBackgroundColor = color;
+    line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
   }
 
   getColor(dataset: Dataset): string | undefined {
