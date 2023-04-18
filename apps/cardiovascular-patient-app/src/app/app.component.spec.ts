@@ -18,23 +18,23 @@ class MockDataLayerService implements DataLayerService {
   retrieve = () => EMPTY;
 }
 
-@Component({ selector: 'fhir-chart' })
+@Component({ selector: 'fhir-chart', template: ''})
 class MockFhirChartComponent {
   @Input() legendPosition?: LegendPosition;
 }
 
-@Component({ selector: 'fhir-chart-summary' })
+@Component({ selector: 'fhir-chart-summary',  template: ''})
 class MockFhirChartSummaryComponent {}
 
-@Component({ selector: 'last-report-bp' })
+@Component({ selector: 'last-report-bp', template: ''})
 class MockLastReportBPComponent {}
 
-@Component({ selector: 'report-bp' })
+@Component({ selector: 'report-bp',  template: ''})
 class MockReportBPComponent {
   @Output() resourceCreated = new EventEmitter<number>();
 }
 
-@Component({ selector: 'options-menu' })
+@Component({ selector: 'options-menu',  template: ''})
 class MockOptionsMenuComponent {
   @Input() chart?: FhirChartComponent;
 }
