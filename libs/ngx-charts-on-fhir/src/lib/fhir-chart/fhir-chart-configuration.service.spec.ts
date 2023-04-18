@@ -18,7 +18,7 @@ describe('FhirChartConfigurationService', () => {
     options: {
       scales: jasmine.anything(),
       plugins: jasmine.objectContaining({
-        annotation: { annotations: [] },
+        annotation: { annotations: jasmine.arrayContaining([jasmine.objectContaining({ scaleID: 'x' })]) },
       }),
     },
   } as const;
@@ -238,7 +238,7 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ id: 'one', label: { content: 'one' } }],
+                  annotations: jasmine.arrayContaining([{ id: 'one', label: { content: 'one' } }, jasmine.objectContaining({ scaleID: 'x' })]),
                 },
               }),
             },
@@ -249,10 +249,11 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [
+                  annotations: jasmine.arrayContaining([
                     { id: 'one', label: { content: 'one' } },
                     { id: 'two', label: { content: 'two' } },
-                  ],
+                    jasmine.objectContaining({ scaleID: 'x' }),
+                  ]),
                 },
               }),
             },

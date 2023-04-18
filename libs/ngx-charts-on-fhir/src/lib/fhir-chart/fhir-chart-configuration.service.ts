@@ -22,6 +22,21 @@ type MergedDataLayer = {
   providedIn: 'root',
 })
 export class FhirChartConfigurationService {
+  today_date_annotation: ChartAnnotation = {
+    type: 'line',
+    borderColor: '#FF900D',
+    borderWidth: 3,
+    display: true,
+    label: {
+      display: true,
+      content: 'Today',
+      position: 'start',
+      color: '#FF900D',
+      backgroundColor: '#FAFAFA',
+    },
+    scaleID: 'x',
+    value: new Date().getTime(),
+  };
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
@@ -107,6 +122,7 @@ export class FhirChartConfigurationService {
     const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
     const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
+    annotations.push(this.today_date_annotation);
     return this.buildConfiguration(datasets, scales, annotations);
   }
 
