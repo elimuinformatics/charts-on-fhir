@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   appTitle: string = environment.env.appTitle;
   cdsicLogo = environment.env.cdsicLogo;
   selectedIndex?: number;
+  showLegend = false;
 
   constructor(readonly layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {}
 

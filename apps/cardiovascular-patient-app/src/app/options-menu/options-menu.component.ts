@@ -1,15 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { FhirChartComponent } from '@elimuinformatics/ngx-charts-on-fhir';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'options-menu',
   templateUrl: './options-menu.component.html',
 })
 export class OptionsMenuComponent {
-  @Input() chart?: FhirChartComponent;
-  toggleLegend(value: boolean) {
-    if (this.chart) {
-      this.chart.legendPosition = value ? 'float' : 'none';
-    }
-  }
+  @Input() legend?: boolean;
+  @Output() legendChange = new EventEmitter<boolean>();
 }

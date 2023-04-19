@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartDemoComponent } from './demo/chart-demo.component';
-import { FhirChartModule } from '@elimuinformatics/ngx-charts-on-fhir';
+import { ChartDemoComponent } from './demos/chart/chart-demo.component';
+import { FloatingContentDemoComponent } from './demos/floating-content/floating-content-demo.component';
+import { FhirChartLegendModule, FhirChartModule } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @NgModule({
-  declarations: [ChartDemoComponent],
-  imports: [CommonModule, FhirChartModule],
+  declarations: [ChartDemoComponent, FloatingContentDemoComponent],
+  imports: [CommonModule, FhirChartModule, FhirChartLegendModule],
 })
 export class ChartDemoModule {}
