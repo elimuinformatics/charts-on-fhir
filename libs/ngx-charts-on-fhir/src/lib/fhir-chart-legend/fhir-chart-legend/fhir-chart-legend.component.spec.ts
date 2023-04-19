@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { COLOR_PALETTE } from '../data-layer/data-layer-color.service';
-import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { COLOR_PALETTE } from '../../data-layer/data-layer-color.service';
+import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { FhirChartLegendComponent } from './fhir-chart-legend.component';
-import { FhirChartLegendModule } from './fhir-chart-legend.module';
+import { FhirChartLegendModule } from '../fhir-chart-legend.module';
 
 const mockLayerManager = {};
 

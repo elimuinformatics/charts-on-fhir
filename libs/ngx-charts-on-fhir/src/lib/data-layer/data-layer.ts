@@ -30,6 +30,8 @@ export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoi
      * When set to `solid` (default), the same color will be used for both stroke and fill colors.
      */
     backgroundStyle?: 'solid' | 'transparent';
+    /** Tags can be used to apply similar visual style to multiple datasets */
+    tags?: string[];
   };
 };
 

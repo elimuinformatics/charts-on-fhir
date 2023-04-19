@@ -35,7 +35,6 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
 })
 export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
-    @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
     @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
   ) {}
@@ -49,14 +48,15 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         {
           label: resource.code.text + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
-          pointRadius: isHomeMeasurement(resource) ? 3 : 5,
-          pointStyle: isHomeMeasurement(resource) ? 'rectRot' : 'circle',
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
               y: resource.valueQuantity.value,
             },
           ],
+          chartsOnFhir: {
+            tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+          },
         },
       ],
       scale: merge({}, this.linearScaleOptions, {
