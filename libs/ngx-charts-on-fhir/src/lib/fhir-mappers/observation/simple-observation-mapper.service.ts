@@ -6,7 +6,7 @@ import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
-import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
+import { CLINIC_DATASET_LABEL_SUFFIX, HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
 export type SimpleObservation = {
@@ -66,7 +66,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
           id: `${resource.code.text} Reference Range`,
-          label: { content: `${resource.code.text} Reference Range` },
+          label: { content: `${resource.code.text + getMeasurementSettingSuffix(resource)} Reference Range` },
           yScaleID: scaleName,
           yMax: range?.high?.value,
           yMin: range?.low?.value,
@@ -79,7 +79,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
 export const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
 export const homeEnvironmentCode = '264362003';
 export function getMeasurementSettingSuffix(resource: Observation): string {
-  return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : '';
+  return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : CLINIC_DATASET_LABEL_SUFFIX;
 }
 export function isHomeMeasurement(resource: Observation): boolean {
   if (resource.extension) {

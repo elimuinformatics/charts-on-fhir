@@ -5,6 +5,7 @@ import { ScatterDataPointSummaryService, SummaryService } from './summary.servic
 import { groupBy } from 'lodash-es';
 
 export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
+export const CLINIC_DATASET_LABEL_SUFFIX = ' (Clinic)';
 
 /** Combines home and office measurements before summarizing */
 @Injectable({

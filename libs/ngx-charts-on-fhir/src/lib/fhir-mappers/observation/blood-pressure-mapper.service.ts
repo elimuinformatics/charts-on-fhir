@@ -6,6 +6,7 @@ import { Mapper } from '../multi-mapper.service';
 import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { ChartAnnotation } from '../../utils';
 import { DataLayer } from '../../data-layer/data-layer';
+import { getMeasurementSettingSuffix } from './simple-observation-mapper.service';
 
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {
@@ -30,7 +31,7 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
       merge({}, this.annotationOptions, {
         id: 'Systolic Blood Pressure Reference Range',
         display: true,
-        label: { content: 'Systolic Blood Pressure Reference Range' },
+        label: { content: `Systolic Blood Pressure${getMeasurementSettingSuffix(resource)} Reference Range` },
         yScaleID: layer.datasets[0].yAxisID,
         yMax: 140,
         yMin: 90,
@@ -38,7 +39,7 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
       merge({}, this.annotationOptions, {
         id: 'Diastolic Blood Pressure Reference Range',
         display: true,
-        label: { content: 'Diastolic Blood Pressure Reference Range' },
+        label: { content: `Diastolic Blood Pressure${getMeasurementSettingSuffix(resource)} Reference Range` },
         yScaleID: layer.datasets[0].yAxisID,
         yMax: 90,
         yMin: 60,
