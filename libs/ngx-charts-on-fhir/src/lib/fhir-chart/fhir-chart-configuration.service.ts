@@ -6,7 +6,7 @@ import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
-import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
+import { TODAY_DATE_VERTICAL_LINE_ANNOTATION, TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
@@ -22,24 +22,10 @@ type MergedDataLayer = {
   providedIn: 'root',
 })
 export class FhirChartConfigurationService {
-  today_date_annotation: ChartAnnotation = {
-    type: 'line',
-    borderColor: '#FF900D',
-    borderWidth: 3,
-    display: true,
-    label: {
-      display: true,
-      content: 'Today',
-      position: 'start',
-      color: '#FF900D',
-      backgroundColor: '#FAFAFA',
-    },
-    scaleID: 'x',
-    value: new Date().getTime(),
-  };
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
+    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation,
     private ngZone: NgZone
   ) {}
 
@@ -122,7 +108,6 @@ export class FhirChartConfigurationService {
     const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
     const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
-    annotations.push(this.today_date_annotation);
     return this.buildConfiguration(datasets, scales, annotations);
   }
 
@@ -139,7 +124,7 @@ export class FhirChartConfigurationService {
           x: this.timeline,
         },
         plugins: {
-          annotation: { annotations },
+          annotation: { annotations: [...annotations, this.todayDateVerticalLineAnnotation] },
           zoom: {
             zoom: {
               onZoomStart: ({ chart }) => {
