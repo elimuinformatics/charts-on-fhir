@@ -27,25 +27,28 @@ describe('OptionsMenuComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should enable the legend when checked', async () => {
-    component.chart = { legendPosition: 'none' } as any;
+  it('should emit legendChange when checked', async () => {
     const menu = await loader.getHarness(MatMenuHarness);
     await menu.open();
     const childLoader = await menu.getChildLoader('*');
     const legendToggle = await childLoader.getHarness(MatSlideToggleHarness);
     expect(await legendToggle.isChecked()).toBe(false);
+    let emitted: boolean;
+    component.legendChange.subscribe((e) => (emitted = e));
     await legendToggle.check();
-    expect(component.chart?.legendPosition).toBe('float');
+    expect(emitted!).toBe(true);
   });
 
-  it('should disable the legend when unchecked', async () => {
-    component.chart = { legendPosition: 'float' } as any;
+  it('should emit legendChange when unchecked', async () => {
+    component.legend = true;
     const menu = await loader.getHarness(MatMenuHarness);
     await menu.open();
     const childLoader = await menu.getChildLoader('*');
     const legendToggle = await childLoader.getHarness(MatSlideToggleHarness);
     expect(await legendToggle.isChecked()).toBe(true);
+    let emitted: boolean;
+    component.legendChange.subscribe((e) => (emitted = e));
     await legendToggle.uncheck();
-    expect(component.chart?.legendPosition).toBe('none');
+    expect(emitted!).toBe(false);
   });
 });
