@@ -80,7 +80,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
           component.referenceRange?.map((range) =>
             merge({}, this.annotationOptions, {
               id: `${component.code.text} Reference Range`,
-              label: { content: `${component.code.text} Reference Range` },
+              label: { content: `${component.code.text + getMeasurementSettingSuffix(resource)} Reference Range` },
               yScaleID: scaleName,
               yMax: range?.high?.value,
               yMin: range?.low?.value,
