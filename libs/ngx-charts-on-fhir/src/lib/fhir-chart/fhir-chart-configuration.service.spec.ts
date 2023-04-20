@@ -18,12 +18,15 @@ describe('FhirChartConfigurationService', () => {
     options: {
       scales: jasmine.anything(),
       plugins: jasmine.objectContaining({
-        annotation: { annotations: [] },
+        annotation: { annotations: jasmine.arrayContaining([jasmine.objectContaining({ scaleID: 'x' })]) },
       }),
     },
   } as const;
 
   let ngZone: jasmine.SpyObj<NgZone>;
+  const todayDateVerticalLineAnnotation = {
+    scaleID: 'x',
+  };
 
   beforeEach(() => {
     // fake zone.run() can just invoke its callback because we don't care about change detection here
@@ -54,7 +57,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('eab', { e, a, b }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('xyz', {
           x: emptyConfig,
@@ -97,7 +100,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('eab', { e, a, b }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('xyz', {
           x: emptyConfig,
@@ -143,7 +146,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: {
@@ -184,7 +187,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: {
@@ -228,7 +231,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('eab', { e, a, b }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('xyz', {
           x: emptyConfig,
@@ -238,7 +241,7 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [{ id: 'one', label: { content: 'one' } }],
+                  annotations: jasmine.arrayContaining([{ id: 'one', label: { content: 'one' } }, jasmine.objectContaining({ scaleID: 'x' })]),
                 },
               }),
             },
@@ -249,10 +252,11 @@ describe('FhirChartConfigurationService', () => {
               ...emptyConfig.options,
               plugins: jasmine.objectContaining({
                 annotation: {
-                  annotations: [
+                  annotations: jasmine.arrayContaining([
                     { id: 'one', label: { content: 'one' } },
                     { id: 'two', label: { content: 'two' } },
-                  ],
+                    jasmine.objectContaining({ scaleID: 'x' }),
+                  ]),
                 },
               }),
             },
@@ -272,7 +276,7 @@ describe('FhirChartConfigurationService', () => {
           a: [],
         }),
       };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: emptyConfig,
@@ -291,7 +295,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: {
@@ -322,7 +326,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: hot('ab', { a, b }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       expect(configService.chartConfig$).toBeObservable(
         hot('xy', {
           x: jasmine.anything(), // cannot test prior state because it has been mutated
@@ -341,7 +345,7 @@ describe('FhirChartConfigurationService', () => {
     it('should emit when timeline scale limits change', waitForAsync(() => {
       const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       let config = {} as TimelineConfiguration;
       configService.chartConfig$.subscribe((c) => (config = c));
       getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
@@ -355,7 +359,7 @@ describe('FhirChartConfigurationService', () => {
     it('should run afterDataLimits callback within NgZone', waitForAsync(() => {
       const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       let config = {} as TimelineConfiguration;
       configService.chartConfig$.subscribe((c) => (config = c));
       getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
@@ -370,7 +374,7 @@ describe('FhirChartConfigurationService', () => {
     beforeEach(() => {
       const layers: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: of(layers) };
-      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     });
 
     it('should autoZoom by default', () => {
@@ -422,7 +426,7 @@ describe('FhirChartConfigurationService', () => {
         },
       ];
       const layerManager: any = { selectedLayers$: of(layers) };
-      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       configService.chart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale']);
     });
 
@@ -467,7 +471,7 @@ describe('FhirChartConfigurationService', () => {
       },
     ];
     const layerManager: any = { selectedLayers$: EMPTY };
-    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     const config = configService.buildConfiguration([dataset], { scale }, annotations);
     const tooltipItems = [{ dataset }] as TooltipItem<TimelineChartType>[];
     const beforeFooter = config.options!.plugins!.tooltip!.callbacks!.beforeFooter!.bind({} as any);
@@ -483,7 +487,7 @@ describe('FhirChartConfigurationService', () => {
     };
     const scale = { id: 'scale', type: 'linear' } as const;
     const layerManager: any = { selectedLayers$: EMPTY };
-    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     const config = configService.buildConfiguration([dataset], { scale }, []);
     const tooltipItem = { raw: dataset.data[0] } as TooltipItem<TimelineChartType>;
     const callback = config.options!.plugins!.tooltip!.callbacks!.label!.bind({} as any);
@@ -498,7 +502,7 @@ describe('FhirChartConfigurationService', () => {
     };
     const scale = { id: 'scale', type: 'linear' } as const;
     const layerManager: any = { selectedLayers$: EMPTY };
-    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     const config = configService.buildConfiguration([dataset], { scale }, []);
     const tooltipItem = { raw: dataset.data[0] } as TooltipItem<TimelineChartType>;
     spyOn(Chart.defaults.plugins.tooltip.callbacks, 'label').and.returnValue('Default Label');
@@ -514,7 +518,7 @@ describe('FhirChartConfigurationService', () => {
     };
     const scale = { id: 'scale', type: 'category' } as const;
     const layerManager: any = { selectedLayers$: EMPTY };
-    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     const config = configService.buildConfiguration([dataset], { scale }, []);
     const tooltipItems = [{ raw: dataset.data[0] }] as TooltipItem<TimelineChartType>[];
     const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
@@ -529,7 +533,7 @@ describe('FhirChartConfigurationService', () => {
     };
     const scale = { id: 'scale', type: 'category' } as const;
     const layerManager: any = { selectedLayers$: EMPTY };
-    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, ngZone);
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
     const config = configService.buildConfiguration([dataset], { scale }, []);
     const tooltipItems = [{ raw: dataset.data[0] }] as TooltipItem<TimelineChartType>[];
     const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
