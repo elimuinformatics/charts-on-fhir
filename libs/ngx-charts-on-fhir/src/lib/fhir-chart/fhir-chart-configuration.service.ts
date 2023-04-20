@@ -127,13 +127,13 @@ export class FhirChartConfigurationService {
           annotation: { annotations: [...annotations, this.todayDateVerticalLineAnnotation] },
           zoom: {
             zoom: {
-              onZoomStart: ({ chart }) => {
+              onZoomComplete: ({ chart }) => {
                 this.lockZoomRange(chart.scales['x']);
                 return true;
               },
             },
             pan: {
-              onPanStart: ({ chart }) => {
+              onPanComplete: ({ chart }) => {
                 this.lockZoomRange(chart.scales['x']);
                 return true;
               },
