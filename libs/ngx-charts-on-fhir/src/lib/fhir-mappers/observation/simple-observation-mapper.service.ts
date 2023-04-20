@@ -68,7 +68,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
           id: `${resource.code.text} Reference Range`,
-          label: { content: `${resource.code.text + getMeasurementSettingSuffix(resource)} Reference Range` },
+          label: { content: `${resource.code.text} Reference Range` },
           yScaleID: scaleName,
           yMax: range?.high?.value,
           yMin: range?.low?.value,
