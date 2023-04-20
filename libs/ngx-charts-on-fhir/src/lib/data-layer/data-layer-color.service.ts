@@ -131,8 +131,3 @@ export class DataLayerColorService {
     return gradient;
   }
 }
-
-/** Determine whether two datasets "match" and should use similar colors */
-function isMatchingDataset(dataset: Dataset, other: Dataset) {
-  return other !== dataset && dataset.label && other.label && (dataset.label.startsWith(other.label) || other.label.startsWith(dataset.label));
-}
