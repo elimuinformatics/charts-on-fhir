@@ -6,7 +6,7 @@ import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
-import { TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
+import { TODAY_DATE_VERTICAL_LINE_ANNOTATION, TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
@@ -25,6 +25,7 @@ export class FhirChartConfigurationService {
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
+    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation,
     private ngZone: NgZone
   ) {}
 
@@ -123,7 +124,7 @@ export class FhirChartConfigurationService {
           x: this.timeline,
         },
         plugins: {
-          annotation: { annotations },
+          annotation: { annotations: [...annotations, this.todayDateVerticalLineAnnotation] },
           zoom: {
             zoom: {
               onZoomStart: ({ chart }) => {
