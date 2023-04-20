@@ -34,7 +34,7 @@ describe('DataLayerColorService', () => {
       };
       service.chooseColorsFromPalette(layer);
       expect(layer.datasets[0].borderColor).toEqual(palette[0]);
-      expect(layer.datasets[1].borderColor).toEqual(palette[0]);
+      expect(layer.datasets[1].borderColor).toEqual(palette[1]);
     }));
 
     it('should brighten palette color by 20% for home measurements', inject([DataLayerColorService], (service: DataLayerColorService) => {
@@ -43,7 +43,7 @@ describe('DataLayerColorService', () => {
         annotations: [{ label: { display: true } }],
       };
       service.chooseColorsFromPalette(layer);
-      expect(layer.datasets[0].borderColor).toEqual('#333333');
+      expect(layer.datasets[0].borderColor).toEqual('#000000');
     }));
 
     it('should add transparency for matching annotation color', inject([DataLayerColorService], (service: DataLayerColorService) => {

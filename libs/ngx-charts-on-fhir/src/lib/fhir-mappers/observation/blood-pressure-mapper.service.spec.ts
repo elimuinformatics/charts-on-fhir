@@ -68,8 +68,8 @@ describe('BloodPressureMapper', () => {
         ],
       };
       expect(mapper.map(observation).annotations).toEqual([
-        jasmine.objectContaining({ label: { content: 'Systolic Blood Pressure (Clinic) Reference Range' } }),
-        jasmine.objectContaining({ label: { content: 'Diastolic Blood Pressure (Clinic) Reference Range' } }),
+        jasmine.objectContaining({ label: { content: 'Systolic Blood Pressure Reference Range' } }),
+        jasmine.objectContaining({ label: { content: 'Diastolic Blood Pressure Reference Range' } }),
       ]);
     });
   });

@@ -55,6 +55,8 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             },
           ],
           chartsOnFhir: {
+            colorGroup: resource.code.text,
+            colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
           },
         },

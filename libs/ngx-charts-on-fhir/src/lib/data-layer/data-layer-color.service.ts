@@ -59,7 +59,7 @@ export class DataLayerColorService {
 
   /** Gets the palette that should be used for the given dataset */
   private getPalette(dataset: Dataset) {
-    if (dataset.label?.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
+    if (dataset.chartsOnFhir?.colorPalette === 'light') {
       return this.lightPalette;
     }
     return this.palette;
@@ -68,7 +68,7 @@ export class DataLayerColorService {
   /** Finds a matching dataset with similar label and returns its color index in the palette */
   private getMatchingDatasetColorIndex(layer: DataLayer, dataset: Dataset) {
     for (let other of layer.datasets) {
-      if (isMatchingDataset(dataset, other)) {
+      if (dataset.chartsOnFhir?.colorGroup && dataset.chartsOnFhir.colorGroup === other.chartsOnFhir?.colorGroup) {
         const color = this.getColor(other);
         if (color) {
           for (let palette of [this.palette, this.lightPalette]) {
@@ -89,7 +89,7 @@ export class DataLayerColorService {
       for (let annotation of layer.annotations) {
         const anno = annotation as BoxAnnotationOptions;
         const label = anno.label?.content;
-        if (typeof label === 'string' && label.startsWith(dataset.label)) {
+        if (typeof label === 'string' && dataset.chartsOnFhir?.colorGroup && label.startsWith(dataset.chartsOnFhir?.colorGroup)) {
           anno.backgroundColor = this.addTransparency(this.getColor(dataset));
         }
       }
