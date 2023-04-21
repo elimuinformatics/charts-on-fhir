@@ -8,12 +8,12 @@ import { Subject } from 'rxjs';
 })
 export class FhirChartLifecycleService {
   constructor() {
-    console.log('Registering reactive-chart-plugin');
+    console.log('Registering lifecycle-service-plugin');
     Chart.register(this.plugin);
   }
 
   private plugin: Plugin = {
-    id: 'reactive-chart-plugin',
+    id: 'lifecycle-service-plugin',
     afterInit: (...args) => this.afterInit.next(args),
     afterUpdate: (...args) => this.afterUpdate.next(args),
   };
