@@ -1,17 +1,19 @@
 <ng-container *ngIf="scalePositions$ | async as positions">
   <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
-    <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'" [style.gridTemplateRows]="gridTemplateRows$ | async">
-      <fhir-chart-summary-card
-        *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
-        class="dataset-summary mat-elevation-z2"
-        [style.gridRow]="index + 1"
-        [layer]="layer"
-        [expanded]="expandedCard === layer.id"
-        (expand)="onCardExpand(layer.id)"
-        (collapse)="onCardCollapse(layer.id)"
-      >
-      </fhir-chart-summary-card>
-      <div class="backdrop" *ngIf="expandedCard != null" (click)="expandedCard = null"></div>
-    </div>
+    <ng-container *ngIf="layers.length > 0">
+      <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'" [style.gridTemplateRows]="gridTemplateRows$ | async">
+        <fhir-chart-summary-card
+          *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
+          class="dataset-summary mat-elevation-z2"
+          [style.gridRow]="index + 1"
+          [layer]="layer"
+          [expanded]="expandedCard === layer.id"
+          (expand)="onCardExpand(layer.id)"
+          (collapse)="onCardCollapse(layer.id)"
+        >
+        </fhir-chart-summary-card>
+        <div class="backdrop" *ngIf="expandedCard != null" (click)="expandedCard = null"></div>
+      </div>
+    </ng-container>
   </ng-container>
 </ng-container>

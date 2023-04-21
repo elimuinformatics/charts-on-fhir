@@ -1,56 +1,42 @@
 import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ManagedDataLayer } from '../../data-layer/data-layer';
-import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
-import { NumberRange } from '../../utils';
-import { SummaryService } from '../summary.service';
 import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
+import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
+import { Chart } from 'chart.js';
+import { DeepPartial } from 'chart.js/dist/types/utils';
 
 class MockLayerManager {
   enabledLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
 }
 
-class MockConfigService {
-  timelineRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
+class MockLifecycleService {
+  afterUpdate$ = new Subject<[DeepPartial<Chart>]>();
 }
 
-@Component({ selector: 'fhir-chart-summary-card', template: '<ng-content></ng-content>' })
+@Component({ selector: 'fhir-chart-summary-card' })
 class MockFhirChartSummaryCardComponent {
-  @Input() title: unknown;
-  @Input() color: unknown;
+  @Input() layer: unknown;
+  @Input() expanded: unknown;
 }
 
-@Component({ selector: 'dynamic-table', template: '' })
-class MockDynamicTableComponent {
-  @Input() data: Record<string, string>[] = [];
-}
-
-describe('FhirChartSummaryComponent', () => {
+fdescribe('FhirChartSummaryComponent', () => {
   let component: FhirChartSummaryComponent;
   let fixture: ComponentFixture<FhirChartSummaryComponent>;
   let layerManager: MockLayerManager;
-  let configService: MockConfigService;
-  let summaryService: jasmine.SpyObj<SummaryService>;
-  let colorService: jasmine.SpyObj<DataLayerColorService>;
+  let lifecycleService: MockLifecycleService;
 
   beforeEach(async () => {
     layerManager = new MockLayerManager();
-    configService = new MockConfigService();
-    summaryService = jasmine.createSpyObj('SummaryService', ['canSummarize', 'summarize']);
-    summaryService.canSummarize.and.returnValue(true);
-    summaryService.summarize.and.returnValue([{ name: 'summary' }]);
-    colorService = jasmine.createSpyObj('ColorService', ['getColorGradient']);
+    lifecycleService = new MockLifecycleService();
     await TestBed.configureTestingModule({
-      declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent, MockDynamicTableComponent],
+      declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: layerManager },
-        { provide: FhirChartConfigurationService, useValue: configService },
-        { provide: SummaryService, useValue: summaryService, multi: true },
-        { provide: DataLayerColorService, useValue: colorService },
+        { provide: FhirChartLifecycleService, useValue: lifecycleService },
       ],
     }).compileComponents();
 
@@ -64,8 +50,21 @@ describe('FhirChartSummaryComponent', () => {
   });
 
   it('should render a card for each layer', () => {
-    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [], scale: { id: 'test' } };
-    layerManager.enabledLayers$.next([layer, layer, layer]);
+    layerManager.enabledLayers$.next([
+      { id: '1', name: 'layer 1', datasets: [], scale: { id: 'one' } },
+      { id: '2', name: 'layer 2', datasets: [], scale: { id: 'two' } },
+      { id: '3', name: 'layer 3', datasets: [], scale: { id: 'three' } },
+    ]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          one: { axis: 'y', top: 10, bottom: 20, height: 10 },
+          two: { axis: 'y', top: 20, bottom: 40, height: 20 },
+          three: { axis: 'y', top: 40, bottom: 50, height: 10 },
+        },
+      },
+    ]);
     fixture.detectChanges();
     const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
     expect(cards.length).toBe(3);
@@ -74,20 +73,38 @@ describe('FhirChartSummaryComponent', () => {
   it('should set inputs on fhir-chart-summary-card component', () => {
     const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
     layerManager.enabledLayers$.next([layer]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          test: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
     fixture.detectChanges();
     const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
-    expect(card.componentInstance.title).toEqual('layer');
+    expect(card.componentInstance.layer).toEqual(layer);
+    expect(card.componentInstance.expanded).toEqual(false);
   });
 
-  it('should set inputs on dynamic-table component', () => {
-    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
-    layerManager.enabledLayers$.next([layer]);
-    fixture.detectChanges();
-    const statistics: DebugElement = fixture.debugElement.query(By.directive(MockDynamicTableComponent));
-    expect(statistics.componentInstance.data).toEqual([{ name: 'summary' }]);
-  });
   it('should not render a card for disabled layers', () => {
     layerManager.enabledLayers$.next([]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          test: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    fixture.detectChanges();
+    const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
+    expect(cards.length).toBe(0);
+  });
+
+  it('should not render a card before chart updates', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.enabledLayers$.next([layer]);
     fixture.detectChanges();
     const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
     expect(cards.length).toBe(0);

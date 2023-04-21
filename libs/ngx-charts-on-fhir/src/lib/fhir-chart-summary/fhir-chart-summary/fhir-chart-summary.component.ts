@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
 
