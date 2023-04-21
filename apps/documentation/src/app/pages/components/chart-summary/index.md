@@ -2,7 +2,7 @@
 
 ## Overview
 
-A stack of summary cards that display information about each data layer on the chart. The summary information will be updated dynamically to reflect the data points that are currently visible on the chart.
+A stack of summary cards that display information about each data layer on the chart. The summary information will be updated dynamically to reflect the data points that are currently visible on the chart. If a summary card gets too small to display all of the content, it can be expanded to full size by clicking on it.
 
 ## Example
 

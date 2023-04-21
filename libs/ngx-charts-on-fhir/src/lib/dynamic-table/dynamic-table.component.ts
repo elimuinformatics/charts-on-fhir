@@ -10,6 +10,11 @@ import { zipObject } from 'lodash-es';
 export class DynamicTableComponent {
   columns: string[] = [];
   _data: Record<string, string>[] = [];
+  /**
+   * Input data can be an array of records or a 2D array.
+   * If it is an array of records, the record keys will be the column headings.
+   * If it is a 2D array, the first row will be column headings.
+   * */
   @Input() set data(inputData: Record<string, string>[] | string[][]) {
     if (isArrayData(inputData)) {
       this._data = inputData.slice(1).map((row) => zipObject(inputData[0], row));
