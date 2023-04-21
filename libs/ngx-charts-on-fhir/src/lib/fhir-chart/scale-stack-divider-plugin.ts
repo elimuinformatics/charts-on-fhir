@@ -8,7 +8,7 @@ export const scaleStackDividerPlugin: Plugin = {
     for (let scale of Object.values(chart.scales)) {
       if (!scale.isHorizontal() && isCartesianScale(scale) && scale.top > chartArea.top) {
         ctx.save();
-        drawDivider(chart, scale, 24, '#fff');
+        ctx.clearRect(chart.chartArea.left - 1, scale.top - 12, chart.chartArea.width, 24);
         drawDivider(chart, scale, 1, '#666');
         ctx.restore();
       }
