@@ -6,7 +6,6 @@ import { DataLayerMergeService } from './data-layer-merge.service';
 import produce, { castDraft } from 'immer';
 import { zip } from 'lodash-es';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
-import { CartesianScaleOptions } from 'chart.js';
 
 /**
  * A service for asynchronously retrieving data layers.
@@ -51,16 +50,11 @@ export abstract class DataLayerService {
 type DataLayerManagerState = {
   layers: DataLayerCollection;
   selected: string[];
-  focused: null | {
-    id: string;
-    originalWeight: number;
-  };
 };
 
 const initialState: DataLayerManagerState = {
   layers: {},
   selected: [],
-  focused: null,
 };
 
 type LayerCompareFn = (a: DataLayer, b: DataLayer) => number;
@@ -220,39 +214,6 @@ export class DataLayerManagerService {
       })
     );
   }
-
-  /** Focus a layer so it takes up a larger portion of the screen */
-  focus(id: string, height: number) {
-    if (!this.state.layers[id]) {
-      throw new Error(`Layer [${id}] not found`);
-    }
-    let nextState = this.unfocusLayer(this.state);
-    if (!this.state.focused || this.state.focused.id !== id) {
-      nextState = this.focusLayer(nextState, id, height);
-    }
-    this.stateSubject.next(nextState);
-  }
-
-  /** Reducer that returns a new state with the given layer focused */
-  private focusLayer = produce<DataLayerManagerState, [string, number]>((draft, id, height) => {
-    const layer = draft.layers[id];
-    const scale = layer.scale as CartesianScaleOptions;
-    const originalWeight = scale?.stackWeight ?? 1;
-    draft.focused = { id, originalWeight };
-    scale.stackWeight = (1.2 + 0.3 * draft.selected.length) * originalWeight;
-    layer.focused = true;
-  });
-
-  /** Reducer that returns a new state without a focused layer */
-  private unfocusLayer = produce<DataLayerManagerState>((draft) => {
-    if (draft.focused) {
-      const prevLayer = draft.layers[draft.focused.id];
-      const prevScale = prevLayer.scale as CartesianScaleOptions;
-      prevScale.stackWeight = draft.focused.originalWeight;
-      prevLayer.focused = false;
-      draft.focused = null;
-    }
-  });
 
   /** Modify a layer's properties.
    * This method must be used to propagate the changes to other components.
