@@ -10,11 +10,11 @@ export class AppComponent implements OnInit {
   showAddDataLayer: boolean = false;
   layers: any[] = [];
   isAllLayerSelected = true;
-
+  preDisableLayer: string[] = ['Glucose'];
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn);
+    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn, this.preDisableLayer);
   }
 
   sortCompareFn = (a: DataLayer, b: DataLayer) => {
