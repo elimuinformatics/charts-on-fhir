@@ -1,4 +1,4 @@
-<div class="grid-table" [style.gridTemplateColumns]="'repeat(' + columns.length + ', 1fr)'">
+<div class="grid-table" [style.gridTemplateColumns]="'repeat(' + columns.length + ', auto)'">
   <div class="grid-thead">
     <div class="grid-th" *ngFor="let col of columns">{{ col | titlecase }}</div>
   </div>
