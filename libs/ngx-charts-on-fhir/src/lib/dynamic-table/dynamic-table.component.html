@@ -1,8 +1,8 @@
-<table mat-table [dataSource]="data" aria-label="Summary">
-  <ng-container *ngFor="let col of columns" [matColumnDef]="col">
-    <th mat-header-cell *matHeaderCellDef>{{ col | titlecase }}</th>
-    <td mat-cell *matCellDef="let element">{{ element[col] }}</td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="columns"></tr>
-  <tr mat-row *matRowDef="let row; columns: columns"></tr>
-</table>
+<div class="grid-table" [style.gridTemplateColumns]="'repeat(' + columns.length + ', 1fr)'">
+  <div class="grid-thead">
+    <div class="grid-th" *ngFor="let col of columns">{{ col | titlecase }}</div>
+  </div>
+  <div class="grid-tbody" *ngFor="let row of _data">
+    <div class="grid-td" *ngFor="let col of columns">{{ row[col] }}</div>
+  </div>
+</div>
