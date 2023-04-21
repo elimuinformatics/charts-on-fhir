@@ -65,3 +65,22 @@ const defaultAnnotationOptions: ChartAnnotation = {
   borderWidth: 0,
   drawTime: 'beforeDraw',
 };
+
+export const TODAY_DATE_VERTICAL_LINE_ANNOTATION = new InjectionToken<ChartAnnotation>('Annotation Options', {
+  factory: () => todayDateVerticalLineAnnotation,
+});
+const todayDateVerticalLineAnnotation: ChartAnnotation = {
+  type: 'line',
+  borderColor: '#FF900D',
+  borderWidth: 3,
+  display: true,
+  label: {
+    display: true,
+    content: 'Today',
+    position: 'start',
+    color: '#FF900D',
+    backgroundColor: '#FAFAFA',
+  },
+  scaleID: 'x',
+  value: new Date().getTime(),
+};

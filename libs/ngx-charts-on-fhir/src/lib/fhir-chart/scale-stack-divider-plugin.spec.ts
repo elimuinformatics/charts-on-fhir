@@ -10,7 +10,7 @@ describe('scaleStackDividerPlugin', () => {
   it('should draw a line between scales', () => {
     const ctx = jasmine.createSpyObj<CanvasRenderingContext2D>(
       'CanvasRenderingContext2D',
-      ['save', 'restore', 'beginPath', 'moveTo', 'lineTo', 'stroke'],
+      ['save', 'restore', 'beginPath', 'moveTo', 'lineTo', 'stroke', 'clearRect'],
       ['strokeStyle', 'lineWidth']
     );
     const chartArea: ChartArea = {
@@ -38,6 +38,7 @@ describe('scaleStackDividerPlugin', () => {
     if (scaleStackDividerPlugin.beforeDatasetsDraw) {
       scaleStackDividerPlugin.beforeDatasetsDraw(chart, { cancelable: true }, {});
     }
+    expect(ctx.clearRect).toHaveBeenCalled();
     expect(ctx.stroke).toHaveBeenCalled();
   });
 });
