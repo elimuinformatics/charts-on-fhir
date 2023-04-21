@@ -53,7 +53,8 @@
               "with": "apps/cardiovascular-patient-app/src/environments/environment.prod.ts"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "tsConfig": "apps/cardiovascular-patient-app/tsconfig.app.json"
         },
         "development": {
           "buildOptimizer": false,
@@ -61,7 +62,8 @@
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true
+          "namedChunks": true,
+          "tsConfig": "apps/cardiovascular-patient-app/tsconfig.app.json"
         },
         "logica-open": {
           "fileReplacements": [
