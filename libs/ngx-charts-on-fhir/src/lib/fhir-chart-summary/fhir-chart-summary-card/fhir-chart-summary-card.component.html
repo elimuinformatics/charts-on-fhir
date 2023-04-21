@@ -1,3 +1,28 @@
-<div class="card summary-card" [style.background]="getBackgroundStyle()">
-  <ng-content></ng-content>
-</div>
+<ng-container *ngIf="configService.timelineRange$ | async as range">
+  <ng-template #template>
+    <div class="card summary-card" [style.background]="getBackgroundStyle()">
+      <dynamic-table [data]="summarize(range)"></dynamic-table>
+    </div>
+  </ng-template>
+  <div class="overlay-origin" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="expanded = true" [matTooltip]="getTooltip()">
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+    <div *ngIf="contentOverflow" class="content-overflow"></div>
+  </div>
+  <ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOpen]="expanded"
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayHasBackdrop]="false"
+    cdkConnectedOverlayPanelClass="mat-elevation-z4"
+    [cdkConnectedOverlayPositions]="overlayPositions"
+    [cdkConnectedOverlayPush]="true"
+    [cdkConnectedOverlayGrowAfterOpen]="true"
+    [cdkConnectedOverlayWidth]="collapsedWidth + 16"
+    [cdkConnectedOverlayMinHeight]="collapsedHeight"
+    (detach)="expanded = false"
+  >
+    <div class="overlay" (click)="expanded = false">
+      <ng-container [ngTemplateOutlet]="template"></ng-container>
+    </div>
+  </ng-template>
+</ng-container>

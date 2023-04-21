@@ -1,14 +1,19 @@
 .chart-summary {
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* grid-template-rows is set dynamically */
+  grid-template-columns: 1fr;
   gap: 5px;
 }
 .dataset-summary {
-  flex: 0 0 auto;
-  overflow-y: auto;
+  pointer-events: all;
+  /* grid-row is set dynamically */
+  grid-column: 1;
+  overflow-y: hidden;
 }
-.card-button {
-  position: absolute;
-  margin-left: -48px;
+.backdrop {
+  grid-row: 1 / -1;
+  grid-column: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+  z-index: 100;
 }

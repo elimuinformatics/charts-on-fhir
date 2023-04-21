@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { zipObject } from 'lodash-es';
 
 @Component({
   selector: 'dynamic-table',
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicTableComponent {
   columns: string[] = [];

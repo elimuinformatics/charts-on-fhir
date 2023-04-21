@@ -1,26 +1,17 @@
-<ng-container *ngIf="configService.timelineRange$ | async as range">
-  <ng-container *ngIf="scalePositions$ | async as positions">
-    <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
-      <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'">
-        <fhir-chart-summary-card
-          *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
-          [color]="colorService.getColorGradient(layer)"
-          [title]="layer.name"
-          icon="info"
-          class="dataset-summary mat-elevation-z2"
-          [style.top]="positions[layer.scale.id].top + 'px'"
-          [style.height]="positions[layer.scale.id].height - 5 + 'px'"
-          #card
-        >
-          <button mat-icon-button color="primary" class="card-button" *ngIf="!layer.focused" matTooltip="Expand this chart" (click)="onCardClick(layer, index)">
-            <mat-icon>unfold_more</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" class="card-button" *ngIf="layer.focused" matTooltip="Shrink this chart" (click)="onCardClick(layer, index)">
-            <mat-icon>unfold_less</mat-icon>
-          </button>
-          <dynamic-table [data]="summarize(layer, range)" #table></dynamic-table>
-        </fhir-chart-summary-card>
-      </div>
-    </ng-container>
+<ng-container *ngIf="scalePositions$ | async as positions">
+  <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
+    <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'" [style.gridTemplateRows]="gridTemplateRows$ | async">
+      <fhir-chart-summary-card
+        *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
+        class="dataset-summary mat-elevation-z2"
+        [style.gridRow]="index + 1"
+        [layer]="layer"
+        [expanded]="expandedCard === layer.id"
+        (expand)="onCardExpand(layer.id)"
+        (collapse)="onCardCollapse(layer.id)"
+      >
+      </fhir-chart-summary-card>
+      <div class="backdrop" *ngIf="expandedCard != null" (click)="expandedCard = null"></div>
+    </div>
   </ng-container>
 </ng-container>

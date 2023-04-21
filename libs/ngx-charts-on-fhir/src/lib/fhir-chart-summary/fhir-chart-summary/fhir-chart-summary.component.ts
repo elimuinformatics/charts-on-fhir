@@ -1,14 +1,8 @@
-import { Component, ElementRef, Inject, QueryList, ViewChildren } from '@angular/core';
-import { DataLayer, ManagedDataLayer } from '../../data-layer/data-layer';
-import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
-import { NumberRange } from '../../utils';
-import { SummaryService } from '../summary.service';
-import { combineLatest, map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
-import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-chart-summary-card.component';
 
 /**
  * See `*ChartSummary` for example usage.
@@ -17,32 +11,31 @@ import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-c
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
   styleUrls: ['./fhir-chart-summary.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartSummaryComponent {
-  constructor(
-    public layerManager: DataLayerManagerService,
-    public configService: FhirChartConfigurationService,
-    public colorService: DataLayerColorService,
-    @Inject(SummaryService) private summaryServices: SummaryService[],
-    private lifecycleService: FhirChartLifecycleService
-  ) {}
+  constructor(public layerManager: DataLayerManagerService, private lifecycleService: FhirChartLifecycleService) {}
 
-  @ViewChildren('card', { read: ElementRef }) cards!: QueryList<ElementRef>;
+  scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
+    map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height })))
+  );
+  gridTemplateRows$ = this.scalePositions$.pipe(
+    map(
+      (scales) =>
+        Object.values(scales)
+          .filter((scale) => scale.axis === 'y')
+          .map((scale) => (scale.height - 5).toFixed(0) + 'px')
+          .join(' ') + ' auto'
+    )
+  );
 
-  scalePositions$ = this.lifecycleService.afterUpdate$.pipe(map(([chart]) => mapValues(chart.scales, ({ top, bottom, height }) => ({ top, bottom, height }))));
-
-  onCardClick(layer: ManagedDataLayer, index: number) {
-    this.layerManager.focus(layer.id, this.cards.get(index)?.nativeElement.scrollHeight);
+  expandedCard: string | null = null;
+  onCardExpand(layerId: string) {
+    this.expandedCard = layerId;
   }
-
-  summarize(layer: DataLayer, range: NumberRange | null) {
-    if (range) {
-      for (let summaryService of this.summaryServices) {
-        if (summaryService.canSummarize(layer)) {
-          return summaryService.summarize(layer, range);
-        }
-      }
+  onCardCollapse(layerId: string) {
+    if (this.expandedCard === layerId) {
+      this.expandedCard = null;
     }
-    return [{}];
   }
 }
