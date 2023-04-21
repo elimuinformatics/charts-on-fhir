@@ -68,7 +68,7 @@ export class DataLayerColorService {
   /** Finds a matching dataset with similar label and returns its color index in the palette */
   private getMatchingDatasetColorIndex(layer: DataLayer, dataset: Dataset) {
     for (let other of layer.datasets) {
-      if (dataset.chartsOnFhir?.colorGroup && dataset.chartsOnFhir.colorGroup === other.chartsOnFhir?.colorGroup) {
+      if (dataset.chartsOnFhir?.group && dataset.chartsOnFhir.group === other.chartsOnFhir?.group) {
         const color = this.getColor(other);
         if (color) {
           for (let palette of [this.palette, this.lightPalette]) {
@@ -89,7 +89,7 @@ export class DataLayerColorService {
       for (let annotation of layer.annotations) {
         const anno = annotation as BoxAnnotationOptions;
         const label = anno.label?.content;
-        if (typeof label === 'string' && dataset.chartsOnFhir?.colorGroup && label.startsWith(dataset.chartsOnFhir?.colorGroup)) {
+        if (typeof label === 'string' && dataset.chartsOnFhir?.group && label.startsWith(dataset.chartsOnFhir?.group)) {
           anno.backgroundColor = this.addTransparency(this.getColor(dataset));
         }
       }

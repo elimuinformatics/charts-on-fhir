@@ -52,7 +52,7 @@ describe('DataLayerColorService', () => {
           {
             label: 'One',
             chartsOnFhir: {
-              colorGroup: 'One',
+              group: 'One',
               colorPalette: 'dark',
               tags: ['Clinic'],
             },
