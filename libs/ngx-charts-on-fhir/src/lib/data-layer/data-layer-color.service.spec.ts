@@ -48,7 +48,16 @@ describe('DataLayerColorService', () => {
 
     it('should add transparency for matching annotation color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
-        datasets: [{ label: 'One' }],
+        datasets: [
+          {
+            label: 'One',
+            chartsOnFhir: {
+              colorGroup: 'One',
+              colorPalette: 'dark',
+              tags: ['Clinic'],
+            },
+          },
+        ],
         annotations: [{ label: { display: true, content: 'One Annotation' } }],
       };
       service.chooseColorsFromPalette(layer);

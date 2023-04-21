@@ -28,6 +28,8 @@ export class HomeMeasurementSummaryService implements SummaryService {
 export function getOriginalLabel(dataset: Dataset): string | undefined {
   if (dataset.label && dataset.label.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
     return dataset.label.substring(0, dataset.label.length - HOME_DATASET_LABEL_SUFFIX.length);
+  } else if (dataset.label && dataset.label.endsWith(CLINIC_DATASET_LABEL_SUFFIX)) {
+    return dataset.label.substring(0, dataset.label.length - CLINIC_DATASET_LABEL_SUFFIX.length);
   }
   return dataset.label;
 }
