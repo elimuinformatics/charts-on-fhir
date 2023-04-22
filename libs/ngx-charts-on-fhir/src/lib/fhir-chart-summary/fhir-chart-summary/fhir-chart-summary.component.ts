@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { map } from 'rxjs';
+import { combineLatest, map, shareReplay } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
 
@@ -17,14 +17,15 @@ export class FhirChartSummaryComponent {
   constructor(public layerManager: DataLayerManagerService, private lifecycleService: FhirChartLifecycleService) {}
 
   scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
-    map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height })))
+    map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height }))),
+    shareReplay(1)
   );
-  gridTemplateRows$ = this.scalePositions$.pipe(
+  gridTemplateRows$ = combineLatest([this.layerManager.enabledLayers$, this.scalePositions$]).pipe(
     map(
-      (scales) =>
-        Object.values(scales)
-          .filter((scale) => scale.axis === 'y')
-          .map((scale) => (scale.height - 5).toFixed(0) + 'px')
+      ([layers, scales]) =>
+        layers
+          .filter((layer) => layer.scale.id in scales)
+          .map((layer) => (scales[layer.scale.id].height - 5).toFixed(0) + 'px')
           .join(' ') + ' auto'
     )
   );

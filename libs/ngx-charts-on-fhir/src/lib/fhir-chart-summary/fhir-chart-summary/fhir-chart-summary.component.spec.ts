@@ -23,7 +23,7 @@ class MockFhirChartSummaryCardComponent {
   @Input() expanded: unknown;
 }
 
-fdescribe('FhirChartSummaryComponent', () => {
+describe('FhirChartSummaryComponent', () => {
   let component: FhirChartSummaryComponent;
   let fixture: ComponentFixture<FhirChartSummaryComponent>;
   let layerManager: MockLayerManager;
@@ -69,6 +69,29 @@ fdescribe('FhirChartSummaryComponent', () => {
     const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
     expect(cards.length).toBe(3);
   });
+
+  it('should create a grid layout from scale positions', () => {
+    layerManager.enabledLayers$.next([
+      { id: '1', name: 'layer 1', datasets: [], scale: { id: 'one' } },
+      { id: '2', name: 'layer 2', datasets: [], scale: { id: 'two' } },
+      { id: '3', name: 'layer 3', datasets: [], scale: { id: 'three' } },
+    ]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          three: { axis: 'y', top: 40, bottom: 70, height: 30 },
+          two: { axis: 'y', top: 20, bottom: 40, height: 20 },
+          one: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    fixture.detectChanges();
+    const summary = fixture.debugElement.query(By.css('.chart-summary'));
+    expect(summary.styles['gridTemplateRows']).toBe('5px 15px 25px auto');
+  });
+
+  // card sizing doesn't match order in cardio 31059
 
   it('should set inputs on fhir-chart-summary-card component', () => {
     const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
