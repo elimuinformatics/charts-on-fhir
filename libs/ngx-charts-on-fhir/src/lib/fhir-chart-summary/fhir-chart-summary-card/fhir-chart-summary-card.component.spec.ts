@@ -65,4 +65,22 @@ describe('FhirChartSummaryCardComponent', () => {
     const statistics: DebugElement = fixture.debugElement.query(By.directive(MockDynamicTableComponent));
     expect(statistics.componentInstance.data).toEqual([{ name: 'summary' }]);
   });
+
+  it('should show overlay when card is expanded', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    component.layer = layer;
+    component.expanded = true;
+    fixture.detectChanges();
+    const overlay: DebugElement = fixture.debugElement.query(By.css('.overlay'));
+    expect(overlay).toBeDefined();
+  });
+
+  it('should hide overlay when card is collapsed', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    component.layer = layer;
+    component.expanded = false;
+    fixture.detectChanges();
+    const overlay: DebugElement = fixture.debugElement.query(By.css('.overlay'));
+    expect(overlay).toBeNull();
+  });
 });

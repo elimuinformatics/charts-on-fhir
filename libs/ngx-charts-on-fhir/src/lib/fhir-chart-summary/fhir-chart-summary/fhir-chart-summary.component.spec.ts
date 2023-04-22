@@ -1,4 +1,4 @@
-import { Component, DebugElement, Input } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -20,7 +20,9 @@ class MockLifecycleService {
 @Component({ selector: 'fhir-chart-summary-card' })
 class MockFhirChartSummaryCardComponent {
   @Input() layer: unknown;
-  @Input() expanded: unknown;
+  @Input() expanded = false;
+  @Output() expand = new EventEmitter();
+  @Output() collapse = new EventEmitter();
 }
 
 describe('FhirChartSummaryComponent', () => {
@@ -91,8 +93,6 @@ describe('FhirChartSummaryComponent', () => {
     expect(summary.styles['gridTemplateRows']).toBe('5px 15px 25px auto');
   });
 
-  // card sizing doesn't match order in cardio 31059
-
   it('should set inputs on fhir-chart-summary-card component', () => {
     const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
     layerManager.enabledLayers$.next([layer]);
@@ -131,5 +131,68 @@ describe('FhirChartSummaryComponent', () => {
     fixture.detectChanges();
     const cards = fixture.debugElement.queryAll(By.directive(MockFhirChartSummaryCardComponent));
     expect(cards.length).toBe(0);
+  });
+
+  it('should show backdrop when card is expanded', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.enabledLayers$.next([layer]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          test: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    fixture.detectChanges();
+    const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
+    card.componentInstance.expand.emit();
+    fixture.detectChanges();
+    expect(component.expandedCard).toBe('1');
+    const backdrop: DebugElement = fixture.debugElement.query(By.css('.backdrop'));
+    expect(backdrop).toBeDefined();
+  });
+
+  it('should collapse expanded card when backdrop is clicked', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.enabledLayers$.next([layer]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          test: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    component.expandedCard = '1';
+    fixture.detectChanges();
+    const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
+    expect(card.componentInstance.expanded).toBe(true);
+    const backdrop: DebugElement = fixture.debugElement.query(By.css('.backdrop'));
+    backdrop.triggerEventHandler('click');
+    fixture.detectChanges();
+    expect(card.componentInstance.expanded).toBe(false);
+  });
+
+  it('should hide backdrop when card is collapsed', () => {
+    const layer: ManagedDataLayer = { id: '1', name: 'layer', datasets: [{ label: 'dataset', data: [] }], scale: { id: 'test' } };
+    layerManager.enabledLayers$.next([layer]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          test: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    component.expandedCard = '1';
+    fixture.detectChanges();
+    let backdrop: DebugElement = fixture.debugElement.query(By.css('.backdrop'));
+    expect(backdrop).toBeTruthy();
+    const card: DebugElement = fixture.debugElement.query(By.directive(MockFhirChartSummaryCardComponent));
+    card.componentInstance.collapse.emit();
+    fixture.detectChanges();
+    backdrop = fixture.debugElement.query(By.css('.backdrop'));
+    expect(backdrop).toBeNull();
   });
 });

@@ -3,7 +3,7 @@
     <ng-container *ngIf="layers.length > 0">
       <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'" [style.gridTemplateRows]="gridTemplateRows$ | async">
         <fhir-chart-summary-card
-          *ngFor="let layer of layerManager.enabledLayers$ | async; let index = index"
+          *ngFor="let layer of layers; let index = index"
           class="dataset-summary mat-elevation-z2"
           [style.gridRow]="index + 1"
           [layer]="layer"
