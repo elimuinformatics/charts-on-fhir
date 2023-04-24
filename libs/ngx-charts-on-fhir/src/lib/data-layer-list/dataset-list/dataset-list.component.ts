@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import produce, { castDraft } from 'immer';
 import { Dataset } from '../../data-layer/data-layer';
+import { removeBloodPressureLabel } from '../../utils';
 
 @Component({
   selector: 'dataset-list',
@@ -45,5 +46,9 @@ export class DatasetListComponent {
 
   trackByLabel(_index: number, dataset: Dataset) {
     return dataset.label;
+  }
+
+  datasetBPlabel(label: string) {
+    return removeBloodPressureLabel(label);
   }
 }
