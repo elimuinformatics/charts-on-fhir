@@ -68,13 +68,18 @@ export class DataLayerColorService {
     for (let other of layer.datasets) {
       if (dataset.chartsOnFhir?.group && dataset.chartsOnFhir.group === other.chartsOnFhir?.group) {
         const color = this.getColor(other);
-        if (color) {
-          for (let palette of [this.palette, this.lightPalette]) {
-            const index = palette.indexOf(color);
-            if (index >= 0) {
-              return index;
-            }
-          }
+        return this.datasetColorIndex(color!);
+      }
+    }
+    return null;
+  }
+
+  private datasetColorIndex(color: string) {
+    if (color) {
+      for (let palette of [this.palette, this.lightPalette]) {
+        const index = palette.indexOf(color);
+        if (index >= 0) {
+          return index;
         }
       }
     }
