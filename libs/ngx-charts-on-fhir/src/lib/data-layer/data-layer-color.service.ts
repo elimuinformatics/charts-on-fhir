@@ -2,8 +2,6 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
 import tinycolor from 'tinycolor2';
 import { BoxAnnotationOptions } from 'chartjs-plugin-annotation';
-import { HOME_DATASET_LABEL_SUFFIX } from '../fhir-chart-summary/home-measurement-summary.service';
-
 /**
  * Injection Token used by `DataLayerColorService` to define the available chart colors.
  *
