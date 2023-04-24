@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Chart, Plugin } from 'chart.js';
 import { Subject } from 'rxjs';
 
@@ -6,10 +6,17 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class FhirChartLifecycleService {
+export class FhirChartLifecycleService implements OnDestroy {
   constructor() {
-    console.log('Registering lifecycle-service-plugin');
-    Chart.register(this.plugin);
+    if (Chart.registry.plugins.get(this.plugin.id)) {
+      console.warn('lifecycle-service-plugin has already been registered');
+    } else {
+      Chart.register(this.plugin);
+    }
+  }
+
+  ngOnDestroy(): void {
+    Chart.unregister(this.plugin);
   }
 
   private plugin: Plugin = {
