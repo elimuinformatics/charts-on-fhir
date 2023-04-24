@@ -36,7 +36,7 @@ export class FhirChartSummaryCardComponent {
     @Inject(SummaryService) private summaryServices: SummaryService[]
   ) {}
 
-  overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top' }];
+  overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];
 
   get collapsedWidth(): number {
     return this.elementRef.nativeElement.offsetWidth;
