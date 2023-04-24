@@ -50,11 +50,10 @@ export function formatTime(date: string | number | Date): string {
   h = h ? h : 12;
   return `${h}:${mm} ${ampm}`;
 }
+
 export function formatDateTime(date: string | number | Date): string {
   return `${formatDate(date)} ${formatTime(date)}`;
 }
-
-export function removeBloodPressureLabel(label: any) {
-  const datasetlabel = label.includes('Blood Pressure') ? label.replace('Blood Pressure', '') : label;
-  return datasetlabel;
+export function removeBloodPressureLabel(label: string) {
+  return label.includes('Blood Pressure') ? label.replace('Blood Pressure', '') : label;
 }

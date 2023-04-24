@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import produce, { castDraft } from 'immer';
-import { removeBloodPressureLabel } from '../../utils'
+import { removeBloodPressureLabel } from '../../utils';
 
 @Component({
   selector: 'annotation-list',
