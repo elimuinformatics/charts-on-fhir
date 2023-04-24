@@ -155,7 +155,7 @@ export class DataLayerManagerService {
       draft.selected.push(layer.id);
       layer.selected = true;
       layer.enabled = true;
-      preDisableLayer.forEach((layerName: any) => {
+      preDisableLayer.forEach((layerName: string) => {
         if (layerName === layer.name) {
           layer.enabled = false;
         }

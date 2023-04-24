@@ -67,6 +67,23 @@ describe('DataLayerManagerService', () => {
       );
     });
 
+    it('should disable layer when we pass particular layer to disable', () => {
+      const preDisableLayer: string[] = ['a'];
+      const services = [
+        { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
+        { name: 'two', retrieve: () => cold('-a|', { a }) },
+      ];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.retrieveAll(true, (one, two) => one.name.localeCompare(two.name), preDisableLayer);
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xyz', {
+          x: [jasmine.objectContaining(c)],
+          y: [jasmine.objectContaining({ enabled: false }), jasmine.objectContaining(c)],
+          z: [jasmine.objectContaining({ enabled: false }), jasmine.objectContaining(b), jasmine.objectContaining(c)],
+        })
+      );
+    });
+
     it('should sort selectedLayers$ when auto-selecting', () => {
       const services = [
         { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
