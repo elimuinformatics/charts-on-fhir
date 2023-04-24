@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
 import { combineLatest, map, shareReplay } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
@@ -15,6 +15,9 @@ import { mapValues } from 'lodash-es';
 })
 export class FhirChartSummaryComponent {
   constructor(public layerManager: DataLayerManagerService, private lifecycleService: FhirChartLifecycleService) {}
+
+  /** When set to `true`, each card will be vertically aligned with the corresponding chart. */
+  @Input() autoAlign = false;
 
   scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
     map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height }))),

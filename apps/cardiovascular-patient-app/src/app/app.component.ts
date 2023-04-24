@@ -16,11 +16,7 @@ export class AppComponent implements OnInit {
   constructor(readonly layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll();
-
-    this.layerManager.availableLayers$.subscribe((layers) => {
-      layers.forEach((layer) => this.layerManager.select(layer.id));
-    });
+    this.layerManager.retrieveAll(true);
 
     const now = new Date().getTime();
     this.configService.zoom({
@@ -30,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   getBpLayerdata() {
-    this.layerManager.retrieveAll();
+    this.layerManager.retrieveAll(true);
     this.selectedIndex = 1;
   }
 }

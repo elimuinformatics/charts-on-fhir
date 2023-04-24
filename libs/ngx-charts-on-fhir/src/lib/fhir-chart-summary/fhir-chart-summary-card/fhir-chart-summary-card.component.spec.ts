@@ -11,11 +11,6 @@ import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-confi
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-const mockColorService = {
-  getColor: () => '#000000',
-  setColor: () => {},
-};
-
 class MockConfigService {
   timelineRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }

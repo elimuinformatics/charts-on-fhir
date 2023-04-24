@@ -72,7 +72,8 @@ describe('FhirChartSummaryComponent', () => {
     expect(cards.length).toBe(3);
   });
 
-  it('should create a grid layout from scale positions', () => {
+  it('should create a grid layout from scale positions when autoAlign=true', () => {
+    fixture.componentRef.setInput('autoAlign', true);
     layerManager.enabledLayers$.next([
       { id: '1', name: 'layer 1', datasets: [], scale: { id: 'one' } },
       { id: '2', name: 'layer 2', datasets: [], scale: { id: 'two' } },
@@ -91,6 +92,22 @@ describe('FhirChartSummaryComponent', () => {
     fixture.detectChanges();
     const summary = fixture.debugElement.query(By.css('.chart-summary'));
     expect(summary.styles['gridTemplateRows']).toBe('5px 15px 25px auto');
+  });
+
+  it('should use implicit grid rows when autoAlign=false', () => {
+    fixture.componentRef.setInput('autoAlign', false);
+    layerManager.enabledLayers$.next([{ id: '1', name: 'layer 1', datasets: [], scale: { id: 'one' } }]);
+    lifecycleService.afterUpdate$.next([
+      {
+        scales: {
+          x: { axis: 'x', top: 50, bottom: 60, height: 10 },
+          one: { axis: 'y', top: 10, bottom: 20, height: 10 },
+        },
+      },
+    ]);
+    fixture.detectChanges();
+    const summary = fixture.debugElement.query(By.css('.chart-summary'));
+    expect(summary.styles['gridTemplateRows']).toBe('');
   });
 
   it('should set inputs on fhir-chart-summary-card component', () => {

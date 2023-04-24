@@ -1,7 +1,11 @@
 <ng-container *ngIf="scalePositions$ | async as positions">
   <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
     <ng-container *ngIf="layers.length > 0">
-      <div class="chart-summary" [style.paddingTop]="positions[layers[0].scale.id].top + 'px'" [style.gridTemplateRows]="gridTemplateRows$ | async">
+      <div
+        class="chart-summary"
+        [style.paddingTop]="autoAlign ? positions[layers[0].scale.id].top + 'px' : '0'"
+        [style.gridTemplateRows]="autoAlign ? (gridTemplateRows$ | async) : ''"
+      >
         <fhir-chart-summary-card
           *ngFor="let layer of layers; let index = index"
           class="dataset-summary mat-elevation-z2"
