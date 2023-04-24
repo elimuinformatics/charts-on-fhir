@@ -116,7 +116,7 @@ export class DataLayerManagerService {
    * @param selectAll When `true`, every layer that is retrieved will be automatically selected.
    * @param sortCompareFn A comparison function for sorting auto-selected layers. This function will be passed to `Array.sort`.
    */
-  retrieveAll(selectAll: boolean = false, sortCompareFn: LayerCompareFn = () => 0) {
+  retrieveAll(selectAll: boolean = false, sortCompareFn: LayerCompareFn = () => 0, preDisableLayer: string[] = []) {
     this.reset();
     this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve()))
@@ -126,7 +126,7 @@ export class DataLayerManagerService {
           const layers = this.mergeService.merge(this.state.layers, layer);
           let nextState = { ...this.stateSubject.value, layers };
           if (selectAll) {
-            nextState = this.selectAllLayers(nextState);
+            nextState = this.selectAllLayers(nextState, preDisableLayer);
             nextState = this.sortLayers(nextState, sortCompareFn);
           }
           this.stateSubject.next(nextState);
@@ -144,17 +144,22 @@ export class DataLayerManagerService {
   });
 
   /** Reducer that returns a new state with all layers selected */
-  private selectAllLayers = (state: DataLayerManagerState) => {
-    return Object.keys(state.layers).reduce((nextState, id) => this.selectLayer(nextState, id), state);
+  private selectAllLayers = (state: DataLayerManagerState, preDisableLayer: string[]) => {
+    return Object.keys(state.layers).reduce((nextState, id) => this.selectLayer(nextState, id, preDisableLayer), state);
   };
 
   /** Reducer that returns a new state with the given layer selected */
-  private selectLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
+  private selectLayer = produce<DataLayerManagerState, [string, string[]?]>((draft, id, preDisableLayer: string[] = []) => {
     if (!draft.layers[id].selected) {
       const layer = draft.layers[id];
       draft.selected.push(layer.id);
       layer.selected = true;
       layer.enabled = true;
+      preDisableLayer.forEach((layerName: string) => {
+        if (layerName === layer.name) {
+          layer.enabled = false;
+        }
+      });
       this.colorService.chooseColorsFromPalette(layer);
       for (let dataset of layer.datasets) {
         this.tagsService.applyTagStyles(dataset);
