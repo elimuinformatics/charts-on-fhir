@@ -5,6 +5,7 @@ import { ScatterDataPointSummaryService, SummaryService } from './summary.servic
 import { groupBy } from 'lodash-es';
 
 export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
+export const CLINIC_DATASET_LABEL_SUFFIX = ' (Clinic)';
 
 /** Combines home and office measurements before summarizing */
 @Injectable({
@@ -27,6 +28,8 @@ export class HomeMeasurementSummaryService implements SummaryService {
 export function getOriginalLabel(dataset: Dataset): string | undefined {
   if (dataset.label && dataset.label.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
     return dataset.label.substring(0, dataset.label.length - HOME_DATASET_LABEL_SUFFIX.length);
+  } else if (dataset.label && dataset.label.endsWith(CLINIC_DATASET_LABEL_SUFFIX)) {
+    return dataset.label.substring(0, dataset.label.length - CLINIC_DATASET_LABEL_SUFFIX.length);
   }
   return dataset.label;
 }
