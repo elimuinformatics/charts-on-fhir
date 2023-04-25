@@ -40,7 +40,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation): DataLayer {
-    const scaleName = `${resource.code.text} (${resource.valueQuantity.unit})`;
+    const scaleName = resource.code.text;
     return {
       name: resource.code.text,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
@@ -63,7 +63,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       ],
       scale: merge({}, this.linearScaleOptions, {
         id: scaleName,
-        title: { text: scaleName },
+        title: { text: [scaleName, resource.valueQuantity.unit] },
       }),
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
