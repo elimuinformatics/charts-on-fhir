@@ -68,7 +68,10 @@ export class DataLayerColorService {
     for (let other of layer.datasets) {
       if (dataset.chartsOnFhir?.group && dataset.chartsOnFhir.group === other.chartsOnFhir?.group) {
         const color = this.getColor(other);
-        return this.datasetColorIndex(color!);
+        const colorIndex = this.datasetColorIndex(color!);
+        if (colorIndex >= 0) {
+          return colorIndex;
+        }
       }
     }
     return null;
@@ -83,7 +86,7 @@ export class DataLayerColorService {
         }
       }
     }
-    return null;
+    return -1;
   }
 
   /** Finds the corresponding annotations for a dataset and changes their colors to match the dataset */
