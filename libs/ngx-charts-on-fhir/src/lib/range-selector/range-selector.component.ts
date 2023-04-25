@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION, TODAY_DATE_VERTICAL_LINE_ANNOTATION } from '../fhir-mappers/fhir-mapper-options';
+import { ChartAnnotation } from '../utils';
 
 /**
  * See `*RangeSelector` for example usage.
@@ -14,7 +16,6 @@ import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configur
 export class RangeSelectorComponent {
   maxDate?: Date;
   minDate?: Date;
-
   rangeSelectorButtons = [
     { month: 1, value: '1 mo' },
     { month: 3, value: '3 mo' },
@@ -23,7 +24,12 @@ export class RangeSelectorComponent {
   ];
   selectedButton: number | 'All' = 'All';
 
-  constructor(private configService: FhirChartConfigurationService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private configService: FhirChartConfigurationService,
+    @Inject(SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION) private sixMonthTimeFrameAnnotation: ChartAnnotation,
+    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation
+  ) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
@@ -42,10 +48,12 @@ export class RangeSelectorComponent {
     if (this.maxDate && monthCount) {
       this.maxDate = new Date();
       this.minDate = subtractMonths(this.maxDate, monthCount);
+      this.configService.buildConfiguration([], {}, [this.sixMonthTimeFrameAnnotation]);
       this.configService.zoom({
         min: this.minDate.getTime(),
         max: new Date().getTime(),
       });
+      this.configService.chart?.render();
     }
   }
 
