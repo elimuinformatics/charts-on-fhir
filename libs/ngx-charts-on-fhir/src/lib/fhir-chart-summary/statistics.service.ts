@@ -64,10 +64,10 @@ export class StatisticsService {
   /** Format a set of statistics as strings */
   private formatStatistics({ days, reported, outOfRange, average, median }: CombinedStats, precision: number) {
     return {
-      'Days Reported': formatFraction(reported.length, days),
-      ...(outOfRange == null ? {} : { 'Outside Goal': formatFraction(outOfRange.length, reported.length) }),
       Average: formatMultipleValues(average, precision),
       Median: formatMultipleValues(median, precision),
+      ...(outOfRange == null ? {} : { 'Outside Goal': formatFraction(outOfRange.length, reported.length) }),
+      'Days Reported': formatFraction(reported.length, days),
     };
   }
 

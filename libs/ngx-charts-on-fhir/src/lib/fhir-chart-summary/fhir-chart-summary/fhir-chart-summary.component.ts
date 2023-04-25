@@ -1,10 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { DataLayer } from '../../data-layer/data-layer';
-import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
-import { NumberRange } from '../../utils';
-import { SummaryService } from '../summary.service';
+import { combineLatest, map, shareReplay } from 'rxjs';
+import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
+import { mapValues } from 'lodash-es';
 
 /**
  * See `*ChartSummary` for example usage.
@@ -13,23 +11,35 @@ import { SummaryService } from '../summary.service';
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
   styleUrls: ['./fhir-chart-summary.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartSummaryComponent {
-  constructor(
-    public layerManager: DataLayerManagerService,
-    public configService: FhirChartConfigurationService,
-    public colorService: DataLayerColorService,
-    @Inject(SummaryService) private summaryServices: SummaryService[]
-  ) {}
+  constructor(public layerManager: DataLayerManagerService, private lifecycleService: FhirChartLifecycleService) {}
 
-  summarize(layer: DataLayer, range: NumberRange | null) {
-    if (range) {
-      for (let summaryService of this.summaryServices) {
-        if (summaryService.canSummarize(layer)) {
-          return summaryService.summarize(layer, range);
-        }
-      }
+  /** When set to `true`, each card will be vertically aligned with the corresponding chart. */
+  @Input() autoAlign = false;
+
+  scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
+    map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height }))),
+    shareReplay(1)
+  );
+  gridTemplateRows$ = combineLatest([this.layerManager.enabledLayers$, this.scalePositions$]).pipe(
+    map(
+      ([layers, scales]) =>
+        layers
+          .filter((layer) => layer.scale.id in scales)
+          .map((layer) => (scales[layer.scale.id].height - 5).toFixed(0) + 'px')
+          .join(' ') + ' auto'
+    )
+  );
+
+  expandedCard: string | null = null;
+  onCardExpand(layerId: string) {
+    this.expandedCard = layerId;
+  }
+  onCardCollapse(layerId: string) {
+    if (this.expandedCard === layerId) {
+      this.expandedCard = null;
     }
-    return [{}];
   }
 }
