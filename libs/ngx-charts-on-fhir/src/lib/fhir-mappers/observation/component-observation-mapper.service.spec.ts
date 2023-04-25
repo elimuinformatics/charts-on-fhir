@@ -108,9 +108,9 @@ describe('ComponentObservationMapper', () => {
       const mapper = new ComponentObservationMapper({ type: 'linear' }, {});
       expect(mapper.map(observation).scale).toEqual(
         jasmine.objectContaining({
-          id: 'text (unit)',
+          id: 'text',
           type: 'linear',
-          title: { text: 'text (unit)' },
+          title: { text: ['text', 'unit'] },
         })
       );
     });
@@ -138,7 +138,7 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
-          yScaleID: 'text (unit)',
+          yScaleID: 'text',
           yMin: 1,
           yMax: 10,
         })
