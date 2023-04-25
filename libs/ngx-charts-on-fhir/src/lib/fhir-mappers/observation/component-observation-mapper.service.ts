@@ -4,7 +4,7 @@ import { Observation, ObservationComponent } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { ChartAnnotation, isDefined } from '../../utils';
+import { ChartAnnotation, isDefined, removeBloodPressureLabel } from '../../utils';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
 
@@ -58,7 +58,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
       datasets: resource.component
         .sort((a, b) => a.code.text.localeCompare(b.code.text))
         .map((component) => ({
-          label: component.code.text + getMeasurementSettingSuffix(resource),
+          label: removeBloodPressureLabel(component.code.text) + getMeasurementSettingSuffix(resource),
           yAxisID: scaleName,
           data: [
             {
