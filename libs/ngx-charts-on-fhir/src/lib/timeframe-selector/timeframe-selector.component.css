@@ -1,0 +1,10 @@
+/* Used to make filter responsive for mobile view*/
+.range-selector {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.range-selector mat-button-toggle-group {
+  margin-top: 2px;
+}

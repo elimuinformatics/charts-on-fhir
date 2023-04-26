@@ -48,12 +48,24 @@ export class RangeSelectorComponent {
     if (this.maxDate && monthCount) {
       this.maxDate = new Date();
       this.minDate = subtractMonths(this.maxDate, monthCount);
-      this.configService.buildConfiguration([], {}, [this.sixMonthTimeFrameAnnotation]);
+      //   type: 'line',
+      //   borderColor: '#FF900D',
+      //   borderWidth: 3,
+      //   display: true,
+      //   label: {
+      //     display: true,
+      //     content: `${monthCount} month ago` ,
+      //     position: 'start',
+      //     color: '#FF900D',
+      //     backgroundColor: '#FAFAFA',
+      //   },
+      //   scaleID: 'x',
+      //   value: subtractMonths(new Date(), monthCount).getTime()
+      // });
       this.configService.zoom({
         min: this.minDate.getTime(),
         max: new Date().getTime(),
       });
-      this.configService.chart?.render();
     }
   }
 

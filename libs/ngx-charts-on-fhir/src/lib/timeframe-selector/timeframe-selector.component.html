@@ -1,0 +1,9 @@
+<mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style">
+  <mat-button-toggle
+    *ngFor="let rangeButton of rangeSelectorButtons"
+    [id]="rangeButton.value"
+    [value]="rangeButton.month"
+    (click)="updateRangeSelector(rangeButton.month)"
+    >{{ rangeButton.value }}</mat-button-toggle
+  >
+</mat-button-toggle-group>
