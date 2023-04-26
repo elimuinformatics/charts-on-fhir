@@ -245,7 +245,7 @@ export class DataLayerManagerService {
     this.state = { ...this.state, autoSortFn };
   }
 
-  /** Add a layer to the chart */
+  /** Add a layer to the chart. This will disable auto-select. */
   select(id: string) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -259,7 +259,7 @@ export class DataLayerManagerService {
     };
   }
 
-  /** Remove a layer from the chart */
+  /** Remove a layer from the chart. This will disable auto-select. */
   remove(id: string) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -278,7 +278,8 @@ export class DataLayerManagerService {
   }
 
   /** Enable or disable a layer. A disabled layer will still show up in
-   * the list of selected layers, but will not be visible on the chart. */
+   * the list of selected layers, but will not be visible on the chart.
+   * This will disable auto-enable. */
   enable(id: string, enabled = true) {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
@@ -306,7 +307,7 @@ export class DataLayerManagerService {
     });
   }
 
-  /** Change the sort order of a layer */
+  /** Change the sort order of a layer. This will disable auto-sort. */
   move(previousIndex: number, newIndex: number) {
     if (previousIndex < 0 || previousIndex > this.state.selected.length) {
       throw new RangeError(`Index [${previousIndex}] is out of range [0 - ${this.state.selected.length}]`);
