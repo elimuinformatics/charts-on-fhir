@@ -51,7 +51,10 @@ describe('ComponentObservationMapper', () => {
         ],
       };
       const mapper = new ComponentObservationMapper({}, {});
-      expect(mapper.map(observation).datasets).toEqual([jasmine.objectContaining({ label: 'one' }), jasmine.objectContaining({ label: 'two' })]);
+      expect(mapper.map(observation).datasets).toEqual([
+        jasmine.objectContaining({ label: 'one (Clinic)' }),
+        jasmine.objectContaining({ label: 'two (Clinic)' }),
+      ]);
     });
 
     it('should map effectiveDateTime to x value in milliseconds', () => {

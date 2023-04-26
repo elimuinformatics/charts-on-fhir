@@ -1,7 +1,7 @@
 .layout-main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-template-rows: auto max-content;
+  grid-template-rows: 1fr auto;
   grid-column-gap: 4px;
   height: calc(100vh - 108px);
 }

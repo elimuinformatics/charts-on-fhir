@@ -67,6 +67,8 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
             },
           ],
           chartsOnFhir: {
+            group: component.code.text,
+            colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
           },
         })),

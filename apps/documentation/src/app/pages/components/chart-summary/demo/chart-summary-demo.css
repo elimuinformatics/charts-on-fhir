@@ -1,5 +1,6 @@
 .example-container {
-  height: 480px;
-  display: flex;
-  gap: 8px;
+  height: 320px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 6px;
 }
