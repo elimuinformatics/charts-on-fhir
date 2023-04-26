@@ -72,14 +72,14 @@ export class FhirChartComponent implements OnInit {
 
     // we use a custom legend component instead
     Chart.defaults.plugins.legend.display = false;
-    this.getChartConfigraton();
+    this.getChartConfiguration();
     this.configService.annotationSubject.subscribe((annotation: ChartAnnotation) => {
       this.configService.updateChartConfiguration(annotation);
-      this.getChartConfigraton();
+      this.getChartConfiguration();
     });
   }
 
-  getChartConfigraton() {
+  getChartConfiguration() {
     this.configService.chartConfig$?.subscribe((config) => {
       this.datasets = config.data.datasets;
       this.options = config.options;

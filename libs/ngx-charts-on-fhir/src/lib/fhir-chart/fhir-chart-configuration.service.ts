@@ -32,8 +32,6 @@ export class FhirChartConfigurationService {
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
     @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation,
-    @Inject(SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION) private sixMonthTimeFrameAnnotation: ChartAnnotation,
-    @Inject(TWELVE_MONTH_DATE_VERTICAL_LINE_ANNOTATION) private twelveMonthTimeFrameAnnotation: ChartAnnotation,
     private ngZone: NgZone
   ) {
     this.updateChartConfiguration();
@@ -48,10 +46,10 @@ export class FhirChartConfigurationService {
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
-  updateChartConfiguration(timeframeAnnatation: ChartAnnotation = {}) {
+  updateChartConfiguration(timeframeAnnotation: ChartAnnotation = {}) {
     this.chartConfig$ = this.layerManager.selectedLayers$.pipe(
       map((layers) => this.mergeLayers(layers)),
-      scan((config, layer) => this.updateConfiguration(config, layer, timeframeAnnatation), this.buildConfiguration()),
+      scan((config, layer) => this.updateConfiguration(config, layer, timeframeAnnotation), this.buildConfiguration()),
       tap((config) => this.updateTimelineBounds(config.data.datasets))
     );
   }
@@ -118,12 +116,12 @@ export class FhirChartConfigurationService {
     return { datasets, scales, annotations };
   }
 
-  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer, timeframeAnnatation: ChartAnnotation = {}): TimelineConfiguration {
+  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer, timeframeAnnotation: ChartAnnotation = {}): TimelineConfiguration {
     const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
     const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
-    if (Object.keys(timeframeAnnatation).length !== 0) {
-      annotations.push(timeframeAnnatation);
+    if (Object.keys(timeframeAnnotation).length !== 0) {
+      annotations.push(timeframeAnnotation);
     }
     return this.buildConfiguration(datasets, scales, annotations);
   }
