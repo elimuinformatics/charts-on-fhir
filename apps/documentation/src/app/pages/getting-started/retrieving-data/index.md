@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
 
 ### Automatically Selecting All Layers
 
-If you want to add all layers to the chart as they are retrieved, you can pass in `true` for the first parameter to `retrieveAll()`. Before doing this, make sure that your `DataLayerService` implementations are querying a limited set of data from the FHIR server. You can also pass a sort comparison function as the second parameter to `retrieveAll()` to customize the initial sort order of the layers.
+If you want to add all layers to the chart as they are retrieved, call `layerManager.autoSelect(true)`. Before doing this, make sure that your `DataLayerService` implementations are querying a limited set of data from the FHIR server. You can also pass a callback function to `autoSelect` to choose which layers are auto-selected. The selected layers can be auto-sorted by passing a comparison function to `layerManager.autoSort()`.
 
 ```ts
 // app.component.ts
@@ -102,7 +102,9 @@ import { DataLayerManagerService } from "@elimuinformatics/ngx-charts-on-fhir";
 export class AppComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
   ngOnInit(): void {
-    this.layerManager.retrieveAll(true, this.sortCompareFn);
+    this.layerManager.autoSelect(true);
+    this.layerManager.autoSort(this.sortCompareFn);
+    this.layerManager.retrieveAll();
   }
   sortCompareFn = (a: DataLayer, b: DataLayer) => {
     const layerOrder: string[] = ["Heart rate", "Blood Pressure", "Medications"];

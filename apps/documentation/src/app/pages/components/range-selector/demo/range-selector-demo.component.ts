@@ -11,6 +11,7 @@ import {
 export class RangeSelectorDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
   ngOnInit(): void {
-    this.layerManager.retrieveAll(true);
+    this.layerManager.autoSelect(true);
+    this.layerManager.retrieveAll();
   }
 }

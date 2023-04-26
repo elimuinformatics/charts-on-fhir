@@ -210,7 +210,7 @@ export class DataLayerManagerService {
    * Manually selecting a layer (by calling `select`) will disable the auto-select function.
    * @param autoSelectFn `true`, `false`, or a callback function.
    */
-  autoSelect(autoSelectFn?: boolean | ((layer: DataLayer) => boolean)) {
+  autoSelect(autoSelectFn: boolean | ((layer: DataLayer) => boolean)) {
     if (autoSelectFn === true) {
       autoSelectFn = () => true;
     } else if (autoSelectFn === false) {
@@ -226,7 +226,7 @@ export class DataLayerManagerService {
    * By default, all selected layers will be enabled.
    * @param autoEnableFn `true`, `false`, or a callback function.
    */
-  autoEnable(autoEnableFn?: boolean | ((layer: DataLayer) => boolean)) {
+  autoEnable(autoEnableFn: boolean | ((layer: DataLayer) => boolean)) {
     if (autoEnableFn === true) {
       autoEnableFn = () => true;
     } else if (autoEnableFn === false) {
@@ -241,7 +241,7 @@ export class DataLayerManagerService {
    * Manually sorting the layers (by calling `move`) will disable the auto-sort function.
    * @param autoSortFn A comparison function that returns the relative sort order of its arguments (see `Array.sort`)
    */
-  autoSort(autoSortFn?: LayerCompareFn) {
+  autoSort(autoSortFn: LayerCompareFn) {
     this.state = { ...this.state, autoSortFn };
   }
 
