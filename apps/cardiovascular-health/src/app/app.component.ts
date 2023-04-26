@@ -14,7 +14,10 @@ export class AppComponent implements OnInit {
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn, this.preDisableLayer);
+    this.layerManager.autoSelect(() => true);
+    this.layerManager.autoEnable((layer) => layer.name !== 'Glucose');
+    this.layerManager.autoSort(this.sortCompareFn);
+    this.layerManager.retrieveAll();
   }
 
   sortCompareFn = (a: DataLayer, b: DataLayer) => {
