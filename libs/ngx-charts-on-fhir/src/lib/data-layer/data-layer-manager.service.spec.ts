@@ -54,11 +54,14 @@ describe('DataLayerManagerService', () => {
         })
       );
     });
+  });
 
-    it('should select layers automatically when selectAll=true', () => {
+  describe('autoSelect', () => {
+    it('should select all layers when true', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
       const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
-      manager.retrieveAll(true);
+      manager.autoSelect(true);
+      manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
           x: [jasmine.objectContaining(a)],
@@ -67,30 +70,53 @@ describe('DataLayerManagerService', () => {
       );
     });
 
-    it('should disable layer when we pass particular layer to disable', () => {
-      const preDisableLayer: string[] = ['a'];
-      const services = [
-        { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
-        { name: 'two', retrieve: () => cold('-a|', { a }) },
-      ];
+    it('should select layer when callback returns true', () => {
+      const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
       const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
-      manager.retrieveAll(true, (one, two) => one.name.localeCompare(two.name), preDisableLayer);
+      manager.autoSelect((layer) => layer.name === 'a');
+      manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
-        hot('xyz', {
-          x: [jasmine.objectContaining(c)],
-          y: [jasmine.objectContaining({ enabled: false }), jasmine.objectContaining(c)],
-          z: [jasmine.objectContaining({ enabled: false }), jasmine.objectContaining(b), jasmine.objectContaining(c)],
+        hot('x', {
+          x: [jasmine.objectContaining(a)],
         })
       );
     });
+  });
 
-    it('should sort selectedLayers$ when auto-selecting', () => {
+  describe('autoEnable', () => {
+    it('should disable layer when callback returns false', () => {
       const services = [
         { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
         { name: 'two', retrieve: () => cold('-a|', { a }) },
       ];
       const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
-      manager.retrieveAll(true, (one, two) => one.name.localeCompare(two.name));
+      manager.autoSelect(true);
+      manager.autoEnable((layer) => layer.name !== 'a');
+      manager.retrieveAll();
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xyz', {
+          x: [jasmine.objectContaining(c)],
+          y: jasmine.arrayWithExactContents([jasmine.objectContaining({ name: 'a', enabled: false }), jasmine.objectContaining(c)]),
+          z: jasmine.arrayWithExactContents([
+            jasmine.objectContaining({ name: 'a', enabled: false }),
+            jasmine.objectContaining(b),
+            jasmine.objectContaining(c),
+          ]),
+        })
+      );
+    });
+  });
+
+  describe('autoSort', () => {
+    it('should sort selectedLayers$', () => {
+      const services = [
+        { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
+        { name: 'two', retrieve: () => cold('-a|', { a }) },
+      ];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.autoSelect(true);
+      manager.autoSort((one, two) => one.name.localeCompare(two.name));
+      manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
         hot('xyz', {
           x: [jasmine.objectContaining(c)],
