@@ -123,14 +123,12 @@ export class DataLayerManagerService {
    * `allLayers$`, `selectedLayers$`, or `availableLayers$`.
    */
   retrieveAll() {
-    this.stateSubject.subscribe((state) => console.log(state));
     this.reset();
     this.loading$.next(true);
     merge(...this.dataLayerServices.map((service) => service.retrieve()))
       .pipe(takeUntil(this.cancel$))
       .subscribe({
         next: (layer) => {
-          console.log('merging', layer);
           const layers = this.mergeService.merge(this.state.layers, layer);
           this.state = { ...this.state, layers };
         },
@@ -267,7 +265,6 @@ export class DataLayerManagerService {
     if (!this.state.layers[id].selected) {
       throw new Error(`Layer [${id}] is not selected`);
     }
-    console.log('remove', id);
     this.state = produce(this.state, (draft) => {
       const layer = draft.layers[id];
       layer.selected = false;
@@ -298,7 +295,6 @@ export class DataLayerManagerService {
    * This method must be used to propagate the changes to other components.
    */
   update(layer: ManagedDataLayer) {
-    console.log('update', layer);
     if (!this.state.layers[layer.id]) {
       throw new Error(`Layer [${layer.id}] not found`);
     }
