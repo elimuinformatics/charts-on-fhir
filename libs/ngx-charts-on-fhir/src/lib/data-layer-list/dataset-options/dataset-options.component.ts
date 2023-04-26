@@ -5,6 +5,7 @@ import produce from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { FhirDataService } from '../../fhir-data/fhir-data.service';
 
 @Component({
   selector: 'dataset-options',
@@ -13,13 +14,14 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
 })
 export class DatasetOptionsComponent implements OnInit {
   _dataset?: Dataset;
+  showLayerOptionPanel: boolean = true;
   @Input() set dataset(dataset: Dataset) {
     this._dataset = dataset;
     this.updateForm(dataset);
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
+  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, private fhir: FhirDataService) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;
@@ -38,6 +40,7 @@ export class DatasetOptionsComponent implements OnInit {
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
     });
+    this.showLayerOptionPanel = this.fhir.getOptionPanelValue();
   }
 
   private updateModel(formValue: typeof this.form.value): void {

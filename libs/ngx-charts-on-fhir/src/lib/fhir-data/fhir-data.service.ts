@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import FHIR from 'fhirclient';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Bundle, FhirResource } from 'fhir/r4';
 import { retryBackoff } from 'backoff-rxjs';
 
@@ -31,7 +31,7 @@ export class FhirDataService {
   get isSmartLaunch(): boolean {
     return !!sessionStorage.getItem('SMART_KEY');
   }
-
+  subject$ = new BehaviorSubject<boolean>(false);
   /**
    * Initialize the FHIR Client using OAuth token response from EHR launch, if available.
    * If no EHR launch context is found, it will create a Client from the provided `clientState` parameter.
@@ -223,6 +223,12 @@ export class FhirDataService {
         },
       ],
     };
+  }
+  setOptionPanelValue(optionPanelValue: boolean) {
+    this.subject$.next(optionPanelValue);
+  }
+  getOptionPanelValue(): boolean {
+    return this.subject$.value;
   }
 }
 

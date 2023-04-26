@@ -54,6 +54,7 @@ describe('DatasetOptionsComponent', () => {
   });
 
   it('should emit datasetChange event when pointStyle is changed', waitForAsync(async () => {
+    component.showLayerOptionPanel = true;
     let emitted: any = null;
     component.dataset = { label: 'Dataset', data: [] };
     component.datasetChange.subscribe((e) => (emitted = e));
@@ -79,6 +80,7 @@ describe('DatasetOptionsComponent', () => {
   }));
 
   it('should update the form when dataset is changed', waitForAsync(async () => {
+    component.showLayerOptionPanel = true;
     component.dataset = { label: 'Dataset', data: [], pointStyle: 'rect' };
     const pointStyle = await loader.getHarness(MatButtonToggleGroupHarness.with({ selector: "[formControlName='pointStyle']" }));
     const button = (await pointStyle.getToggles({ text: 'square' }))[0];
