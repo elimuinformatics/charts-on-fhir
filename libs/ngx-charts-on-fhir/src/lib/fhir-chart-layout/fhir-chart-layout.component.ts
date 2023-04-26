@@ -15,7 +15,7 @@ import { FhirDataService } from '../fhir-data/fhir-data.service';
 export class FhirChartLayoutComponent implements OnChanges {
   @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
   @Input() active: ToolbarButtonName | null = null;
-  @Input() showLayerOptionPanel: boolean = false;
+  @Input() showLayerOptionPanel: boolean = true;
 
   constructor(public fhir: FhirDataService) {}
 
