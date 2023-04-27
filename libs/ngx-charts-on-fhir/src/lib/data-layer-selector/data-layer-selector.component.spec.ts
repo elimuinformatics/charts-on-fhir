@@ -8,7 +8,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-fdescribe('DataLayerSelectorComponent', () => {
+describe('DataLayerSelectorComponent', () => {
   let component: DataLayerSelectorComponent;
   let fixture: ComponentFixture<DataLayerSelectorComponent>;
   let loader: HarnessLoader;
