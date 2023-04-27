@@ -107,7 +107,10 @@ export class DataLayerManagerService {
     distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
-  enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
+  enabledLayers$ = this.selectedLayers$.pipe(
+    map((layers) => layers.filter((layer) => layer.enabled)),
+    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
+  );
   loading$ = new BehaviorSubject<boolean>(false);
   settings$ = this.stateSubject.pipe(
     map((state) => ({
