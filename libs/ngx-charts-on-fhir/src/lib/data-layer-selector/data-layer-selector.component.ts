@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { DataLayer } from '../data-layer/data-layer';
 import { Subject, takeUntil } from 'rxjs';
 
+export type DataLayerViews = Record<string, DataLayerView>;
 export type DataLayerView = {
   selected: string[];
   enabled: string[];
@@ -14,7 +15,7 @@ export type DataLayerView = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataLayerSelectorComponent implements OnChanges {
-  @Input() views: Record<string, DataLayerView> = {};
+  @Input() views: DataLayerViews = {};
   @Input() active?: string;
 
   constructor(private layerManager: DataLayerManagerService, private changeDetectorRef: ChangeDetectorRef) {}
