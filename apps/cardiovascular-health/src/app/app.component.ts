@@ -15,16 +15,16 @@ export class AppComponent implements OnInit {
     'O2 Sat',
     'Step Count',
     'Body Weight',
-    'Medication Prescriptions',
+    'Prescribed Medications',
   ];
   views = {
     Hypertension: {
       selected: this.layers,
-      enabled: ['Blood Pressure', 'Heart rate', 'Step Count', 'Body Weight', 'Medication Prescriptions'],
+      enabled: ['Blood Pressure', 'Heart rate', 'Step Count', 'Body Weight', 'Prescribed Medications'],
     },
     Diabetes: {
       selected: this.layers,
-      enabled: ['Glucose', 'Hemoglobin A1c/Hemoglobin.total in Blood', 'Step Count', 'Body Weight', 'Medication Prescriptions'],
+      enabled: ['Glucose', 'Hemoglobin A1c/Hemoglobin.total in Blood', 'Step Count', 'Body Weight', 'Prescribed Medications'],
     },
   };
 
