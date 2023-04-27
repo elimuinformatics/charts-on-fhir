@@ -109,6 +109,14 @@ export class DataLayerManagerService {
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
   enabledLayers$ = this.selectedLayers$.pipe(map((layers) => layers.filter((layer) => layer.enabled)));
   loading$ = new BehaviorSubject<boolean>(false);
+  settings$ = this.stateSubject.pipe(
+    map((state) => ({
+      isAutoSelect: !!state.autoSelectFn,
+      isAutoEnable: !!state.autoEnableFn,
+      isAutoSort: !!state.autoSortFn,
+    })),
+    distinctUntilChanged()
+  );
 
   private cancel$ = new Subject<void>();
 
@@ -138,62 +146,6 @@ export class DataLayerManagerService {
         },
       });
   }
-
-  /** Reducer that returns a new state after applying the auto-select function */
-  private autoSelectLayers = (state: DataLayerManagerState) => {
-    let nextState = state;
-    if (state.autoSelectFn) {
-      for (let layer of Object.values(state.layers)) {
-        if (state.autoSelectFn(layer)) {
-          nextState = this.selectLayer(nextState, layer.id);
-        } else {
-          nextState = this.removeLayer(nextState, layer.id);
-        }
-      }
-    }
-    return nextState;
-  };
-
-  /** Reducer that returns a new state with the given layer un-selected */
-  private removeLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
-    draft.layers[id].selected = false;
-    const index = draft.selected.indexOf(id);
-    if (index >= 0) {
-      draft.selected.splice(index, 1);
-    }
-  });
-
-  /** Reducer that returns a new state after applying the auto-enable function */
-  private autoEnableLayers = produce<DataLayerManagerState>((draft) => {
-    if (draft.autoEnableFn) {
-      for (let id in draft.layers) {
-        draft.layers[id].enabled = draft.autoEnableFn(draft.layers[id]);
-      }
-    }
-  });
-
-  /** Reducer that returns a new state after applying the auto-sort function */
-  private autoSortLayers = produce<DataLayerManagerState>((draft) => {
-    if (draft.autoSortFn) {
-      draft.selected.sort((idA, idB) => draft.autoSortFn!(draft.layers[idA], draft.layers[idB]));
-    }
-  });
-
-  /** Reducer that returns a new state with the given layer selected */
-  private selectLayer = produce<DataLayerManagerState, [string, string[]?]>((draft, id) => {
-    const layer = draft.layers[id];
-    if (!draft.selected.includes(layer.id)) {
-      draft.selected.push(layer.id);
-    }
-    if (!draft.layers[id].selected) {
-      layer.selected = true;
-      layer.enabled = true;
-      this.colorService.chooseColorsFromPalette(layer);
-      for (let dataset of layer.datasets) {
-        this.tagsService.applyTagStyles(dataset);
-      }
-    }
-  });
 
   /** Cancels any in-progress data retrieval and resets the DataLayerManager to its initial state */
   reset() {
@@ -265,13 +217,10 @@ export class DataLayerManagerService {
     if (!this.state.layers[id].selected) {
       throw new Error(`Layer [${id}] is not selected`);
     }
-    this.state = produce(this.state, (draft) => {
-      const layer = draft.layers[id];
-      layer.selected = false;
-      const index = draft.selected.indexOf(id);
-      draft.selected.splice(index, 1);
-      draft.autoSelectFn = undefined;
-    });
+    this.state = {
+      ...this.removeLayer(this.state, id),
+      autoSelectFn: undefined,
+    };
   }
 
   /** Enable or disable a layer. A disabled layer will still show up in
@@ -281,14 +230,10 @@ export class DataLayerManagerService {
     if (!this.state.layers[id]) {
       throw new Error(`Layer [${id}] not found`);
     }
-    this.state = produce(this.state, (draft) => {
-      const layer = draft.layers[id];
-      layer.enabled = enabled;
-      for (let dataset of layer.datasets) {
-        dataset.hidden = !enabled;
-      }
-      draft.autoEnableFn = undefined;
-    });
+    this.state = {
+      ...this.enableLayer(this.state, id, enabled),
+      autoEnableFn: undefined,
+    };
   }
 
   /** Modify a layer's properties.
@@ -314,4 +259,71 @@ export class DataLayerManagerService {
       draft.autoSortFn = undefined;
     });
   }
+
+  /** Reducer that returns a new state after applying the auto-select function */
+  private autoSelectLayers = (state: DataLayerManagerState) => {
+    let nextState = state;
+    if (state.autoSelectFn) {
+      for (let layer of Object.values(state.layers)) {
+        if (state.autoSelectFn(layer)) {
+          nextState = this.selectLayer(nextState, layer.id);
+        } else {
+          nextState = this.removeLayer(nextState, layer.id);
+        }
+      }
+    }
+    return nextState;
+  };
+
+  /** Reducer that returns a new state with the given layer selected */
+  private selectLayer = produce<DataLayerManagerState, [string, string[]?]>((draft, id) => {
+    const layer = draft.layers[id];
+    if (!draft.selected.includes(layer.id)) {
+      draft.selected.push(layer.id);
+    }
+    if (!draft.layers[id].selected) {
+      layer.selected = true;
+      layer.enabled = true;
+      this.colorService.chooseColorsFromPalette(layer);
+      for (let dataset of layer.datasets) {
+        this.tagsService.applyTagStyles(dataset);
+      }
+    }
+  });
+
+  /** Reducer that returns a new state with the given layer un-selected */
+  private removeLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
+    draft.layers[id].selected = false;
+    const index = draft.selected.indexOf(id);
+    if (index >= 0) {
+      draft.selected.splice(index, 1);
+    }
+  });
+
+  /** Reducer that returns a new state after applying the auto-enable function */
+  private autoEnableLayers = (state: DataLayerManagerState) => {
+    let nextState = state;
+    if (state.autoEnableFn) {
+      for (let layer of Object.values(state.layers)) {
+        nextState = this.enableLayer(nextState, layer.id, state.autoEnableFn(layer));
+      }
+    }
+    return nextState;
+  };
+
+  /** Reducer that returns a new state with the given layer enabled/disabled */
+  private enableLayer = produce<DataLayerManagerState, [string, boolean]>((draft, id, enabled) => {
+    const layer = draft.layers[id];
+    layer.enabled = enabled;
+    for (let dataset of layer.datasets) {
+      dataset.hidden = !enabled;
+    }
+  });
+
+  /** Reducer that returns a new state after applying the auto-sort function */
+  private autoSortLayers = produce<DataLayerManagerState>((draft) => {
+    if (draft.autoSortFn) {
+      draft.selected.sort((idA, idB) => draft.autoSortFn!(draft.layers[idA], draft.layers[idB]));
+    }
+  });
 }
