@@ -1,13 +1,23 @@
-<div class="chart-summary">
-  <ng-container *ngIf="configService.timelineRange$ | async as range">
-    <fhir-chart-summary-card
-      *ngFor="let layer of layerManager.enabledLayers$ | async"
-      [color]="colorService.getColorGradient(layer)"
-      [title]="layer.name"
-      icon="info"
-      class="dataset-summary mat-elevation-z2"
-    >
-      <dynamic-table [data]="summarize(layer, range)"> </dynamic-table>
-    </fhir-chart-summary-card>
+<ng-container *ngIf="scalePositions$ | async as positions">
+  <ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
+    <ng-container *ngIf="layers.length > 0">
+      <div
+        class="chart-summary"
+        [style.paddingTop]="autoAlign ? positions[layers[0].scale.id].top + 'px' : '0'"
+        [style.gridTemplateRows]="autoAlign ? (gridTemplateRows$ | async) : ''"
+      >
+        <fhir-chart-summary-card
+          *ngFor="let layer of layers; let index = index"
+          class="dataset-summary mat-elevation-z2"
+          [style.gridRow]="index + 1"
+          [layer]="layer"
+          [expanded]="expandedCard === layer.id"
+          (expand)="onCardExpand(layer.id)"
+          (collapse)="onCardCollapse(layer.id)"
+        >
+        </fhir-chart-summary-card>
+        <div class="backdrop" *ngIf="expandedCard != null" (click)="expandedCard = null"></div>
+      </div>
+    </ng-container>
   </ng-container>
-</div>
+</ng-container>

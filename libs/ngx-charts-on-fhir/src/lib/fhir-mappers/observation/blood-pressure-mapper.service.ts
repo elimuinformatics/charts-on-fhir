@@ -6,7 +6,6 @@ import { Mapper } from '../multi-mapper.service';
 import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { ChartAnnotation } from '../../utils';
 import { DataLayer } from '../../data-layer/data-layer';
-
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {
   code: {

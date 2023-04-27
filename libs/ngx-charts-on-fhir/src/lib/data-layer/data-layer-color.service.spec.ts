@@ -29,8 +29,21 @@ describe('DataLayerColorService', () => {
 
     it('should reuse color from matching dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
-        datasets: [{ label: 'One' }, { label: 'One (X)' }],
-        annotations: [{ label: { display: true } }],
+        datasets: [
+          {
+            label: 'One',
+            chartsOnFhir: {
+              group: 'One',
+            },
+          },
+          {
+            label: 'One (X)',
+            chartsOnFhir: {
+              group: 'One',
+            },
+          },
+        ],
+        annotations: [{ label: { display: true, content: 'One Annotation' } }],
       };
       service.chooseColorsFromPalette(layer);
       expect(layer.datasets[0].borderColor).toEqual(palette[0]);
@@ -39,7 +52,14 @@ describe('DataLayerColorService', () => {
 
     it('should brighten palette color by 20% for home measurements', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
-        datasets: [{ label: 'One (Home)' }],
+        datasets: [
+          {
+            label: 'One (Home)',
+            chartsOnFhir: {
+              colorPalette: 'light',
+            },
+          },
+        ],
         annotations: [{ label: { display: true } }],
       };
       service.chooseColorsFromPalette(layer);
@@ -48,7 +68,16 @@ describe('DataLayerColorService', () => {
 
     it('should add transparency for matching annotation color', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {
-        datasets: [{ label: 'One' }],
+        datasets: [
+          {
+            label: 'One',
+            chartsOnFhir: {
+              group: 'One',
+              colorPalette: 'dark',
+              tags: ['Clinic'],
+            },
+          },
+        ],
         annotations: [{ label: { display: true, content: 'One Annotation' } }],
       };
       service.chooseColorsFromPalette(layer);

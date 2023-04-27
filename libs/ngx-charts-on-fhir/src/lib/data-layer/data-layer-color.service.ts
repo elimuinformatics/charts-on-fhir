@@ -2,8 +2,6 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
 import tinycolor from 'tinycolor2';
 import { BoxAnnotationOptions } from 'chartjs-plugin-annotation';
-import { HOME_DATASET_LABEL_SUFFIX } from '../fhir-chart-summary/home-measurement-summary.service';
-
 /**
  * Injection Token used by `DataLayerColorService` to define the available chart colors.
  *
@@ -59,7 +57,7 @@ export class DataLayerColorService {
 
   /** Gets the palette that should be used for the given dataset */
   private getPalette(dataset: Dataset) {
-    if (dataset.label?.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
+    if (dataset.chartsOnFhir?.colorPalette === 'light') {
       return this.lightPalette;
     }
     return this.palette;
@@ -68,19 +66,27 @@ export class DataLayerColorService {
   /** Finds a matching dataset with similar label and returns its color index in the palette */
   private getMatchingDatasetColorIndex(layer: DataLayer, dataset: Dataset) {
     for (let other of layer.datasets) {
-      if (isMatchingDataset(dataset, other)) {
+      if (dataset.chartsOnFhir?.group && dataset.chartsOnFhir.group === other.chartsOnFhir?.group) {
         const color = this.getColor(other);
-        if (color) {
-          for (let palette of [this.palette, this.lightPalette]) {
-            const index = palette.indexOf(color);
-            if (index >= 0) {
-              return index;
-            }
-          }
+        const colorIndex = this.datasetColorIndex(color!);
+        if (colorIndex >= 0) {
+          return colorIndex;
         }
       }
     }
     return null;
+  }
+
+  private datasetColorIndex(color: string) {
+    if (color) {
+      for (let palette of [this.palette, this.lightPalette]) {
+        const index = palette.indexOf(color);
+        if (index >= 0) {
+          return index;
+        }
+      }
+    }
+    return -1;
   }
 
   /** Finds the corresponding annotations for a dataset and changes their colors to match the dataset */
@@ -89,7 +95,7 @@ export class DataLayerColorService {
       for (let annotation of layer.annotations) {
         const anno = annotation as BoxAnnotationOptions;
         const label = anno.label?.content;
-        if (typeof label === 'string' && label.startsWith(dataset.label)) {
+        if (typeof label === 'string' && dataset.chartsOnFhir?.group && label.startsWith(dataset.chartsOnFhir?.group)) {
           anno.backgroundColor = this.addTransparency(this.getColor(dataset));
         }
       }
@@ -130,9 +136,4 @@ export class DataLayerColorService {
     const gradient = `linear-gradient(0deg, ${segments.join(',')})`;
     return gradient;
   }
-}
-
-/** Determine whether two datasets "match" and should use similar colors */
-function isMatchingDataset(dataset: Dataset, other: Dataset) {
-  return other !== dataset && dataset.label && other.label && (dataset.label.startsWith(other.label) || other.label.startsWith(dataset.label));
 }
