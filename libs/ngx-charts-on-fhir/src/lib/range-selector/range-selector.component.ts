@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION, TODAY_DATE_VERTICAL_LINE_ANNOTATION } from '../fhir-mappers/fhir-mapper-options';
+import { TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation } from '../utils';
 
 /**
@@ -27,8 +27,7 @@ export class RangeSelectorComponent {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private configService: FhirChartConfigurationService,
-    @Inject(SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION) private sixMonthTimeFrameAnnotation: ChartAnnotation,
-    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation
+    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotation: ChartAnnotation
   ) {}
 
   ngOnInit(): void {
@@ -48,20 +47,6 @@ export class RangeSelectorComponent {
     if (this.maxDate && monthCount) {
       this.maxDate = new Date();
       this.minDate = subtractMonths(this.maxDate, monthCount);
-      //   type: 'line',
-      //   borderColor: '#FF900D',
-      //   borderWidth: 3,
-      //   display: true,
-      //   label: {
-      //     display: true,
-      //     content: `${monthCount} month ago` ,
-      //     position: 'start',
-      //     color: '#FF900D',
-      //     backgroundColor: '#FAFAFA',
-      //   },
-      //   scaleID: 'x',
-      //   value: subtractMonths(new Date(), monthCount).getTime()
-      // });
       this.configService.zoom({
         min: this.minDate.getTime(),
         max: new Date().getTime(),

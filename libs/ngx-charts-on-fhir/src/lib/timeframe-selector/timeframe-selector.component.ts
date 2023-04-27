@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
+import { ChartAnnotation } from '../utils';
+import { delay } from 'rxjs';
+import { SummaryService } from '../fhir-chart-summary/summary.service';
 
 @Component({
   selector: 'timeframe-selector',
@@ -17,24 +21,47 @@ export class TimeFrameSelectorComponent {
     { month: 12, value: '1 y' },
   ];
 
-  constructor(private configService: FhirChartConfigurationService) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private configService: FhirChartConfigurationService,
+    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotations: ChartAnnotation[],
+    @Inject(SummaryService) private summaryServices: SummaryService[]
+  ) {}
+
+  ngOnInit(): void {
+    this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
+      this.maxDate = new Date(timelineRange.max);
+      this.minDate = new Date(timelineRange.min);
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 
   updateRangeSelector(monthCount: number) {
-    this.configService.annotationSubject.next({
-      type: 'line',
-      borderColor: '#FF900D',
-      borderWidth: 3,
-      display: true,
-      label: {
+    const previouMonth = monthCount * 2;
+    // remove all previous annotions except TODAY
+    this.timeframeAnnotations.splice(1);
+    for (let i = 0; i < 2; i++) {
+      this.timeframeAnnotations.push({
+        type: 'line',
+        borderColor: '#FF900D',
+        borderWidth: 3,
         display: true,
-        content: `${monthCount} month ago`,
-        position: 'start',
-        color: '#FF900D',
-        backgroundColor: '#FAFAFA',
-      },
-      scaleID: 'x',
-      value: subtractMonths(new Date(), monthCount).getTime(),
-    });
+        label: {
+          display: true,
+          content: i === 0 ? `${monthCount} month ago` : `${previouMonth} month ago`,
+          position: 'start',
+          color: '#FF900D',
+          backgroundColor: '#FAFAFA',
+        },
+        scaleID: 'x',
+        value: i === 0 ? subtractMonths(new Date(), monthCount).getTime() : subtractMonths(new Date(), previouMonth).getTime(),
+      });
+    }
+    this.configService.annotationSubject.next(this.timeframeAnnotations);
+    this.maxDate = new Date();
+    this.minDate = subtractMonths(this.maxDate, monthCount);
+    this.configService.timeline.max = this.minDate.getTime();
+    this.configService.timeline.min = new Date().getTime();
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {

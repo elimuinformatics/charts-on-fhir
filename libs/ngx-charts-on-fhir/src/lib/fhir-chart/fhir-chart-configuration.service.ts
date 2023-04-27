@@ -6,12 +6,7 @@ import { map, Observable, ReplaySubject, scan, Subject, tap, throttleTime } from
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
-import {
-  TODAY_DATE_VERTICAL_LINE_ANNOTATION,
-  TIME_SCALE_OPTIONS,
-  SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION,
-  TWELVE_MONTH_DATE_VERTICAL_LINE_ANNOTATION,
-} from '../fhir-mappers/fhir-mapper-options';
+import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
@@ -31,25 +26,25 @@ export class FhirChartConfigurationService {
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation,
+    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotations: ChartAnnotation[],
     private ngZone: NgZone
   ) {
     this.updateChartConfiguration();
   }
 
-  annotationSubject = new Subject<ChartAnnotation>();
+  annotationSubject = new Subject<ChartAnnotation[]>();
 
-  private timeline: ScaleOptions<'time'> = {
+  public timeline: ScaleOptions<'time'> = {
     ...this.timeScaleOptions,
     afterDataLimits: (axis) => this.ngZone.run(() => this.timelineRangeSubject.next({ max: axis.max, min: axis.min })),
   };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
-  updateChartConfiguration(timeframeAnnotation: ChartAnnotation = {}) {
+  updateChartConfiguration(timeframeAnnotations: ChartAnnotation[] = []) {
     this.chartConfig$ = this.layerManager.selectedLayers$.pipe(
       map((layers) => this.mergeLayers(layers)),
-      scan((config, layer) => this.updateConfiguration(config, layer, timeframeAnnotation), this.buildConfiguration()),
+      scan((config, layer) => this.updateConfiguration(config, layer, timeframeAnnotations), this.buildConfiguration()),
       tap((config) => this.updateTimelineBounds(config.data.datasets))
     );
   }
@@ -116,13 +111,11 @@ export class FhirChartConfigurationService {
     return { datasets, scales, annotations };
   }
 
-  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer, timeframeAnnotation: ChartAnnotation = {}): TimelineConfiguration {
+  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer, timeframeAnnotations: ChartAnnotation[] = []): TimelineConfiguration {
     const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
-    const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
-    if (Object.keys(timeframeAnnotation).length !== 0) {
-      annotations.push(timeframeAnnotation);
-    }
+    let annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
+    annotations = [...annotations, ...timeframeAnnotations];
     return this.buildConfiguration(datasets, scales, annotations);
   }
 
@@ -140,7 +133,7 @@ export class FhirChartConfigurationService {
           x: this.timeline,
         },
         plugins: {
-          annotation: { annotations: [...annotations, this.todayDateVerticalLineAnnotation] },
+          annotation: { annotations: [...annotations, ...this.timeframeAnnotations] },
           zoom: {
             zoom: {
               onZoomComplete: ({ chart }) => {

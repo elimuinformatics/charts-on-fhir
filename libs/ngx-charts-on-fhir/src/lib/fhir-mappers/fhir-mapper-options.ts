@@ -66,63 +66,25 @@ const defaultAnnotationOptions: ChartAnnotation = {
   drawTime: 'beforeDraw',
 };
 
-export const TODAY_DATE_VERTICAL_LINE_ANNOTATION = new InjectionToken<ChartAnnotation>('Annotation Options', {
-  factory: () => todayDateVerticalLineAnnotation,
-});
-const todayDateVerticalLineAnnotation: ChartAnnotation = {
-  type: 'line',
-  borderColor: '#FF900D',
-  borderWidth: 3,
-  display: true,
-  drawTime: 'afterDatasetsDraw',
-  label: {
-    display: true,
-    content: 'Today',
-    position: 'start',
-    color: '#FF900D',
-    backgroundColor: '#FAFAFA',
-  },
-  scaleID: 'x',
-  value: new Date().getTime(),
-};
-
-export const SIX_MONTH_DATE_VERTICAL_LINE_ANNOTATION = new InjectionToken<ChartAnnotation>('Annotation Options', {
-  factory: () => sixMonthTimeFrameAnnotation,
+export const TIMEFRAME_ANNOTATIONS = new InjectionToken<ChartAnnotation[]>('Timeframe annotation Options', {
+  factory: () => timeframeAnnotations,
 });
 const today = new Date();
-const sixMonthTimeFrameAnnotation: ChartAnnotation = {
-  type: 'line',
-  borderColor: '#FF900D',
-  borderWidth: 3,
-  display: true,
-  drawTime: 'afterDatasetsDraw',
-  label: {
+const timeframeAnnotations: ChartAnnotation[] = [
+  {
+    type: 'line',
+    borderColor: '#FF900D',
+    borderWidth: 3,
     display: true,
-    content: '6 month ago',
-    position: 'start',
-    color: '#FF900D',
-    backgroundColor: '#FAFAFA',
+    drawTime: 'afterDatasetsDraw',
+    label: {
+      display: true,
+      content: 'Today',
+      position: 'start',
+      color: '#FF900D',
+      backgroundColor: '#FAFAFA',
+    },
+    scaleID: 'x',
+    value: new Date().getTime(),
   },
-  scaleID: 'x',
-  value: new Date(today.getFullYear(), today.getMonth() - 6, today.getDate()).getTime(),
-};
-
-export const TWELVE_MONTH_DATE_VERTICAL_LINE_ANNOTATION = new InjectionToken<ChartAnnotation>('Annotation Options', {
-  factory: () => twelveMonthTimeFrameAnnotation,
-});
-
-const twelveMonthTimeFrameAnnotation: ChartAnnotation = {
-  type: 'line',
-  borderColor: '#FF900D',
-  borderWidth: 3,
-  display: true,
-  label: {
-    display: true,
-    content: '12 month ago',
-    position: 'start',
-    color: '#FF900D',
-    backgroundColor: '#FAFAFA',
-  },
-  scaleID: 'x',
-  value: new Date(today.getFullYear(), today.getMonth() - 12, today.getDate()).getTime(),
-};
+];
