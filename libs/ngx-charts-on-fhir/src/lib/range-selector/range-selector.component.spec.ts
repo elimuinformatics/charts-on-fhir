@@ -13,6 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { TimeFrameSelectorComponent } from '../timeframe-selector/timeframe-selector.component';
+import { SummaryService } from '../fhir-chart-summary/summary.service';
 
 const max = new Date('2022-03-30T00:00').getTime();
 const min = new Date('2022-01-06T00:00').getTime();
@@ -34,8 +36,8 @@ describe('RangeSelectorComponent', () => {
     mockConfigService = new MockConfigService();
     await TestBed.configureTestingModule({
       imports: [MatButtonToggleModule, MatInputModule, FormsModule, BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule],
-      declarations: [RangeSelectorComponent],
-      providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }],
+      declarations: [RangeSelectorComponent, TimeFrameSelectorComponent],
+      providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }, SummaryService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RangeSelectorComponent);

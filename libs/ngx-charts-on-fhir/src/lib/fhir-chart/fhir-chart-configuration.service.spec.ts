@@ -4,7 +4,7 @@ import { Chart, TooltipItem } from 'chart.js';
 import { hot, getTestScheduler } from 'jasmine-marbles';
 import { EMPTY, of } from 'rxjs';
 import { Dataset, ManagedDataLayer, TimelineChartType } from '../data-layer/data-layer';
-import { ChartAnnotations } from '../utils';
+import { ChartAnnotation, ChartAnnotations } from '../utils';
 import { FhirChartConfigurationService, TimelineConfiguration } from './fhir-chart-configuration.service';
 
 describe('FhirChartConfigurationService', () => {
@@ -24,9 +24,8 @@ describe('FhirChartConfigurationService', () => {
   } as const;
 
   let ngZone: jasmine.SpyObj<NgZone>;
-  const todayDateVerticalLineAnnotation = {
-    scaleID: 'x',
-  };
+
+  const todayDateVerticalLineAnnotation: ChartAnnotation[] = [{ scaleID: 'x' }];
 
   beforeEach(() => {
     // fake zone.run() can just invoke its callback because we don't care about change detection here
@@ -347,7 +346,7 @@ describe('FhirChartConfigurationService', () => {
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       let config = {} as TimelineConfiguration;
-      configService.chartConfig$.subscribe((c) => (config = c));
+      configService.chartConfig$?.subscribe((c) => (config = c));
       getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       expect(configService.timelineRange$).toBeObservable(
         hot('--x', {
@@ -361,7 +360,7 @@ describe('FhirChartConfigurationService', () => {
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, todayDateVerticalLineAnnotation, ngZone);
       let config = {} as TimelineConfiguration;
-      configService.chartConfig$.subscribe((c) => (config = c));
+      configService.chartConfig$?.subscribe((c) => (config = c));
       getTestScheduler().schedule(() => (config.options?.scales?.['x'] as any).afterDataLimits({ min: 2, max: 3 }), 20);
       getTestScheduler().flush();
       expect(ngZone.run).toHaveBeenCalledTimes(1);
@@ -396,7 +395,7 @@ describe('FhirChartConfigurationService', () => {
 
     it('should set initial zoom if called before chart is initialized', waitForAsync(() => {
       configService.zoom({ min: 1, max: 2 });
-      configService.chartConfig$.subscribe((config) => {
+      configService.chartConfig$?.subscribe((config) => {
         expect(configService.isAutoZoom).toBe(false);
         expect(config.options?.scales?.['x']?.min).toBe(1);
         expect(config.options?.scales?.['x']?.max).toBe(2);
@@ -431,13 +430,13 @@ describe('FhirChartConfigurationService', () => {
     });
 
     it('should call chart.zoom with data bounds', waitForAsync(() => {
-      configService.chartConfig$.subscribe();
+      configService.chartConfig$?.subscribe();
       configService.resetZoom();
       expect(configService.chart?.zoomScale).toHaveBeenCalledWith('x', { min: 10, max: 20 }, 'zoom');
     }));
 
     it('should unlock zoom range', () => {
-      configService.chartConfig$.subscribe();
+      configService.chartConfig$?.subscribe();
       configService.zoom({ min: 1, max: 2 });
       configService.resetZoom();
       expect(configService.isAutoZoom).toBe(true);
@@ -446,7 +445,7 @@ describe('FhirChartConfigurationService', () => {
     it('should ignore NaN in data', waitForAsync(() => {
       layers[0].datasets[0].data.unshift({ x: NaN, y: 0 });
       layers[0].datasets[0].data.push({ x: NaN, y: 0 });
-      configService.chartConfig$.subscribe();
+      configService.chartConfig$?.subscribe();
       configService.resetZoom();
       expect(configService.chart?.zoomScale).toHaveBeenCalledWith('x', { min: 10, max: 20 }, 'zoom');
     }));
