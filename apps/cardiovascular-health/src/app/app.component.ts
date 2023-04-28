@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     'Prescribed Medications',
   ];
   views = {
-    Hypertension: {
+    Cardiovascular: {
       selected: this.layers,
       enabled: ['Blood Pressure', 'Heart rate', 'Step Count', 'Body Weight', 'Prescribed Medications'],
     },
