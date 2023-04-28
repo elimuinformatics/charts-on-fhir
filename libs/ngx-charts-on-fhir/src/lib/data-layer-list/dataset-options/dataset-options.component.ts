@@ -14,7 +14,7 @@ import { SharedDataLayerService } from '../../data-layer/shared-data-layer.servi
 })
 export class DatasetOptionsComponent implements OnInit {
   _dataset?: Dataset;
-  showLayerOptionPanel: boolean = true;
+  showAdvancedOptions: boolean = true;
   @Input() set dataset(dataset: Dataset) {
     this._dataset = dataset;
     this.updateForm(dataset);
@@ -40,7 +40,7 @@ export class DatasetOptionsComponent implements OnInit {
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
     });
-    this.showLayerOptionPanel = this.sharedDataService.getOptionPanelValue();
+    this.showAdvancedOptions = this.sharedDataService.getOptionPanelValue();
   }
 
   private updateModel(formValue: typeof this.form.value): void {

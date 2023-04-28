@@ -1,7 +1,7 @@
 <form [formGroup]="form">
-  <color-picker formControlName="color" *ngIf="showLayerOptionPanel"></color-picker>
+  <color-picker formControlName="color" *ngIf="showAdvancedOptions"></color-picker>
   <ng-container *ngIf="this._dataset?.yAxisID != 'medications'">
-    <mat-button-toggle-group formControlName="type" *ngIf="showLayerOptionPanel">
+    <mat-button-toggle-group formControlName="type" *ngIf="showAdvancedOptions">
       <mat-button-toggle value="line" aria-label="Line Chart">
         <mat-icon>show_chart</mat-icon>
       </mat-button-toggle>
@@ -9,7 +9,7 @@
         <mat-icon>scatter_plot</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <mat-button-toggle-group formControlName="pointStyle" *ngIf="showLayerOptionPanel">
+    <mat-button-toggle-group formControlName="pointStyle" *ngIf="showAdvancedOptions">
       <mat-button-toggle value="circle" aria-label="Circle">
         <mat-icon class="material-icons-outlined">circle</mat-icon>
       </mat-button-toggle>
@@ -29,7 +29,7 @@
         ><input matSliderThumb formControlName="pointRadius"
       /></mat-slider>
     </div>
-    <div *ngIf="showLayerOptionPanel">
+    <div *ngIf="showAdvancedOptions">
       <section *ngIf="this.form.value.type === 'line'">
         <h3>Line Chart Options</h3>
         <mat-slide-toggle formControlName="interpolation">Cubic interpolation</mat-slide-toggle>

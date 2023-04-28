@@ -16,12 +16,12 @@ import { FhirDataService } from '../fhir-data/fhir-data.service';
 export class FhirChartLayoutComponent implements OnChanges {
   @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
   @Input() active: ToolbarButtonName | null = null;
-  @Input() showLayerOptionPanel: boolean = true;
+  @Input() showAdvancedOptions: boolean = true;
 
   constructor(public fhir: FhirDataService, private sharedDataService: SharedDataLayerService) {}
 
   ngOnChanges(): void {
-    this.sharedDataService.setOptionPanelValue(this.showLayerOptionPanel);
+    this.sharedDataService.setOptionPanelValue(this.showAdvancedOptions);
   }
 
   onToolbarChange(sidenav: MatSidenav, panel: ToolbarButtonName | null) {
