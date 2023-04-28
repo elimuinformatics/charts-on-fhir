@@ -3,11 +3,10 @@ import { merge } from 'lodash-es';
 import { Coding, Observation } from 'fhir/r4';
 import { ComponentObservation, ComponentObservationMapper, isComponentObservation } from './component-observation-mapper.service';
 import { Mapper } from '../multi-mapper.service';
-import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
-import { ChartAnnotation, isDefined, removeBloodPressureLabel } from '../../utils';
+import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { ChartAnnotation } from '../../utils';
 import { DataLayer } from '../../data-layer/data-layer';
-import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
-import { ScaleOptions } from 'chart.js';
+import { getMeasurementSettingSuffix } from './simple-observation-mapper.service';
 
 const bpCodes = ['85354-9'] as const;
 export type BloodPressureObservation = {
@@ -24,15 +23,15 @@ export function isBloodPressureObservation(resource: Observation): resource is B
   providedIn: 'root',
 })
 export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
-  constructor(
-    private baseMapper: ComponentObservationMapper,
-    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation,
-    @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>
-  ) {}
+  constructor(private baseMapper: ComponentObservationMapper, @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation) {}
   canMap = isBloodPressureObservation;
   map(resource: BloodPressureObservation): DataLayer {
     const layer = this.baseMapper.map(resource);
-    const scaleName = `${resource.code.text} (${resource.component[0].valueQuantity.unit})`;
+    const datasets = resource.component
+      .sort((a, b) => a.code.text.localeCompare(b.code.text))
+      .map((component) => ({
+        label: this.getBloodPressureTypeBasedOnCode(component) + getMeasurementSettingSuffix(resource),
+      }));
     layer.annotations = [
       merge({}, this.annotationOptions, {
         id: 'Systolic Reference Range',
@@ -51,30 +50,20 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
         yMin: 60,
       }),
     ];
-    return {
-      name: resource.code.text,
-      category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
-      datasets: resource.component
-        .sort((a, b) => a.code.text.localeCompare(b.code.text))
-        .map((component) => ({
-          label: removeBloodPressureLabel(component.code.text) + getMeasurementSettingSuffix(resource),
-          yAxisID: scaleName,
-          data: [
-            {
-              x: new Date(resource.effectiveDateTime).getTime(),
-              y: component.valueQuantity.value,
-            },
-          ],
-          chartsOnFhir: {
-            tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-          },
-        })),
-      scale: merge({}, this.linearScaleOptions, {
-        id: scaleName,
-        title: { text: scaleName },
-        stackWeight: resource.component.length,
-      }),
-      annotations: layer.annotations,
-    };
+    return merge({}, layer, {
+      datasets,
+    });
+  }
+
+  getBloodPressureTypeBasedOnCode(component: any) {
+    let type: string = '';
+    component?.code?.coding?.forEach((reading: any) => {
+      if (reading.code && reading.code === '8480-6') {
+        type = 'Systolic';
+      } else if (reading.code && reading.code === '8462-4') {
+        type = 'Diastolic';
+      }
+    });
+    return type;
   }
 }

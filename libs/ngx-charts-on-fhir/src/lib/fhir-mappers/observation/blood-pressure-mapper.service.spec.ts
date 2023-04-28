@@ -73,4 +73,21 @@ describe('BloodPressureMapper', () => {
       ]);
     });
   });
+
+  it('should return the correct type based on the component code', () => {
+    const systolicComponent = {
+      code: {
+        coding: [{ code: '8480-6' }],
+      },
+    };
+    const diastolicComponent = {
+      code: {
+        coding: [{ code: '8462-4' }],
+      },
+    };
+    const systolicType = mapper.getBloodPressureTypeBasedOnCode(systolicComponent);
+    expect(systolicType).toBe('Systolic');
+    const diastolicType = mapper.getBloodPressureTypeBasedOnCode(diastolicComponent);
+    expect(diastolicType).toBe('Diastolic');
+  });
 });
