@@ -16,6 +16,16 @@ const observationCodings = [
   },
   {
     system: 'http://loinc.org',
+    code: '8480-6',
+    display: 'Systolic',
+  },
+  {
+    system: 'http://loinc.org',
+    code: '8462-4',
+    display: 'Diastolic',
+  },
+  {
+    system: 'http://loinc.org',
     code: '8867-4',
     display: 'Heart Rate',
   },
