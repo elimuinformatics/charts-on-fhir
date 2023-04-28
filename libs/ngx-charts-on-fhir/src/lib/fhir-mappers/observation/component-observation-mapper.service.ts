@@ -51,7 +51,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
   ) {}
   canMap = isComponentObservation;
   map(resource: ComponentObservation): DataLayer {
-    const scaleName = `${resource.code.text} (${resource.component[0].valueQuantity.unit})`;
+    const scaleName = resource.code.text;
     return {
       name: resource.code.text,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
@@ -74,7 +74,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         })),
       scale: merge({}, this.linearScaleOptions, {
         id: scaleName,
-        title: { text: scaleName },
+        title: { text: [scaleName, resource.component[0].valueQuantity.unit] },
         stackWeight: resource.component.length,
       }),
       annotations: resource.component.flatMap(
