@@ -2,10 +2,12 @@ import {
   BloodPressureMapper,
   ComponentObservationMapper,
   DurationMedicationMapper,
+  FhirCodeService,
   Mapper,
   SimpleMedicationMapper,
   SimpleObservationMapper,
 } from '@elimuinformatics/ngx-charts-on-fhir';
+import { CustomFhirCodeService } from '../datasets/observations.service';
 
 /**
  * Resource Mappers for FhirConverter, listed in priority order.
@@ -17,4 +19,5 @@ export const mapperProviders = [
   { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },
   { provide: Mapper, useExisting: DurationMedicationMapper, multi: true },
   { provide: Mapper, useExisting: SimpleMedicationMapper, multi: true },
+  { provide: FhirCodeService, useExisting: CustomFhirCodeService },
 ];

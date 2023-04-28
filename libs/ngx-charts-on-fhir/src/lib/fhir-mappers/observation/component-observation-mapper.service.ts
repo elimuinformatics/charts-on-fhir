@@ -7,6 +7,7 @@ import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
+import { FhirCodeService } from '../fhir-code.service';
 
 /** Required properties for mapping an Observation with `ComponentObservationMapper` */
 export type ComponentObservation = {
@@ -47,19 +48,20 @@ export function isComponentObservation(resource: Observation): resource is Compo
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
-    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
+    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation,
+    private codeService: FhirCodeService
   ) {}
   canMap = isComponentObservation;
   map(resource: ComponentObservation): DataLayer {
-    const scaleName = resource.code.text;
+    const codeName = this.codeService.getName(resource.code);
     return {
-      name: resource.code.text,
+      name: codeName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: resource.component
         .sort((a, b) => a.code.text.localeCompare(b.code.text))
         .map((component) => ({
-          label: component.code.text + getMeasurementSettingSuffix(resource),
-          yAxisID: scaleName,
+          label: this.codeService.getName(component.code) + getMeasurementSettingSuffix(resource),
+          yAxisID: codeName,
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
@@ -67,23 +69,23 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
             },
           ],
           chartsOnFhir: {
-            group: component.code.text,
+            group: this.codeService.getName(component.code),
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
           },
         })),
       scale: merge({}, this.linearScaleOptions, {
-        id: scaleName,
-        title: { text: [scaleName, resource.component[0].valueQuantity.unit] },
+        id: codeName,
+        title: { text: [codeName, resource.component[0].valueQuantity.unit] },
         stackWeight: resource.component.length,
       }),
       annotations: resource.component.flatMap(
         (component) =>
           component.referenceRange?.map((range) =>
             merge({}, this.annotationOptions, {
-              id: `${component.code.text} Reference Range`,
-              label: { content: `${component.code.text} Reference Range` },
-              yScaleID: scaleName,
+              id: `${this.codeService.getName(component.code)} Reference Range`,
+              label: { content: `${this.codeService.getName(component.code)} Reference Range` },
+              yScaleID: codeName,
               yMax: range?.high?.value,
               yMin: range?.low?.value,
             })
