@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ToolbarButtonName } from '../data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
-import { SharedDataLayerService } from '../data-layer/shared-data-layer.service';
+import { SharedDataLayerListService } from '../data-layer-list/shared-data-layer-list.service';
 import { FhirDataService } from '../fhir-data/fhir-data.service';
 
 /**
@@ -18,7 +18,7 @@ export class FhirChartLayoutComponent implements OnChanges {
   @Input() active: ToolbarButtonName | null = null;
   @Input() showAdvancedOptions: boolean = true;
 
-  constructor(public fhir: FhirDataService, private sharedDataService: SharedDataLayerService) {}
+  constructor(public fhir: FhirDataService, private sharedDataService: SharedDataLayerListService) {}
 
   ngOnChanges(): void {
     this.sharedDataService.setOptionPanelValue(this.showAdvancedOptions);

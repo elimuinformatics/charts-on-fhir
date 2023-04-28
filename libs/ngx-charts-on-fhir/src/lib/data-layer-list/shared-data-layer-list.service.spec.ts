@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { SharedDataLayerService } from './shared-data-layer.service';
+import { SharedDataLayerListService } from './shared-data-layer-list.service';
 
-describe('SharedDataLayerService', () => {
-  let service: SharedDataLayerService;
+describe('SharedDataLayerListService', () => {
+  let service: SharedDataLayerListService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SharedDataLayerService],
+      providers: [SharedDataLayerListService],
     });
-    service = TestBed.inject(SharedDataLayerService);
+    service = TestBed.inject(SharedDataLayerListService);
   });
 
   it('should be created', () => {

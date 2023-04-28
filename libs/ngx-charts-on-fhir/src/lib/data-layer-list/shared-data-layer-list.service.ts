@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SharedDataLayerService {
+export class SharedDataLayerListService {
   subject$ = new BehaviorSubject<boolean>(false);
 
   setOptionPanelValue(optionPanelValue: boolean) {
