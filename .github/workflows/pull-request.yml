@@ -56,7 +56,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
-      - run: npx nx affected -t test --parallel=5 --no-watch --code-coverage
+      - if: ${{ github.ref == 'refs/heads/main' }} # Run all tests when merging to main for accurate coverage in SonarCloud
+        run: npx nx run-many -t test --parallel=5 --no-watch --code-coverage
+      - if: ${{ github.ref != 'refs/heads/main' }} # Only test affected projects in PRs
+        run: npx nx affected -t test --parallel=5 --no-watch --code-coverage
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
