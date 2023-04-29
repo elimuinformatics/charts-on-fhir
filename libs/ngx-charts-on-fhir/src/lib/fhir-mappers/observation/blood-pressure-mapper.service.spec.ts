@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TIME_SCALE_OPTIONS, ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { BloodPressureMapper, BloodPressureObservation } from './blood-pressure-mapper.service';
 import { ComponentObservationMapper } from './component-observation-mapper.service';
+import { FhirCodeService } from '../fhir-code.service';
 
 describe('BloodPressureMapper', () => {
   let mapper: BloodPressureMapper;
@@ -9,6 +10,7 @@ describe('BloodPressureMapper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        FhirCodeService,
         BloodPressureMapper,
         ComponentObservationMapper,
         { provide: TIME_SCALE_OPTIONS, useValue: {} },
@@ -68,8 +70,8 @@ describe('BloodPressureMapper', () => {
         ],
       };
       expect(mapper.map(observation).annotations).toEqual([
-        jasmine.objectContaining({ label: { content: 'Systolic Blood Pressure Reference Range' } }),
-        jasmine.objectContaining({ label: { content: 'Diastolic Blood Pressure Reference Range' } }),
+        jasmine.objectContaining({ label: { content: 'Systolic Reference Range' } }),
+        jasmine.objectContaining({ label: { content: 'Diastolic Reference Range' } }),
       ]);
     });
   });

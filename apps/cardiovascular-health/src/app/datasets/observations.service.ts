@@ -62,15 +62,15 @@ const observationCodings = [
 ];
 
 @Injectable({ providedIn: 'root' })
-export class CustomFhirCodeService implements FhirCodeService {
-  getName(code: CodeableConcept): string {
+export class CustomFhirCodeService extends FhirCodeService {
+  override getName(code: CodeableConcept): string {
     const codingMatch = observationCodings.find((candidate) =>
       code.coding?.some((coding) => coding.system === candidate.system && coding.code === candidate.code)
     );
     if (codingMatch) {
       return codingMatch?.display;
     }
-    return code.text ?? '';
+    return super.getName(code);
   }
 }
 

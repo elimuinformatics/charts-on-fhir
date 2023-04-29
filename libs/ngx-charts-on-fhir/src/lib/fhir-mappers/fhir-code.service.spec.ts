@@ -9,7 +9,9 @@ describe('CodeNameService', () => {
     service = TestBed.inject(FhirCodeService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('getName', () => {
+    it('should return text property', () => {
+      expect(service.getName({ text: 'hello' })).toBe('hello');
+    });
   });
 });

@@ -1,7 +1,19 @@
 import { MedicationRequest } from 'fhir/r4';
 import { SimpleMedication, SimpleMedicationMapper } from './simple-medication-mapper.service';
+import { TestBed } from '@angular/core/testing';
+import { FhirCodeService } from '../fhir-code.service';
+import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
 
 describe('SimpleMedicationMapper', () => {
+  let mapper: SimpleMedicationMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: MEDICATION_SCALE_OPTIONS, useValue: { type: 'category' } }, FhirCodeService],
+    });
+    mapper = TestBed.inject(SimpleMedicationMapper);
+  });
+
   describe('canMap', () => {
     it('should return true for a SimpleMedication', () => {
       const medication: SimpleMedication = {
@@ -12,7 +24,6 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({});
       expect(mapper.canMap(medication)).toBe(true);
     });
 
@@ -24,7 +35,6 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({});
       expect(mapper.canMap(medication)).toBe(false);
     });
   });
@@ -40,7 +50,6 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({});
       expect(mapper.map(medication).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -53,7 +62,6 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({});
       expect(mapper.map(medication).datasets[0].data[0].y).toEqual('text');
     });
 
@@ -66,7 +74,6 @@ describe('SimpleMedicationMapper', () => {
         status: 'completed',
         subject: {},
       };
-      const mapper = new SimpleMedicationMapper({ type: 'category' });
       expect(mapper.map(medication).scale).toEqual({
         id: 'medications',
         type: 'category',
