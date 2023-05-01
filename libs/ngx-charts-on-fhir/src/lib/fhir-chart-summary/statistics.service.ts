@@ -183,7 +183,8 @@ function getDay(point: ScatterDataPoint): string {
 function isReferenceRangeFor(dataset: Dataset) {
   return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
     return (
-      annotation.id === dataset.chartsOnFhir?.referenceRangeAnnotation &&
+      dataset.chartsOnFhir?.referenceRangeAnnotation != null &&
+      annotation.id === dataset.chartsOnFhir.referenceRangeAnnotation &&
       typeof annotation.yMax === 'number' &&
       typeof annotation.yMin === 'number' &&
       typeof annotation.yScaleID === 'string'
