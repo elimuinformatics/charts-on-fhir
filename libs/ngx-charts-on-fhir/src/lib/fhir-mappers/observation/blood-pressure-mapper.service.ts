@@ -1,9 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Coding, Observation } from 'fhir/r4';
 import { ComponentObservation, ComponentObservationMapper, isComponentObservation } from './component-observation-mapper.service';
 import { Mapper } from '../multi-mapper.service';
-import { ANNOTATION_OPTIONS } from '../fhir-mapper-options';
-import { ChartAnnotation } from '../../utils';
 import { DataLayer } from '../../data-layer/data-layer';
 import { codeEquals } from '../fhir-code.service';
 
@@ -40,7 +38,7 @@ export function isBloodPressureObservation(resource: Observation): resource is B
   providedIn: 'root',
 })
 export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
-  constructor(private baseMapper: ComponentObservationMapper, @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation) {}
+  constructor(private baseMapper: ComponentObservationMapper) {}
   canMap = isBloodPressureObservation;
   map(resource: BloodPressureObservation): DataLayer {
     for (let component of resource.component) {

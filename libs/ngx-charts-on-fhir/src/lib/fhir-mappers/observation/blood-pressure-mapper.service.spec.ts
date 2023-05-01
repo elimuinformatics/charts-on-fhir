@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TIME_SCALE_OPTIONS, ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { BloodPressureMapper, BloodPressureObservation } from './blood-pressure-mapper.service';
 import { ComponentObservationMapper } from './component-observation-mapper.service';
 import { FhirCodeService } from '../fhir-code.service';
@@ -13,7 +13,6 @@ describe('BloodPressureMapper', () => {
         FhirCodeService,
         BloodPressureMapper,
         ComponentObservationMapper,
-        { provide: TIME_SCALE_OPTIONS, useValue: {} },
         { provide: LINEAR_SCALE_OPTIONS, useValue: {} },
         { provide: ANNOTATION_OPTIONS, useValue: {} },
       ],
