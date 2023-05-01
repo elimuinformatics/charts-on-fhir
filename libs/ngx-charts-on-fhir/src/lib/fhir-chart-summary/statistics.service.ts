@@ -181,10 +181,9 @@ function getDay(point: ScatterDataPoint): string {
 
 /** Factory for generating functions that check if any given annotation is a reference range for the bound dataset */
 function isReferenceRangeFor(dataset: Dataset) {
-  const datasetLabel = getOriginalLabel(dataset);
   return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
     return (
-      (annotation as BoxAnnotationOptions)?.label?.content === `${datasetLabel} Reference Range` &&
+      annotation.id === dataset.chartsOnFhir?.referenceRangeAnnotation &&
       typeof annotation.yMax === 'number' &&
       typeof annotation.yMin === 'number' &&
       typeof annotation.yScaleID === 'string'

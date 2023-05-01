@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CodeableConcept } from 'fhir/r4';
+import { CodeableConcept, Coding } from 'fhir/r4';
 
 /**
  * A service for getting the display name of a FHIR `CodableConcept`.
@@ -20,9 +20,7 @@ import { CodeableConcept } from 'fhir/r4';
  *       },
  *       // ...
  *     ];
- *     const codingMatch = customCodings.find((candidate) =>
- *       code.coding?.some((coding) => coding.system === candidate.system && coding.code === candidate.code)
- *     );
+ *     const codingMatch = customCodings.find(codeIn(code));;
  *     if (codingMatch) {
  *       return codingMatch?.display;
  *     }
@@ -47,4 +45,35 @@ export class FhirCodeService {
   getName(code: CodeableConcept): string {
     return code.text ?? '';
   }
+}
+
+type CodeOrCoding = CodeableConcept | Coding | Coding[];
+
+/** Check if two codes are equivalent (if they have at least one `Coding` in common) */
+export function codeEquals(a: CodeOrCoding, b: CodeOrCoding) {
+  return getCodings(a).some(codeIn(b));
+}
+
+/** Returns a matcher that can be used with Array functions (find, some, etc.) to match the given code */
+export function codeIn(code: CodeOrCoding) {
+  return (other: Coding) => getCodings(code).some((coding) => codingEquals(coding, other));
+}
+
+/** Check if two codings are equal */
+export function codingEquals(a: Coding, b: Coding) {
+  return a.system === b.system && a.code === b.code;
+}
+
+function getCodings(code: CodeOrCoding): Coding[] {
+  if (isCodeableConcept(code)) {
+    return code.coding ?? [];
+  } else if (Array.isArray(code)) {
+    return code;
+  } else {
+    return [code];
+  }
+}
+
+function isCodeableConcept(code: CodeOrCoding): code is CodeableConcept {
+  return !!(code as CodeableConcept).coding;
 }

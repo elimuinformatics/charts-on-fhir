@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CodeableConcept, Coding, Observation } from 'fhir/r4';
-import { DataLayerService, FhirDataService, FhirConverter, FhirCodeService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { DataLayerService, FhirDataService, FhirConverter, FhirCodeService, codeIn } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
 
 const observationCodings = [
@@ -64,9 +64,7 @@ const observationCodings = [
 @Injectable({ providedIn: 'root' })
 export class CustomFhirCodeService extends FhirCodeService {
   override getName(code: CodeableConcept): string {
-    const codingMatch = observationCodings.find((candidate) =>
-      code.coding?.some((coding) => coding.system === candidate.system && coding.code === candidate.code)
-    );
+    const codingMatch = observationCodings.find(codeIn(code));
     if (codingMatch) {
       return codingMatch?.display;
     }

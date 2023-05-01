@@ -60,6 +60,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             group: codeName,
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+            referenceRangeAnnotation: `${codeName} Reference Range`,
           },
         },
       ],

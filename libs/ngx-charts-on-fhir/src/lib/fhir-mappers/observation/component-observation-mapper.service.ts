@@ -72,6 +72,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
             group: this.codeService.getName(component.code),
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+            referenceRangeAnnotation: `${this.codeService.getName(component.code)} Reference Range`,
           },
         })),
       scale: merge({}, this.linearScaleOptions, {
