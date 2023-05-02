@@ -10,8 +10,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { Subject, of } from 'rxjs';
-import { NumberRange } from '../utils';
+import { of } from 'rxjs';
 
 type ChartAnnotation = {
   type: string;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
 import { delay } from 'rxjs';
@@ -20,11 +20,7 @@ export class TimeFrameSelectorComponent {
     { month: 12, value: '1 y' },
   ];
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private configService: FhirChartConfigurationService,
-    @Inject(TIMEFRAME_ANNOTATIONS) public timeframeAnnotations: ChartAnnotation[]
-  ) {}
+  constructor(private configService: FhirChartConfigurationService, @Inject(TIMEFRAME_ANNOTATIONS) public timeframeAnnotations: ChartAnnotation[]) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
