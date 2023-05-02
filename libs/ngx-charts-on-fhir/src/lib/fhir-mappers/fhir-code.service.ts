@@ -20,7 +20,7 @@ import { CodeableConcept, Coding } from 'fhir/r4';
  *       },
  *       // ...
  *     ];
- *     const codingMatch = customCodings.find(codeIn(code));;
+ *     const codingMatch = customCodings.find(codeIn(code));
  *     if (codingMatch) {
  *       return codingMatch?.display;
  *     }
