@@ -1,0 +1,8 @@
+<mat-form-field floatLabel="always" subscriptSizing="dynamic">
+  <mat-label>View</mat-label>
+  <mat-select [(value)]="active" (selectionChange)="onSelectionChange($event.value)" placeholder="Custom">
+    <mat-option *ngFor="let item of views | keyvalue" [value]="item.key">
+      {{ item.key }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
