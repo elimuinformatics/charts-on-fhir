@@ -30,15 +30,7 @@ export class TimeFrameSelectorComponent {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
       this.maxDate = new Date(timelineRange.max);
       this.minDate = new Date(timelineRange.min);
-
-      this.changeDetectorRef.markForCheck();
     });
-    if (this.maxDate && this.minDate) {
-      this.configService.summaryUpdateSubject.next({
-        max: this.maxDate.getTime(),
-        min: this.minDate.getTime(),
-      });
-    }
   }
 
   updateTimeframeRangeSelector(monthCount: number) {
@@ -71,16 +63,6 @@ export class TimeFrameSelectorComponent {
         min: this.minDate.getTime(),
       });
     }
-  }
-
-  calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
-    let months = (maxDateValue.getFullYear() - minDateValue.getFullYear()) * 12;
-    months -= minDateValue.getMonth();
-    months += maxDateValue.getMonth();
-    if (months) {
-      return months;
-    }
-    return 0;
   }
 }
 
