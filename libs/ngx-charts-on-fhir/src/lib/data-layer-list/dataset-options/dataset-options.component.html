@@ -1,5 +1,5 @@
-<form [formGroup]="form">
-  <color-picker formControlName="color" *ngIf="showAdvancedOptions"></color-picker>
+<form [formGroup]="form" *ngIf="showAdvancedOptions; else simpleOptions">
+  <color-picker formControlName="color"></color-picker>
   <ng-container *ngIf="this._dataset?.yAxisID != 'medications'">
     <mat-button-toggle-group formControlName="type">
       <mat-button-toggle value="line" aria-label="Line Chart">
@@ -9,7 +9,7 @@
         <mat-icon>scatter_plot</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <mat-button-toggle-group formControlName="pointStyle" *ngIf="showAdvancedOptions">
+    <mat-button-toggle-group formControlName="pointStyle">
       <mat-button-toggle value="circle" aria-label="Circle">
         <mat-icon class="material-icons-outlined">circle</mat-icon>
       </mat-button-toggle>
@@ -23,18 +23,30 @@
         <mat-icon class="material-icons-outlined">change_history</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
-    <div class="form-row" *ngIf="showAdvancedOptions">
+    <div class="form-row">
       <label for="pointRadius">Point Size</label>
       <mat-slider id="pointRadius" class="form-row-stretch" discrete min="1" max="20" step="1"
         ><input matSliderThumb formControlName="pointRadius"
       /></mat-slider>
     </div>
-    <div *ngIf="showAdvancedOptions">
+    <div>
       <section *ngIf="this.form.value.type === 'line'">
         <h3>Line Chart Options</h3>
-        <mat-slide-toggle formControlName="interpolation">Cubic interpolation</mat-slide-toggle>
+        <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
         <mat-slide-toggle formControlName="fill">Fill area under line</mat-slide-toggle>
       </section>
     </div>
   </ng-container>
 </form>
+<ng-template #simpleOptions>
+  <form [formGroup]="form">
+    <ng-container *ngIf="this._dataset?.yAxisID != 'medications'">
+      <div>
+        <section *ngIf="this.form.value.type === 'line'">
+          <h3>Line Chart Options</h3>
+          <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
+        </section>
+      </div>
+    </ng-container>
+  </form>
+</ng-template>

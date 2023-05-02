@@ -14,10 +14,4 @@ describe('SharedDataLayerListService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('should set and get option panel value', () => {
-    const value = true;
-    service.setOptionPanelValue(value);
-    expect(service.getOptionPanelValue()).toEqual(value);
-  });
 });

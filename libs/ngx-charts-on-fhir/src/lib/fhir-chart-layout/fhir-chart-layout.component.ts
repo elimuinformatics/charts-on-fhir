@@ -21,7 +21,7 @@ export class FhirChartLayoutComponent implements OnChanges {
   constructor(public fhir: FhirDataService, private sharedDataService: SharedDataLayerListService) {}
 
   ngOnChanges(): void {
-    this.sharedDataService.setOptionPanelValue(this.showAdvancedOptions);
+    this.sharedDataService.showAdvancedOptions$.next(this.showAdvancedOptions);
   }
 
   onToolbarChange(sidenav: MatSidenav, panel: ToolbarButtonName | null) {

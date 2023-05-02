@@ -40,7 +40,9 @@ export class DatasetOptionsComponent implements OnInit {
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
     });
-    this.showAdvancedOptions = this.sharedDataService.getOptionPanelValue();
+    this.sharedDataService.showAdvancedOptions$.subscribe((showAdvancedOptions: boolean) => {
+      this.showAdvancedOptions = showAdvancedOptions;
+    });
   }
 
   private updateModel(formValue: typeof this.form.value): void {
