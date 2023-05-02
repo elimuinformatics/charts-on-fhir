@@ -2,64 +2,7 @@ import { Injectable } from '@angular/core';
 import { CodeableConcept, Coding, Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter, FhirCodeService, codeIn } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
-
-const observationCodings = [
-  {
-    system: 'http://loinc.org',
-    code: '29463-7',
-    display: 'Body Weight',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '85354-9',
-    display: 'Blood Pressure',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '8480-6',
-    display: 'Systolic',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '8462-4',
-    display: 'Diastolic',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '8867-4',
-    display: 'Heart Rate',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '74774-1',
-    display: 'Glucose',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '2339-0',
-    display: 'Glucose',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '4548-4',
-    display: 'Hemoglobin A1c',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '59408-5',
-    display: 'O2 Saturation',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '55423-8',
-    display: 'Step Count',
-  },
-  {
-    system: 'http://loinc.org',
-    code: '41950-7',
-    display: 'Step Count',
-  },
-];
+import observationCodings from './observations.json';
 
 @Injectable({ providedIn: 'root' })
 export class CustomFhirCodeService extends FhirCodeService {
