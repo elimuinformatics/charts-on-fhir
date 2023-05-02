@@ -14,7 +14,7 @@ export class TimeFrameSelectorComponent {
   maxDate?: Date;
   minDate?: Date;
 
-  rangeSelectorButtons = [
+  timeframeSelectorButtons = [
     { month: 1, value: '1 mo' },
     { month: 3, value: '3 mo' },
     { month: 6, value: '6 mo' },
@@ -24,7 +24,7 @@ export class TimeFrameSelectorComponent {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private configService: FhirChartConfigurationService,
-    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotations: ChartAnnotation[],
+    @Inject(TIMEFRAME_ANNOTATIONS) public timeframeAnnotations: ChartAnnotation[],
     @Inject(SummaryService) private summaryServices: SummaryService[]
   ) {}
 
@@ -32,8 +32,14 @@ export class TimeFrameSelectorComponent {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
       this.maxDate = new Date(timelineRange.max);
       this.minDate = new Date(timelineRange.min);
+
       this.changeDetectorRef.markForCheck();
     });
+    if (this.maxDate && this.minDate)
+      this.configService.summaryUpdateSubject.next({
+        max: this.maxDate.getTime(),
+        min: this.minDate.getTime(),
+      });
   }
 
   updateRangeSelector(monthCount: number) {
@@ -60,8 +66,13 @@ export class TimeFrameSelectorComponent {
     this.configService.annotationSubject.next(this.timeframeAnnotations);
     this.maxDate = new Date();
     this.minDate = subtractMonths(this.maxDate, monthCount);
-    this.configService.timeline.max = this.minDate.getTime();
-    this.configService.timeline.min = new Date().getTime();
+    this.configService.summaryUpdateSubject.next({
+      max: new Date().getTime(),
+      min: this.minDate.getTime(),
+    });
+    // this.configService.timeline.min = this.minDate.getTime();
+    // this.configService.timeline.max = new Date().getTime();
+    // this.configService.annotationSubject.next(this.timeframeAnnotations);
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {

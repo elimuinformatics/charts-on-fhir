@@ -33,6 +33,7 @@ export class FhirChartConfigurationService {
   }
 
   annotationSubject = new Subject<ChartAnnotation[]>();
+  summaryUpdateSubject = new Subject<NumberRange>();
 
   public timeline: ScaleOptions<'time'> = {
     ...this.timeScaleOptions,

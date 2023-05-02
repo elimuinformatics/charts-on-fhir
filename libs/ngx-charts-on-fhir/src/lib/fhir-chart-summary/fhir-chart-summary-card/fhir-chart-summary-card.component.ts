@@ -13,6 +13,9 @@ import { NumberRange } from '../../utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartSummaryCardComponent {
+  isFirst: boolean = true;
+  range: NumberRange | null = null;
+  summary: any[] = [{}];
   @Input() layer!: DataLayer;
   _expanded = false;
   get expanded() {
@@ -34,7 +37,18 @@ export class FhirChartSummaryCardComponent {
     private colorService: DataLayerColorService,
     private elementRef: ElementRef,
     @Inject(SummaryService) private summaryServices: SummaryService[]
-  ) {}
+  ) {
+    this.configService.summaryUpdateSubject.subscribe((range: NumberRange) => {
+      // this.range = range;
+      this.summary = this.summarize(range);
+    });
+  }
+
+  ngOnInit() {
+    this.configService.timelineRange$?.subscribe((range) => {
+      this.configService.summaryUpdateSubject.next(range);
+    });
+  }
 
   overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];
 
@@ -75,4 +89,17 @@ export class FhirChartSummaryCardComponent {
     }
     return [{}];
   }
+
+  // summarize() {
+  //   if (this.range) {
+  //     for (let summaryService of this.summaryServices) {
+  //       if (summaryService.canSummarize(this.layer)) {
+  //         this.summary = summaryService.summarize(this.layer, this.range);
+  //         break;
+  //       }
+  //     }
+  //   } else {
+  //     this.summary = [{}];
+  //   }
+  // }
 }

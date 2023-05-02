@@ -5,7 +5,7 @@ import { Component, Input, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ManagedDataLayer } from '../../data-layer/data-layer';
 import { BehaviorSubject } from 'rxjs';
-import { NumberRange } from '../../utils';
+import { ChartAnnotation, NumberRange } from '../../utils';
 import { SummaryService } from '../summary.service';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -13,6 +13,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 class MockConfigService {
   timelineRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
+  annotationSubject = new BehaviorSubject<ChartAnnotation[]>([
+    {
+      type: 'line',
+      borderColor: '#FF900D',
+      borderWidth: 3,
+      display: true,
+      drawTime: 'afterDatasetsDraw',
+      label: {
+        display: true,
+        content: 'Today',
+        position: 'start',
+        color: '#FF900D',
+        backgroundColor: '#FAFAFA',
+      },
+      scaleID: 'x',
+      value: new Date().getTime(),
+    },
+  ]);
+  summaryUpdateSubject = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }
 
 @Component({ selector: 'dynamic-table', template: '' })

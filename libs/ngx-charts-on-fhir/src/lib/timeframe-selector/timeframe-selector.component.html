@@ -1,9 +1,11 @@
-<mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style">
-  <mat-button-toggle
-    *ngFor="let rangeButton of rangeSelectorButtons"
-    [id]="rangeButton.value"
-    [value]="rangeButton.month"
-    (click)="updateRangeSelector(rangeButton.month)"
-    >{{ rangeButton.value }}</mat-button-toggle
-  >
-</mat-button-toggle-group>
+<div class="timeframe-selector">
+  <mat-button-toggle-group id="timeframeselector" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle
+      *ngFor="let timeframeButton of timeframeSelectorButtons"
+      [id]="timeframeButton.value"
+      [value]="timeframeButton.month"
+      (click)="updateRangeSelector(timeframeButton.month)"
+      >{{ timeframeButton.value }}</mat-button-toggle
+    >
+  </mat-button-toggle-group>
+</div>
