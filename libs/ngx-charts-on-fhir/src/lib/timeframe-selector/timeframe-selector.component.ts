@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
-// import { ChartAnnotation } from '../utils';
 import { delay } from 'rxjs';
-import { SummaryService } from '../fhir-chart-summary/summary.service';
 import { ChartAnnotation } from '../utils';
 
 @Component({
@@ -25,8 +23,7 @@ export class TimeFrameSelectorComponent {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private configService: FhirChartConfigurationService,
-    @Inject(TIMEFRAME_ANNOTATIONS) public timeframeAnnotations: ChartAnnotation[],
-    @Inject(SummaryService) private summaryServices: SummaryService[]
+    @Inject(TIMEFRAME_ANNOTATIONS) public timeframeAnnotations: ChartAnnotation[]
   ) {}
 
   ngOnInit(): void {
@@ -36,14 +33,15 @@ export class TimeFrameSelectorComponent {
 
       this.changeDetectorRef.markForCheck();
     });
-    if (this.maxDate && this.minDate)
+    if (this.maxDate && this.minDate) {
       this.configService.summaryUpdateSubject.next({
         max: this.maxDate.getTime(),
         min: this.minDate.getTime(),
       });
+    }
   }
 
-  updateRangeSelector(monthCount: number) {
+  updateTimeframeRangeSelector(monthCount: number) {
     if (this.maxDate && monthCount) {
       const previouMonth = monthCount * 2;
       // remove all previous annotions except TODAY
@@ -73,9 +71,6 @@ export class TimeFrameSelectorComponent {
         min: this.minDate.getTime(),
       });
     }
-    // this.configService.timeline.min = this.minDate.getTime();
-    // this.configService.timeline.max = new Date().getTime();
-    // this.configService.annotationSubject.next(this.timeframeAnnotations);
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {

@@ -33,13 +33,17 @@ export class FhirChartConfigurationService {
   }
 
   annotationSubject = new Subject<ChartAnnotation[]>();
-  summaryUpdateSubject = new Subject<NumberRange>();
 
   public timeline: ScaleOptions<'time'> = {
     ...this.timeScaleOptions,
-    afterDataLimits: (axis) => this.ngZone.run(() => this.timelineRangeSubject.next({ max: axis.max, min: axis.min })),
+    afterDataLimits: (axis) =>
+      this.ngZone.run(() => {
+        this.timelineRangeSubject.next({ max: axis.max, min: axis.min });
+      }),
   };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
+  summaryUpdateSubject = new ReplaySubject<NumberRange>();
+
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
 
   updateChartConfiguration(timeframeAnnotations: ChartAnnotation[] = []) {
@@ -96,6 +100,8 @@ export class FhirChartConfigurationService {
 
   private updateTimelineBounds(datasets: Dataset[]) {
     this.timelineDataBounds = computeBounds('x', 0, datasets);
+    if (this.timelineDataBounds.min && this.timelineDataBounds.max)
+      this.summaryUpdateSubject.next({ min: this.timelineDataBounds.min, max: this.timelineDataBounds.max });
     if (!this.isZoomRangeLocked) {
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
@@ -121,7 +127,7 @@ export class FhirChartConfigurationService {
   }
 
   /** Build a chart configuration object to display the given datasets, scales, and annotations */
-  buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = [], annotations1: any = []): TimelineConfiguration {
+  buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = []): TimelineConfiguration {
     return {
       type: 'line',
       data: {

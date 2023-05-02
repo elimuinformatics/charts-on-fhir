@@ -37,16 +37,12 @@ export class FhirChartSummaryCardComponent {
     private colorService: DataLayerColorService,
     private elementRef: ElementRef,
     @Inject(SummaryService) private summaryServices: SummaryService[]
-  ) {
-    this.configService.summaryUpdateSubject.subscribe((range: NumberRange) => {
-      // this.range = range;
-      this.summary = this.summarize(range);
-    });
-  }
+  ) {}
 
   ngOnInit() {
-    this.configService.timelineRange$?.subscribe((range) => {
-      this.configService.summaryUpdateSubject.next(range);
+    this.configService.summaryUpdateSubject.subscribe((range: NumberRange) => {
+      this.summary = this.summarize(range);
+      console.log(this.summary);
     });
   }
 
