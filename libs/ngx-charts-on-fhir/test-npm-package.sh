@@ -24,6 +24,7 @@ echo ::::: Installing Charts-on-FHIR library
 npm i ../../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
 
 echo ::::: Building the Angular app
+npx \@angular/cli@${MIN_ANGULAR_VERSION} version
 npx \@angular/cli@${MIN_ANGULAR_VERSION} build
 
 echo ::::: Cleaning up temporary files
