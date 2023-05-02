@@ -10,7 +10,16 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { of } from 'rxjs';
+import { Subject, of } from 'rxjs';
+import { NumberRange } from '../utils';
+
+type ChartAnnotation = {
+  type: string;
+  value: Date;
+  label: {
+    content: string;
+  };
+};
 
 const max = new Date('2022-03-30T00:00').getTime();
 const min = new Date('2022-01-06T00:00').getTime();
@@ -19,6 +28,8 @@ class MockConfigService {
   timelineRange$ = of({ min, max });
   zoom = jasmine.createSpy('zoom');
   resetZoom = jasmine.createSpy('resetZoom');
+  annotationSubject = new Subject<ChartAnnotation[]>();
+  summaryUpdateSubject = new Subject<NumberRange>();
 }
 
 describe('TimeFrameSelectorComponent', () => {
@@ -55,46 +66,59 @@ describe('TimeFrameSelectorComponent', () => {
 
   it('should display the range selector', () => {
     fixture.detectChanges();
-    const rangeSelector = element.query(By.css('.timeframe-selector'));
-    expect(rangeSelector).toBeTruthy();
+    const timeframeSelector = element.query(By.css('.timeframe-selector'));
+    expect(timeframeSelector).toBeTruthy();
   });
 
-  it('should calculate proper 1 month ago date from max layer date', async () => {
+  it('should calculate proper 1 month ago date from max layer date and add timeframe annotations', async () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 mo']" }));
     await ButtonInputGroup.check();
-    const expectedMinDate = new Date('2022-02-28T00:00');
+    const timeframeAnnotations: ChartAnnotation[] = component.timeframeAnnotations as ChartAnnotation[];
     expect(component.timeframeAnnotations.length).toBe(3);
-    expect(component.timeframeAnnotations[1].label.content).toBe('1 month ago');
-    expect(component.timeframeAnnotations[2].label.content).toBe('2 months ago');
-    // component.timeframeAnnotations.forEach((annotation: ) => {
-    //   expect(annotation.value).toEqual('expectedValue');
-    // });
-
-    // expect(component.timeframeAnnotations).toEqual(jasmine.arrayContaining([]));
+    expect(timeframeAnnotations[1].label.content).toBe('1 months ago');
+    expect(timeframeAnnotations[2].label.content).toBe('2 months ago');
+    const expectedMinDate = new Date('2022-02-28T00:00');
+    expect(component.minDate).toEqual(expectedMinDate);
+    expect(new Date(timeframeAnnotations[1].value).getTime()).toEqual(expectedMinDate.getTime());
   });
 
-  // it('should calculate proper 3 month ago date from max layer date', async () => {
-  //   jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-  //   let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
-  //   await ButtonInput.check();
-  //   const expectedMinDate = new Date('2021-12-30T00:00');
-  //   expect(component.minDate).toEqual(expectedMinDate);
-  // });
+  it('should calculate proper 3 month ago date from max layer date and add timeframe annotations', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
+    await ButtonInput.check();
+    const timeframeAnnotations: ChartAnnotation[] = component.timeframeAnnotations as ChartAnnotation[];
+    expect(component.timeframeAnnotations.length).toBe(3);
+    expect(timeframeAnnotations[1].label.content).toBe('3 months ago');
+    expect(timeframeAnnotations[2].label.content).toBe('6 months ago');
+    const expectedMinDate = new Date('2021-12-30T00:00');
+    expect(component.minDate).toEqual(expectedMinDate);
+    expect(new Date(timeframeAnnotations[1].value).getTime()).toEqual(expectedMinDate.getTime());
+  });
 
-  // it('should calculate proper 6 month ago date from max layer date', async () => {
-  //   jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-  //   let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
-  //   await ButtonInput.check();
-  //   const expectedMinDate = new Date('2021-09-30T00:00');
-  //   expect(component.minDate).toEqual(expectedMinDate);
-  // });
+  it('should calculate proper 6 month ago date from max layer date and add timeframe annotations', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
+    await ButtonInput.check();
+    const timeframeAnnotations: ChartAnnotation[] = component.timeframeAnnotations as ChartAnnotation[];
+    expect(component.timeframeAnnotations.length).toBe(3);
+    expect(timeframeAnnotations[1].label.content).toBe('6 months ago');
+    expect(timeframeAnnotations[2].label.content).toBe('12 months ago');
+    const expectedMinDate = new Date('2021-09-30T00:00');
+    expect(component.minDate).toEqual(expectedMinDate);
+    expect(new Date(timeframeAnnotations[1].value).getTime()).toEqual(expectedMinDate.getTime());
+  });
 
-  // it('should calculate proper 12 month ago date from max layer date', async () => {
-  //   jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-  //   let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
-  //   await ButtonInput.check();
-  //   const expectedMinDate = new Date('2021-03-30T00:00');
-  //   expect(component.minDate).toEqual(expectedMinDate);
-  // });
+  it('should calculate proper 12 month ago date from max layer date', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
+    await ButtonInput.check();
+    const timeframeAnnotations: ChartAnnotation[] = component.timeframeAnnotations as ChartAnnotation[];
+    expect(component.timeframeAnnotations.length).toBe(3);
+    expect(timeframeAnnotations[1].label.content).toBe('12 months ago');
+    expect(timeframeAnnotations[2].label.content).toBe('24 months ago');
+    const expectedMinDate = new Date('2021-03-30T00:00');
+    expect(component.minDate).toEqual(expectedMinDate);
+    expect(new Date(timeframeAnnotations[1].value).getTime()).toEqual(expectedMinDate.getTime());
+  });
 });

@@ -122,7 +122,6 @@ export class FhirChartConfigurationService {
 
   /** Build a chart configuration object to display the given datasets, scales, and annotations */
   buildConfiguration(datasets: Dataset[] = [], scales: ChartScales = {}, annotations: ChartAnnotations = [], annotations1: any = []): TimelineConfiguration {
-    console.log([...annotations]);
     return {
       type: 'line',
       data: {
