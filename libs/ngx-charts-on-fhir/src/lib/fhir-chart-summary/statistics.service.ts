@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { mean, groupBy, uniq } from 'lodash-es';
 import { ScatterDataPoint } from 'chart.js';
-import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
+import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
 import { DeepPartial } from 'chart.js/dist/types/utils';
-import { getOriginalLabel } from './home-measurement-summary.service';
 
 type Stats = {
   days: number;
