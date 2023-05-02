@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation } from '../utils';
+import { subtractMonths } from '../utils';
 
 /**
  * See `*RangeSelector` for example usage.
@@ -24,11 +23,7 @@ export class RangeSelectorComponent {
   ];
   selectedButton: number | 'All' = 'All';
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private configService: FhirChartConfigurationService,
-    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotation: ChartAnnotation
-  ) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
@@ -82,16 +77,4 @@ export class RangeSelectorComponent {
     }
     return 0;
   }
-}
-
-function subtractMonths(oldDate: Date, months: number): Date {
-  const newDate = new Date(oldDate);
-  newDate.setMonth(oldDate.getMonth() - months);
-  // If day-of-the-month (getDate) has changed, it's because the day did not exist
-  // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
-  // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
-  if (newDate.getDate() < oldDate.getDate()) {
-    newDate.setDate(0);
-  }
-  return newDate;
 }

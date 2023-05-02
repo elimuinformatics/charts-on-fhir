@@ -2,12 +2,12 @@ import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import produce from 'immer';
 import { mapValues, merge } from 'lodash-es';
-import { map, Observable, ReplaySubject, scan, Subject, tap, throttleTime } from 'rxjs';
+import { combineLatest, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
-import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
+import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
+import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, NumberRange, subtractMonths } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -22,19 +22,16 @@ type MergedDataLayer = {
   providedIn: 'root',
 })
 export class FhirChartConfigurationService {
-  chartConfig$?: Observable<TimelineConfiguration>;
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(TIMEFRAME_ANNOTATIONS) private timeframeAnnotations: ChartAnnotation[],
+    @Inject(TIMEFRAME_ANNOTATION_OPTIONS) private timeframeAnnotationOptions: ChartAnnotation,
     private ngZone: NgZone
   ) {
-    this.updateChartConfiguration();
+    this.setSummaryTimeframe(1);
   }
 
-  annotationSubject = new Subject<ChartAnnotation[]>();
-
-  public timeline: ScaleOptions<'time'> = {
+  private timeline: ScaleOptions<'time'> = {
     ...this.timeScaleOptions,
     afterDataLimits: (axis) =>
       this.ngZone.run(() => {
@@ -42,17 +39,18 @@ export class FhirChartConfigurationService {
       }),
   };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
-  summaryUpdateSubject = new ReplaySubject<NumberRange>();
+  private summaryRangeSubject = new ReplaySubject<NumberRange>();
+  private annotationSubject = new ReplaySubject<ChartAnnotation[]>();
 
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
+  summaryRange$ = this.summaryRangeSubject.asObservable();
 
-  updateChartConfiguration(timeframeAnnotations: ChartAnnotation[] = []) {
-    this.chartConfig$ = this.layerManager.selectedLayers$.pipe(
-      map((layers) => this.mergeLayers(layers)),
-      scan((config, layer) => this.updateConfiguration(config, layer, timeframeAnnotations), this.buildConfiguration()),
-      tap((config) => this.updateTimelineBounds(config.data.datasets))
-    );
-  }
+  private mergedLayer$ = this.layerManager.selectedLayers$.pipe(map((layers) => this.mergeLayers(layers)));
+  chartConfig$ = combineLatest([this.mergedLayer$, this.annotationSubject]).pipe(
+    map(([layer, annotations]) => ({ ...layer, annotations: layer.annotations.concat(annotations) })),
+    scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
+    tap((config) => this.updateTimelineBounds(config.data.datasets))
+  );
 
   private timelineDataBounds: Partial<NumberRange> = { min: undefined, max: undefined };
   private isZoomRangeLocked = false;
@@ -69,6 +67,28 @@ export class FhirChartConfigurationService {
     if (this._chart !== value) {
       this._chart = value;
     }
+  }
+
+  setSummaryTimeframe(months: number) {
+    this.annotationSubject.next([
+      this.buildTimeframeAnnotation('today', 0),
+      this.buildTimeframeAnnotation('current', months),
+      this.buildTimeframeAnnotation('previous', months * 2),
+    ]);
+    this.summaryRangeSubject.next({
+      max: new Date().getTime(),
+      min: subtractMonths(new Date(), months).getTime(),
+    });
+  }
+
+  private buildTimeframeAnnotation(id: string, months: number) {
+    return merge({}, this.timeframeAnnotationOptions, {
+      id,
+      label: {
+        content: formatMonths(months),
+      },
+      value: subtractMonths(new Date(), months).getTime(),
+    });
   }
 
   /** Lock the zoom range for timeline scale so it will not change when new data is added */
@@ -100,9 +120,6 @@ export class FhirChartConfigurationService {
 
   private updateTimelineBounds(datasets: Dataset[]) {
     this.timelineDataBounds = computeBounds('x', 0, datasets);
-    if (this.timelineDataBounds.min && this.timelineDataBounds.max) {
-      this.summaryUpdateSubject.next({ min: this.timelineDataBounds.min, max: this.timelineDataBounds.max });
-    }
     if (!this.isZoomRangeLocked) {
       this.timeline.min = this.timelineDataBounds.min;
       this.timeline.max = this.timelineDataBounds.max;
@@ -119,11 +136,10 @@ export class FhirChartConfigurationService {
     return { datasets, scales, annotations };
   }
 
-  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer, timeframeAnnotations: ChartAnnotation[] = []): TimelineConfiguration {
+  updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer): TimelineConfiguration {
     const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
-    let annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
-    annotations = [...annotations, ...timeframeAnnotations];
+    const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
     return this.buildConfiguration(datasets, scales, annotations);
   }
 
@@ -140,7 +156,7 @@ export class FhirChartConfigurationService {
           x: this.timeline,
         },
         plugins: {
-          annotation: { annotations: [...annotations, ...this.timeframeAnnotations] },
+          annotation: { annotations },
           zoom: {
             zoom: {
               onZoomComplete: ({ chart }) => {

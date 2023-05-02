@@ -4,7 +4,7 @@
       *ngFor="let timeframeButton of timeframeSelectorButtons"
       [id]="timeframeButton.value"
       [value]="timeframeButton.month"
-      (click)="updateTimeframeRangeSelector(timeframeButton.month)"
+      (click)="configService.setSummaryTimeframe(timeframeButton.month)"
       >{{ timeframeButton.value }}</mat-button-toggle
     >
   </mat-button-toggle-group>

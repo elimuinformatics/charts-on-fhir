@@ -66,25 +66,22 @@ const defaultAnnotationOptions: ChartAnnotation = {
   drawTime: 'beforeDraw',
 };
 
-export const TIMEFRAME_ANNOTATIONS = new InjectionToken<ChartAnnotation[]>('Timeframe annotation Options', {
-  factory: () => timeframeAnnotations,
+export const TIMEFRAME_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Timeframe annotation Options', {
+  factory: () => defaultTimeframeAnnotationOptions,
 });
-const today = new Date();
-const timeframeAnnotations: ChartAnnotation[] = [
-  {
-    type: 'line',
-    borderColor: '#FF900D',
-    borderWidth: 3,
+const defaultTimeframeAnnotationOptions: ChartAnnotation = {
+  type: 'line',
+  borderColor: '#FF900D',
+  borderWidth: 3,
+  display: true,
+  drawTime: 'afterDatasetsDraw',
+  label: {
     display: true,
-    drawTime: 'afterDatasetsDraw',
-    label: {
-      display: true,
-      content: 'Today',
-      position: 'start',
-      color: '#FF900D',
-      backgroundColor: '#FAFAFA',
-    },
-    scaleID: 'x',
-    value: new Date().getTime(),
+    content: 'Today',
+    position: 'start',
+    color: '#FF900D',
+    backgroundColor: '#FAFAFA',
   },
-];
+  scaleID: 'x',
+  value: new Date().getTime(),
+};

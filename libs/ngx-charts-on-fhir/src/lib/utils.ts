@@ -53,3 +53,25 @@ export function formatTime(date: string | number | Date): string {
 export function formatDateTime(date: string | number | Date): string {
   return `${formatDate(date)} ${formatTime(date)}`;
 }
+
+export function subtractMonths(oldDate: Date, months: number): Date {
+  const newDate = new Date(oldDate);
+  newDate.setMonth(oldDate.getMonth() - months);
+  // If day-of-the-month (getDate) has changed, it's because the day did not exist
+  // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
+  // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
+  if (newDate.getDate() < oldDate.getDate()) {
+    newDate.setDate(0);
+  }
+  return newDate;
+}
+
+export function formatMonths(months: number): string {
+  if (months === 0) {
+    return 'Today';
+  }
+  if (months % 12 === 0) {
+    return `${months / 12} ${months > 12 ? 'years' : 'year'} ago`;
+  }
+  return `${months} ${months > 1 ? 'months' : 'month'} ago`;
+}

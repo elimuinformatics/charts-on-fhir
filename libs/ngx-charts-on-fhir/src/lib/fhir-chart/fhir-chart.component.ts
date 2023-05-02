@@ -72,15 +72,8 @@ export class FhirChartComponent implements OnInit {
 
     // we use a custom legend component instead
     Chart.defaults.plugins.legend.display = false;
-    this.getChartConfiguration();
-    this.configService.annotationSubject.subscribe((timeframeAnnotations: ChartAnnotation[]) => {
-      this.configService.updateChartConfiguration(timeframeAnnotations);
-      this.getChartConfiguration();
-    });
-  }
 
-  getChartConfiguration() {
-    this.configService.chartConfig$?.subscribe((config) => {
+    this.configService.chartConfig$.subscribe((config) => {
       this.datasets = config.data.datasets;
       this.options = config.options;
     });

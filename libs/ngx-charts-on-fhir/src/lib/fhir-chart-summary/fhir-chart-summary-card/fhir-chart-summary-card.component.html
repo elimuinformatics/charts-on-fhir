@@ -1,7 +1,7 @@
-<ng-container *ngIf="configService.summaryUpdateSubject | async as range">
+<ng-container *ngIf="configService.summaryRange$ | async as range">
   <ng-template #template>
     <div class="card summary-card" [style.background]="getBackgroundStyle()">
-      <dynamic-table [data]="summary"></dynamic-table>
+      <dynamic-table [data]="summarize(range)"></dynamic-table>
     </div>
   </ng-template>
   <div class="overlay-origin" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="expanded = true" [matTooltip]="getTooltip()">
