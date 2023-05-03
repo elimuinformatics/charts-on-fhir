@@ -7,7 +7,7 @@
   height: 100vh;
 }
 .layout-main-top {
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 1;
   display: flex;
   gap: 8px;
@@ -22,9 +22,6 @@
   grid-row: 2;
 }
 .layout-summary-selector {
-  grid-column: 1;
+  grid-column: 2;
   grid-row: 1;
 }
-// .range-selector .mat-button-toggle-group .mat-button-toggle-appearance-standard button span{
-//   line-height: 30px !important;
-// }
