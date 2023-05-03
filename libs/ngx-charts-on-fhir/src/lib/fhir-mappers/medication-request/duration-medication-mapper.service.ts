@@ -207,7 +207,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
     const layer = this.baseMapper.map(resource) as DataLayer<'bar', MedicationDataPoint[]>;
     layer.datasets = layer.datasets.map((dataset) => ({
       ...dataset,
-      label: dataset.label + ' *',
+      label: dataset.label + ' (Est. Duration)',
       type: 'bar',
       borderWidth: 1,
       borderSkipped: false,
