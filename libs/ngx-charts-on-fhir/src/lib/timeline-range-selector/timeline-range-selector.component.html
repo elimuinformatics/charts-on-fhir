@@ -1,29 +1,27 @@
-<div style="display: flex; flex-direction: column" *ngIf="maxDate">
-  <div class="range-selector">
-    <div class="">
-      <mat-label>Timeline view</mat-label>
-      <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
-        <mat-button-toggle
-          *ngFor="let rangeButton of rangeSelectorButtons"
-          [id]="rangeButton.value"
-          [value]="rangeButton.month"
-          (click)="updateRangeSelector(rangeButton.month)"
-          >{{ rangeButton.value }}</mat-button-toggle
-        >
-        <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <mat-form-field subscriptSizing="dynamic">
-      <mat-label>Start date</mat-label>
-      <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field subscriptSizing="dynamic">
-      <mat-label>End date</mat-label>
-      <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
-      <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
-      <mat-datepicker #pickerDate></mat-datepicker>
-    </mat-form-field>
+<div class="range-selector" *ngIf="maxDate">
+  <div class="toggle-buttons">
+    <mat-label>Timeline view</mat-label>
+    <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
+      <mat-button-toggle
+        *ngFor="let rangeButton of rangeSelectorButtons"
+        [id]="rangeButton.value"
+        [value]="rangeButton.month"
+        (click)="updateRangeSelector(rangeButton.month)"
+        >{{ rangeButton.value }}</mat-button-toggle
+      >
+      <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>Start date</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>End date</mat-label>
+    <input matInput [matDatepicker]="pickerDate" (dateChange)="dateChange($event, 'max')" [value]="maxDate" id="maxdate" />
+    <mat-datepicker-toggle matSuffix [for]="pickerDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerDate></mat-datepicker>
+  </mat-form-field>
 </div>

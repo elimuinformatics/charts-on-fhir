@@ -1,4 +1,3 @@
-/* Used to make filter responsive for mobile view*/
 .range-selector {
   display: flex;
   align-items: flex-end;
@@ -8,7 +7,7 @@
 .range-selector mat-button-toggle-group {
   margin-top: 2px;
 }
-.range-selector div {
+.range-selector .toggle-buttons {
   display: flex;
   flex-direction: column;
 }
