@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { DataLayer } from '../data-layer/data-layer';
-import { MILLISECONDS_PER_DAY, NumberRange, previous } from '../utils';
+import { MonthRange, NumberRange, formatDateRange, formatMonthRange, previous } from '../utils';
 
 /** Summarizes a DataLayer, looking at data within the specified date range */
 export abstract class SummaryService {
@@ -18,14 +18,15 @@ export class ScatterDataPointSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
     return layer.scale.type === 'linear';
   }
-  summarize(layer: DataLayer, range: NumberRange): Record<string, string>[] {
+  summarize(layer: DataLayer, range: MonthRange): Record<string, string>[] {
     const current = this.stats.getFormattedStatistics(layer, range);
     const prev = this.stats.getFormattedStatistics(layer, previous(range));
-    const days = Math.ceil((range.max - range.min) / MILLISECONDS_PER_DAY);
+    const currentLabel = range.months ? formatMonthRange(range.months, 0) : formatDateRange(range);
+    const previousLabel = range.months ? formatMonthRange(range.months * 2, range.months) : formatDateRange(previous(range));
     const summary = Object.keys(current).map((name) => ({
       [layer.name]: name,
-      [`current ${days} days`]: current[name],
-      [`previous ${days} days`]: prev[name],
+      [currentLabel]: current[name],
+      [previousLabel]: prev[name],
     }));
     return summary;
   }

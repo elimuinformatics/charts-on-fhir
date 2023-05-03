@@ -2,6 +2,7 @@ import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, Sca
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
+export type MonthRange = NumberRange & { months?: number };
 export type NumberRange = { min: number; max: number };
 export function previous({ min, max }: NumberRange): NumberRange {
   return {
@@ -74,4 +75,31 @@ export function formatMonths(months: number): string {
     return `${months / 12} ${months > 12 ? 'years' : 'year'} ago`;
   }
   return `${months} ${months > 1 ? 'months' : 'month'} ago`;
+}
+
+export function formatMonthRange(minMonthsAgo: number, maxMonthsAgo: number) {
+  if (maxMonthsAgo === 0) {
+    if (minMonthsAgo % 12 === 0) {
+      return `past ${minMonthsAgo / 12} ${minMonthsAgo > 12 ? 'years' : 'year'}`;
+    } else {
+      return `past ${minMonthsAgo} ${minMonthsAgo > 1 ? 'months' : 'month'}`;
+    }
+  } else {
+    if (minMonthsAgo % 12 === 0 && maxMonthsAgo % 12 === 0) {
+      return `${maxMonthsAgo / 12} - ${minMonthsAgo / 12} years ago`;
+    } else {
+      return `${maxMonthsAgo} - ${minMonthsAgo} months ago`;
+    }
+  }
+}
+
+export function formatDateRange(range: NumberRange) {
+  const today = new Date().getTime();
+  const minDaysAgo = Math.floor((today - range.min) / MILLISECONDS_PER_DAY);
+  const maxDaysAgo = Math.floor((today - range.max) / MILLISECONDS_PER_DAY);
+  if (maxDaysAgo === 0) {
+    return `past ${minDaysAgo} ${minDaysAgo > 1 ? 'days' : 'day'}`;
+  } else {
+    return `${maxDaysAgo} - ${minDaysAgo} days ago`;
+  }
 }

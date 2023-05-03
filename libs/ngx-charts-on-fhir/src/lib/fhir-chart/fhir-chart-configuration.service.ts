@@ -7,7 +7,7 @@ import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from 
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
 import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, NumberRange, subtractMonths } from '../utils';
+import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, MonthRange, NumberRange, subtractMonths } from '../utils';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -39,7 +39,7 @@ export class FhirChartConfigurationService {
       }),
   };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
-  private summaryRangeSubject = new ReplaySubject<NumberRange>();
+  private summaryRangeSubject = new ReplaySubject<MonthRange>();
   private annotationSubject = new ReplaySubject<ChartAnnotation[]>();
 
   timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
@@ -76,6 +76,7 @@ export class FhirChartConfigurationService {
       this.buildTimeframeAnnotation('previous', months * 2),
     ]);
     this.summaryRangeSubject.next({
+      months,
       max: new Date().getTime(),
       min: subtractMonths(new Date(), months).getTime(),
     });

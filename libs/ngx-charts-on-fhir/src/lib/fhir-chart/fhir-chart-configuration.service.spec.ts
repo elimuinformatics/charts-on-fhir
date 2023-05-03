@@ -376,8 +376,8 @@ describe('FhirChartConfigurationService', () => {
       getTestScheduler().schedule(() => configService.setSummaryTimeframe(3), 20);
       expect(configService.summaryRange$).toBeObservable(
         hot('x-y', {
-          x: { min: new Date('2022-12-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
-          y: { min: new Date('2022-10-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
+          x: { months: 1, min: new Date('2022-12-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
+          y: { months: 3, min: new Date('2022-10-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
         })
       );
     });
