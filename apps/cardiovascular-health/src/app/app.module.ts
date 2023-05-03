@@ -13,6 +13,7 @@ import {
   FhirDataService,
   FhirChartLayoutModule,
   RangeSelectorModule,
+  TimeFrameSelectorModule,
   FhirChartLegendModule,
   DataLayerSelectorModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';

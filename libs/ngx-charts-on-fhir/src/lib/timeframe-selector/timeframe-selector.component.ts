@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 
 @Component({
   selector: 'timeframe-selector',
@@ -14,5 +15,5 @@ export class TimeFrameSelectorComponent {
     { month: 12, value: '1 y' },
   ];
 
-  constructor(public configService: FhirChartConfigurationService) {}
+  constructor(public configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 }

@@ -13,6 +13,7 @@ import {
   FhirDataService,
   FhirChartLayoutModule,
   RangeSelectorModule,
+  TimeFrameSelectorModule,
   FhirChartLegendModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
@@ -24,7 +25,16 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, FhirChartLayoutModule, FhirChartModule, FhirChartSummaryModule, RangeSelectorModule, FhirChartLegendModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    FhirChartLayoutModule,
+    FhirChartModule,
+    FhirChartSummaryModule,
+    RangeSelectorModule,
+    FhirChartLegendModule,
+    TimeFrameSelectorModule,
+  ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },

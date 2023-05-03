@@ -1,11 +1,16 @@
-<div class="timeframe-selector">
-  <mat-button-toggle-group id="timeframeselector" name="fontStyle" aria-label="Font Style">
-    <mat-button-toggle
-      *ngFor="let timeframeButton of timeframeSelectorButtons"
-      [id]="timeframeButton.value"
-      [value]="timeframeButton.month"
-      (click)="configService.setSummaryTimeframe(timeframeButton.month)"
-      >{{ timeframeButton.value }}</mat-button-toggle
-    >
-  </mat-button-toggle-group>
-</div>
+<ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
+  <ng-container *ngIf="layers.length > 0">
+    <div class="timeframe-selector">
+      <mat-label>Data summary</mat-label>
+      <mat-button-toggle-group id="timeframeselector" name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle
+          *ngFor="let timeframeButton of timeframeSelectorButtons"
+          [id]="timeframeButton.value"
+          [value]="timeframeButton.month"
+          (click)="configService.setSummaryTimeframe(timeframeButton.month)"
+          >{{ timeframeButton.value }}</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </div>
+  </ng-container>
+</ng-container>
