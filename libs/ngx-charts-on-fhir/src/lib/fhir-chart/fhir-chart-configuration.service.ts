@@ -8,7 +8,7 @@ import { DataLayerManagerService } from '../data-layer/data-layer-manager.servic
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
 import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, MonthRange, NumberRange, subtractMonths } from '../utils';
-
+import './center-tooltip-positioner';
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
 type MergedDataLayer = {
@@ -173,6 +173,7 @@ export class FhirChartConfigurationService {
             },
           },
           tooltip: {
+            position: 'center',
             callbacks: {
               title: (items) => items.map(getTooltipTitle),
               label: (item) => (item.raw as any)['tooltip'] ?? (Chart.defaults.plugins.tooltip.callbacks as any).label(item),
