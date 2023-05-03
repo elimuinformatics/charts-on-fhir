@@ -5,13 +5,12 @@ import {
   DataLayerManagerService,
   FhirChartConfigurationService,
   FhirChartModule,
-  FhirChartSummaryModule,
   TimelineRangeSelectorModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @NgModule({
   declarations: [TimelineRangeSelectorDemoComponent],
-  imports: [CommonModule, FhirChartModule, TimelineRangeSelectorModule, FhirChartSummaryModule],
+  imports: [CommonModule, FhirChartModule, TimelineRangeSelectorModule],
   providers: [DataLayerManagerService, FhirChartConfigurationService],
 })
 export class TimelineRangeSelectorDemoModule {}

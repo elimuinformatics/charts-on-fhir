@@ -10,10 +10,10 @@ A group of buttons and date selectors for adjusting the zoom range of the chart.
 
 ```ts
 // app.module.ts
-import { TimelineRangeSelectorModule } from "@elimuinformatics/ngx-charts-on-fhir";
+import { FhirChartModule, TimelineRangeSelectorModule } from "@elimuinformatics/ngx-charts-on-fhir";
 
 @NgModule({
-  imports: [/* ... */ TimelineRangeSelectorModule],
+  imports: [/* ... */ FhirChartModule, TimelineRangeSelectorModule],
 })
 export class AppModule {}
 ```

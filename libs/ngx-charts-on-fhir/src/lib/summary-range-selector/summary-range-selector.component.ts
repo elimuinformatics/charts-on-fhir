@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 
+/**
+ * See `*SummaryRangeSelector` for example usage.
+ */
 @Component({
   selector: 'summary-range-selector',
   templateUrl: './summary-range-selector.component.html',

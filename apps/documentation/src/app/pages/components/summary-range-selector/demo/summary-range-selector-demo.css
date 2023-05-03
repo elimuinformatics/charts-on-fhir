@@ -1,0 +1,10 @@
+.example-container {
+  height: 360px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  padding: 6px;
+}
+.example-summary {
+  grid-column: 2;
+}
