@@ -6,7 +6,6 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import { merge } from 'lodash-es';
 import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
-import { ChartAnnotation } from '../utils';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
 
