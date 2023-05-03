@@ -18,7 +18,7 @@ describe('SummaryRangeSelectorComponent', () => {
   let mockLayerManager: jasmine.SpyObj<DataLayerManagerService>;
 
   beforeEach(async () => {
-    mockConfigService = jasmine.createSpyObj<FhirChartConfigurationService>('FhirChartConfigurationService', ['setSummaryTimeframe']);
+    mockConfigService = jasmine.createSpyObj<FhirChartConfigurationService>('FhirChartConfigurationService', ['setSummaryRange']);
     mockLayerManager = jasmine.createSpyObj<DataLayerManagerService>('DataLayerManagerService', [], {
       enabledLayers$: of([{ name: 'Layer' } as any]),
     });

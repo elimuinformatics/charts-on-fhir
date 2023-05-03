@@ -28,7 +28,7 @@ export class FhirChartConfigurationService {
     @Inject(TIMEFRAME_ANNOTATION_OPTIONS) private timeframeAnnotationOptions: ChartAnnotation,
     private ngZone: NgZone
   ) {
-    this.setSummaryTimeframe(1);
+    this.setSummaryRange(1);
   }
 
   private timeline: ScaleOptions<'time'> = {
@@ -69,7 +69,7 @@ export class FhirChartConfigurationService {
     }
   }
 
-  setSummaryTimeframe(months: number) {
+  setSummaryRange(months: number) {
     this.annotationSubject.next([
       this.buildTimeframeAnnotation('today', 0),
       this.buildTimeframeAnnotation('current', months),
