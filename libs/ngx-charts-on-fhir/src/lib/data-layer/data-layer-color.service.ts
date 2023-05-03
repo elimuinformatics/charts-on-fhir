@@ -94,8 +94,7 @@ export class DataLayerColorService {
     if (layer.annotations && dataset.label) {
       for (let annotation of layer.annotations) {
         const anno = annotation as BoxAnnotationOptions;
-        const label = anno.label?.content;
-        if (typeof label === 'string' && dataset.chartsOnFhir?.group && label.startsWith(dataset.chartsOnFhir?.group)) {
+        if (anno.id === dataset.chartsOnFhir?.referenceRangeAnnotation) {
           anno.backgroundColor = this.addTransparency(this.getColor(dataset));
         }
       }

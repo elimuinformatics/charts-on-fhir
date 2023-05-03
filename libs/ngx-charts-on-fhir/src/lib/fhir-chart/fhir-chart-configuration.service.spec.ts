@@ -518,10 +518,14 @@ describe('FhirChartConfigurationService', () => {
         { x: 10, y: 100 },
         { x: 20, y: 200 },
       ],
+      chartsOnFhir: {
+        referenceRangeAnnotation: 'test-ref-range',
+      },
     };
     const scale = { id: 'scale', type: 'linear' } as const;
     const annotations: ChartAnnotations = [
       {
+        id: 'test-ref-range',
         label: { content: 'Test Reference Range' },
         yScaleID: 'scale',
         yMax: 20,

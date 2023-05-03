@@ -25,15 +25,22 @@ export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataP
 export type Dataset<T extends ChartType = TimelineChartType, D = TimelineDataPoint[]> = ChartDataset<T, D> & {
   /** Custom chart options for Charts-on-FHIR */
   chartsOnFhir?: {
+    /** Datasets in the same group will be assigned the same color and will be combined in statistical calculations */
+    group?: string;
+    /** When set to 'light', `DataLayerColorService` will use a lighter palette when choosing a color for this dataset. */
+    colorPalette?: 'light' | 'dark';
     /**
      * When set to `transparent`, `DataLayerColorService` will apply partial transparency to the fill color of points.
      * When set to `solid` (default), the same color will be used for both stroke and fill colors.
      */
-    group?: string;
-    colorPalette?: string;
     backgroundStyle?: 'solid' | 'transparent';
     /** Tags can be used to apply similar visual style to multiple datasets */
     tags?: string[];
+    /**
+     * ID of the Reference Range Annotation for this dataset.
+     * The annotation will be assigned a matching color and the Reference Range will be used in some statistical calculations.
+     */
+    referenceRangeAnnotation?: string;
   };
 };
 

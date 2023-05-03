@@ -6,6 +6,7 @@ import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-laye
 import { Mapper } from '../multi-mapper.service';
 import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { formatDate } from '../../utils';
+import { FhirCodeService } from '../fhir-code.service';
 
 /** Required properties for mapping a MedicationRequest with `SimpleMedicationMapper` */
 export type SimpleMedication = {
@@ -28,17 +29,18 @@ export type MedicationDataPoint = TimelineDataPoint & {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'category'>) {}
+  constructor(@Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
+    const codeName = this.codeService.getName(resource?.medicationCodeableConcept);
     return {
-      name: 'Medication Prescriptions',
+      name: 'Prescribed Medications',
       category: ['medication'],
       datasets: [
         {
           type: 'scatter',
-          label: resource?.medicationCodeableConcept?.text,
+          label: codeName,
           yAxisID: 'medications',
           indexAxis: 'y',
           pointRadius: 10,
@@ -47,7 +49,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           data: [
             {
               x: authoredOn,
-              y: resource?.medicationCodeableConcept?.text,
+              y: codeName,
               authoredOn: authoredOn,
               tooltip: `Prescribed: ${formatDate(authoredOn)}`,
             },
@@ -59,17 +61,17 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       ],
       scale: merge({}, this.medicationScaleOptions, {
         id: 'medications',
-        title: { text: 'Medication Prescriptions' },
+        title: { text: ['Prescribed', 'Medications'] },
       }),
       // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
       annotations: [
         {
-          id: resource?.medicationCodeableConcept?.text,
+          id: codeName,
           type: 'line',
           borderWidth: 0,
           label: {
             display: true,
-            content: [resource?.medicationCodeableConcept?.text],
+            content: [codeName],
             position: 'start',
             color: 'black',
             backgroundColor: 'transparent',
@@ -79,7 +81,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
               weight: 'normal',
             },
           },
-          value: resource?.medicationCodeableConcept?.text,
+          value: codeName,
           scaleID: 'medications',
         },
       ],

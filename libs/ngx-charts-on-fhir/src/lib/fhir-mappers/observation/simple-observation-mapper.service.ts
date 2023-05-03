@@ -7,6 +7,7 @@ import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 import { CLINIC_DATASET_LABEL_SUFFIX, HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
+import { FhirCodeService } from '../fhir-code.service';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
 export type SimpleObservation = {
@@ -36,18 +37,19 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
 export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
-    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation
+    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation,
+    private codeService: FhirCodeService
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation): DataLayer {
-    const scaleName = `${resource.code.text} (${resource.valueQuantity.unit})`;
+    const codeName = this.codeService.getName(resource.code);
     return {
-      name: resource.code.text,
+      name: codeName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: [
         {
-          label: resource.code.text + getMeasurementSettingSuffix(resource),
-          yAxisID: scaleName,
+          label: codeName + getMeasurementSettingSuffix(resource),
+          yAxisID: codeName,
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
@@ -55,21 +57,22 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             },
           ],
           chartsOnFhir: {
-            group: resource.code.text,
+            group: codeName,
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+            referenceRangeAnnotation: `${codeName} Reference Range`,
           },
         },
       ],
       scale: merge({}, this.linearScaleOptions, {
-        id: scaleName,
-        title: { text: scaleName },
+        id: codeName,
+        title: { text: [codeName, resource.valueQuantity.unit] },
       }),
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
-          id: `${resource.code.text} Reference Range`,
-          label: { content: `${resource.code.text} Reference Range` },
-          yScaleID: scaleName,
+          id: `${codeName} Reference Range`,
+          label: { content: `${codeName} Reference Range` },
+          yScaleID: codeName,
           yMax: range?.high?.value,
           yMin: range?.low?.value,
         })

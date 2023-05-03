@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataLayer, DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'app-root',
@@ -7,18 +7,21 @@ import { DataLayer, DataLayerManagerService } from '@elimuinformatics/ngx-charts
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  showAddDataLayer: boolean = false;
-  layers: any[] = [];
-  isAllLayerSelected = true;
-  preDisableLayer: string[] = ['Glucose'];
+  layers = ['Blood Pressure', 'Heart Rate', 'Glucose', 'Hemoglobin A1c', 'O2 Saturation', 'Step Count', 'Body Weight', 'Prescribed Medications'];
+  views = {
+    Cardiovascular: {
+      selected: this.layers,
+      enabled: ['Blood Pressure', 'Heart Rate', 'Step Count', 'Body Weight', 'Prescribed Medications'],
+    },
+    Diabetes: {
+      selected: this.layers,
+      enabled: ['Glucose', 'Hemoglobin A1c', 'Step Count', 'Body Weight', 'Prescribed Medications'],
+    },
+  };
+
   constructor(readonly layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
-    this.layerManager.retrieveAll(this.isAllLayerSelected, this.sortCompareFn, this.preDisableLayer);
+    this.layerManager.retrieveAll();
   }
-
-  sortCompareFn = (a: DataLayer, b: DataLayer) => {
-    const layerOrder: string[] = ['Heart rate', 'Blood Pressure', 'O2 Sat', 'Glucose', 'Step Count', 'Body Weight', 'Medications'];
-    return layerOrder.indexOf(a.name) - layerOrder.indexOf(b.name);
-  };
 }

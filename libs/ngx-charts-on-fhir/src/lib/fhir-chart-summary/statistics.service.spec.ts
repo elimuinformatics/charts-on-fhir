@@ -1,9 +1,8 @@
-import { findReferenceRangeForDataset } from './statistics.service';
+import { StatisticsService, findReferenceRangeForDataset } from './statistics.service';
 import { ScatterDataPoint } from 'chart.js';
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset, TimelineChartType } from '../data-layer/data-layer';
-import { StatisticsService } from './statistics.service';
 
 describe('StatisticsService', () => {
   let service: StatisticsService;
@@ -24,12 +23,15 @@ describe('StatisticsService', () => {
               { x: new Date('2022-01-02').getTime(), y: 3 },
               { x: new Date('2022-01-03').getTime(), y: 5 },
             ],
+            chartsOnFhir: {
+              referenceRangeAnnotation: 'test-ref-range',
+            },
           },
         ],
         scale: { id: 'test' },
         annotations: [
           {
-            label: { content: 'Test Reference Range' },
+            id: 'test-ref-range',
             yMin: 2,
             yMax: 4,
             yScaleID: 'Scale',
@@ -60,12 +62,15 @@ describe('StatisticsService', () => {
               { x: new Date('2022-01-02').getTime(), y: 3 },
               { x: new Date('2022-01-03').getTime(), y: 5 },
             ],
+            chartsOnFhir: {
+              referenceRangeAnnotation: 'test-ref-range',
+            },
           },
         ],
         scale: { id: 'test' },
         annotations: [
           {
-            label: { content: 'Test Reference Range' },
+            id: 'test-ref-range',
             yMin: 2,
             yMax: 4,
             yScaleID: 'Scale',
@@ -127,6 +132,9 @@ describe('StatisticsService', () => {
               { x: new Date('2022-01-02').getTime(), y: 3 },
               { x: new Date('2022-01-03').getTime(), y: 5 },
             ],
+            chartsOnFhir: {
+              referenceRangeAnnotation: 'one-ref-range',
+            },
           },
           {
             label: 'Two',
@@ -135,18 +143,21 @@ describe('StatisticsService', () => {
               { x: new Date('2022-01-02').getTime(), y: 13 },
               { x: new Date('2022-01-03').getTime(), y: 15 },
             ],
+            chartsOnFhir: {
+              referenceRangeAnnotation: 'two-ref-range',
+            },
           },
         ],
         scale: { id: 'test' },
         annotations: [
           {
-            label: { content: 'One Reference Range' },
+            id: 'one-ref-range',
             yMin: 2,
             yMax: 4,
             yScaleID: 'Scale',
           },
           {
-            label: { content: 'Two Reference Range' },
+            id: 'two-ref-range',
             yMin: 12,
             yMax: 16,
             yScaleID: 'Scale',
@@ -205,16 +216,21 @@ describe('StatisticsService', () => {
 
   describe('findReferenceRangeForDataset', () => {
     it("should return true for dataset's reference range", () => {
-      const dataset: Dataset = { label: 'Test Dataset', data: [] };
+      const dataset: Dataset = {
+        label: 'Test Dataset',
+        data: [],
+        chartsOnFhir: {
+          referenceRangeAnnotation: 'test-ref-range',
+        },
+      };
       const annotations: DeepPartial<AnnotationOptions>[] = [
-        { label: { content: 'Test Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', value: 10 },
-        { label: { content: 'Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 20, yMax: 30 },
-        { label: { content: 'Test Dataset Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 40, yMax: 50 },
+        { id: 'wrong', label: { content: 'Wrong Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 20, yMax: 30 },
+        { id: 'test-ref-range', label: { content: 'Test Dataset Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 40, yMax: 50 },
       ];
       const result: DeepPartial<AnnotationOptions> | undefined = findReferenceRangeForDataset(annotations, dataset);
-      expect(result).toEqual(annotations[2]);
+      expect(result).toEqual(annotations[1]);
     });
-    it('should return undefine for other annotation', () => {
+    it('should return undefined for other annotation', () => {
       const dataset: Dataset = { label: 'Test', data: [] };
       const annotations: DeepPartial<AnnotationOptions>[] = [
         { label: { content: 'Reference Range' }, xScaleID: 'x-axis', yScaleID: 'y-axis', yMin: 20, yMax: 30 },
@@ -236,12 +252,15 @@ describe('StatisticsService', () => {
               { x: new Date('2022-01-02').getTime(), y: 3 },
               { x: new Date('2022-01-03').getTime(), y: 5 },
             ],
+            chartsOnFhir: {
+              referenceRangeAnnotation: 'test-ref-range',
+            },
           },
         ],
         scale: { id: 'test' },
         annotations: [
           {
-            label: { content: 'Test Reference Range' },
+            id: 'test-ref-range',
             yMin: 2,
             yMax: 4,
             yScaleID: 'Scale',

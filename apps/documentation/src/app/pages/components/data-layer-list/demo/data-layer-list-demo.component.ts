@@ -8,6 +8,7 @@ import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
 export class DataLayerListDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
   ngOnInit(): void {
-    this.layerManager.retrieveAll(true);
+    this.layerManager.autoSelect(true);
+    this.layerManager.retrieveAll();
   }
 }
