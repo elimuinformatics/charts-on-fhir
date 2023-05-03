@@ -1,5 +1,5 @@
 /* Used to make filter responsive for mobile view*/
-.timeframe-selector {
+.summary-range-selector {
   display: flex;
   flex-direction: column;
   align-items: flex-start;

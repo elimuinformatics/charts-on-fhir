@@ -8,11 +8,11 @@ import { subtractMonths } from '../utils';
  * See `*RangeSelector` for example usage.
  */
 @Component({
-  selector: 'range-selector',
-  templateUrl: './range-selector.component.html',
-  styleUrls: ['./range-selector.component.css'],
+  selector: 'timeline-range-selector',
+  templateUrl: './timeline-range-selector.component.html',
+  styleUrls: ['./timeline-range-selector.component.css'],
 })
-export class RangeSelectorComponent {
+export class TimelineRangeSelectorComponent {
   maxDate?: Date;
   minDate?: Date;
   rangeSelectorButtons = [

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeFrameSelectorModule } from './timeframe-selector.module';
-import { TimeFrameSelectorComponent } from './timeframe-selector.component';
+import { SummaryRangeSelectorModule } from './summary-range-selector.module';
+import { SummaryRangeSelectorComponent } from './summary-range-selector.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -9,9 +9,9 @@ import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configur
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { of } from 'rxjs';
 
-describe('TimeFrameSelectorComponent', () => {
-  let component: TimeFrameSelectorComponent;
-  let fixture: ComponentFixture<TimeFrameSelectorComponent>;
+describe('SummaryRangeSelectorComponent', () => {
+  let component: SummaryRangeSelectorComponent;
+  let fixture: ComponentFixture<SummaryRangeSelectorComponent>;
   let element: DebugElement;
   let loader: HarnessLoader;
   let mockConfigService: jasmine.SpyObj<FhirChartConfigurationService>;
@@ -24,14 +24,14 @@ describe('TimeFrameSelectorComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [TimeFrameSelectorModule],
+      imports: [SummaryRangeSelectorModule],
       providers: [
         { provide: FhirChartConfigurationService, useValue: mockConfigService },
         { provide: DataLayerManagerService, useValue: mockLayerManager },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TimeFrameSelectorComponent);
+    fixture = TestBed.createComponent(SummaryRangeSelectorComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -45,7 +45,7 @@ describe('TimeFrameSelectorComponent', () => {
 
   it('should display the range selector', () => {
     fixture.detectChanges();
-    const timeframeSelector = element.query(By.css('.timeframe-selector'));
-    expect(timeframeSelector).toBeTruthy();
+    const summaryRangeSelector = element.query(By.css('.summary-range-selector'));
+    expect(summaryRangeSelector).toBeTruthy();
   });
 });

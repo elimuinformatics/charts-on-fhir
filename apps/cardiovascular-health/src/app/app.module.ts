@@ -12,8 +12,8 @@ import {
   FhirChartSummaryModule,
   FhirDataService,
   FhirChartLayoutModule,
-  RangeSelectorModule,
-  TimeFrameSelectorModule,
+  TimelineRangeSelectorModule,
+  SummaryRangeSelectorModule,
   FhirChartLegendModule,
   DataLayerSelectorModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
@@ -33,8 +33,8 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     FhirChartModule,
     FhirChartLegendModule,
     FhirChartSummaryModule,
-    RangeSelectorModule,
-    TimeFrameSelectorModule,
+    TimelineRangeSelectorModule,
+    SummaryRangeSelectorModule,
     DataLayerSelectorModule,
   ],
   providers: [
