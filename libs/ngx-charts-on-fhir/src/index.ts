@@ -34,6 +34,7 @@ export * from './lib/data-layer/data-layer-manager.service';
 export * from './lib/data-layer/data-layer-merge.service';
 export * from './lib/data-layer/data-layer-color.service';
 export * from './lib/data-layer/data-layer';
+export * from './lib/fhir-mappers/fhir-code.service';
 export * from './lib/fhir-mappers/fhir-converter.service';
 export * from './lib/fhir-mappers/multi-mapper.service';
 export * from './lib/fhir-mappers/fhir-mapper-options';

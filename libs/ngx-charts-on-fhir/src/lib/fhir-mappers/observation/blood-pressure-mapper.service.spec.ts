@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { TIME_SCALE_OPTIONS, ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { BloodPressureMapper, BloodPressureObservation } from './blood-pressure-mapper.service';
 import { ComponentObservationMapper } from './component-observation-mapper.service';
+import { FhirCodeService } from '../fhir-code.service';
 
 describe('BloodPressureMapper', () => {
   let mapper: BloodPressureMapper;
@@ -9,9 +10,9 @@ describe('BloodPressureMapper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        FhirCodeService,
         BloodPressureMapper,
         ComponentObservationMapper,
-        { provide: TIME_SCALE_OPTIONS, useValue: {} },
         { provide: LINEAR_SCALE_OPTIONS, useValue: {} },
         { provide: ANNOTATION_OPTIONS, useValue: {} },
       ],
@@ -24,7 +25,7 @@ describe('BloodPressureMapper', () => {
       const observation: BloodPressureObservation = {
         resourceType: 'Observation',
         status: 'final',
-        code: { coding: [{ code: '85354-9' }], text: 'Blood Pressure' },
+        code: { coding: [{ system: 'http://loinc.org', code: '85354-9' }], text: 'Blood Pressure' },
         effectiveDateTime: new Date().toISOString(),
         component: [
           {
@@ -40,7 +41,7 @@ describe('BloodPressureMapper', () => {
       const observation: BloodPressureObservation = {
         resourceType: 'Observation',
         status: 'final',
-        code: { coding: [{ code: '8867-4' as any }], text: '' },
+        code: { coding: [{ system: 'http://loinc.org', code: '8867-4' as any }], text: '' },
         effectiveDateTime: new Date().toISOString(),
         component: [
           {
@@ -58,19 +59,36 @@ describe('BloodPressureMapper', () => {
       const observation: BloodPressureObservation = {
         resourceType: 'Observation',
         status: 'final',
-        code: { coding: [{ code: '85354-9' }], text: 'Blood Pressure' },
+        code: { coding: [{ system: 'http://loinc.org', code: '85354-9' }], text: 'Blood Pressure' },
         effectiveDateTime: new Date().toISOString(),
         component: [
           {
-            code: { text: 'component' },
+            code: { coding: [{ system: 'http://loinc.org', code: '8480-6' }], text: 'Systolic' },
+            valueQuantity: { value: 7, unit: 'unit' },
+          },
+          {
+            code: { coding: [{ system: 'http://loinc.org', code: '8462-4' }], text: 'Diastolic' },
             valueQuantity: { value: 7, unit: 'unit' },
           },
         ],
       };
-      expect(mapper.map(observation).annotations).toEqual([
-        jasmine.objectContaining({ label: { content: 'Systolic Blood Pressure Reference Range' } }),
-        jasmine.objectContaining({ label: { content: 'Diastolic Blood Pressure Reference Range' } }),
-      ]);
+      const layer = mapper.map(observation);
+      const systolicAnnoId = layer.datasets.find((dataset) => dataset.label?.startsWith('Systolic'))?.chartsOnFhir?.referenceRangeAnnotation;
+      const diastolicAnnoId = layer.datasets.find((dataset) => dataset.label?.startsWith('Diastolic'))?.chartsOnFhir?.referenceRangeAnnotation;
+      expect(layer.annotations?.find((anno) => anno.id === systolicAnnoId)).toEqual(
+        jasmine.objectContaining({
+          label: { content: 'Systolic Reference Range' },
+          yMax: 140,
+          yMin: 90,
+        })
+      );
+      expect(layer.annotations?.find((anno) => anno.id === diastolicAnnoId)).toEqual(
+        jasmine.objectContaining({
+          label: { content: 'Diastolic Reference Range' },
+          yMax: 90,
+          yMin: 60,
+        })
+      );
     });
   });
 });
