@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RangeSelectorModule } from '../range-selector/range-selector.module';
+import { TimeFrameSelectorModule } from './timeframe-selector.module';
 import { TimeFrameSelectorComponent } from './timeframe-selector.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
+import { of } from 'rxjs';
 
 describe('TimeFrameSelectorComponent', () => {
   let component: TimeFrameSelectorComponent;
@@ -13,13 +15,20 @@ describe('TimeFrameSelectorComponent', () => {
   let element: DebugElement;
   let loader: HarnessLoader;
   let mockConfigService: jasmine.SpyObj<FhirChartConfigurationService>;
+  let mockLayerManager: jasmine.SpyObj<DataLayerManagerService>;
 
   beforeEach(async () => {
     mockConfigService = jasmine.createSpyObj<FhirChartConfigurationService>('FhirChartConfigurationService', ['setSummaryTimeframe']);
+    mockLayerManager = jasmine.createSpyObj<DataLayerManagerService>('DataLayerManagerService', [], {
+      enabledLayers$: of([{ name: 'Layer' } as any]),
+    });
 
     await TestBed.configureTestingModule({
-      imports: [RangeSelectorModule],
-      providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }],
+      imports: [TimeFrameSelectorModule],
+      providers: [
+        { provide: FhirChartConfigurationService, useValue: mockConfigService },
+        { provide: DataLayerManagerService, useValue: mockLayerManager },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimeFrameSelectorComponent);
