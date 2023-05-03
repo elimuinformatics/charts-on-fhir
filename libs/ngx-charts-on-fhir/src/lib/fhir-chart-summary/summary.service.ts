@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { DataLayer } from '../data-layer/data-layer';
-import { MonthRange, NumberRange, formatDateRange, formatMonthRange, previous } from '../utils';
+import { MonthRange, NumberRange, formatMonthRange, previous } from '../utils';
 
 /** Summarizes a DataLayer, looking at data within the specified date range */
 export abstract class SummaryService {
@@ -21,8 +21,8 @@ export class ScatterDataPointSummaryService implements SummaryService {
   summarize(layer: DataLayer, range: MonthRange): Record<string, string>[] {
     const current = this.stats.getFormattedStatistics(layer, range);
     const prev = this.stats.getFormattedStatistics(layer, previous(range));
-    const currentLabel = range.months ? formatMonthRange(range.months, 0) : formatDateRange(range);
-    const previousLabel = range.months ? formatMonthRange(range.months * 2, range.months) : formatDateRange(previous(range));
+    const currentLabel = `most recent ${formatMonthRange(range)}`;
+    const previousLabel = `prior ${formatMonthRange(range)}`;
     const summary = Object.keys(current).map((name) => ({
       [layer.name]: name,
       [currentLabel]: current[name],

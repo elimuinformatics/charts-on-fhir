@@ -68,38 +68,21 @@ export function subtractMonths(oldDate: Date, months: number): Date {
 }
 
 export function formatMonths(months: number): string {
-  if (months === 0) {
-    return 'Today';
-  }
   if (months % 12 === 0) {
-    return `${months / 12} ${months > 12 ? 'years' : 'year'} ago`;
+    return `${months / 12} ${months === 12 ? 'year' : 'years'}`;
   }
-  return `${months} ${months > 1 ? 'months' : 'month'} ago`;
+  return `${months} ${months === 1 ? 'month' : 'months'}`;
 }
 
-export function formatMonthRange(minMonthsAgo: number, maxMonthsAgo: number) {
-  if (maxMonthsAgo === 0) {
-    if (minMonthsAgo % 12 === 0) {
-      return `past ${minMonthsAgo / 12} ${minMonthsAgo > 12 ? 'years' : 'year'}`;
-    } else {
-      return `past ${minMonthsAgo} ${minMonthsAgo > 1 ? 'months' : 'month'}`;
-    }
-  } else {
-    if (minMonthsAgo % 12 === 0 && maxMonthsAgo % 12 === 0) {
-      return `${maxMonthsAgo / 12} - ${minMonthsAgo / 12} years ago`;
-    } else {
-      return `${maxMonthsAgo} - ${minMonthsAgo} months ago`;
-    }
-  }
+export function formatDays(range: NumberRange) {
+  const days = Math.floor((range.max - range.min) / MILLISECONDS_PER_DAY);
+  return `${days} ${days === 1 ? 'day' : 'days'}`;
 }
 
-export function formatDateRange(range: NumberRange) {
-  const today = new Date().getTime();
-  const minDaysAgo = Math.floor((today - range.min) / MILLISECONDS_PER_DAY);
-  const maxDaysAgo = Math.floor((today - range.max) / MILLISECONDS_PER_DAY);
-  if (maxDaysAgo === 0) {
-    return `past ${minDaysAgo} ${minDaysAgo > 1 ? 'days' : 'day'}`;
+export function formatMonthRange(range: MonthRange) {
+  if (range.months) {
+    return formatMonths(range.months);
   } else {
-    return `${maxDaysAgo} - ${minDaysAgo} days ago`;
+    return formatDays(range);
   }
 }

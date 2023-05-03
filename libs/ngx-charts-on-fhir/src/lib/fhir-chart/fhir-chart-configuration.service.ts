@@ -86,7 +86,7 @@ export class FhirChartConfigurationService {
     return merge({}, this.timeframeAnnotationOptions, {
       id,
       label: {
-        content: formatMonths(months),
+        content: months === 0 ? 'Today' : `${formatMonths(months)} ago`,
       },
       value: subtractMonths(new Date(), months).getTime(),
     });
