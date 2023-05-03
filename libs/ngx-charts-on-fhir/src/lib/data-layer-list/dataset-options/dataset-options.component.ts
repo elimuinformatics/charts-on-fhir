@@ -14,7 +14,6 @@ import { SharedDataLayerListService } from '../shared-data-layer-list.service';
 })
 export class DatasetOptionsComponent implements OnInit {
   _dataset?: Dataset;
-  showAdvancedOptions: boolean = true;
   @Input() set dataset(dataset: Dataset) {
     this._dataset = dataset;
     this.updateForm(dataset);
