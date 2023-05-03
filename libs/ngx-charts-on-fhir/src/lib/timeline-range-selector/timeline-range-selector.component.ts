@@ -5,7 +5,7 @@ import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configur
 import { subtractMonths } from '../utils';
 
 /**
- * See `*RangeSelector` for example usage.
+ * See `*TimelineRangeSelector` for example usage.
  */
 @Component({
   selector: 'timeline-range-selector',

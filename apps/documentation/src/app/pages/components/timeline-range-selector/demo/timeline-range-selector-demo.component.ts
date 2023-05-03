@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
-  selector: 'example-range-selector-demo',
-  templateUrl: './range-selector-demo.component.html',
+  selector: 'example-timeline-range-selector-demo',
+  templateUrl: './timeline-range-selector-demo.component.html',
 })
-export class RangeSelectorDemoComponent implements OnInit {
+export class TimelineRangeSelectorDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
   ngOnInit(): void {
     this.layerManager.autoSelect(true);
