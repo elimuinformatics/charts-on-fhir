@@ -21,7 +21,7 @@ export class DatasetOptionsComponent implements OnInit {
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, private sharedDataService: SharedDataLayerListService) {}
+  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;
@@ -39,9 +39,6 @@ export class DatasetOptionsComponent implements OnInit {
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
       this.updateModel(value);
-    });
-    this.sharedDataService.showAdvancedOptions$.subscribe((showAdvancedOptions: boolean) => {
-      this.showAdvancedOptions = showAdvancedOptions;
     });
   }
 

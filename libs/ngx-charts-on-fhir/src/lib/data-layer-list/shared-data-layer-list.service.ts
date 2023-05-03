@@ -5,5 +5,5 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharedDataLayerListService {
-  showAdvancedOptions$ = new BehaviorSubject<boolean>(false);
+  showAdvancedOptions$ = new BehaviorSubject<boolean>(true);
 }

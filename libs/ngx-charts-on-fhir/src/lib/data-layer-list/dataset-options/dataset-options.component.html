@@ -1,4 +1,4 @@
-<form [formGroup]="form" *ngIf="showAdvancedOptions; else simpleOptions">
+<form [formGroup]="form" *ngIf="sharedDataService.showAdvancedOptions$ | async; else simpleOptions">
   <color-picker formControlName="color"></color-picker>
   <ng-container *ngIf="this._dataset?.yAxisID != 'medications'">
     <mat-button-toggle-group formControlName="type">
@@ -29,24 +29,17 @@
         ><input matSliderThumb formControlName="pointRadius"
       /></mat-slider>
     </div>
-    <div>
-      <section *ngIf="this.form.value.type === 'line'">
-        <h3>Line Chart Options</h3>
-        <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
-        <mat-slide-toggle formControlName="fill">Fill area under line</mat-slide-toggle>
-      </section>
-    </div>
+    <section *ngIf="this.form.value.type === 'line'">
+      <h3>Line Chart Options</h3>
+      <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
+      <mat-slide-toggle formControlName="fill">Fill area under line</mat-slide-toggle>
+    </section>
   </ng-container>
 </form>
 <ng-template #simpleOptions>
   <form [formGroup]="form">
     <ng-container *ngIf="this._dataset?.yAxisID != 'medications'">
-      <div>
-        <section *ngIf="this.form.value.type === 'line'">
-          <h3>Line Chart Options</h3>
-          <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
-        </section>
-      </div>
+      <mat-slide-toggle formControlName="interpolation">Line Smoothing</mat-slide-toggle>
     </ng-container>
   </form>
 </ng-template>

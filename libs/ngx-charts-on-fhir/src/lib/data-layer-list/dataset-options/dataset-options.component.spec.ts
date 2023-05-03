@@ -54,7 +54,6 @@ describe('DatasetOptionsComponent', () => {
   });
 
   it('should emit datasetChange event when pointStyle is changed', waitForAsync(async () => {
-    component.showAdvancedOptions = true;
     let emitted: any = null;
     component.dataset = { label: 'Dataset', data: [] };
     component.datasetChange.subscribe((e) => (emitted = e));
@@ -68,7 +67,6 @@ describe('DatasetOptionsComponent', () => {
   }));
 
   it('should emit datasetChange event when point size is changed', waitForAsync(async () => {
-    component.showAdvancedOptions = true;
     let emitted: any = null;
     component.dataset = { label: 'Dataset', data: [] };
     component.datasetChange.subscribe((e) => (emitted = e));
@@ -81,7 +79,6 @@ describe('DatasetOptionsComponent', () => {
   }));
 
   it('should update the form when dataset is changed', waitForAsync(async () => {
-    component.showAdvancedOptions = true;
     component.dataset = { label: 'Dataset', data: [], pointStyle: 'rect' };
     const pointStyle = await loader.getHarness(MatButtonToggleGroupHarness.with({ selector: "[formControlName='pointStyle']" }));
     const button = (await pointStyle.getToggles({ text: 'square' }))[0];
@@ -90,7 +87,6 @@ describe('DatasetOptionsComponent', () => {
   }));
 
   it('should use chart default if point size is undefined', waitForAsync(async () => {
-    component.showAdvancedOptions = true;
     Chart.defaults.elements.point.radius = 3;
     component.dataset = { label: 'Dataset', data: [] };
     const pointRadius = await loader.getHarness(MatSliderThumbHarness.with({ selector: "[formControlName='pointRadius']" }));
