@@ -5,6 +5,7 @@ import produce from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { SharedDataLayerListService } from '../shared-data-layer-list.service';
 
 @Component({
   selector: 'dataset-options',
@@ -19,7 +20,7 @@ export class DatasetOptionsComponent implements OnInit {
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
+  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;
