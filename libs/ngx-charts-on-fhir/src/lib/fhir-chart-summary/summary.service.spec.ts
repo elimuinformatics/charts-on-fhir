@@ -50,13 +50,13 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summary).toEqual([
         {
           [mockLayer.name]: 'Average',
-          'past 10 days': '10',
-          '10 - 20 days ago': '10',
+          'most recent 10 days': '10',
+          'prior 10 days': '10',
         },
         {
           [mockLayer.name]: 'Median',
-          'past 10 days': '15',
-          '10 - 20 days ago': '15',
+          'most recent 10 days': '15',
+          'prior 10 days': '15',
         },
       ]);
     });
@@ -78,13 +78,13 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summary).toEqual([
         {
           [mockLayer.name]: 'Average',
-          'past 3 months': '10',
-          '3 - 6 months ago': '10',
+          'most recent 3 months': '10',
+          'prior 3 months': '10',
         },
         {
           [mockLayer.name]: 'Median',
-          'past 3 months': '15',
-          '3 - 6 months ago': '15',
+          'most recent 3 months': '15',
+          'prior 3 months': '15',
         },
       ]);
     });
@@ -106,13 +106,13 @@ describe('ScatterDataPointSummaryService', () => {
       expect(summary).toEqual([
         {
           [mockLayer.name]: 'Average',
-          'past 1 year': '10',
-          '1 - 2 years ago': '10',
+          'most recent 1 year': '10',
+          'prior 1 year': '10',
         },
         {
           [mockLayer.name]: 'Median',
-          'past 1 year': '15',
-          '1 - 2 years ago': '15',
+          'most recent 1 year': '15',
+          'prior 1 year': '15',
         },
       ]);
     });
