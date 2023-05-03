@@ -34,6 +34,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     FhirChartLegendModule,
     FhirChartSummaryModule,
     RangeSelectorModule,
+    TimeFrameSelectorModule,
     DataLayerSelectorModule,
   ],
   providers: [

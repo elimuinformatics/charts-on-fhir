@@ -11,6 +11,7 @@
   grid-row: 1;
   display: flex;
   gap: 8px;
+  align-items: end;
 }
 .layout-main-chart {
   grid-column: 1;
@@ -24,3 +25,6 @@
   grid-column: 1;
   grid-row: 1;
 }
+// .range-selector .mat-button-toggle-group .mat-button-toggle-appearance-standard button span{
+//   line-height: 30px !important;
+// }
