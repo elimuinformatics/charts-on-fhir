@@ -28,6 +28,8 @@ export * from './lib/data-layer-list/data-layer-list/data-layer-list.component';
 export * from './lib/data-layer-list/data-layer-list.module';
 export * from './lib/data-layer-toolbar/data-layer-toolbar.module';
 export * from './lib/data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
+export * from './lib/data-layer-selector/data-layer-selector.module';
+export * from './lib/data-layer-selector/data-layer-selector.component';
 export * from './lib/data-layer/data-layer-manager.service';
 export * from './lib/data-layer/data-layer-merge.service';
 export * from './lib/data-layer/data-layer-color.service';

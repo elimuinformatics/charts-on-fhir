@@ -46,6 +46,11 @@ export class ObservationLayerService extends DataLayerService {
     },
     {
       system: 'http://loinc.org',
+      code: '4548-4',
+      display: 'Hemoglobin A1c/Hemoglobin.total in Blood',
+    },
+    {
+      system: 'http://loinc.org',
       code: '59408-5',
       display: 'Oxygen saturation in Arterial blood by Pulse oximetry',
     },

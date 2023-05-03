@@ -6,9 +6,11 @@
   gap: 8px;
   height: 100vh;
 }
-.layout-main-range {
+.layout-main-top {
   grid-column: 1 / -1;
   grid-row: 1;
+  display: flex;
+  gap: 8px;
 }
 .layout-main-chart {
   grid-column: 1;
