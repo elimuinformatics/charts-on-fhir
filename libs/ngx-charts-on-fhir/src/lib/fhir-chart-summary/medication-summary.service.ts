@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { formatDate } from '../utils';
 import { MedicationDataPoint } from '../fhir-mappers/medication-request/simple-medication-mapper.service';
 import { DataLayer, TimelineChartType } from '../data-layer/data-layer';
-import { ScatterDataPointSummaryService, SummaryService } from './summary.service';
+import { SummaryService } from './summary.service';
 import { groupBy } from 'lodash-es';
 
 @Injectable({
