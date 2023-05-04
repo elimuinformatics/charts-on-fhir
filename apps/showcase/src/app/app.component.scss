@@ -7,7 +7,7 @@
   height: 100vh;
 }
 .layout-main-range {
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 1;
 }
 .layout-main-chart {
@@ -17,4 +17,9 @@
 .layout-main-summary {
   grid-column: 2;
   grid-row: 2;
+}
+
+.layout-summary-selector {
+  grid-column: 2;
+  grid-row: 1;
 }

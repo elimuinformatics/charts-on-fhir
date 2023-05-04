@@ -2,19 +2,19 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { subtractMonths } from '../utils';
 
 /**
- * See `*RangeSelector` for example usage.
+ * See `*TimelineRangeSelector` for example usage.
  */
 @Component({
-  selector: 'range-selector',
-  templateUrl: './range-selector.component.html',
-  styleUrls: ['./range-selector.component.css'],
+  selector: 'timeline-range-selector',
+  templateUrl: './timeline-range-selector.component.html',
+  styleUrls: ['./timeline-range-selector.component.css'],
 })
-export class RangeSelectorComponent {
+export class TimelineRangeSelectorComponent {
   maxDate?: Date;
   minDate?: Date;
-
   rangeSelectorButtons = [
     { month: 1, value: '1 mo' },
     { month: 3, value: '3 mo' },
@@ -23,7 +23,7 @@ export class RangeSelectorComponent {
   ];
   selectedButton: number | 'All' = 'All';
 
-  constructor(private configService: FhirChartConfigurationService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
@@ -77,16 +77,4 @@ export class RangeSelectorComponent {
     }
     return 0;
   }
-}
-
-function subtractMonths(oldDate: Date, months: number): Date {
-  const newDate = new Date(oldDate);
-  newDate.setMonth(oldDate.getMonth() - months);
-  // If day-of-the-month (getDate) has changed, it's because the day did not exist
-  // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
-  // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
-  if (newDate.getDate() < oldDate.getDate()) {
-    newDate.setDate(0);
-  }
-  return newDate;
 }

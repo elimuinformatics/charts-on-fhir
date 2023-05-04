@@ -240,15 +240,31 @@ export class DataLayerManagerService {
   }
 
   /** Modify a layer's properties.
-   * This method must be used to propagate the changes to other components.
+   * If the layer's `selected` property is changed, this will disable auto-select.
+   * If the layer's `enabled` or `dataset[].hidden` property is changed, this will disable auto-enable.
    */
   update(layer: ManagedDataLayer) {
     if (!this.state.layers[layer.id]) {
       throw new Error(`Layer [${layer.id}] not found`);
     }
-    this.state = produce(this.state, (draft) => {
+    let nextState = produce(this.state, (draft) => {
       draft.layers[layer.id] = castDraft(layer);
     });
+    const old = this.state.layers[layer.id];
+    if (layer.selected !== old.selected) {
+      nextState = {
+        ...nextState,
+        ...(layer.selected ? this.selectLayer(nextState, layer.id) : this.removeLayer(nextState, layer.id)),
+        autoSelectFn: undefined,
+      };
+    }
+    if (layer.enabled !== old.enabled || layer.datasets.some((d, i) => d.hidden !== old.datasets[i].hidden)) {
+      nextState = {
+        ...nextState,
+        autoEnableFn: undefined,
+      };
+    }
+    this.state = nextState;
   }
 
   /** Change the sort order of a layer. This will disable auto-sort. */

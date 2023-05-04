@@ -16,7 +16,7 @@
 .grid-th,
 .grid-td {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   text-align: end;
   align-items: center;
   white-space: nowrap;

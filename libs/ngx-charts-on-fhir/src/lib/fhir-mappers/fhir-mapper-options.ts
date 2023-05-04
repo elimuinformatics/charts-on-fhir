@@ -66,14 +66,15 @@ const defaultAnnotationOptions: ChartAnnotation = {
   drawTime: 'beforeDraw',
 };
 
-export const TODAY_DATE_VERTICAL_LINE_ANNOTATION = new InjectionToken<ChartAnnotation>('Annotation Options', {
-  factory: () => todayDateVerticalLineAnnotation,
+export const TIMEFRAME_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Timeframe annotation Options', {
+  factory: () => defaultTimeframeAnnotationOptions,
 });
-const todayDateVerticalLineAnnotation: ChartAnnotation = {
+const defaultTimeframeAnnotationOptions: ChartAnnotation = {
   type: 'line',
   borderColor: '#FF900D',
   borderWidth: 3,
   display: true,
+  drawTime: 'afterDatasetsDraw',
   label: {
     display: true,
     content: 'Today',

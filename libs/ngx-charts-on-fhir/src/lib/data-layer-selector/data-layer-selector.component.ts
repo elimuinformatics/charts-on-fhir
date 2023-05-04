@@ -12,6 +12,7 @@ export type DataLayerView = {
 @Component({
   selector: 'data-layer-selector',
   templateUrl: './data-layer-selector.component.html',
+  styleUrls: ['./data-layer-selector.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataLayerSelectorComponent implements OnChanges {

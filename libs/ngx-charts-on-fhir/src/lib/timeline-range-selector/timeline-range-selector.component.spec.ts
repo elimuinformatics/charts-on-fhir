@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatButtonToggleHarness } from '@angular/material/button-toggle/testing';
 import { of } from 'rxjs';
-import { RangeSelectorComponent } from './range-selector.component';
+import { TimelineRangeSelectorComponent } from './timeline-range-selector.component';
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -13,6 +13,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
+import { SummaryRangeSelectorComponent } from '../summary-range-selector/summary-range-selector.component';
+import { SummaryService } from '../fhir-chart-summary/summary.service';
 
 const max = new Date('2022-03-30T00:00').getTime();
 const min = new Date('2022-01-06T00:00').getTime();
@@ -23,9 +25,9 @@ class MockConfigService {
   resetZoom = jasmine.createSpy('resetZoom');
 }
 
-describe('RangeSelectorComponent', () => {
-  let component: RangeSelectorComponent;
-  let fixture: ComponentFixture<RangeSelectorComponent>;
+describe('TimelineRangeSelectorComponent', () => {
+  let component: TimelineRangeSelectorComponent;
+  let fixture: ComponentFixture<TimelineRangeSelectorComponent>;
   let element: DebugElement;
   let loader: HarnessLoader;
   let mockConfigService: MockConfigService;
@@ -34,11 +36,11 @@ describe('RangeSelectorComponent', () => {
     mockConfigService = new MockConfigService();
     await TestBed.configureTestingModule({
       imports: [MatButtonToggleModule, MatInputModule, FormsModule, BrowserAnimationsModule, MatDatepickerModule, MatNativeDateModule],
-      declarations: [RangeSelectorComponent],
-      providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }],
+      declarations: [TimelineRangeSelectorComponent, SummaryRangeSelectorComponent],
+      providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }, SummaryService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RangeSelectorComponent);
+    fixture = TestBed.createComponent(TimelineRangeSelectorComponent);
     component = fixture.componentInstance;
     element = fixture.debugElement;
     loader = TestbedHarnessEnvironment.loader(fixture);
