@@ -1,4 +1,4 @@
-<ng-container *ngIf="configService.timelineRange$ | async as range">
+<ng-container *ngIf="configService.summaryRange$ | async as range">
   <ng-template #template>
     <div class="card summary-card" [style.background]="getBackgroundStyle()">
       <dynamic-table [data]="summarize(range)"></dynamic-table>

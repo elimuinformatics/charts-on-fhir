@@ -1,0 +1,9 @@
+.summary-range-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+mat-button-toggle {
+  min-width: 50px;
+}

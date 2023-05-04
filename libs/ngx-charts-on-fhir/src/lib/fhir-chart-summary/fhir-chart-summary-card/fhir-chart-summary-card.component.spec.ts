@@ -12,7 +12,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 class MockConfigService {
-  timelineRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
+  summaryRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }
 
 @Component({ selector: 'dynamic-table', template: '' })

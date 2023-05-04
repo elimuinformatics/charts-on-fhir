@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TimelineRangeSelectorComponent } from './timeline-range-selector.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [TimelineRangeSelectorComponent],
+  imports: [CommonModule, MatDatepickerModule, MatInputModule, MatButtonToggleModule, MatNativeDateModule, FormsModule],
+  exports: [TimelineRangeSelectorComponent],
+})
+export class TimelineRangeSelectorModule {}

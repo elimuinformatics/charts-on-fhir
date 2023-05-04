@@ -1,14 +1,17 @@
 <div class="range-selector" *ngIf="maxDate">
-  <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
-    <mat-button-toggle
-      *ngFor="let rangeButton of rangeSelectorButtons"
-      [id]="rangeButton.value"
-      [value]="rangeButton.month"
-      (click)="updateRangeSelector(rangeButton.month)"
-      >{{ rangeButton.value }}</mat-button-toggle
-    >
-    <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
-  </mat-button-toggle-group>
+  <div class="toggle-buttons">
+    <mat-label>Timeline view</mat-label>
+    <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
+      <mat-button-toggle
+        *ngFor="let rangeButton of rangeSelectorButtons"
+        [id]="rangeButton.value"
+        [value]="rangeButton.month"
+        (click)="updateRangeSelector(rangeButton.month)"
+        >{{ rangeButton.value }}</mat-button-toggle
+      >
+      <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Start date</mat-label>
     <input matInput [matDatepicker]="picker" (dateChange)="dateChange($event, 'min')" [value]="minDate" id="mindate" />

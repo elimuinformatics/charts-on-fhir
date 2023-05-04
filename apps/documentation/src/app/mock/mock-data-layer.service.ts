@@ -23,7 +23,7 @@ const heartRateLayer: DataLayer = {
     {
       yAxisID: 'Heart Rate',
       label: 'Heart Rate',
-      data: [xy(10, 65), xy(5, 60), xy(0, 68)],
+      data: [xy(160, 65), xy(120, 67), xy(95, 66), xy(60, 64), xy(33, 62), xy(0, 63)],
       pointStyle: 'rect',
       chartsOnFhir: {
         tags: ['Clinic'],
@@ -46,7 +46,7 @@ const bloodPressureLayer: DataLayer = {
     {
       yAxisID: 'Blood Pressure',
       label: 'Systolic',
-      data: [xy(10, 105), xy(5, 125), xy(0, 119)],
+      data: [xy(160, 105), xy(120, 126), xy(95, 116), xy(60, 129), xy(33, 123), xy(0, 110)],
       fill: '+1',
       chartsOnFhir: {
         tags: ['Clinic'],
@@ -55,7 +55,7 @@ const bloodPressureLayer: DataLayer = {
     {
       yAxisID: 'Blood Pressure',
       label: 'Diastolic',
-      data: [xy(10, 66), xy(5, 69), xy(0, 60)],
+      data: [xy(160, 66), xy(120, 72), xy(95, 70), xy(60, 71), xy(33, 67), xy(0, 68)],
       chartsOnFhir: {
         tags: ['Clinic'],
       },
