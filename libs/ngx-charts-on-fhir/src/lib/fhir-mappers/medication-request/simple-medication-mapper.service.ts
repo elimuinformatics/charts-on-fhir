@@ -56,6 +56,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           ],
           chartsOnFhir: {
             backgroundStyle: 'transparent',
+            group: codeName,
           },
         },
       ],
