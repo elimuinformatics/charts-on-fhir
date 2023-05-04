@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataLayer, Dataset } from '../data-layer/data-layer';
+import { DataLayer } from '../data-layer/data-layer';
 import { MonthRange } from '../utils';
 import { ScatterDataPointSummaryService, SummaryService } from './summary.service';
 import { groupBy } from 'lodash-es';
