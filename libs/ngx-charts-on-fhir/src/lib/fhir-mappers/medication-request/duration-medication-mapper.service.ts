@@ -222,6 +222,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
         },
       ],
     }));
+
     return layer;
   }
 }

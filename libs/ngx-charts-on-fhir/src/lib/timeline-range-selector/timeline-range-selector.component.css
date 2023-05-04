@@ -1,0 +1,17 @@
+.range-selector {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.range-selector mat-button-toggle-group {
+  margin-top: 2px;
+}
+.range-selector .toggle-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field {
+  max-width: 160px;
+}
