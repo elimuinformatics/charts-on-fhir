@@ -379,6 +379,85 @@ describe('DataLayerManagerService', () => {
       const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
       expect(() => manager.enable('a')).toThrowError(/not found/);
     });
+
+    it('should turn off autoEnable when a dataset is hidden', () => {
+      const originalLayer = { name: 'a', id: 'a', datasets: [{ label: 'aa', data: [], hidden: false }], scale: { id: 'a' } };
+      const updatedLayer = { name: 'a', id: 'a', datasets: [{ label: 'aa', data: [], hidden: true }], scale: { id: 'a' } };
+      const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.autoEnable(() => true);
+      manager.retrieveAll();
+      getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
+      expect(manager.settings$).toBeObservable(
+        hot('xy', {
+          x: jasmine.objectContaining({ isAutoEnable: true }),
+          y: jasmine.objectContaining({ isAutoEnable: false }),
+        })
+      );
+    });
+
+    it('should turn off autoEnable when a layer is disabled', () => {
+      const originalLayer = { name: 'a', id: 'a', enabled: true, datasets: [], scale: { id: 'a' } };
+      const updatedLayer = { name: 'a', id: 'a', enabled: false, datasets: [], scale: { id: 'a' } };
+      const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.autoEnable(() => true);
+      manager.retrieveAll();
+      getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
+      expect(manager.settings$).toBeObservable(
+        hot('xy', {
+          x: jasmine.objectContaining({ isAutoEnable: true }),
+          y: jasmine.objectContaining({ isAutoEnable: false }),
+        })
+      );
+    });
+
+    it('should turn off autoSelect when a layer is removed', () => {
+      const originalLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
+      const updatedLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
+      const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.autoSelect(() => true);
+      manager.retrieveAll();
+      getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
+      expect(manager.settings$).toBeObservable(
+        hot('xy', {
+          x: jasmine.objectContaining({ isAutoSelect: true }),
+          y: jasmine.objectContaining({ isAutoSelect: false }),
+        })
+      );
+    });
+
+    it('should add layer to selectedLayers when selected=true', () => {
+      const originalLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
+      const updatedLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
+      const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.retrieveAll();
+      getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xy', {
+          x: [],
+          y: [jasmine.objectContaining({ name: 'a', selected: true })],
+        })
+      );
+    });
+
+    it('should remove layer from selectedLayers when selected=false', () => {
+      const originalLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
+      const updatedLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
+      const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      manager.autoSelect(() => true);
+      manager.retrieveAll();
+      getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
+      expect(manager.selectedLayers$).toBeObservable(
+        hot('xy', {
+          x: [jasmine.objectContaining({ name: 'a', selected: true })],
+          y: [],
+        })
+      );
+    });
   });
 
   describe('move', () => {
