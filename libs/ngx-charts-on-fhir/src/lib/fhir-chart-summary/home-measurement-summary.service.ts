@@ -18,18 +18,9 @@ export class HomeMeasurementSummaryService implements SummaryService {
     return this.baseSummaryService.canSummarize(layer) && layer.datasets.some((dataset) => dataset.label?.endsWith(HOME_DATASET_LABEL_SUFFIX));
   }
   summarize(layer: DataLayer, range: MonthRange): Record<string, string>[] {
-    const groups = groupBy(layer.datasets, getOriginalLabel);
+    const groups = groupBy(layer.datasets, (dataset) => dataset.chartsOnFhir?.group ?? dataset.label);
     const datasets = Object.entries(groups).map(([label, ds]) => ({ ...ds[0], label, data: ds.flatMap((d) => d.data) }));
     const combined = { ...layer, datasets };
     return this.baseSummaryService.summarize(combined, range);
   }
-}
-
-export function getOriginalLabel(dataset: Dataset): string | undefined {
-  if (dataset.label && dataset.label.endsWith(HOME_DATASET_LABEL_SUFFIX)) {
-    return dataset.label.substring(0, dataset.label.length - HOME_DATASET_LABEL_SUFFIX.length);
-  } else if (dataset.label && dataset.label.endsWith(CLINIC_DATASET_LABEL_SUFFIX)) {
-    return dataset.label.substring(0, dataset.label.length - CLINIC_DATASET_LABEL_SUFFIX.length);
-  }
-  return dataset.label;
 }

@@ -49,7 +49,7 @@ describe('HomeMeasurementSummaryService', () => {
             data: [{ x: 1, y: 1 }],
           },
           {
-            label: 'Test' + HOME_DATASET_LABEL_SUFFIX,
+            label: 'Test',
             data: [{ x: 2, y: 2 }],
           },
         ],
@@ -77,7 +77,7 @@ describe('HomeMeasurementSummaryService', () => {
             data: [{ x: 1, y: 1 }],
           },
           {
-            label: 'Different' + HOME_DATASET_LABEL_SUFFIX,
+            label: 'Different',
             data: [{ x: 2, y: 2 }],
           },
         ],
@@ -102,7 +102,7 @@ describe('HomeMeasurementSummaryService', () => {
       const layer: any = {
         datasets: [
           {
-            label: 'Test' + HOME_DATASET_LABEL_SUFFIX,
+            label: 'Test',
             data: [{ x: 2, y: 2 }],
           },
           {
