@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataLayer, DataLayerCollection, ManagedDataLayer, TimelineDataPoint } from './data-layer';
+import { DataLayer, DataLayerCollection, Dataset, ManagedDataLayer, TimelineChartType, TimelineDataPoint } from './data-layer';
 import produce, { castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
@@ -40,6 +40,12 @@ export class DataLayerMergeService {
         }
       }
     }
+    mergedLayer.datasets.sort((a: Dataset<TimelineChartType, TimelineDataPoint[]>, b: Dataset<TimelineChartType, TimelineDataPoint[]>) => {
+      if (a.label && b.label) {
+        return a.label.localeCompare(b.label);
+      }
+      return 0;
+    });
   }
   /** Adds annotations from newLayer that do not already exist in the mergedLayer, matching annotations by ID. This function mutates `mergedLayer`. */
   mergeAnnotations(mergedLayer: ManagedDataLayer, newLayer: DataLayer) {
