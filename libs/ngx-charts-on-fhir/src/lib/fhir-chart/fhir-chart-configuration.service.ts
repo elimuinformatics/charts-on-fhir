@@ -8,6 +8,7 @@ import { DataLayerManagerService } from '../data-layer/data-layer-manager.servic
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
 import { TODAY_DATE_VERTICAL_LINE_ANNOTATION, TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
+import './center-tooltip-positioner';
 
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
@@ -140,6 +141,7 @@ export class FhirChartConfigurationService {
             },
           },
           tooltip: {
+            position: 'center',
             callbacks: {
               title: (items) => items.map(getTooltipTitle),
               label: (item) => (item.raw as any)['tooltip'] ?? (Chart.defaults.plugins.tooltip.callbacks as any).label(item),

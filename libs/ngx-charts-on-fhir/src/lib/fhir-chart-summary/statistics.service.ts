@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { mean, groupBy, uniq } from 'lodash-es';
 import { ScatterDataPoint } from 'chart.js';
-import { AnnotationOptions, BoxAnnotationOptions } from 'chartjs-plugin-annotation';
+import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
 import { DeepPartial } from 'chart.js/dist/types/utils';
-import { getOriginalLabel } from './home-measurement-summary.service';
 
 type Stats = {
   days: number;
@@ -181,10 +180,10 @@ function getDay(point: ScatterDataPoint): string {
 
 /** Factory for generating functions that check if any given annotation is a reference range for the bound dataset */
 function isReferenceRangeFor(dataset: Dataset) {
-  const datasetLabel = getOriginalLabel(dataset);
   return function isReferenceRange(annotation: DeepPartial<AnnotationOptions>): annotation is ReferenceRange {
     return (
-      (annotation as BoxAnnotationOptions)?.label?.content === `${datasetLabel} Reference Range` &&
+      dataset.chartsOnFhir?.referenceRangeAnnotation != null &&
+      annotation.id === dataset.chartsOnFhir.referenceRangeAnnotation &&
       typeof annotation.yMax === 'number' &&
       typeof annotation.yMin === 'number' &&
       typeof annotation.yScaleID === 'string'

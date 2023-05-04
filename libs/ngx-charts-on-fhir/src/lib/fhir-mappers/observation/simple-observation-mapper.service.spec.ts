@@ -1,8 +1,20 @@
 import { Observation } from 'fhir/r4';
 import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 import { homeEnvironmentCode, measurementSettingExtUrl, SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
+import { TestBed } from '@angular/core/testing';
+import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { FhirCodeService } from '../fhir-code.service';
 
 describe('SimpleObservationMapper', () => {
+  let mapper: SimpleObservationMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } }, { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } }, FhirCodeService],
+    });
+    mapper = TestBed.inject(SimpleObservationMapper);
+  });
+
   describe('canMap', () => {
     it('should return true for a SimpleObservation', () => {
       const observation: SimpleObservation = {
@@ -12,7 +24,6 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(true);
     });
 
@@ -23,7 +34,6 @@ describe('SimpleObservationMapper', () => {
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(false);
     });
   });
@@ -38,7 +48,6 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: date.toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -50,7 +59,6 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
@@ -62,7 +70,6 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({ type: 'linear' }, {});
       expect(mapper.map(observation).scale).toEqual({
         id: 'text',
         type: 'linear',
@@ -84,7 +91,6 @@ describe('SimpleObservationMapper', () => {
           },
         ],
       };
-      const mapper = new SimpleObservationMapper({}, { type: 'box' });
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
@@ -104,7 +110,6 @@ describe('SimpleObservationMapper', () => {
         effectiveDateTime: new Date().toISOString(),
         valueQuantity: { value: 7, unit: 'unit' },
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
 
@@ -124,7 +129,6 @@ describe('SimpleObservationMapper', () => {
           },
         ],
       };
-      const mapper = new SimpleObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].label).toBe('text' + HOME_DATASET_LABEL_SUFFIX);
     });
   });

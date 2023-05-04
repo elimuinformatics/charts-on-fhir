@@ -31,7 +31,6 @@ export class FhirDataService {
   get isSmartLaunch(): boolean {
     return !!sessionStorage.getItem('SMART_KEY');
   }
-
   /**
    * Initialize the FHIR Client using OAuth token response from EHR launch, if available.
    * If no EHR launch context is found, it will create a Client from the provided `clientState` parameter.

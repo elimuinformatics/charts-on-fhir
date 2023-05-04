@@ -1,7 +1,19 @@
 import { Observation } from 'fhir/r4';
 import { ComponentObservation, ComponentObservationMapper } from './component-observation-mapper.service';
+import { TestBed } from '@angular/core/testing';
+import { FhirCodeService } from '../fhir-code.service';
+import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 
 describe('ComponentObservationMapper', () => {
+  let mapper: ComponentObservationMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } }, { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } }, FhirCodeService],
+    });
+    mapper = TestBed.inject(ComponentObservationMapper);
+  });
+
   describe('canMap', () => {
     it('should return true for a ComponentObservation', () => {
       const observation: ComponentObservation = {
@@ -16,7 +28,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(true);
     });
 
@@ -27,7 +38,6 @@ describe('ComponentObservationMapper', () => {
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.canMap(observation)).toBe(false);
     });
   });
@@ -50,7 +60,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets).toEqual([
         jasmine.objectContaining({ label: 'one (Clinic)' }),
         jasmine.objectContaining({ label: 'two (Clinic)' }),
@@ -71,7 +80,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
@@ -88,7 +96,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
@@ -105,7 +112,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({ type: 'linear' }, {});
       expect(mapper.map(observation).scale).toEqual(
         jasmine.objectContaining({
           id: 'text',
@@ -134,7 +140,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, { type: 'box' });
       expect(mapper.map(observation).annotations?.[0]).toEqual(
         jasmine.objectContaining({
           type: 'box',
@@ -159,7 +164,6 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      const mapper = new ComponentObservationMapper({}, {});
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
   });
