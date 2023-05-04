@@ -1,0 +1,12 @@
+<ng-container *ngIf="layerManager.enabledLayers$ | async as layers">
+  <ng-container *ngIf="layers.length > 0">
+    <div class="summary-range-selector">
+      <mat-label>Data summary</mat-label>
+      <mat-button-toggle-group id="timeframeselector" name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle *ngFor="let button of buttons" [id]="button.value" [value]="button.month" (click)="configService.setSummaryRange(button.month)">{{
+          button.value
+        }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </ng-container>
+</ng-container>

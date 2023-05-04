@@ -2,6 +2,7 @@ import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, Sca
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
+export type MonthRange = NumberRange & { months?: number };
 export type NumberRange = { min: number; max: number };
 export function previous({ min, max }: NumberRange): NumberRange {
   return {
@@ -52,4 +53,36 @@ export function formatTime(date: string | number | Date): string {
 }
 export function formatDateTime(date: string | number | Date): string {
   return `${formatDate(date)} ${formatTime(date)}`;
+}
+
+export function subtractMonths(oldDate: Date, months: number): Date {
+  const newDate = new Date(oldDate);
+  newDate.setMonth(oldDate.getMonth() - months);
+  // If day-of-the-month (getDate) has changed, it's because the day did not exist
+  // in the new month (e.g.Feb 30) so setMonth rolled over into the next month.
+  // We can fix this by setting day-of-month to 0, so it rolls back to last day of previous month.
+  if (newDate.getDate() < oldDate.getDate()) {
+    newDate.setDate(0);
+  }
+  return newDate;
+}
+
+export function formatMonths(months: number): string {
+  if (months % 12 === 0) {
+    return `${months / 12} ${months === 12 ? 'year' : 'years'}`;
+  }
+  return `${months} ${months === 1 ? 'month' : 'months'}`;
+}
+
+export function formatDays(range: NumberRange) {
+  const days = Math.floor((range.max - range.min) / MILLISECONDS_PER_DAY);
+  return `${days} ${days === 1 ? 'day' : 'days'}`;
+}
+
+export function formatMonthRange(range: MonthRange) {
+  if (range.months) {
+    return formatMonths(range.months);
+  } else {
+    return formatDays(range);
+  }
 }

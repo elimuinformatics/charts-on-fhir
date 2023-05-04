@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
-import { NumberRange } from '../utils';
+import { MonthRange } from '../utils';
 import { ScatterDataPointSummaryService, SummaryService } from './summary.service';
 import { groupBy } from 'lodash-es';
 
@@ -17,7 +17,7 @@ export class HomeMeasurementSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
     return this.baseSummaryService.canSummarize(layer) && layer.datasets.some((dataset) => dataset.label?.endsWith(HOME_DATASET_LABEL_SUFFIX));
   }
-  summarize(layer: DataLayer, range: NumberRange): Record<string, string>[] {
+  summarize(layer: DataLayer, range: MonthRange): Record<string, string>[] {
     const groups = groupBy(layer.datasets, getOriginalLabel);
     const datasets = Object.entries(groups).map(([label, ds]) => ({ ...ds[0], label, data: ds.flatMap((d) => d.data) }));
     const combined = { ...layer, datasets };

@@ -7,10 +7,11 @@
   height: 100vh;
 }
 .layout-main-top {
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 1;
   display: flex;
   gap: 8px;
+  align-items: flex-end;
 }
 .layout-main-chart {
   grid-column: 1;
@@ -19,4 +20,8 @@
 .layout-main-summary {
   grid-column: 2;
   grid-row: 2;
+}
+.layout-summary-selector {
+  grid-column: 2;
+  grid-row: 1;
 }

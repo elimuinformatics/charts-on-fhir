@@ -2,13 +2,13 @@ import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import produce from 'immer';
 import { mapValues, merge } from 'lodash-es';
-import { map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
+import { combineLatest, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.service';
-import { TODAY_DATE_VERTICAL_LINE_ANNOTATION, TIME_SCALE_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
-import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, isDefined, NumberRange } from '../utils';
-
+import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
+import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, MonthRange, NumberRange, subtractMonths } from '../utils';
+import './center-tooltip-positioner';
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
 type MergedDataLayer = {
@@ -25,19 +25,29 @@ export class FhirChartConfigurationService {
   constructor(
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
-    @Inject(TODAY_DATE_VERTICAL_LINE_ANNOTATION) private todayDateVerticalLineAnnotation: ChartAnnotation,
+    @Inject(TIMEFRAME_ANNOTATION_OPTIONS) private timeframeAnnotationOptions: ChartAnnotation,
     private ngZone: NgZone
-  ) {}
+  ) {
+    this.setSummaryRange(1);
+  }
 
   private timeline: ScaleOptions<'time'> = {
     ...this.timeScaleOptions,
-    afterDataLimits: (axis) => this.ngZone.run(() => this.timelineRangeSubject.next({ max: axis.max, min: axis.min })),
+    afterDataLimits: (axis) =>
+      this.ngZone.run(() => {
+        this.timelineRangeSubject.next({ max: axis.max, min: axis.min });
+      }),
   };
   private timelineRangeSubject = new ReplaySubject<NumberRange>();
-  timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
+  private summaryRangeSubject = new ReplaySubject<MonthRange>();
+  private annotationSubject = new ReplaySubject<ChartAnnotation[]>();
 
-  chartConfig$ = this.layerManager.selectedLayers$.pipe(
-    map((layers) => this.mergeLayers(layers)),
+  timelineRange$ = this.timelineRangeSubject.pipe(throttleTime(100, undefined, { leading: true, trailing: true }));
+  summaryRange$ = this.summaryRangeSubject.asObservable();
+
+  private mergedLayer$ = this.layerManager.selectedLayers$.pipe(map((layers) => this.mergeLayers(layers)));
+  chartConfig$ = combineLatest([this.mergedLayer$, this.annotationSubject]).pipe(
+    map(([layer, annotations]) => ({ ...layer, annotations: layer.annotations.concat(annotations) })),
     scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
     tap((config) => this.updateTimelineBounds(config.data.datasets))
   );
@@ -57,6 +67,29 @@ export class FhirChartConfigurationService {
     if (this._chart !== value) {
       this._chart = value;
     }
+  }
+
+  setSummaryRange(months: number) {
+    this.annotationSubject.next([
+      this.buildTimeframeAnnotation('today', 0),
+      this.buildTimeframeAnnotation('current', months),
+      this.buildTimeframeAnnotation('previous', months * 2),
+    ]);
+    this.summaryRangeSubject.next({
+      months,
+      max: new Date().getTime(),
+      min: subtractMonths(new Date(), months).getTime(),
+    });
+  }
+
+  private buildTimeframeAnnotation(id: string, months: number) {
+    return merge({}, this.timeframeAnnotationOptions, {
+      id,
+      label: {
+        content: months === 0 ? 'Today' : `${formatMonths(months)} ago`,
+      },
+      value: subtractMonths(new Date(), months).getTime(),
+    });
   }
 
   /** Lock the zoom range for timeline scale so it will not change when new data is added */
@@ -124,7 +157,7 @@ export class FhirChartConfigurationService {
           x: this.timeline,
         },
         plugins: {
-          annotation: { annotations: [...annotations, this.todayDateVerticalLineAnnotation] },
+          annotation: { annotations },
           zoom: {
             zoom: {
               onZoomComplete: ({ chart }) => {
@@ -140,6 +173,7 @@ export class FhirChartConfigurationService {
             },
           },
           tooltip: {
+            position: 'center',
             callbacks: {
               title: (items) => items.map(getTooltipTitle),
               label: (item) => (item.raw as any)['tooltip'] ?? (Chart.defaults.plugins.tooltip.callbacks as any).label(item),

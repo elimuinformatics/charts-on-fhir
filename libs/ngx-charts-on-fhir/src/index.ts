@@ -34,6 +34,7 @@ export * from './lib/data-layer/data-layer-manager.service';
 export * from './lib/data-layer/data-layer-merge.service';
 export * from './lib/data-layer/data-layer-color.service';
 export * from './lib/data-layer/data-layer';
+export * from './lib/fhir-mappers/fhir-code.service';
 export * from './lib/fhir-mappers/fhir-converter.service';
 export * from './lib/fhir-mappers/multi-mapper.service';
 export * from './lib/fhir-mappers/fhir-mapper-options';
@@ -45,6 +46,8 @@ export * from './lib/fhir-mappers/medication-request/duration-medication-mapper.
 export * from './lib/patient-browser/patient-browser.module';
 export * from './lib/patient-browser/patient-browser.component';
 export * from './lib/patient-browser/patient.service';
-export * from './lib/range-selector/range-selector.module';
-export * from './lib/range-selector/range-selector.component';
+export * from './lib/summary-range-selector/summary-range-selector.module';
+export * from './lib/summary-range-selector/summary-range-selector.component';
+export * from './lib/timeline-range-selector/timeline-range-selector.module';
+export * from './lib/timeline-range-selector/timeline-range-selector.component';
 export * from './lib/utils';
