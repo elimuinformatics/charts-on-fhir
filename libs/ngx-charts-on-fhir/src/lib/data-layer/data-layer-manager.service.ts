@@ -240,7 +240,8 @@ export class DataLayerManagerService {
   }
 
   /** Modify a layer's properties.
-   * This method must be used to propagate the changes to other components.
+   * If the layer's `selected` property is changed, this will disable auto-select.
+   * If the layer's `enabled` or `dataset[].hidden` property is changed, this will disable auto-enable.
    */
   update(layer: ManagedDataLayer) {
     if (!this.state.layers[layer.id]) {
