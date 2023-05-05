@@ -40,7 +40,7 @@ export class DataLayerMergeService {
         }
       }
     }
-    mergedLayer.datasets.sort((a: Dataset<TimelineChartType, TimelineDataPoint[]>, b: Dataset<TimelineChartType, TimelineDataPoint[]>) => {
+    mergedLayer.datasets.sort((a: Dataset, b: Dataset) => {
       if (a.label && b.label) {
         return a.label.localeCompare(b.label);
       }
