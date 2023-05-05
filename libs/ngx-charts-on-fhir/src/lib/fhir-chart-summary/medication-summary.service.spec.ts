@@ -48,7 +48,8 @@ describe('MedicationSummaryService', () => {
       expect(summary).toEqual([
         {
           Medications: 'one',
-          'Date Written': '1 Jan 2023',
+          'First Written': '1 Jan 2023',
+          'Last Written': '1 Jan 2023',
         },
       ]);
     });
