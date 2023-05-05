@@ -57,24 +57,22 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
     return {
       name: codeName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
-      datasets: resource.component
-        .sort((a, b) => a.code.text.localeCompare(b.code.text))
-        .map((component) => ({
-          label: this.codeService.getName(component.code) + getMeasurementSettingSuffix(resource),
-          yAxisID: codeName,
-          data: [
-            {
-              x: new Date(resource.effectiveDateTime).getTime(),
-              y: component.valueQuantity.value,
-            },
-          ],
-          chartsOnFhir: {
-            group: this.codeService.getName(component.code),
-            colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
-            tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-            referenceRangeAnnotation: `${this.codeService.getName(component.code)} Reference Range`,
+      datasets: resource.component.map((component) => ({
+        label: this.codeService.getName(component.code) + getMeasurementSettingSuffix(resource),
+        yAxisID: codeName,
+        data: [
+          {
+            x: new Date(resource.effectiveDateTime).getTime(),
+            y: component.valueQuantity.value,
           },
-        })),
+        ],
+        chartsOnFhir: {
+          group: this.codeService.getName(component.code),
+          colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
+          tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
+          referenceRangeAnnotation: `${this.codeService.getName(component.code)} Reference Range`,
+        },
+      })),
       scale: merge({}, this.linearScaleOptions, {
         id: codeName,
         title: { text: [codeName, resource.component[0].valueQuantity.unit] },
