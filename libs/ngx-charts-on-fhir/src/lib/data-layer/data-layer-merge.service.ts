@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataLayer, DataLayerCollection, Dataset, ManagedDataLayer, TimelineChartType, TimelineDataPoint } from './data-layer';
+import { DataLayer, DataLayerCollection, Dataset, ManagedDataLayer, TimelineDataPoint } from './data-layer';
 import produce, { castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
