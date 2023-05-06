@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import produce from 'immer';
-import { mapValues, merge } from 'lodash-es';
+import { mapValues, merge, mergeWith, union } from 'lodash-es';
 import { combineLatest, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
@@ -9,6 +9,7 @@ import { findReferenceRangeForDataset } from '../fhir-chart-summary/statistics.s
 import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mappers/fhir-mapper-options';
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, MonthRange, NumberRange, subtractMonths } from '../utils';
 import './center-tooltip-positioner';
+import { sortData } from '../data-layer/data-layer-merge.service';
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
 type MergedDataLayer = {
@@ -138,7 +139,7 @@ export class FhirChartConfigurationService {
   }
 
   updateConfiguration(config: TimelineConfiguration, merged: MergedDataLayer): TimelineConfiguration {
-    const datasets = merged.datasets.map((dataset) => merge(findDataset(config, dataset), dataset));
+    const datasets = merged.datasets.map((dataset) => mergeWith(findDataset(config, dataset), dataset, datasetMergeCustomizer));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
     const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
     return this.buildConfiguration(datasets, scales, annotations);
@@ -155,6 +156,10 @@ export class FhirChartConfigurationService {
         scales: {
           ...scales,
           x: this.timeline,
+        },
+        animation: {
+          duration: 300,
+          easing: 'easeOutExpo',
         },
         plugins: {
           annotation: { annotations },
@@ -191,6 +196,15 @@ export class FhirChartConfigurationService {
     };
   }
 }
+
+/** Customizer function used with lodash `mergeWith` */
+const datasetMergeCustomizer = (objValue: any, srcValue: any, key: any) => {
+  if (key === 'data') {
+    // sort in reverse order so animation will look better when data is loading in reverse chronological order
+    return union<TimelineDataPoint>(objValue, srcValue).sort((b, a) => sortData(a, b));
+  }
+  return undefined;
+};
 
 const getTooltipTitle = (item: TooltipItem<TimelineChartType>) => {
   const dataPoint = item.raw as TimelineDataPoint;

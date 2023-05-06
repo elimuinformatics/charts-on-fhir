@@ -94,8 +94,7 @@ export class FhirDataService {
           throw new Error('Cancelled by subscriber');
         }
       };
-      // use maximum page size on every request to improve performance
-      url = addCountParam(url);
+      url = addDefaultParams(url);
       const request = currentPatientOnly ? this.client.patient.request.bind(this.client.patient) : this.client.request.bind(this.client);
 
       request(url, { pageLimit: 0, onPage })
@@ -225,14 +224,18 @@ export class FhirDataService {
   }
 }
 
-function addCountParam(url: string) {
+/**
+ * Use maximum page size on every request to improve performance.
+ * Sort by date descending so most recent data is available first.
+ */
+function addDefaultParams(url: string) {
   if (!url.includes('_count=')) {
     if (url.includes('?')) {
       url += '&';
     } else {
       url += '?';
     }
-    url += '_count=200';
+    url += '_count=200&_sort=-date';
   }
   return url;
 }

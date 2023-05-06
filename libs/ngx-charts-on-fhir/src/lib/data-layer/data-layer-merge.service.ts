@@ -61,7 +61,7 @@ export class DataLayerMergeService {
   }
 }
 
-function sortData(a: TimelineDataPoint, b: TimelineDataPoint) {
+export function sortData(a: TimelineDataPoint, b: TimelineDataPoint) {
   return (Array.isArray(a.x) ? a.x[0] : a.x) - (Array.isArray(b.x) ? b.x[0] : b.x);
 }
 
