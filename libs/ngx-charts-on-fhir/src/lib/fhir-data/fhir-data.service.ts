@@ -95,9 +95,7 @@ export class FhirDataService {
         }
       };
       // use maximum page size on every request to improve performance
-      url = addDefaultParam(url, '_count', '200');
-      // sort by date descending so most recent data is available first
-      url = addDefaultParam(url, '_sort', '-date');
+      url = addCountParam(url);
       const request = currentPatientOnly ? this.client.patient.request.bind(this.client.patient) : this.client.request.bind(this.client);
 
       request(url, { pageLimit: 0, onPage })
@@ -227,14 +225,14 @@ export class FhirDataService {
   }
 }
 
-function addDefaultParam(url: string, name: string, value: string) {
-  if (!url.includes(`${name}=`)) {
+function addCountParam(url: string) {
+  if (!url.includes('_count=')) {
     if (url.includes('?')) {
       url += '&';
     } else {
       url += '?';
     }
-    url += `${name}=${value}`;
+    url += '_count=200';
   }
   return url;
 }
