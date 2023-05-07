@@ -19,11 +19,14 @@ export class ObservationLayerService implements DataLayerService {
   name = "Observations";
   retrieve = () => {
     return this.fhir
-      .getPatientData<Observation>("Observation")
+      .getPatientData<Observation>("Observation?_sort=-date")
       .pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
   };
 }
 ```
+
+> **Note**
+> Note that the FHIR query sorts by date descending. This will retrieve the most recent data first, allowing you to quickly see the most relevant data while `FhirDataService` continues loading older data in the background.
 
 To use this service, provide it as a `DataLayerService` in AppModule:
 
