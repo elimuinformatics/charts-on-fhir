@@ -17,6 +17,7 @@ describe('FhirChartConfigurationService', () => {
     data: { datasets: [] },
     options: {
       scales: jasmine.anything(),
+      animation: jasmine.anything(),
       plugins: jasmine.objectContaining({
         annotation: { annotations: jasmine.arrayContaining([jasmine.objectContaining({ scaleID: 'x' })]) },
       }),

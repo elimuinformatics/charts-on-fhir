@@ -12,6 +12,6 @@ export class ObservationLayerService extends DataLayerService {
   }
   name = 'Observations';
   retrieve = () => {
-    return this.fhir.getPatientData<Observation>('Observation').pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return this.fhir.getPatientData<Observation>('Observation?_sort=-date').pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
   };
 }

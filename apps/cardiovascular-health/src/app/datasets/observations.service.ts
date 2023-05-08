@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CodeableConcept, Coding, Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter, FhirCodeService, codeIn } from '@elimuinformatics/ngx-charts-on-fhir';
-import { from, mergeMap } from 'rxjs';
+import { OperatorFunction, bufferCount, concatMap, delay, from, mergeMap, pipe } from 'rxjs';
 import observationCodings from './observations.json';
 
 @Injectable({ providedIn: 'root' })
@@ -25,12 +25,28 @@ export class ObservationLayerService extends DataLayerService {
   name = 'Observations';
 
   retrieve = () => {
-    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return this.fhir.getPatientData<Observation>('Observation' + this.query).pipe(
+      mergeMap((bundle) => from(this.converter.convert(bundle))),
+      smoothDataAnimations(50)
+    );
   };
 
   getQueryfromCoding(codings: Coding[]) {
     let finalUrl = '?code=';
     codings.forEach((coding: any) => (finalUrl += `${coding.system}|${coding.code},`));
-    return finalUrl;
+    return finalUrl + '&_sort=-date';
   }
+}
+
+/**
+ * Operator function that smooths out animations while adding data to the chart.
+ * delay(0) makes the emission async, allowing the chart to start animating points in the buffer.
+ * Smaller buffer size will give smoother animation, but may impact performance.
+ */
+function smoothDataAnimations<T>(bufferSize: number): OperatorFunction<T, T> {
+  return pipe(
+    bufferCount(bufferSize),
+    delay(0),
+    concatMap((layers) => from(layers))
+  );
 }
