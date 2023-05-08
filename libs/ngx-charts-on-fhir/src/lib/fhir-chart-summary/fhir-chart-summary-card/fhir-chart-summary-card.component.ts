@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
@@ -33,7 +33,8 @@ export class FhirChartSummaryCardComponent {
     public configService: FhirChartConfigurationService,
     private colorService: DataLayerColorService,
     private elementRef: ElementRef,
-    @Inject(SummaryService) private summaryServices: SummaryService[]
+    @Inject(SummaryService) private summaryServices: SummaryService[],
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];
@@ -46,6 +47,21 @@ export class FhirChartSummaryCardComponent {
   }
   get contentOverflow() {
     return this.elementRef.nativeElement.scrollHeight > this.elementRef.nativeElement.offsetHeight;
+  }
+
+  private resizeObserver?: ResizeObserver;
+
+  ngOnInit() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.changeDetectorRef.markForCheck();
+    });
+    this.resizeObserver.observe(this.elementRef.nativeElement);
+  }
+
+  ngOnDestroy() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   getTooltip() {
