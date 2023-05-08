@@ -34,7 +34,6 @@ export class AppModule {}
 This component uses the provided `SummaryService` implementations to generate the content for each summary card. It requires at least one `SummaryService` that is capable of summarizing each layer. If more than one service is capable of a summarizing a layer, it will use the one that comes first in the providers array. Charts-on-FHIR comes with a few built-in summary services. Applications can create additional services to customize the summary information or add support for other types of data.
 
 - `ScatterDataPointSummaryService` computes basic statistics for numerical data
-- `HomeMeasurementSummaryService` computes combined statistics for layers with both home and clinic measurements
 - `MedicationSummaryService` shows a list of the patient's medications
 
 ## API Reference
