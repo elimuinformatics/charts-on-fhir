@@ -6,8 +6,10 @@ import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
 import { ChartAnnotation, isDefined } from '../../utils';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
-import { CLINIC_DATASET_LABEL_SUFFIX, HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
 import { FhirCodeService } from '../fhir-code.service';
+
+export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
+export const CLINIC_DATASET_LABEL_SUFFIX = ' (Clinic)';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
 export type SimpleObservation = {

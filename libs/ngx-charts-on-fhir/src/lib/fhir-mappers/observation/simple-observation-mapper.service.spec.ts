@@ -1,6 +1,11 @@
 import { Observation } from 'fhir/r4';
-import { HOME_DATASET_LABEL_SUFFIX } from '../../fhir-chart-summary/home-measurement-summary.service';
-import { homeEnvironmentCode, measurementSettingExtUrl, SimpleObservation, SimpleObservationMapper } from './simple-observation-mapper.service';
+import {
+  HOME_DATASET_LABEL_SUFFIX,
+  homeEnvironmentCode,
+  measurementSettingExtUrl,
+  SimpleObservation,
+  SimpleObservationMapper,
+} from './simple-observation-mapper.service';
 import { TestBed } from '@angular/core/testing';
 import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirCodeService } from '../fhir-code.service';
