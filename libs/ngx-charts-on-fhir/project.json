@@ -32,7 +32,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
       "options": {
-        "command": "libs/ngx-charts-on-fhir/test-npm-package.sh"
+        "command": "docker build -t test-npm-package -f libs/ngx-charts-on-fhir/test-npm-package.Dockerfile . && docker run test-npm-package"
       }
     }
   }
