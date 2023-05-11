@@ -1,8 +1,8 @@
 FROM node:18.13.0-alpine
 USER node
 WORKDIR /home/node
-COPY --chown=node ./libs/ngx-charts-on-fhir/test-npm-package.sh ./libs/ngx-charts-on-fhir/
-COPY --chown=node ./libs/ngx-charts-on-fhir/package*.json ./libs/ngx-charts-on-fhir/
+COPY ./libs/ngx-charts-on-fhir/test-npm-package.sh ./libs/ngx-charts-on-fhir/
+COPY ./libs/ngx-charts-on-fhir/package*.json ./libs/ngx-charts-on-fhir/
 COPY --chown=node ./dist/libs/ngx-charts-on-fhir ./dist/libs/ngx-charts-on-fhir
 RUN ./libs/ngx-charts-on-fhir/test-npm-package.sh
 WORKDIR /home/node/test-app
