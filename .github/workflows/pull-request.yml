@@ -75,20 +75,20 @@ jobs:
             -Dsonar.coverage.exclusions=**/*.spec.ts,**/test.ts,**/main.ts,**/polyfills.ts,**/*.module.ts,**/environment*.ts,**/*.js,projects/synthea-utils/*,apps/documentation/**/*
             -Dsonar.test.inclusions=**/*.spec.ts,**/test.ts
 
-  # test-npm-package:
-  #   name: Test NPM Package
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #     - uses: nrwl/nx-set-shas@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - run: npx nx affected -t test-npm-package
+  test-npm-package:
+    name: Test NPM Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - run: npm ci
+      - run: npx nx affected -t test-npm-package
 
   deploy-affected:
     name: Deploy Applications
