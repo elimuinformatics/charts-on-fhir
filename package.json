@@ -52,7 +52,7 @@
     "@angular/compiler-cli": "^15.2.4",
     "@nrwl/workspace": "15.8.9",
     "@schematics/angular": "~15.2.4",
-    "@types/fhir": "^0.0.35",
+    "@types/fhir": "^0.0.37",
     "@types/jasmine": "~4.0.0",
     "@types/lodash-es": "^4.17.6",
     "@types/tinycolor2": "^1.4.3",
