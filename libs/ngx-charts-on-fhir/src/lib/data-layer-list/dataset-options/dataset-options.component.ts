@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Chart } from 'chart.js';
-import produce from 'immer';
+import { produce } from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';

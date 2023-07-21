@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import produce from 'immer';
+import { produce } from 'immer';
 import { merge } from 'lodash-es';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 
