@@ -3,7 +3,7 @@ import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, Subject,
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
-import produce, { castDraft } from 'immer';
+import { produce, castDraft } from 'immer';
 import { zip } from 'lodash-es';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
 

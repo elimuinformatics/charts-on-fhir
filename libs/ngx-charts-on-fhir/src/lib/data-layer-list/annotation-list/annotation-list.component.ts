@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import produce, { castDraft } from 'immer';
+import { produce, castDraft } from 'immer';
 
 @Component({
   selector: 'annotation-list',

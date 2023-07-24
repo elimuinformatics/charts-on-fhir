@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { mapValues } from 'lodash-es';
 import { DataLayer, DataLayerCollection } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';

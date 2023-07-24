@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import produce, { castDraft } from 'immer';
+import { produce, castDraft } from 'immer';
 import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
 
 @Component({

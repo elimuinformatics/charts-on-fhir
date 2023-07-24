@@ -4,7 +4,7 @@ import { ChartType, ChartTypeRegistry } from 'chart.js';
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { merge } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
-import produce, { castDraft } from 'immer';
+import { produce, castDraft } from 'immer';
 
 type DatasetOptions<TType extends TimelineChartType = TimelineChartType> = DeepPartial<
   { [key in ChartType]: { type: key } & ChartTypeRegistry[key]['datasetOptions'] }[TType]
