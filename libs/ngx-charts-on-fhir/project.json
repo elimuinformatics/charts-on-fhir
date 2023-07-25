@@ -6,7 +6,7 @@
   "prefix": "lib",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "project": "libs/ngx-charts-on-fhir/ng-package.json"
       },
