@@ -42,7 +42,7 @@
     "tinycolor2": "^1.5.2",
     "tslib": "^2.3.0",
     "zone.js": "0.13.1",
-    "@nx/angular": "16.5.5"
+    "@nx/angular": "16.6.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "16.1.6",
@@ -50,7 +50,7 @@
     "@angular-devkit/schematics": "16.1.6",
     "@angular/cli": "~16.1.6",
     "@angular/compiler-cli": "16.1.7",
-    "@schematics/angular": "16.1.5",
+    "@schematics/angular": "16.1.6",
     "@types/fhir": "^0.0.37",
     "@types/jasmine": "~4.0.0",
     "@types/lodash-es": "^4.17.6",
@@ -65,13 +65,13 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "lint-staged": "^13.2.3",
     "ng-packagr": "16.1.0",
-    "nx": "16.5.5",
+    "nx": "16.6.0",
     "postcss": "^8.4.5",
     "postcss-import": "~14.1.0",
     "postcss-preset-env": "~7.5.0",
     "postcss-url": "~10.1.3",
     "prettier": "2.7.1",
     "typescript": "5.1.6",
-    "@nx/workspace": "16.5.5"
+    "@nx/workspace": "16.6.0"
   }
 }

@@ -8,7 +8,8 @@
     "build": {
       "executor": "@nx/angular:package",
       "options": {
-        "project": "libs/ngx-charts-on-fhir/ng-package.json"
+        "project": "libs/ngx-charts-on-fhir/ng-package.json",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "production": {
