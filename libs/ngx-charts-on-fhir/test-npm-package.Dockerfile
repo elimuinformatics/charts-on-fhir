@@ -1,4 +1,5 @@
 FROM node:18.13.0-alpine
+RUN apk update && apk add jq
 USER node
 WORKDIR /home/node
 COPY ./libs/ngx-charts-on-fhir/test-npm-package.sh ./libs/ngx-charts-on-fhir/
