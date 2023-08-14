@@ -19,6 +19,7 @@ import {
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { summaryProviders } from './providers/summary-providers';
+import { MatInputModule } from '@angular/material/input';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -36,6 +37,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     TimelineRangeSelectorModule,
     SummaryRangeSelectorModule,
     DataLayerSelectorModule,
+    MatInputModule,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
