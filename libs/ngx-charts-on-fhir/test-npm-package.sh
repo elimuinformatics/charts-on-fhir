@@ -17,6 +17,9 @@ echo ::::: Creating a new Angular app
 npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} new test-app --defaults
 cd test-app
 
+echo ::::: Installing Angular Material
+npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} add @angular/material --skip-confirmation --interactive=false
+
 echo ::::: Installing Charts-on-FHIR library
 npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
 
