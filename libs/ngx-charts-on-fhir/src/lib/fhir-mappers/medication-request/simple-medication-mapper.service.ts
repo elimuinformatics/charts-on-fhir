@@ -52,6 +52,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
               y: codeName,
               authoredOn: authoredOn,
               tooltip: `Prescribed: ${formatDate(authoredOn)}`,
+              resource,
             },
           ],
           chartsOnFhir: {
