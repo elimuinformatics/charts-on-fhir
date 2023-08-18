@@ -198,10 +198,10 @@ export class FhirChartConfigurationService {
 }
 
 /** Customizer function used with lodash `mergeWith` */
-const datasetMergeCustomizer = (objValue: any, srcValue: any, key: any) => {
+const datasetMergeCustomizer = (_objValue: any, srcValue: any, key: any) => {
   if (key === 'data') {
     // sort in reverse order so animation will look better when data is loading in reverse chronological order
-    return union<TimelineDataPoint>(objValue, srcValue).sort((b, a) => sortData(a, b));
+    return srcValue.slice().sort((b: any, a: any) => sortData(a, b));
   }
   return undefined;
 };
