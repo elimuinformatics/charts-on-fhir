@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import { produce } from 'immer';
-import { mapValues, merge, mergeWith, union } from 'lodash-es';
+import { mapValues, merge, mergeWith } from 'lodash-es';
 import { combineLatest, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
