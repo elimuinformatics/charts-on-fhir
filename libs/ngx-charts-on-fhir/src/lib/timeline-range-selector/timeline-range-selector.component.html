@@ -1,5 +1,6 @@
 <div class="range-selector" *ngIf="maxDate">
   <div class="toggle-buttons">
+    <mat-label *ngIf="showTimelineViewTitle">Timeline view</mat-label>
     <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
       <mat-button-toggle
         *ngFor="let rangeButton of rangeSelectorButtons"
