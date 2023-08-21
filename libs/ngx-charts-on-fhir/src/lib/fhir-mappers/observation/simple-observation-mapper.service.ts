@@ -56,6 +56,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             {
               x: new Date(resource.effectiveDateTime).getTime(),
               y: resource.valueQuantity.value,
+              resource,
             },
           ],
           chartsOnFhir: {
