@@ -1,8 +1,6 @@
 <fhir-chart-layout [toolbar]="toolbar" [active]="active">
-  <mat-label>Timeline view</mat-label>
-
   <div class="layout-main">
-    <timeline-range-selector class="layout-main-range"></timeline-range-selector>
+    <timeline-range-selector [showTimelineViewTitle]="true" class="layout-main-range"></timeline-range-selector>
     <summary-range-selector class="layout-summary-selector"></summary-range-selector>
     <fhir-chart class="layout-main-chart" width="100%" height="100%" [floatingContent]="legend"> </fhir-chart>
     <ng-template #legend>
