@@ -339,6 +339,74 @@ describe('FhirChartConfigurationService', () => {
         })
       );
     });
+
+    it('should update config when a data point is added', () => {
+      const a: ManagedDataLayer[] = [
+        {
+          name: '1',
+          id: '1',
+          enabled: true,
+          datasets: [{ label: 'one', data: [] }],
+          scale: { id: '1' },
+        },
+      ];
+      const b: ManagedDataLayer[] = [
+        {
+          name: '1',
+          id: '1',
+          enabled: true,
+          datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
+          scale: { id: '1' },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: hot('ab', { a, b }) };
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
+      expect(configService.chartConfig$).toBeObservable(
+        hot('xy', {
+          x: jasmine.anything(), // cannot test prior state because it has been mutated
+          y: {
+            ...emptyConfig,
+            data: {
+              datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
+            },
+          },
+        })
+      );
+    });
+
+    it('should update config when a data point is removed', () => {
+      const a: ManagedDataLayer[] = [
+        {
+          name: '1',
+          id: '1',
+          enabled: true,
+          datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
+          scale: { id: '1' },
+        },
+      ];
+      const b: ManagedDataLayer[] = [
+        {
+          name: '1',
+          id: '1',
+          enabled: true,
+          datasets: [{ label: 'one', data: [] }],
+          scale: { id: '1' },
+        },
+      ];
+      const layerManager: any = { selectedLayers$: hot('ab', { a, b }) };
+      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
+      expect(configService.chartConfig$).toBeObservable(
+        hot('xy', {
+          x: jasmine.anything(), // cannot test prior state because it has been mutated
+          y: {
+            ...emptyConfig,
+            data: {
+              datasets: [{ label: 'one', data: [] }],
+            },
+          },
+        })
+      );
+    });
   });
 
   describe('timelineRange$', () => {

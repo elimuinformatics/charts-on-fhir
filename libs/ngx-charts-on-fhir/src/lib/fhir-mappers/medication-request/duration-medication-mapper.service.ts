@@ -219,6 +219,7 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
           y: dataset.data[0].y,
           authoredOn,
           tooltip: [`Prescribed: ${formatDate(authoredOn)}`, `Est. supply: ${durationDays} days`, `Est. end date: ${formatDate(endDate)}`],
+          resource,
         },
       ],
     }));

@@ -64,6 +64,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
           {
             x: new Date(resource.effectiveDateTime).getTime(),
             y: component.valueQuantity.value,
+            resource,
           },
         ],
         chartsOnFhir: {

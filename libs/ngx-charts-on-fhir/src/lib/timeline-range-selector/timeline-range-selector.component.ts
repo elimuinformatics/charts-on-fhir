@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
@@ -22,6 +22,7 @@ export class TimelineRangeSelectorComponent {
     { month: 12, value: '1 y' },
   ];
   selectedButton: number | 'All' = 'All';
+  @Input() showTimelineViewTitle: boolean = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
 
