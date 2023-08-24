@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { COLOR_PALETTE, DataLayerService, PatientService, ScatterDataPointSummaryService, SummaryService } from '@elimuinformatics/ngx-charts-on-fhir';
 import { MockDataLayerService } from './mock/mock-data-layer.service';
 import { MockPatientService } from './mock/mock-patient.service';
-import { NgDocIconModule } from '@ng-doc/ui-kit';
+import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,10 +21,16 @@ import { NgDocIconModule } from '@ng-doc/ui-kit';
     BrowserAnimationsModule,
     NgDocNavbarModule,
     NgDocSidebarModule,
-    NgDocIconModule,
+    NgDocIconComponent,
+    NgDocButtonIconComponent,
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
+        // this page has a custom child route for the full-screen demo
+        {
+          path: 'components/chart-layout',
+          loadChildren: () => import('./pages/components/chart-layout/ng-doc.module').then((m) => m.FhirChartLayoutDemoModule),
+        },
         {
           path: '**',
           redirectTo: 'introduction',
