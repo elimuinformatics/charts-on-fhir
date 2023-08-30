@@ -65,13 +65,11 @@ export class TimelineRangeSelectorComponent {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
-    console.log('dateChange', event, datePickerType);
     if (datePickerType === 'min') {
       this.selectedDateRange = new DateRange(event.value, this.selectedDateRange.end);
     } else {
       this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
     }
-    // this.zoomChart();
   }
   calendarChange(date: Date): void {
     if (this.selectedDateRange.start && date > this.selectedDateRange.start && !this.selectedDateRange.end) {
@@ -79,7 +77,6 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.selectedDateRange = new DateRange(date, null);
     }
-    // this.zoomChart();
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {

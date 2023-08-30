@@ -42,7 +42,11 @@
               <input matEndDate placeholder="End date" [value]="selectedDateRange.end" (dateChange)="dateChange($event, 'max')" />
             </mat-date-range-input>
           </mat-form-field>
-          <mat-calendar class="calendar" #calendar [selected]="selectedDateRange" (selectedChange)="calendarChange($event)" startView="month"> </mat-calendar>
+          <mat-calendar class="calendar" [selected]="selectedDateRange" (selectedChange)="calendarChange($event)" startView="month"></mat-calendar>
+          <div class="date-range-dropdown-actions">
+            <button mat-button>Cancel</button>
+            <button mat-raised-button color="primary">Apply</button>
+          </div>
         </div>
       </mat-menu>
     </div>
@@ -54,7 +58,12 @@
           <input matEndDate placeholder="End date" [value]="selectedDateRange.end" (dateChange)="dateChange($event, 'max')" />
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker (closed)="zoomChart()"> </mat-date-range-picker>
+        <mat-date-range-picker #picker (closed)="zoomChart()">
+          <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
       </mat-form-field>
     </div>
   </div>
