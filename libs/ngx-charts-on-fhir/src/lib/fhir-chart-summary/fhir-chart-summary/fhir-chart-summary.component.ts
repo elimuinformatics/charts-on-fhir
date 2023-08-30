@@ -3,6 +3,7 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 import { combineLatest, map, shareReplay } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
+import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 
 /**
  * See `*ChartSummary` for example usage.
@@ -14,10 +15,18 @@ import { mapValues } from 'lodash-es';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FhirChartSummaryComponent {
-  constructor(public layerManager: DataLayerManagerService, private lifecycleService: FhirChartLifecycleService) {}
+  constructor(
+    public layerManager: DataLayerManagerService,
+    private lifecycleService: FhirChartLifecycleService,
+    private configService: FhirChartConfigurationService
+  ) {}
 
   /** When set to `true`, each card will be vertically aligned with the corresponding chart. */
   @Input() autoAlign = false;
+
+  ngOnInit() {
+    this.configService.showSummaryRange(1);
+  }
 
   scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
     map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height }))),
