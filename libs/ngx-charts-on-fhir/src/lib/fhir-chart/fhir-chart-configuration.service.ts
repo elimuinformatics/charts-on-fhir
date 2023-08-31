@@ -71,17 +71,19 @@ export class FhirChartConfigurationService {
   }
 
   setSummaryRange(months: number) {
-    this.annotationSubject.next([
-      this.buildTimeframeAnnotation('today', 0),
-      this.buildTimeframeAnnotation('current', months),
-      this.buildTimeframeAnnotation('previous', months * 2),
-    ]);
-    if (months >= 1) {
+    if (months > 0) {
+      this.annotationSubject.next([
+        this.buildTimeframeAnnotation('today', 0),
+        this.buildTimeframeAnnotation('current', months),
+        this.buildTimeframeAnnotation('previous', months * 2),
+      ]);
       this.summaryRangeSubject.next({
         months,
         max: new Date().getTime(),
         min: subtractMonths(new Date(), months).getTime(),
       });
+    } else {
+      this.annotationSubject.next([this.buildTimeframeAnnotation('today', 0)]);
     }
   }
 
