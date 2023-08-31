@@ -444,19 +444,18 @@ describe('FhirChartConfigurationService', () => {
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
       getTestScheduler().schedule(() => configService.setSummaryRange(3), 20);
       expect(configService.summaryRange$).toBeObservable(
-        hot('x-y', {
-          x: { months: 1, min: new Date('2022-12-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
-          y: { months: 3, min: new Date('2022-10-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
+        hot('--x', {
+          x: { months: 3, min: new Date('2022-10-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
         })
       );
     });
 
-    it('should emit chartConfig$ with timeframe annotations when call showSummaryRange', () => {
+    it('should emit chartConfig$ with timeframe annotations', () => {
       jasmine.clock().mockDate(new Date('2023-01-31T00:00'));
       const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
       const layerManager: any = { selectedLayers$: hot('a', { a }) };
       const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
-      getTestScheduler().schedule(() => configService.showSummaryRange(3), 20);
+      getTestScheduler().schedule(() => configService.setSummaryRange(3), 20);
       expect(configService.chartConfig$).toBeObservable(
         hot('x-y', {
           x: jasmine.anything(),
@@ -484,37 +483,6 @@ describe('FhirChartConfigurationService', () => {
                       scaleID: 'x',
                       label: { content: '6 months ago' },
                       value: new Date('2022-07-31T00:00').getTime(),
-                    },
-                  ],
-                },
-              }),
-            },
-          },
-        })
-      );
-    });
-
-    it('should emit chartConfig$ with todays timeframe annotations', () => {
-      jasmine.clock().mockDate(new Date('2023-01-31T00:00'));
-      const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
-      const layerManager: any = { selectedLayers$: hot('a', { a }) };
-      const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
-      getTestScheduler().schedule(() => configService.setSummaryRange(3), 20);
-      expect(configService.chartConfig$).toBeObservable(
-        hot('x-y', {
-          x: jasmine.anything(),
-          y: {
-            ...emptyConfig,
-            options: {
-              ...emptyConfig.options,
-              plugins: jasmine.objectContaining({
-                annotation: {
-                  annotations: [
-                    {
-                      id: 'today',
-                      scaleID: 'x',
-                      label: { content: 'Today' },
-                      value: new Date('2023-01-31T00:00').getTime(),
                     },
                   ],
                 },

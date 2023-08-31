@@ -19,7 +19,7 @@ class MockLifecycleService {
 }
 
 class MockFhirChartConfigurationService {
-  showSummaryRange = () => {};
+  setSummaryRange = () => {};
 }
 
 @Component({ selector: 'fhir-chart-summary-card' })

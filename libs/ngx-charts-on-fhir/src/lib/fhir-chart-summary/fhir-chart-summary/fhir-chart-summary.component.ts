@@ -25,7 +25,7 @@ export class FhirChartSummaryComponent {
   @Input() autoAlign = false;
 
   ngOnInit() {
-    this.configService.showSummaryRange(1);
+    this.configService.setSummaryRange(1);
   }
 
   scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
