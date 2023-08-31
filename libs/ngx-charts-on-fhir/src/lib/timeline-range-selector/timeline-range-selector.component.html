@@ -43,11 +43,17 @@
           <mat-form-field class="date-range" subscriptSizing="dynamic">
             <mat-label>Date Range</mat-label>
             <mat-date-range-input>
-              <input matStartDate placeholder="Start date" [value]="calendarDateRange.start" (dateChange)="dateChange($event, 'min')" #overlayStartDate />
-              <input matEndDate placeholder="End date" [value]="calendarDateRange.end" (dateChange)="dateChange($event, 'max')" />
+              <input
+                matStartDate
+                placeholder="Start date"
+                [value]="calendarDateRange.start"
+                (dateChange)="calendarDateChange($event, 'min')"
+                #overlayStartDate
+              />
+              <input matEndDate placeholder="End date" [value]="calendarDateRange.end" (dateChange)="calendarDateChange($event, 'max')" />
             </mat-date-range-input>
           </mat-form-field>
-          <mat-calendar class="calendar" [selected]="calendarDateRange" (selectedChange)="calendarChange($event)" startView="month"></mat-calendar>
+          <mat-calendar class="calendar" [selected]="calendarDateRange" (selectedChange)="calendarSelectedChange($event)" startView="month"></mat-calendar>
           <div class="date-range-dropdown-actions">
             <button mat-button (click)="dateRangeMenuTrigger.closeMenu()">Cancel</button>
             <button mat-raised-button color="primary" (click)="applyCalendarDateRange(); dateRangeMenuTrigger.closeMenu()">Apply</button>

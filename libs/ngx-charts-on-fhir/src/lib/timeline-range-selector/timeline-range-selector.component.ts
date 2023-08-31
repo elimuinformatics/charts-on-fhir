@@ -3,6 +3,7 @@ import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { subtractMonths } from '../utils';
+import { zoom } from 'chartjs-plugin-zoom';
 
 /**
  * See `*TimelineRangeSelector` for example usage.
@@ -71,13 +72,22 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
     }
+    this.zoomChart();
   }
 
   openCalendar() {
     this.calendarDateRange = this.selectedDateRange;
   }
 
-  calendarChange(date: Date): void {
+  calendarDateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
+    if (datePickerType === 'min') {
+      this.calendarDateRange = new DateRange(event.value, this.calendarDateRange.end);
+    } else {
+      this.calendarDateRange = new DateRange(this.calendarDateRange.start, event.value);
+    }
+  }
+
+  calendarSelectedChange(date: Date): void {
     if (this.calendarDateRange.start && date > this.calendarDateRange.start && !this.calendarDateRange.end) {
       this.calendarDateRange = new DateRange(this.calendarDateRange.start, date);
     } else {
