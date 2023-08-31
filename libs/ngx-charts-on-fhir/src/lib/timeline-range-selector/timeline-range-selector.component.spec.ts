@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCalendarHarness, MatDateRangeInputHarness } from '@angular/material/datepicker/testing';
 import { MatMenuHarness } from '@angular/material/menu/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 
 const max = new Date('2022-03-30T00:00').getTime();
 const min = new Date('2022-01-06T00:00').getTime();
@@ -140,31 +141,31 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(mockConfigService.zoom).toHaveBeenCalledWith({ min, max: new Date('3/2/2023').getTime() });
   });
 
-  it('should call configService.zoom when start date is changed from dropdown', async () => {
-    const menu = await loader.getHarness(MatMenuHarness);
+  it('should call configService.zoom when date range is entered manually in dropdown', async () => {
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '#range-selector-dropdown .mat-mdc-menu-trigger' }));
     await menu.open();
     const rangeInput = await menu.getHarness(MatDateRangeInputHarness);
     const startInput = await rangeInput.getStartInput();
     await startInput.setValue('3/2/2020');
-    expect(mockConfigService.zoom).toHaveBeenCalledWith({ min: new Date('3/2/2020').getTime(), max });
-  });
-
-  it('should call configService.zoom when end date is changed from dropdown', async () => {
-    const menu = await loader.getHarness(MatMenuHarness);
-    await menu.open();
-    const rangeInput = await menu.getHarness(MatDateRangeInputHarness);
-    const startInput = await rangeInput.getEndInput();
-    await startInput.setValue('3/2/2023');
-    expect(mockConfigService.zoom).toHaveBeenCalledWith({ min, max: new Date('3/2/2023').getTime() });
+    const endInput = await rangeInput.getEndInput();
+    await endInput.setValue('3/2/2023');
+    const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
+    await apply.click();
+    expect(mockConfigService.zoom).toHaveBeenCalledWith({
+      min: new Date('3/2/2020').getTime(),
+      max: new Date('3/2/2023').getTime(),
+    });
   });
 
   it('should call configService.zoom when range is selected on calendar', async () => {
-    const menu = await loader.getHarness(MatMenuHarness);
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '#range-selector-dropdown .mat-mdc-menu-trigger' }));
     await menu.open();
     const calendar = await menu.getHarness(MatCalendarHarness);
     const monthYear = await calendar.getCurrentViewLabel();
     await calendar.selectCell({ text: '1' });
     await calendar.selectCell({ text: '22' });
+    const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
+    await apply.click();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({
       min: new Date(`1 ${monthYear}`).getTime(),
       max: new Date(`22 ${monthYear}`).getTime(),
