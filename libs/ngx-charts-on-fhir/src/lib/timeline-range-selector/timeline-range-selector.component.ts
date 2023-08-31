@@ -14,6 +14,7 @@ import { subtractMonths } from '../utils';
 })
 export class TimelineRangeSelectorComponent {
   selectedDateRange: DateRange<Date> = new DateRange<Date>(null, null);
+  calendarDateRange: DateRange<Date> = new DateRange<Date>(null, null);
   rangeSelectorButtons = [
     { month: 1, value: '1 mo' },
     { month: 3, value: '3 mo' },
@@ -71,12 +72,22 @@ export class TimelineRangeSelectorComponent {
       this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
     }
   }
+
+  openCalendar() {
+    this.calendarDateRange = this.selectedDateRange;
+  }
+
   calendarChange(date: Date): void {
-    if (this.selectedDateRange.start && date > this.selectedDateRange.start && !this.selectedDateRange.end) {
-      this.selectedDateRange = new DateRange(this.selectedDateRange.start, date);
+    if (this.calendarDateRange.start && date > this.calendarDateRange.start && !this.calendarDateRange.end) {
+      this.calendarDateRange = new DateRange(this.calendarDateRange.start, date);
     } else {
-      this.selectedDateRange = new DateRange(date, null);
+      this.calendarDateRange = new DateRange(date, null);
     }
+  }
+
+  applyCalendarDateRange() {
+    this.selectedDateRange = this.calendarDateRange;
+    this.zoomChart();
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {
