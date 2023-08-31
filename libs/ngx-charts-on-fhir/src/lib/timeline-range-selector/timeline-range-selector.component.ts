@@ -3,7 +3,6 @@ import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { subtractMonths } from '../utils';
-import { zoom } from 'chartjs-plugin-zoom';
 
 /**
  * See `*TimelineRangeSelector` for example usage.
