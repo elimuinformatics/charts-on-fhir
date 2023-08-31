@@ -29,7 +29,7 @@
     display: none;
   }
 }
-@container (width > 300px) {
+@container (width > 328px) {
   #toggle-buttons {
     display: flex;
   }
@@ -37,7 +37,7 @@
     display: none;
   }
 }
-@container (width <= 300px) {
+@container (width <= 328px) {
   #toggle-buttons {
     display: none;
   }
