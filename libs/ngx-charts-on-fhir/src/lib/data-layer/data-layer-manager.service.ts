@@ -143,7 +143,10 @@ export class DataLayerManagerService {
           const layers = this.mergeService.merge(this.state.layers, layer);
           this.state = { ...this.state, layers };
         },
-        error: (err) => this.loading$.next(false),
+        error: (err) => {
+          console.error(err);
+          this.loading$.next(false);
+        },
         complete: () => {
           this.loading$.next(false);
         },
