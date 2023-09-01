@@ -8,6 +8,7 @@ import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { Chart } from 'chart.js';
 import { DeepPartial } from 'chart.js/dist/types/utils';
+import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 
 class MockLayerManager {
   enabledLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
@@ -15,6 +16,10 @@ class MockLayerManager {
 
 class MockLifecycleService {
   afterUpdate$ = new Subject<[DeepPartial<Chart>]>();
+}
+
+class MockFhirChartConfigurationService {
+  setSummaryRange = () => {};
 }
 
 @Component({ selector: 'fhir-chart-summary-card' })
@@ -30,15 +35,18 @@ describe('FhirChartSummaryComponent', () => {
   let fixture: ComponentFixture<FhirChartSummaryComponent>;
   let layerManager: MockLayerManager;
   let lifecycleService: MockLifecycleService;
+  let fhirChartConfigurationService: MockFhirChartConfigurationService;
 
   beforeEach(async () => {
     layerManager = new MockLayerManager();
     lifecycleService = new MockLifecycleService();
+    fhirChartConfigurationService = new MockFhirChartConfigurationService();
     await TestBed.configureTestingModule({
       declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: layerManager },
         { provide: FhirChartLifecycleService, useValue: lifecycleService },
+        { provide: FhirChartConfigurationService, useValue: fhirChartConfigurationService },
       ],
     }).compileComponents();
 
