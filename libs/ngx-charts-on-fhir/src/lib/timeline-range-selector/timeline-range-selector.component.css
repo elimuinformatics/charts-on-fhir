@@ -1,18 +1,72 @@
+:host {
+  width: 100%;
+}
 .range-selector {
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+}
+.range-selector-controls {
   display: flex;
   align-items: flex-end;
   gap: 8px;
   flex-wrap: wrap;
 }
+@container (width > 532px) {
+  #range-selector-dropdown {
+    display: none;
+  }
+  #range-selector-inline {
+    display: block;
+  }
+}
 
-.range-selector mat-button-toggle-group {
+@container (width <= 532px) {
+  #range-selector-dropdown {
+    display: block;
+  }
+  #range-selector-inline {
+    display: none;
+  }
+}
+@container (width > 328px) {
+  #toggle-buttons {
+    display: flex;
+  }
+  #menu-buttons {
+    display: none;
+  }
+}
+@container (width <= 328px) {
+  #toggle-buttons {
+    display: none;
+  }
+  #menu-buttons {
+    display: block;
+  }
+}
+
+#toggle-buttons,
+#menu-buttons {
   margin-top: 2px;
 }
-.range-selector .toggle-buttons {
-  display: flex;
-  flex-direction: column;
+.button-menu-trigger {
+  height: 50px;
+  --mdc-typography-button-font-weight: 400;
+}
+.dropdown-arrow {
+  vertical-align: bottom;
 }
 
 mat-form-field {
-  max-width: 160px;
+  max-width: 250px;
+}
+.date-range-overlay .date-range,
+.date-range-overlay .calendar {
+  width: 250px;
+}
+.date-range-dropdown-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 8px;
 }
