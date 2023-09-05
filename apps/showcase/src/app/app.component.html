@@ -2,7 +2,7 @@
   <div class="layout-main">
     <timeline-range-selector [showTimelineViewTitle]="true" class="layout-main-range"></timeline-range-selector>
     <summary-range-selector class="layout-summary-selector"></summary-range-selector>
-    <fhir-chart class="layout-main-chart" width="100%" height="100%" [floatingContent]="legend"> </fhir-chart>
+    <fhir-chart class="layout-main-chart" width="100%" height="100%" [floatingContent]="legend" [emptyMessage]="'No data layers are selected'"> </fhir-chart>
     <ng-template #legend>
       <fhir-chart-tags-legend></fhir-chart-tags-legend>
     </ng-template>
