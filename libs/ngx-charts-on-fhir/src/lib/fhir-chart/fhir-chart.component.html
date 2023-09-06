@@ -15,7 +15,7 @@
             <div>Loading data...</div>
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </ng-container>
-          <ng-template #doneLoading>No data layers are selected</ng-template>
+          <ng-template #doneLoading>{{ emptyMessage }}</ng-template>
         </div>
       </div>
     </ng-template>

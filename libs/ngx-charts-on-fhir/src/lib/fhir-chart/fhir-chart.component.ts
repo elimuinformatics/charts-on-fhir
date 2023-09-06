@@ -32,6 +32,8 @@ export class FhirChartComponent implements OnInit {
 
   @Input() floatingContent?: TemplateRef<unknown>;
 
+  @Input() emptyMessage: string = 'No data';
+
   constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
