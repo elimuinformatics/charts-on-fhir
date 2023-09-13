@@ -10,7 +10,7 @@ import { groupBy } from 'lodash-es';
 })
 export class MedicationSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
-    return layer.scale.type === 'category';
+    return layer.category?.includes('medication') ?? false;
   }
   summarize(layer: DataLayer<TimelineChartType, MedicationDataPoint[]>): Record<string, string>[] {
     const groups = groupBy(layer.datasets, (dataset) => dataset.chartsOnFhir?.group ?? dataset.label);

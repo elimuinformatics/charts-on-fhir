@@ -5,6 +5,7 @@ import {
   SimpleMedicationMapper,
   DurationMedicationMapper,
   BloodPressureMapper,
+  EncounterMapper,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 /**
@@ -12,6 +13,7 @@ import {
  * If more than one Mapper can handle a given resource, the first one will be used.
  */
 export const mapperProviders = [
+  { provide: Mapper, useExisting: EncounterMapper, multi: true },
   { provide: Mapper, useExisting: BloodPressureMapper, multi: true },
   { provide: Mapper, useExisting: ComponentObservationMapper, multi: true },
   { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },

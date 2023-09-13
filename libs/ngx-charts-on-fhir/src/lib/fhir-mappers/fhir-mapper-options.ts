@@ -27,10 +27,10 @@ const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
   },
 } as const;
 
-export const MEDICATION_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'category'>>('Medication scale options', {
-  factory: () => defaultMedicationScaleOptions,
+export const CATEGORY_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'category'>>('Category scale options', {
+  factory: () => defaultCategoryScaleOptions,
 });
-const defaultMedicationScaleOptions: ScaleOptions<'category'> = {
+const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   display: 'auto',
   position: 'left',
   type: 'category',
