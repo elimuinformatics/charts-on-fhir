@@ -35,6 +35,7 @@ This component uses the provided `SummaryService` implementations to generate th
 
 - `ScatterDataPointSummaryService` computes basic statistics for numerical data
 - `MedicationSummaryService` shows a list of the patient's medications
+- `EncounterSummaryService` shows the patient's most recent encounter
 
 ## API Reference
 
