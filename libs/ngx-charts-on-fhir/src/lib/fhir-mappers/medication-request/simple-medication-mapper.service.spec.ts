@@ -2,14 +2,14 @@ import { MedicationRequest } from 'fhir/r4';
 import { SimpleMedication, SimpleMedicationMapper } from './simple-medication-mapper.service';
 import { TestBed } from '@angular/core/testing';
 import { FhirCodeService } from '../fhir-code.service';
-import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
 
 describe('SimpleMedicationMapper', () => {
   let mapper: SimpleMedicationMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: MEDICATION_SCALE_OPTIONS, useValue: { type: 'category' } }, FhirCodeService],
+      providers: [{ provide: CATEGORY_SCALE_OPTIONS, useValue: { type: 'category' } }, FhirCodeService],
     });
     mapper = TestBed.inject(SimpleMedicationMapper);
   });
@@ -40,6 +40,19 @@ describe('SimpleMedicationMapper', () => {
   });
 
   describe('map', () => {
+    it('should return a layer with medication category', () => {
+      const date = new Date();
+      const medication: SimpleMedication = {
+        resourceType: 'MedicationRequest',
+        medicationCodeableConcept: { text: 'text' },
+        authoredOn: date.toISOString(),
+        intent: 'order',
+        status: 'completed',
+        subject: {},
+      };
+      expect(mapper.map(medication).category?.[0]).toEqual('medication');
+    });
+
     it('should map authoredOn time to x value in milliseconds', () => {
       const date = new Date();
       const medication: SimpleMedication = {

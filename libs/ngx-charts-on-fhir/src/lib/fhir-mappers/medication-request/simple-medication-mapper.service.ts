@@ -4,7 +4,7 @@ import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { MEDICATION_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { formatDate } from '../../utils';
 import { FhirCodeService } from '../fhir-code.service';
 
@@ -29,7 +29,7 @@ export type MedicationDataPoint = TimelineDataPoint & {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(MEDICATION_SCALE_OPTIONS) private medicationScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {}
+  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {}
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
@@ -61,7 +61,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           },
         },
       ],
-      scale: merge({}, this.medicationScaleOptions, {
+      scale: merge({}, this.categoryScaleOptions, {
         id: 'medications',
         title: { text: ['Prescribed', 'Medications'] },
       }),

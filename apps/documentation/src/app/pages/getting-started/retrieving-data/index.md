@@ -50,6 +50,7 @@ Add the ones that you want to use to the providers array in AppModule. The order
 // app.module.ts
 @NgModule({
   providers: [
+    { provide: Mapper, useExisting: EncounterMapper, multi: true },
     { provide: Mapper, useExisting: BloodPressureMapper, multi: true },
     { provide: Mapper, useExisting: ComponentObservationMapper, multi: true },
     { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },
@@ -62,6 +63,7 @@ export class AppModule {}
 
 ### API Reference
 
+- `EncounterMapper`
 - `BloodPressureMapper`
 - `ComponentObservationMapper`
 - `SimpleObservationMapper`

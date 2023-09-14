@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MEDICATION_SCALE_OPTIONS, TIME_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { CATEGORY_SCALE_OPTIONS, TIME_SCALE_OPTIONS } from '../fhir-mapper-options';
 import {
   BoundsDurationMedication,
   BoundsPeriodMedication,
@@ -30,7 +30,7 @@ describe('DurationMedicationMapper', () => {
         DurationMedicationMapper,
         SimpleMedicationMapper,
         { provide: TIME_SCALE_OPTIONS, useValue: {} },
-        { provide: MEDICATION_SCALE_OPTIONS, useValue: {} },
+        { provide: CATEGORY_SCALE_OPTIONS, useValue: {} },
       ],
     });
 
