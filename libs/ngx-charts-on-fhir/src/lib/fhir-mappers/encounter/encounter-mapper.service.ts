@@ -137,7 +137,6 @@ const getPointStyle = (context: ScriptableContext<TimelineChartType>) => {
   }
   if (!imageCache[code][color]) {
     imageCache[code][color] = createSvgImage(svg.replace('<path ', `<path style="fill:${color}" `));
-    console.log(imageCache);
   }
   return imageCache[code][color];
 };
