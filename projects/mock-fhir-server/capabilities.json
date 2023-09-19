@@ -40,6 +40,18 @@
               "documentation": "Returns prescriptions for a specific patient"
             }
           ]
+        },
+        {
+          "type": "Encounter",
+          "profile": "http://hl7.org/fhir/StructureDefinition/Encounter",
+          "interaction": [{ "code": "read" }],
+          "searchParam": [
+            {
+              "name": "patient",
+              "type": "reference",
+              "documentation": "Returns encounters for a specific patient"
+            }
+          ]
         }
       ]
     }
