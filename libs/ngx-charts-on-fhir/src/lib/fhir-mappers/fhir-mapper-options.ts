@@ -11,7 +11,7 @@ const defaultTimeScaleOptions: ScaleOptions<'time'> = {
   position: 'bottom',
   type: 'time',
   offset: true,
-  stacked: true,
+  stacked: false,
 } as const;
 
 export const LINEAR_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'linear'>>('Linear scale options', {
@@ -34,6 +34,7 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   display: 'auto',
   position: 'left',
   type: 'category',
+  offset: true,
   stack: 'all',
   stackWeight: 0.7,
   title: {

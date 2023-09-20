@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { ChartConfiguration, ScaleOptions, CartesianScaleOptions, Chart, TooltipItem } from 'chart.js';
 import { produce } from 'immer';
-import { mapValues, merge, mergeWith } from 'lodash-es';
+import { mapValues, merge, mergeWith, uniq } from 'lodash-es';
 import { combineLatest, map, ReplaySubject, scan, tap, throttleTime } from 'rxjs';
 import { TimelineChartType, ManagedDataLayer, Dataset, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
@@ -135,6 +135,7 @@ export class FhirChartConfigurationService {
   mergeLayers(layers: ManagedDataLayer[]): MergedDataLayer {
     layers = arrangeScales(layers);
     layers = setScaleBounds(layers);
+    layers = setCategoryScaleLabels(layers);
     const enabledLayers = layers.filter((layer) => layer.enabled);
     const datasets = enabledLayers.flatMap((layer) => layer.datasets).filter((dataset) => !dataset.hidden);
     const scales = Object.assign({}, ...enabledLayers.map((layer) => ({ [layer.scale.id]: layer.scale })));
@@ -283,3 +284,12 @@ function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], an
 function isNotNaN(value: unknown): value is number {
   return typeof value === 'number' && !Number.isNaN(value);
 }
+
+/** chart.js does not infer labels correctly when there are multiple category scales */
+const setCategoryScaleLabels = produce((layers: ManagedDataLayer[]) => {
+  for (let layer of layers) {
+    if (layer.scale.type === 'category') {
+      layer.scale.labels = uniq(layer.datasets.flatMap((dataset) => dataset.data.map((dataPoint) => String(dataPoint.y))));
+    }
+  }
+});
