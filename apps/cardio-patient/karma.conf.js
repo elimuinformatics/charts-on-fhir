@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    ...require("../../karma.base.conf.js")(config, "cardiovascular-patient-app"),
+    ...require("../../karma.base.conf.js")(config, "cardio-patient"),
     files: ["src/assets/env.js"],
   });
 };

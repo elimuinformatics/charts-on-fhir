@@ -1,0 +1,116 @@
+{
+  "name": "cardio",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "apps/cardio/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/cardio",
+        "index": "apps/cardio/src/index.html",
+        "main": "apps/cardio/src/main.ts",
+        "polyfills": "apps/cardio/src/polyfills.ts",
+        "tsConfig": "apps/cardio/tsconfig.json",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/cardio/src/favicon.ico", "apps/cardio/src/assets", "apps/cardio/src/launch.html"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardio/src/styles.scss"],
+        "scripts": [
+          {
+            "input": "node_modules/fhirclient/build/fhir-client.js",
+            "inject": false,
+            "bundleName": "fhirclient"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "2.0mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/cardio/src/environments/environment.ts",
+              "with": "apps/cardio/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "tsConfig": "apps/cardio/tsconfig.app.json"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "tsConfig": "apps/cardio/tsconfig.app.json"
+        },
+        "logica-open": {
+          "fileReplacements": [
+            {
+              "replace": "apps/cardio/src/environments/environment.ts",
+              "with": "apps/cardio/src/environments/environment.logica-open.ts"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "cardio:build:production"
+        },
+        "development": {
+          "browserTarget": "cardio:build:development"
+        },
+        "logica-open": {
+          "browserTarget": "cardio:build:development,logica-open"
+        }
+      },
+      "defaultConfiguration": "logica-open"
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "curl -X POST \"$WEBHOOK_URL?job=charts-on-fhir-build&token=$WEBHOOK_TOKEN&app=cardio\""
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "cardio:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/cardio/src/test.ts",
+        "polyfills": "apps/cardio/src/polyfills.ts",
+        "tsConfig": "apps/cardio/tsconfig.spec.json",
+        "karmaConfig": "apps/cardio/karma.conf.js",
+        "inlineStyleLanguage": "scss",
+        "assets": ["apps/cardio/src/favicon.ico", "apps/cardio/src/assets"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardio/src/styles.scss"],
+        "scripts": []
+      }
+    }
+  }
+}

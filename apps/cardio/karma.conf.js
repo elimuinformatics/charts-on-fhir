@@ -3,6 +3,6 @@
 
 module.exports = function (config) {
   config.set({
-    ...require("../../karma.base.conf.js")(config, "cardiovascular-health"),
+    ...require("../../karma.base.conf.js")(config, "cardio"),
   });
 };
