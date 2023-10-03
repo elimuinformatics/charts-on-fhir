@@ -90,7 +90,7 @@
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "curl -X POST \"$WEBHOOK_URL?job=cardio-web-build&token=$WEBHOOK_TOKEN\""
+        "command": "curl -X POST \"$WEBHOOK_URL?job=charts-on-fhir-build&token=$WEBHOOK_TOKEN&app=cardio\""
       }
     },
     "extract-i18n": {
