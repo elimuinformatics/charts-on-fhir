@@ -18,8 +18,8 @@ Explore the [Documentation](https://elimuinformatics.github.io/charts-on-fhir) f
 ### Applications
 
 - [showcase](apps/showcase): A customizable clinical dashboard that demonstrates all of the library's features
-- [cardiovascular-health](apps/cardiovascular-health): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
-- [cardiovascular-patient-app](apps/cardiovascular-patient-app): A patient-facing application for submitting blood pressure measurements and viewing prior data
+- [cardio](apps/cardio): A pre-configured clinical dashboard focused on patient-generated health data (PGHD)
+- [cardio-patient](apps/cardio-patient): A patient-facing application for submitting blood pressure measurements and viewing prior data
 - [documentation](apps/documentation): The application that powers the library's [Documentation site](https://elimuinformatics.github.io/charts-on-fhir)
 
 ### Utilities
