@@ -136,5 +136,16 @@ describe('SimpleObservationMapper', () => {
       };
       expect(mapper.map(observation).datasets[0].label).toBe('text' + HOME_DATASET_LABEL_SUFFIX);
     });
+
+    it('should use custom layer name as axis label', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 7, unit: 'unit' },
+      };
+      expect((mapper.map(observation, 'custom').scale as any).title.text[0]).toBe('custom');
+    });
   });
 });

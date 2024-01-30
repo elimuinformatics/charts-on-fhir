@@ -52,14 +52,15 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
     private codeService: FhirCodeService
   ) {}
   canMap = isComponentObservation;
-  map(resource: ComponentObservation): DataLayer {
+  map(resource: ComponentObservation, layerName?: string): DataLayer {
     const codeName = this.codeService.getName(resource.code);
+    layerName = layerName ?? codeName;
     return {
-      name: codeName,
+      name: layerName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: resource.component.map((component) => ({
         label: this.codeService.getName(component.code) + getMeasurementSettingSuffix(resource),
-        yAxisID: codeName,
+        yAxisID: layerName,
         data: [
           {
             x: new Date(resource.effectiveDateTime).getTime(),
@@ -75,8 +76,8 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         },
       })),
       scale: merge({}, this.linearScaleOptions, {
-        id: codeName,
-        title: { text: [codeName, resource.component[0].valueQuantity.unit] },
+        id: layerName,
+        title: { text: [layerName, resource.component[0].valueQuantity.unit] },
         stackWeight: resource.component.length,
       }),
       annotations: resource.component.flatMap(
@@ -85,7 +86,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
             merge({}, this.annotationOptions, {
               id: `${this.codeService.getName(component.code)} Reference Range`,
               label: { content: `${this.codeService.getName(component.code)} Reference Range` },
-              yScaleID: codeName,
+              yScaleID: layerName,
               yMax: range?.high?.value,
               yMin: range?.low?.value,
             })
