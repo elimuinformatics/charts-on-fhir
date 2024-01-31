@@ -40,7 +40,7 @@ export function isBloodPressureObservation(resource: Observation): resource is B
 export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
   constructor(private baseMapper: ComponentObservationMapper) {}
   canMap = isBloodPressureObservation;
-  map(resource: BloodPressureObservation): DataLayer {
+  map(resource: BloodPressureObservation, layerName?: string): DataLayer {
     for (let component of resource.component) {
       if (codeEquals(component.code, systolicCode)) {
         component.referenceRange = [
@@ -59,6 +59,6 @@ export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
         ];
       }
     }
-    return this.baseMapper.map(resource);
+    return this.baseMapper.map(resource, layerName);
   }
 }

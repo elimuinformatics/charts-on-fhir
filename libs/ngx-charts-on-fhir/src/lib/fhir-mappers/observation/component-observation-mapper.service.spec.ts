@@ -166,5 +166,21 @@ describe('ComponentObservationMapper', () => {
       };
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
+
+    it('should use custom layer name as axis label', () => {
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveDateTime: new Date().toISOString(),
+        component: [
+          {
+            code: { text: 'component' },
+            valueQuantity: { value: 7, unit: 'unit' },
+          },
+        ],
+      };
+      expect((mapper.map(observation, 'custom').scale as any).title.text[0]).toBe('custom');
+    });
   });
 });

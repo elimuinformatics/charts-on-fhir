@@ -43,15 +43,16 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
     private codeService: FhirCodeService
   ) {}
   canMap = isSimpleObservation;
-  map(resource: SimpleObservation): DataLayer {
+  map(resource: SimpleObservation, layerName?: string): DataLayer {
     const codeName = this.codeService.getName(resource.code);
+    layerName = layerName ?? codeName;
     return {
-      name: codeName,
+      name: layerName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: [
         {
           label: codeName + getMeasurementSettingSuffix(resource),
-          yAxisID: codeName,
+          yAxisID: layerName,
           data: [
             {
               x: new Date(resource.effectiveDateTime).getTime(),
@@ -60,22 +61,22 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             },
           ],
           chartsOnFhir: {
-            group: codeName,
+            group: layerName,
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-            referenceRangeAnnotation: `${codeName} Reference Range`,
+            referenceRangeAnnotation: `${layerName} Reference Range`,
           },
         },
       ],
       scale: merge({}, this.linearScaleOptions, {
-        id: codeName,
-        title: { text: [codeName, resource.valueQuantity.unit] },
+        id: layerName,
+        title: { text: [layerName, resource.valueQuantity.unit] },
       }),
       annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
         merge({}, this.annotationOptions, {
-          id: `${codeName} Reference Range`,
-          label: { content: `${codeName} Reference Range` },
-          yScaleID: codeName,
+          id: `${layerName} Reference Range`,
+          label: { content: `${layerName} Reference Range` },
+          yScaleID: layerName,
           yMax: range?.high?.value,
           yMin: range?.low?.value,
         })
