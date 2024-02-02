@@ -3,6 +3,7 @@ import { SimpleMedication, SimpleMedicationMapper } from './simple-medication-ma
 import { TestBed } from '@angular/core/testing';
 import { FhirCodeService } from '../fhir-code.service';
 import { CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { Chart } from 'chart.js';
 
 describe('SimpleMedicationMapper', () => {
   let mapper: SimpleMedicationMapper;
@@ -91,6 +92,17 @@ describe('SimpleMedicationMapper', () => {
         id: 'medications',
         type: 'category',
         title: { text: ['Prescribed', 'Medications'] },
+      });
+    });
+  });
+
+  describe('registerCustomPlugin', () => {
+    it('should register custom plugin with id "customLabels"', () => {
+      spyOn(Chart, 'register');
+      mapper.registerCustomPlugin();
+      expect(Chart.register).toHaveBeenCalledWith({
+        id: 'customLabels',
+        afterDatasetsDraw: jasmine.any(Function),
       });
     });
   });
