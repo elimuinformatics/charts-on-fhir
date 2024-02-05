@@ -105,5 +105,40 @@ describe('SimpleMedicationMapper', () => {
         afterDatasetsDraw: jasmine.any(Function),
       });
     });
+
+    it('should register custom plugin and invoke afterDatasetsDraw function', () => {
+      const mockChart: any = {
+        ctx: {
+          fillStyle: 'black',
+          font: '14px Arial',
+          textAlign: 'start',
+          textBaseline: 'middle',
+          fillText: jasmine.createSpy('fillText'),
+        },
+        data: {
+          datasets: [
+            {
+              label: 'TestLabel',
+            },
+          ],
+        },
+        getDatasetMeta: jasmine.createSpy('getDatasetMeta').and.returnValue({
+          yAxisID: 'medications',
+          data: [{ y: 10 }, { y: 20 }],
+        }),
+        chartArea: {
+          left: 50,
+        },
+        afterDatasetsDraw: () => {},
+      };
+
+      spyOn(Chart, 'register').and.callFake((plugin) => {
+        if ((plugin as any).id === 'customLabels') {
+          (plugin as any).afterDatasetsDraw(mockChart);
+        }
+      });
+      mapper.registerCustomPlugin();
+      expect(mockChart.ctx.fillText).toHaveBeenCalledWith('TestLabel', 50, 15);
+    });
   });
 });

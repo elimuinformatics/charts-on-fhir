@@ -29,10 +29,11 @@ export type MedicationDataPoint = TimelineDataPoint & {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {}
+  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {
+    this.registerCustomPlugin();
+  }
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
-    this.registerCustomPlugin();
     const authoredOn = new Date(resource.authoredOn).getTime();
     const codeName = this.codeService.getName(resource?.medicationCodeableConcept);
     return {
@@ -83,6 +84,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
             ctx.fillStyle = 'black';
             ctx.font = '14px Arial';
             ctx.textAlign = 'start';
+            ctx.textBaseline = 'middle';
             ctx.fillText(label!, chart.chartArea.left, centerY);
           }
         });
