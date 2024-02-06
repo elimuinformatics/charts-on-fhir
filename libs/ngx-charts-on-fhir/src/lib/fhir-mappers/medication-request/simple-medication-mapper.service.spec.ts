@@ -3,6 +3,7 @@ import { SimpleMedication, SimpleMedicationMapper } from './simple-medication-ma
 import { TestBed } from '@angular/core/testing';
 import { FhirCodeService } from '../fhir-code.service';
 import { CATEGORY_SCALE_OPTIONS } from '../fhir-mapper-options';
+import { Chart } from 'chart.js';
 
 describe('SimpleMedicationMapper', () => {
   let mapper: SimpleMedicationMapper;
@@ -92,6 +93,52 @@ describe('SimpleMedicationMapper', () => {
         type: 'category',
         title: { text: ['Prescribed', 'Medications'] },
       });
+    });
+  });
+
+  describe('registerCustomPlugin', () => {
+    it('should register custom plugin with id "customLabels"', () => {
+      spyOn(Chart, 'register');
+      mapper.registerCustomPlugin();
+      expect(Chart.register).toHaveBeenCalledWith({
+        id: 'customLabels',
+        afterDatasetsDraw: jasmine.any(Function),
+      });
+    });
+
+    it('should register custom plugin and invoke afterDatasetsDraw function', () => {
+      const mockChart: any = {
+        ctx: {
+          fillStyle: 'black',
+          font: '14px Arial',
+          textAlign: 'start',
+          textBaseline: 'middle',
+          fillText: jasmine.createSpy('fillText'),
+        },
+        data: {
+          datasets: [
+            {
+              label: 'TestLabel',
+            },
+          ],
+        },
+        getDatasetMeta: jasmine.createSpy('getDatasetMeta').and.returnValue({
+          yAxisID: 'medications',
+          data: [{ y: 10 }, { y: 20 }],
+        }),
+        chartArea: {
+          left: 50,
+        },
+        afterDatasetsDraw: () => {},
+      };
+
+      spyOn(Chart, 'register').and.callFake((plugin) => {
+        if ((plugin as any).id === 'customLabels') {
+          (plugin as any).afterDatasetsDraw(mockChart);
+        }
+      });
+      mapper.registerCustomPlugin();
+      expect(mockChart.ctx.fillText).toHaveBeenCalledWith('TestLabel', 50, 15);
     });
   });
 });

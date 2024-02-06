@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { ScaleOptions } from 'chart.js';
+import { ScaleOptions, Chart } from 'chart.js';
 import { MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
@@ -29,7 +29,9 @@ export type MedicationDataPoint = TimelineDataPoint & {
   providedIn: 'root',
 })
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {}
+  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {
+    this.registerCustomPlugin();
+  }
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
@@ -65,28 +67,28 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
         id: 'medications',
         title: { text: ['Prescribed', 'Medications'] },
       }),
-      // use annotations for labels so they are drawn on top of the data (axis labels are drawn underneath)
-      annotations: [
-        {
-          id: codeName,
-          type: 'line',
-          borderWidth: 0,
-          label: {
-            display: true,
-            content: [codeName],
-            position: 'start',
-            color: 'black',
-            backgroundColor: 'transparent',
-            padding: 0,
-            font: {
-              size: 14,
-              weight: 'normal',
-            },
-          },
-          value: codeName,
-          scaleID: 'medications',
-        },
-      ],
     };
+  }
+
+  // Register the custom plugin when the service is created
+  registerCustomPlugin() {
+    Chart.register({
+      id: 'customLabels',
+      afterDatasetsDraw: (chart) => {
+        const ctx = chart.ctx;
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          if (meta.yAxisID === 'medications') {
+            const label = dataset.label;
+            const centerY = (meta.data[0].y + meta.data[meta.data.length - 1].y) / 2;
+            ctx.fillStyle = 'black';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'start';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label!, chart.chartArea.left, centerY);
+          }
+        });
+      },
+    });
   }
 }
