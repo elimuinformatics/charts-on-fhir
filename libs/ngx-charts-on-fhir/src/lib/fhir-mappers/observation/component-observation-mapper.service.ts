@@ -4,10 +4,11 @@ import { Observation, ObservationComponent } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { ChartAnnotation, isDefined } from '../../utils';
-import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { isDefined } from '../../utils';
+import { LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { getMeasurementSettingSuffix, isHomeMeasurement } from './simple-observation-mapper.service';
 import { FhirCodeService } from '../fhir-code.service';
+import { ReferenceRangeService } from './reference-range.service';
 
 /** Required properties for mapping an Observation with `ComponentObservationMapper` */
 export type ComponentObservation = {
@@ -48,13 +49,13 @@ export function isComponentObservation(resource: Observation): resource is Compo
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
-    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation,
-    private codeService: FhirCodeService
+    private codeService: FhirCodeService,
+    private referenceRangeService: ReferenceRangeService
   ) {}
   canMap = isComponentObservation;
-  map(resource: ComponentObservation, layerName?: string): DataLayer {
+  map(resource: ComponentObservation, overrideLayerName?: string): DataLayer {
     const codeName = this.codeService.getName(resource.code);
-    layerName = layerName ?? codeName;
+    const layerName = overrideLayerName ?? codeName;
     return {
       name: layerName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
@@ -72,7 +73,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
           group: this.codeService.getName(component.code),
           colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
           tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-          referenceRangeAnnotation: `${this.codeService.getName(component.code)} Reference Range`,
+          referenceRangeAnnotation: this.referenceRangeService.getAnnotationLabel(component.referenceRange?.[0], this.codeService.getName(component.code)),
         },
       })),
       scale: merge({}, this.linearScaleOptions, {
@@ -80,18 +81,13 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         title: { text: [layerName, resource.component[0].valueQuantity.unit] },
         stackWeight: resource.component.length,
       }),
-      annotations: resource.component.flatMap(
-        (component) =>
+      annotations: resource.component
+        .flatMap((component) =>
           component.referenceRange?.map((range) =>
-            merge({}, this.annotationOptions, {
-              id: `${this.codeService.getName(component.code)} Reference Range`,
-              label: { content: `${this.codeService.getName(component.code)} Reference Range` },
-              yScaleID: layerName,
-              yMax: range?.high?.value,
-              yMin: range?.low?.value,
-            })
-          ) ?? []
-      ),
+            this.referenceRangeService.createReferenceRangeAnnotation(range, this.codeService.getName(component.code), layerName)
+          )
+        )
+        .filter(isDefined),
     };
   }
 }
