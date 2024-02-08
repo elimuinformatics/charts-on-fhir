@@ -112,11 +112,46 @@ export class DataLayerColorService {
    * Transparency will be applied to the point background color if the dataset defines the custom property `chartsOnFhir.backgroundStyle = 'transparent'`
    */
   setColor(dataset: Dataset, color: string): void {
+    const diastolicBP = dataset.data[0].resource.component[0].valueQuantity.value;
+    const systolicBP = dataset.data[0].resource.component[1].valueQuantity.value;
+
+    const lowBP = dataset.data[0].resource.component.find((component: { code: { text: string } }) => component.code.text === 'Diastolic Blood Pressure')
+      ?.referenceRange[0].low.value;
+    // const highBP = dataset.data[0].resource.component.find((component: { code: { text: string } }) => component.code.text === 'Systolic Blood Pressure')
+    //   ?.referenceRange[0].high.value;
+    const highBP = 130;
+
     const line = dataset as Dataset<'line'>;
     line.borderColor = color;
     line.backgroundColor = this.addTransparency(color);
-    line.pointBorderColor = color;
-    line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
+
+    if (line.label == 'Diastolic Blood Pressure (Clinic)') {
+      if (diastolicBP < lowBP) {
+        line.pointBorderColor = '#0000FF';
+        line.pointBackgroundColor = '#0000FF';
+      } else {
+        line.pointBorderColor = color;
+        line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
+      }
+    }
+    // else (line.label == 'Systolic Blood Pressure (Clinic)') {
+    else {
+      if (systolicBP > highBP) {
+        line.pointBorderColor = '#FF0000';
+        line.pointBackgroundColor = '#FF0000';
+      } else {
+        line.pointBorderColor = color;
+        line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
+      }
+    }
+
+    //   } else if (line.label == 'Systolic Blood Pressure (Clinic)' && systolicBP > highBP) {
+    //     line.pointBorderColor = '#FF0000';
+    //     line.pointBackgroundColor = '#FF0000';
+    //   } else {
+    //     line.pointBorderColor = color;
+    //     line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
+    //   }
   }
 
   getColor(dataset: Dataset): string | undefined {
