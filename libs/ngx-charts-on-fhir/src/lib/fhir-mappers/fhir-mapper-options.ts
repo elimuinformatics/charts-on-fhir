@@ -67,6 +67,26 @@ const defaultAnnotationOptions: ChartAnnotation = {
   drawTime: 'beforeDraw',
 };
 
+export const LINE_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Line Annotation Options', {
+  factory: () => defaultLineAnnotationOptions,
+});
+const defaultLineAnnotationOptions: ChartAnnotation = {
+  label: {
+    display: true,
+    position: 'start',
+    color: '#666666',
+    backgroundColor: '#FAFAFA',
+    font: {
+      size: 16,
+      weight: 'normal',
+    },
+  },
+  type: 'line',
+  borderWidth: 4,
+  borderColor: '#FF9999',
+  drawTime: 'beforeDraw',
+};
+
 export const TIMEFRAME_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Timeframe annotation Options', {
   factory: () => defaultTimeframeAnnotationOptions,
 });

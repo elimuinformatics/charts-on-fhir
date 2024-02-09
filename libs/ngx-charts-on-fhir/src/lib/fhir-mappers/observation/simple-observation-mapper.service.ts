@@ -4,9 +4,10 @@ import { Observation } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
-import { ChartAnnotation, isDefined } from '../../utils';
-import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { isDefined } from '../../utils';
+import { LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirCodeService } from '../fhir-code.service';
+import { ReferenceRangeService } from './reference-range.service';
 
 export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
 export const CLINIC_DATASET_LABEL_SUFFIX = ' (Clinic)';
@@ -39,13 +40,13 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
 export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
-    @Inject(ANNOTATION_OPTIONS) private annotationOptions: ChartAnnotation,
-    private codeService: FhirCodeService
+    private codeService: FhirCodeService,
+    private referenceRangeService: ReferenceRangeService
   ) {}
   canMap = isSimpleObservation;
-  map(resource: SimpleObservation, layerName?: string): DataLayer {
+  map(resource: SimpleObservation, overrideLayerName?: string): DataLayer {
     const codeName = this.codeService.getName(resource.code);
-    layerName = layerName ?? codeName;
+    const layerName = overrideLayerName ?? codeName;
     return {
       name: layerName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
@@ -64,7 +65,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
             group: layerName,
             colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
             tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-            referenceRangeAnnotation: `${layerName} Reference Range`,
+            referenceRangeAnnotation: this.referenceRangeService.getAnnotationLabel(resource.referenceRange?.[0], layerName),
           },
         },
       ],
@@ -72,15 +73,9 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
         id: layerName,
         title: { text: [layerName, resource.valueQuantity.unit] },
       }),
-      annotations: resource.referenceRange?.map<ChartAnnotation>((range) =>
-        merge({}, this.annotationOptions, {
-          id: `${layerName} Reference Range`,
-          label: { content: `${layerName} Reference Range` },
-          yScaleID: layerName,
-          yMax: range?.high?.value,
-          yMin: range?.low?.value,
-        })
-      ),
+      annotations: resource.referenceRange
+        ?.map((range) => this.referenceRangeService.createReferenceRangeAnnotation(range, layerName, layerName))
+        .filter(isDefined),
     };
   }
 }
