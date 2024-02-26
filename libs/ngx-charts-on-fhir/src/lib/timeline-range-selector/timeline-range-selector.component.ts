@@ -36,17 +36,19 @@ export class TimelineRangeSelectorComponent {
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
       this.selectedDateRange = new DateRange(new Date(timelineRange.min), new Date(timelineRange.max));
-      if (this.configService.isAutoZoom || !this.selectedDateRange.start || !this.selectedDateRange.end) {
-        this.selectedButton = 'All';
+      if ((this.selectedButtonLabel === 'All' && this.configService.isAutoZoom) || !this.selectedDateRange.start || !this.selectedDateRange.end) {
+        this.selectedButton = 12;
+        this.updateRangeSelector(12);
       } else {
         this.selectedButton = this.calculateMonthDiff(this.selectedDateRange.start, this.selectedDateRange.end);
+        this.updateRangeSelector('All');
       }
       this.changeDetectorRef.markForCheck();
     });
   }
 
-  updateRangeSelector(monthCount: number) {
-    if (this.selectedDateRange.end && monthCount) {
+  updateRangeSelector(monthCount: number | 'All') {
+    if (this.selectedDateRange.end && monthCount && monthCount != 'All') {
       const maxDate = new Date();
       this.selectedDateRange = new DateRange(subtractMonths(maxDate, monthCount), maxDate);
       this.zoomChart();
