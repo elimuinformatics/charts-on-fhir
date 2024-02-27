@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { subtractMonths } from '../utils';
+import { MILLISECONDS_PER_DAY, subtractMonths } from '../utils';
 
 /**
  * See `*TimelineRangeSelector` for example usage.
@@ -31,7 +31,11 @@ export class TimelineRangeSelectorComponent {
   }
   @Input() showTimelineViewTitle: boolean = false;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private configService: FhirChartConfigurationService,
+    private chartConfigService: FhirChartConfigurationService
+  ) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
@@ -39,6 +43,10 @@ export class TimelineRangeSelectorComponent {
       if ((this.selectedButtonLabel === 'All' && this.configService.isAutoZoom) || !this.selectedDateRange.start || !this.selectedDateRange.end) {
         this.selectedButton = 12;
         this.updateRangeSelector(12);
+        this.chartConfigService.zoom({
+          max: new Date().getTime(),
+          min: new Date().getTime() - 365 * MILLISECONDS_PER_DAY,
+        });
       } else {
         this.selectedButton = this.calculateMonthDiff(this.selectedDateRange.start, this.selectedDateRange.end);
         this.updateRangeSelector('All');
