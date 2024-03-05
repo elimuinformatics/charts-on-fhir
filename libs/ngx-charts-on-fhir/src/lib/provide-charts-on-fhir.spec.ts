@@ -8,7 +8,7 @@ import { Mapper, MultiMapper } from './fhir-mappers/multi-mapper.service';
 import { ReferenceRangeService } from './fhir-mappers/observation/reference-range.service';
 import { provideChartsOnFhir, withColors, withDataLayerServices, withMappers, withSummaryServices } from './provide-charts-on-fhir';
 
-fdescribe('provideChartsOnFhir', () => {
+describe('provideChartsOnFhir', () => {
   it('should return an array of providers', () => {
     const MyMapper = {} as any;
     const MyDataLayerService = {} as any;
