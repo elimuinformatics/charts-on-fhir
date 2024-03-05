@@ -6,7 +6,7 @@ import { FhirChartConfigurationService } from './fhir-chart/fhir-chart-configura
 import { FhirConverter } from './fhir-mappers/fhir-converter.service';
 import { Mapper, MultiMapper } from './fhir-mappers/multi-mapper.service';
 import { SummaryService } from './fhir-chart-summary/summary.service';
-import { provideDefaultMapperOptions } from './fhir-mappers/fhir-mapper-options';
+import { ReferenceRangeService } from './fhir-mappers/observation/reference-range.service';
 
 /**
  * Returns a Provider array with all of the configured services.
@@ -36,7 +36,7 @@ export function provideChartsOnFhir(...features: Provider[]): Provider[] {
     FhirChartConfigurationService,
     FhirConverter,
     MultiMapper,
-    provideDefaultMapperOptions(),
+    ReferenceRangeService,
     ...features,
   ];
 }
@@ -53,7 +53,7 @@ export function withSummaryServices(...services: Type<SummaryService>[]): Provid
 
 /** Provides the given Mappers to the Charts-on-FHIR library */
 export function withMappers(...mappers: Type<Mapper<any, any, any>>[]): Provider[] {
-  return mappers.map((mapper) => ({ provide: Mapper, useClass: mapper, multi: true }));
+  return mappers.flatMap((mapper) => [mapper, { provide: Mapper, useClass: mapper, multi: true }]);
 }
 
 /** Configures the color palette for the Charts-on-FHIR library */

@@ -2,17 +2,6 @@ import { InjectionToken } from '@angular/core';
 import { ScaleOptions } from 'chart.js';
 import { ChartAnnotation } from '../utils';
 
-export function provideDefaultMapperOptions() {
-  return [
-    { provide: TIME_SCALE_OPTIONS, useValue: defaultTimeScaleOptions },
-    { provide: LINEAR_SCALE_OPTIONS, useValue: defaultLinearScaleOptions },
-    { provide: CATEGORY_SCALE_OPTIONS, useValue: defaultCategoryScaleOptions },
-    { provide: ANNOTATION_OPTIONS, useValue: defaultAnnotationOptions },
-    { provide: LINE_ANNOTATION_OPTIONS, useValue: defaultLineAnnotationOptions },
-    { provide: TIMEFRAME_ANNOTATION_OPTIONS, useValue: defaultTimeframeAnnotationOptions },
-  ];
-}
-
 // can we use Chart.js built-in system for defaults and config merging instead?
 
 export const TIME_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'time'>>('Time scale options', {
