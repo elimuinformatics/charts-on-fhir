@@ -52,3 +52,4 @@ export * from './lib/summary-range-selector/summary-range-selector.component';
 export * from './lib/timeline-range-selector/timeline-range-selector.module';
 export * from './lib/timeline-range-selector/timeline-range-selector.component';
 export * from './lib/utils';
+export * from './lib/provide-charts-on-fhir';

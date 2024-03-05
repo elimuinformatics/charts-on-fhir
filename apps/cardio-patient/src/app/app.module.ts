@@ -5,26 +5,29 @@ import { MatCardModule } from '@angular/material/card';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgChartsModule } from 'ng2-charts';
 import { AppComponent } from './app.component';
-import { dataLayerProviders } from './providers/data-layer-providers';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { mapperProviders } from './providers/mapper-providers';
 import { MatButtonModule } from '@angular/material/button';
-import paletteProvider from './providers/palette-provider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
   FhirChartModule,
-  COLOR_PALETTE,
   DataLayerBrowserModule,
   FhirChartSummaryModule,
   FhirDataService,
   FhirChartLegendModule,
+  BloodPressureMapper,
+  ScatterDataPointSummaryService,
+  provideChartsOnFhir,
+  withColors,
+  withDataLayerServices,
+  withMappers,
+  withSummaryServices,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
-import { summaryProviders } from './providers/summary-providers';
 import { ReportBPModule } from './report-bp/report-bp.module';
 import { LastReportBPModule } from './last-report-bp/last-report-bp.module';
 import { OptionsMenuModule } from './options-menu/options-menu.module';
+import { ObservationLayerService } from './datasets/observations.service';
 
 function initializeFhirClientFactory(service: FhirDataService): () => Promise<void> {
   return () => service.initialize(environment.clientState);
@@ -52,10 +55,12 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
-    { provide: COLOR_PALETTE, useValue: paletteProvider },
-    mapperProviders,
-    dataLayerProviders,
-    summaryProviders,
+    provideChartsOnFhir(
+      withColors('#e36667', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#c36d3c', '#f781bf', '#c46358', '#5a84a1', '#ba803f', '#90b354', '#ab7490'),
+      withMappers(BloodPressureMapper),
+      withDataLayerServices(ObservationLayerService),
+      withSummaryServices(ScatterDataPointSummaryService)
+    ),
   ],
   bootstrap: [AppComponent],
 })
