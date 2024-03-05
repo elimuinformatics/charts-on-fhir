@@ -10,7 +10,6 @@ import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/co
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import paletteProvider from './providers/palette-provider';
 import { By } from '@angular/platform-browser';
 
 class MockDataLayerService implements DataLayerService {
@@ -57,7 +56,7 @@ describe('AppComponent', () => {
       imports: [NoopAnimationsModule, MatTabsModule, MatCardModule, MatToolbarModule],
       providers: [
         { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
-        { provide: COLOR_PALETTE, useValue: paletteProvider },
+        { provide: COLOR_PALETTE, useValue: ['#ffffff', '#000000'] },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);

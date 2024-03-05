@@ -28,12 +28,12 @@ export class ObservationLayerService implements DataLayerService {
 > **Note**
 > Note that the FHIR query sorts by date descending. This will retrieve the most recent data first, allowing you to quickly see the most relevant data while `FhirDataService` continues loading older data in the background.
 
-To use this service, provide it as a `DataLayerService` in AppModule:
+To use this service, pass it to the `withDataLayerServices` function when calling `provideChartsOnFhir` in `app.module.ts` or `app.config.ts`:
 
 ```ts
 // app.module.ts
 @NgModule({
-  providers: [{ provide: DataLayerService, useExisting: ObservationLayerService, multi: true }],
+  providers: [provideChartsOnFhir(withDataLayerServices(ObservationLayerService))],
 })
 export class AppModule {}
 ```
@@ -44,18 +44,22 @@ export class AppModule {}
 Charts-on-FHIR comes with a few built-in mappers.
 You can implement additional mappers to add support for other types of FHIR Resources or to customize specific data layers.
 
-Add the ones that you want to use to the providers array in AppModule. The order is important here. `FhirConverter` will use the first Mapper that is capable of mapping each resource, so specific mappers should come before generic mappers in this list.
+Call the `withMappers` function when calling `provideChartsOnFhir`, and specify the mappers that you want to use. The order is important here. `FhirConverter` will use the first Mapper that is capable of mapping each resource, so specific mappers should come before generic mappers in this list.
 
 ```ts
 // app.module.ts
 @NgModule({
   providers: [
-    { provide: Mapper, useExisting: EncounterMapper, multi: true },
-    { provide: Mapper, useExisting: BloodPressureMapper, multi: true },
-    { provide: Mapper, useExisting: ComponentObservationMapper, multi: true },
-    { provide: Mapper, useExisting: SimpleObservationMapper, multi: true },
-    { provide: Mapper, useExisting: DurationMedicationMapper, multi: true },
-    { provide: Mapper, useExisting: SimpleMedicationMapper, multi: true },
+    provideChartsOnFhir(
+      withMappers(
+        EncounterMapper,
+        BloodPressureMapper,
+        ComponentObservationMapper,
+        SimpleObservationMapper,
+        DurationMedicationMapper,
+        SimpleMedicationMapper
+      )
+    ),
   ],
 })
 export class AppModule {}
