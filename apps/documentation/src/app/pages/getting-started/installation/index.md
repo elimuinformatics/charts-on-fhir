@@ -61,9 +61,22 @@ Apply Angular Material's global typography styles by adding the `mat-typography`
 
 Charts-on-FHIR is a modular library that uses Angular's Dependency Injection system to configure which features will be included.
 
-Add providers for the services that you want to use to the providers array in `app.module.ts`. At a minimum, each app must provide:
+The recommended way to configure service providers is by using the `provideChartsOnFhir` function in either your `app.module.ts` (for NgModule-based apps) or in `app.config.ts` (for standalone component apps). It can also be used in the providers array for a specific route or component, to make Charts-on-FHIR available only to that part of the app.
 
-1. `COLOR_PALETTE`
+```ts
+providers: [
+  provideChartsOnFhir(
+    withColors("#e36667", "#377eb8", "#4daf4a"),
+    withDataLayerServices(MedicationLayerService, ObservationLayerService),
+    withMappers(SimpleMedicationMapper, SimpleObservationMapper),
+    withSummaryServices(MedicationSummaryService, ScatterDataPointSummaryService)
+  ),
+];
+```
+
+At a minimum, each app must provide:
+
+1. A color palette
 1. At least one `DataLayerService` (See `*RetrievingData` for details)
 1. If your `DataLayerService` uses `FhirConverter` then you need to provide at least one `Mapper` that will be used to convert the FHIR Resources into Data Layers. (See `*RetrievingData` for details)
 1. If your app uses `FhirChartSummaryComponent` then you need to provide at least one `SummaryService` that will be used to summarize the Data Layers. (See `*ChartSummary` for details)

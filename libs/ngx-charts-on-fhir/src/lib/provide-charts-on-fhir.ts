@@ -21,12 +21,13 @@ import { ReferenceRangeService } from './fhir-mappers/observation/reference-rang
  * ```
  * providers: [
  *   provideChartsOnFhir(
- *     withDataLayerServices(MyDataLayerService),
- *     withSummaryServices(MySummaryService),
- *     withMappers(BloodPressureMapper, SimpleObservationMapper),
- *     withColors('#ff0000', '#00ff00', '#0000ff'),
+ *     withColors('#e36667', '#377eb8', '#4daf4a'),
+ *     withDataLayerServices(MedicationLayerService, ObservationLayerService),
+ *     withMappers(SimpleMedicationMapper, SimpleObservationMapper),
+ *     withSummaryServices(MedicationSummaryService, ScatterDataPointSummaryService),
  *   ),
  * ];
+ * ```
  */
 export function provideChartsOnFhir(...features: Provider[]): Provider[] {
   return [

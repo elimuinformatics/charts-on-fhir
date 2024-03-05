@@ -24,7 +24,7 @@ import { FhirChartModule, FhirChartSummaryModule } from "@elimuinformatics/ngx-c
 
 @NgModule({
   imports: [/* ... */ FhirChartModule, FhirChartSummaryModule],
-  providers: [{ provide: SummaryService, useClass: ScatterDataPointSummaryService, multi: true }],
+  providers: [provideChartsOnFhir(withSummaryServices(ScatterDataPointSummaryService))],
 })
 export class AppModule {}
 ```
