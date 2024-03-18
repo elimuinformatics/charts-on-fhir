@@ -83,6 +83,23 @@ describe('DataLayerColorService', () => {
       service.chooseColorsFromPalette(layer);
       expect(layer.annotations[0].backgroundColor).toEqual('rgba(0, 0, 0, 0.2)');
     }));
+
+    it('should ignore datasets that use a callback function for borderColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      const borderColor = () => '#000000';
+      const layer: any = {
+        datasets: [{ label: 'One', borderColor }],
+      };
+      service.chooseColorsFromPalette(layer);
+      expect(layer.datasets[0].borderColor).toBe(borderColor);
+    }));
+    it('should ignore datasets that use a callback function for pointBackgroundColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      const pointBackgroundColor = () => '#000000';
+      const layer: any = {
+        datasets: [{ label: 'One', pointBackgroundColor }],
+      };
+      service.chooseColorsFromPalette(layer);
+      expect(layer.datasets[0].pointBackgroundColor).toBe(pointBackgroundColor);
+    }));
   });
 
   describe('addTransparency', () => {
@@ -93,7 +110,7 @@ describe('DataLayerColorService', () => {
   });
 
   describe('getColor', () => {
-    it('should get correct annotation color by calling getColor', inject([DataLayerColorService], (service: DataLayerColorService) => {
+    it('should get the borderColor of a dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = {
         label: 'Diastolic Blood Pressure',
         yAxisID: 'mm[Hg]',
@@ -105,7 +122,7 @@ describe('DataLayerColorService', () => {
   });
 
   describe('setColor', () => {
-    it('should setColor function called', inject([DataLayerColorService], (service: DataLayerColorService) => {
+    it('should set the borderColor of a dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = { borderColor: '#e41a1c' };
       service.setColor(dataset, '#e41a1c');
       expect(dataset.borderColor).toEqual('#e41a1c');

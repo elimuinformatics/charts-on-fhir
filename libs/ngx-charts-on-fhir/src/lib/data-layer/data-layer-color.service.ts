@@ -39,7 +39,7 @@ export class DataLayerColorService {
   /** Chooses colors for all of the datasets and annotations in the Layer by cycling through the palette */
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
-      if (!this.getColor(dataset)) {
+      if (!this.hasColor(dataset)) {
         const colorIndex = this.getMatchingDatasetColorIndex(layer, dataset) ?? this.getNextPaletteIndex();
         const palette = this.getPalette(dataset);
         const color = palette[colorIndex];
@@ -125,6 +125,11 @@ export class DataLayerColorService {
       return color;
     }
     return undefined;
+  }
+
+  hasColor(dataset: Dataset) {
+    const line = dataset as Dataset<'line'>;
+    return line.borderColor || line.backgroundColor || line.pointBorderColor || line.pointBackgroundColor;
   }
 
   /** build a CSS linear gradient that includes colors from all datasets in the layer */
