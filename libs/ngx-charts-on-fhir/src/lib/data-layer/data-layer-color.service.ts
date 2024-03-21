@@ -31,7 +31,7 @@ export class DataLayerColorService {
 
   private lightPalette = this.palette.map((c) => tinycolor(c).brighten(20).toString());
 
-  /** Chooses colors for all of the datasets and annotations in the Layer by cycling through the palette */
+  /** Chooses colors for all of the datasets and annotations in the Layer */
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
       if (!this.hasColor(dataset)) {
