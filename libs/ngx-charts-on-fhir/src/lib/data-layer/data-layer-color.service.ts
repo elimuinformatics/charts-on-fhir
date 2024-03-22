@@ -2,6 +2,7 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
 import tinycolor from 'tinycolor2';
 import { BoxAnnotationOptions } from 'chartjs-plugin-annotation';
+import { hashCode } from '../utils';
 /**
  * Injection Token used by `DataLayerColorService` to define the available chart colors.
  *
@@ -29,18 +30,12 @@ export class DataLayerColorService {
   constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
 
   private lightPalette = this.palette.map((c) => tinycolor(c).brighten(20).toString());
-  private nextColorIndex = 0;
 
-  /** Reset the service to its initial state so `chooseColorsFromPalette` will select the first color in the palette */
-  reset() {
-    this.nextColorIndex = 0;
-  }
-
-  /** Chooses colors for all of the datasets and annotations in the Layer by cycling through the palette */
+  /** Chooses colors for all of the datasets and annotations in the Layer */
   chooseColorsFromPalette(layer: DataLayer): void {
     for (let dataset of layer.datasets) {
       if (!this.hasColor(dataset)) {
-        const colorIndex = this.getMatchingDatasetColorIndex(layer, dataset) ?? this.getNextPaletteIndex();
+        const colorIndex = this.getMatchingDatasetColorIndex(layer, dataset) ?? this.getPaletteIndex(dataset);
         const palette = this.getPalette(dataset);
         const color = palette[colorIndex];
         this.setColor(dataset, color);
@@ -49,10 +44,9 @@ export class DataLayerColorService {
     }
   }
 
-  private getNextPaletteIndex() {
-    const currentIndex = this.nextColorIndex;
-    this.nextColorIndex = (this.nextColorIndex + 1) % this.palette.length;
-    return currentIndex;
+  /** Gets the palette index that should be used for the given dataset */
+  private getPaletteIndex(dataset: Dataset) {
+    return Math.abs(hashCode(dataset.label ?? '')) % this.palette.length;
   }
 
   /** Gets the palette that should be used for the given dataset */

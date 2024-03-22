@@ -16,16 +16,23 @@ describe('DataLayerColorService', () => {
   });
 
   describe('chooseColorsFromPalette', () => {
-    it('should cycle through the palette', inject([DataLayerColorService], (service: DataLayerColorService) => {
-      const layer: any = {
+    it('should always choose the same color for a dataset', () => {
+      const service1 = new DataLayerColorService(palette);
+      const service2 = new DataLayerColorService(palette);
+      const layer1: any = {
         datasets: [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }],
         annotations: [{ label: { display: true } }],
       };
-      service.chooseColorsFromPalette(layer);
-      expect(layer.datasets[0].borderColor).toEqual(palette[0]);
-      expect(layer.datasets[1].borderColor).toEqual(palette[1]);
-      expect(layer.datasets[2].borderColor).toEqual(palette[0]);
-    }));
+      const layer2: any = {
+        datasets: [{ label: 'One' }, { label: 'Two' }, { label: 'Three' }],
+        annotations: [{ label: { display: true } }],
+      };
+      service1.chooseColorsFromPalette(layer1);
+      service2.chooseColorsFromPalette(layer2);
+      expect(layer1.datasets[0].borderColor).toEqual(layer2.datasets[0].borderColor);
+      expect(layer1.datasets[1].borderColor).toEqual(layer2.datasets[1].borderColor);
+      expect(layer1.datasets[2].borderColor).toEqual(layer2.datasets[2].borderColor);
+    });
 
     it('should reuse color from matching dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const layer: any = {

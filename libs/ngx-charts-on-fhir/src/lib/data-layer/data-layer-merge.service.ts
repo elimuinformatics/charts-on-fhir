@@ -3,6 +3,7 @@ import { DataLayer, DataLayerCollection, Dataset, ManagedDataLayer, TimelineData
 import { produce, castDraft } from 'immer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
+import { hashCode } from '../utils';
 
 /**
  * Merges a `DataLayer` into the matching layer in a `DataLayerCollection`.
@@ -67,16 +68,6 @@ export function sortData(a: TimelineDataPoint, b: TimelineDataPoint) {
 
 function generateId(layer: DataLayer): string {
   return hashCode(JSON.stringify(extractMetadata(layer))).toFixed(0);
-}
-
-function hashCode(str: string): number {
-  let hash = 0;
-  for (let i = 0, len = str.length; i < len; i++) {
-    let chr = str.charCodeAt(i);
-    hash = (hash << 5) - hash + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  return hash;
 }
 
 function extractMetadata(layer: DataLayer): DataLayer {
