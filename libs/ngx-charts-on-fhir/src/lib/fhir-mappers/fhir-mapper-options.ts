@@ -7,7 +7,7 @@ import { ChartAnnotation } from '../utils';
 export const TIME_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'time'>>('Time scale options', {
   factory: () => defaultTimeScaleOptions,
 });
-const defaultTimeScaleOptions: ScaleOptions<'time'> = {
+export const defaultTimeScaleOptions: ScaleOptions<'time'> = {
   position: 'bottom',
   type: 'time',
   offset: true,
@@ -17,7 +17,7 @@ const defaultTimeScaleOptions: ScaleOptions<'time'> = {
 export const LINEAR_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'linear'>>('Linear scale options', {
   factory: () => defaultLinearScaleOptions,
 });
-const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
+export const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
   display: 'auto',
   position: 'left',
   type: 'linear',
@@ -30,7 +30,7 @@ const defaultLinearScaleOptions: ScaleOptions<'linear'> = {
 export const CATEGORY_SCALE_OPTIONS = new InjectionToken<ScaleOptions<'category'>>('Category scale options', {
   factory: () => defaultCategoryScaleOptions,
 });
-const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
+export const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
   display: 'auto',
   position: 'left',
   type: 'category',
@@ -48,7 +48,7 @@ const defaultCategoryScaleOptions: ScaleOptions<'category'> = {
 export const ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Annotation Options', {
   factory: () => defaultAnnotationOptions,
 });
-const defaultAnnotationOptions: ChartAnnotation = {
+export const defaultAnnotationOptions: ChartAnnotation = {
   label: {
     display: true,
     position: {
@@ -70,7 +70,7 @@ const defaultAnnotationOptions: ChartAnnotation = {
 export const LINE_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Line Annotation Options', {
   factory: () => defaultLineAnnotationOptions,
 });
-const defaultLineAnnotationOptions: ChartAnnotation = {
+export const defaultLineAnnotationOptions: ChartAnnotation = {
   label: {
     display: true,
     position: 'start',
@@ -90,7 +90,7 @@ const defaultLineAnnotationOptions: ChartAnnotation = {
 export const TIMEFRAME_ANNOTATION_OPTIONS = new InjectionToken<ChartAnnotation>('Timeframe annotation Options', {
   factory: () => defaultTimeframeAnnotationOptions,
 });
-const defaultTimeframeAnnotationOptions: ChartAnnotation = {
+export const defaultTimeframeAnnotationOptions: ChartAnnotation = {
   type: 'line',
   borderColor: '#FF900D',
   borderWidth: 3,
