@@ -54,13 +54,13 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
   ) {}
   canMap = isComponentObservation;
   map(resource: ComponentObservation, overrideLayerName?: string): DataLayer {
-    const codeName = this.codeService.getName(resource.code);
+    const codeName = this.codeService.getName(resource.code, resource);
     const layerName = overrideLayerName ?? codeName;
     return {
       name: layerName,
       category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
       datasets: resource.component.map((component) => ({
-        label: this.codeService.getName(component.code) + getMeasurementSettingSuffix(resource),
+        label: this.codeService.getName(component.code, resource) + getMeasurementSettingSuffix(resource),
         yAxisID: layerName,
         data: [
           {
@@ -70,10 +70,13 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
           },
         ],
         chartsOnFhir: {
-          group: this.codeService.getName(component.code),
+          group: this.codeService.getName(component.code, resource),
           colorPalette: isHomeMeasurement(resource) ? 'light' : 'dark',
           tags: [isHomeMeasurement(resource) ? 'Home' : 'Clinic'],
-          referenceRangeAnnotation: this.referenceRangeService.getAnnotationLabel(component.referenceRange?.[0], this.codeService.getName(component.code)),
+          referenceRangeAnnotation: this.referenceRangeService.getAnnotationLabel(
+            component.referenceRange?.[0],
+            this.codeService.getName(component.code, resource)
+          ),
         },
       })),
       scale: merge({}, this.linearScaleOptions, {
@@ -84,7 +87,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
       annotations: resource.component
         .flatMap((component) =>
           component.referenceRange?.map((range) =>
-            this.referenceRangeService.createReferenceRangeAnnotation(range, this.codeService.getName(component.code), layerName)
+            this.referenceRangeService.createReferenceRangeAnnotation(range, this.codeService.getName(component.code, resource), layerName)
           )
         )
         .filter(isDefined),

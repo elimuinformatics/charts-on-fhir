@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CodeableConcept, Coding } from 'fhir/r4';
+import { CodeableConcept, Coding, FhirResource } from 'fhir/r4';
 
 /**
  * A service for getting the display name of a FHIR `CodableConcept`.
@@ -11,7 +11,7 @@ import { CodeableConcept, Coding } from 'fhir/r4';
  * ```ts
  * @Injectable({ providedIn: 'root' })
  * export class CustomFhirCodeService extends FhirCodeService {
- *   getName(code: CodeableConcept): string {
+ *   getName(code: CodeableConcept, resource?: FhirResource): string {
  *     const customCodings = [
  *       {
  *         system: 'http://loinc.org',
@@ -42,7 +42,7 @@ import { CodeableConcept, Coding } from 'fhir/r4';
  */
 @Injectable({ providedIn: 'root' })
 export class FhirCodeService {
-  getName(code: CodeableConcept): string {
+  getName(code: CodeableConcept, resource?: FhirResource): string {
     return code.text ?? '';
   }
 }

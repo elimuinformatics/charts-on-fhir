@@ -45,7 +45,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation, overrideLayerName?: string): DataLayer {
-    const codeName = this.codeService.getName(resource.code);
+    const codeName = this.codeService.getName(resource.code, resource);
     const layerName = overrideLayerName ?? codeName;
     return {
       name: layerName,
