@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { ScaleOptions, Chart } from 'chart.js';
-import { MedicationRequest } from 'fhir/r4';
+import { FhirResource, MedicationRequest } from 'fhir/r4';
 import { merge } from 'lodash-es';
 import { DataLayer, TimelineChartType, TimelineDataPoint } from '../../data-layer/data-layer';
 import { Mapper } from '../multi-mapper.service';
@@ -15,7 +15,7 @@ export type SimpleMedication = {
   };
   authoredOn: string;
 } & MedicationRequest;
-export function isMedication(resource: MedicationRequest): resource is SimpleMedication {
+export function isMedication(resource: FhirResource): resource is SimpleMedication {
   return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
 }
 
@@ -35,7 +35,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
   canMap = isMedication;
   map(resource: SimpleMedication): DataLayer<TimelineChartType, MedicationDataPoint[]> {
     const authoredOn = new Date(resource.authoredOn).getTime();
-    const codeName = this.codeService.getName(resource?.medicationCodeableConcept);
+    const codeName = this.codeService.getName(resource?.medicationCodeableConcept, resource);
     return {
       name: 'Prescribed Medications',
       category: ['medication'],
