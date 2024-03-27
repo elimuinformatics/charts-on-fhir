@@ -68,7 +68,7 @@ export class EncounterMapper implements Mapper<MappableEncounter> {
             display: true,
             content: [className],
             position: 'start',
-            color: 'black',
+            color: '#666666',
             backgroundColor: 'transparent',
             padding: 0,
             font: {
