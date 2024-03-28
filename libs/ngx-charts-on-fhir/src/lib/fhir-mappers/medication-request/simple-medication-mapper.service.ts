@@ -81,7 +81,7 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
           if (meta.yAxisID === 'medications') {
             const label = dataset.label;
             const centerY = (meta.data[0].y + meta.data[meta.data.length - 1].y) / 2;
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = '#666666';
             ctx.font = '14px Arial';
             ctx.textAlign = 'start';
             ctx.textBaseline = 'middle';
