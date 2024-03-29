@@ -78,6 +78,7 @@ export class EncounterMapper implements Mapper<MappableEncounter> {
           },
           value: className,
           scaleID: 'encounters',
+          drawTime: 'beforeDatasetsDraw',
         },
       ],
     };
