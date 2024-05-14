@@ -1,6 +1,7 @@
 <div class="chart-container" [style.width]="width" [style.height]="height">
   <div class="chart-container-resize-fix">
     <ng-container *ngIf="datasets && datasets.length > 0; else empty">
+      <div class="error-msg" *ngIf="layerManager.dataRetrievalError">Some data is missing</div>
       <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
       <div class="floating-content-container">
         <div *ngIf="floatingContent" class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
