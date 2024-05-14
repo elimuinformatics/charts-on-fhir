@@ -4,6 +4,7 @@ import { cold, hot, getTestScheduler } from 'jasmine-marbles';
 import { DataLayerColorService } from './data-layer-color.service';
 import { ManagedDataLayer } from './data-layer';
 import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legend/fhir-chart-tags.service';
+import { of, throwError } from 'rxjs';
 
 describe('DataLayerManagerService', () => {
   let mergeService: jasmine.SpyObj<DataLayerMergeService>;
@@ -51,6 +52,26 @@ describe('DataLayerManagerService', () => {
         hot('xy-', {
           x: [],
           y: [jasmine.objectContaining(a)],
+        })
+      );
+    });
+
+    it('should handle errors during data retrieval', () => {
+      const error = new Error('Data retrieval error');
+      const servicesWithError = [
+        { name: 'error', retrieve: () => throwError(() => error) },
+        { name: 'successful', retrieve: () => of(a) },
+      ];
+      const manager = new DataLayerManagerService(servicesWithError, colorService, tagsService, mergeService);
+      spyOn(console, 'error');
+      manager.retrieveAll();
+      expect(manager.dataRetrievalError).toBe(true);
+      expect(console.error).toHaveBeenCalledWith(error);
+      expect(manager.loading$.getValue()).toBe(false);
+      expect(mergeService.merge).toHaveBeenCalledWith({}, a);
+      expect(manager.allLayers$).toBeObservable(
+        hot('x', {
+          x: jasmine.arrayWithExactContents([a]),
         })
       );
     });
