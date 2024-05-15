@@ -65,7 +65,7 @@ describe('DataLayerManagerService', () => {
       const manager = new DataLayerManagerService(servicesWithError, colorService, tagsService, mergeService);
       spyOn(console, 'error');
       manager.retrieveAll();
-      expect(manager.dataRetrievalError).toBe(true);
+      expect(manager.dataRetrievalError$.getValue()).toBe(true);
       expect(console.error).toHaveBeenCalledWith(error);
       expect(manager.loading$.getValue()).toBe(false);
       expect(mergeService.merge).toHaveBeenCalledWith({}, a);

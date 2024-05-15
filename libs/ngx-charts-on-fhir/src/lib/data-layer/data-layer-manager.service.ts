@@ -88,7 +88,7 @@ export class DataLayerManagerService {
     private tagsService: FhirChartTagsService,
     private mergeService: DataLayerMergeService
   ) {}
-  dataRetrievalError = false;
+  dataRetrievalError$ = new BehaviorSubject<boolean>(false);
   private stateSubject = new BehaviorSubject(initialState);
   private get state() {
     return this.stateSubject.value;
@@ -140,7 +140,7 @@ export class DataLayerManagerService {
       ...this.dataLayerServices.map((service) =>
         service.retrieve().pipe(
           catchError((error) => {
-            this.dataRetrievalError = true;
+            this.dataRetrievalError$.next(true);
             console.error(error);
             return EMPTY;
           })
