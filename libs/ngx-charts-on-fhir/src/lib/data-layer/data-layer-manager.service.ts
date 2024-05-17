@@ -163,6 +163,7 @@ export class DataLayerManagerService {
   reset() {
     this.cancel$.next();
     this.state = { ...this.state, layers: {}, selected: [] };
+    this.dataRetrievalError$.next(false);
   }
 
   /**
