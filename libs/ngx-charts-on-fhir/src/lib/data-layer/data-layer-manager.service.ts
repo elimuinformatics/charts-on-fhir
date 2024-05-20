@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, merge, Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, EMPTY, map, merge, Observable, Subject, takeUntil } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -88,7 +88,7 @@ export class DataLayerManagerService {
     private tagsService: FhirChartTagsService,
     private mergeService: DataLayerMergeService
   ) {}
-
+  dataRetrievalError$ = new BehaviorSubject<boolean>(false);
   private stateSubject = new BehaviorSubject(initialState);
   private get state() {
     return this.stateSubject.value;
@@ -136,16 +136,22 @@ export class DataLayerManagerService {
   retrieveAll() {
     this.reset();
     this.loading$.next(true);
-    merge(...this.dataLayerServices.map((service) => service.retrieve()))
+    merge(
+      ...this.dataLayerServices.map((service) =>
+        service.retrieve().pipe(
+          catchError((error) => {
+            this.dataRetrievalError$.next(true);
+            console.error(error);
+            return EMPTY;
+          })
+        )
+      )
+    )
       .pipe(takeUntil(this.cancel$))
       .subscribe({
         next: (layer) => {
           const layers = this.mergeService.merge(this.state.layers, layer);
           this.state = { ...this.state, layers };
-        },
-        error: (err) => {
-          console.error(err);
-          this.loading$.next(false);
         },
         complete: () => {
           this.loading$.next(false);
@@ -157,6 +163,7 @@ export class DataLayerManagerService {
   reset() {
     this.cancel$.next();
     this.state = { ...this.state, layers: {}, selected: [] };
+    this.dataRetrievalError$.next(false);
   }
 
   /**

@@ -35,3 +35,9 @@
   padding: 4px;
   pointer-events: all;
 }
+
+.error-msg {
+  position: absolute;
+  text-align: left;
+  color: red;
+}
