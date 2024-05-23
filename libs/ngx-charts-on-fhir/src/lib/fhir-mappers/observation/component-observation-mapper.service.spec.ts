@@ -155,7 +155,7 @@ describe('ComponentObservationMapper', () => {
         resourceType: 'Observation',
         status: 'final',
         code: { text: 'text' },
-        category: [{ coding: [{ display: 'A' }] }, { coding: [{ display: 'B' }] }],
+        category: [{ coding: [{ code: 'A' }] }, { coding: [{ code: 'B' }] }],
         effectiveDateTime: new Date().toISOString(),
         component: [
           {

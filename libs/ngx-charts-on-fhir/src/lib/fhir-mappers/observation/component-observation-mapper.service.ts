@@ -58,7 +58,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
     const layerName = overrideLayerName ?? codeName;
     return {
       name: layerName,
-      category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.display)).filter(isDefined),
+      category: resource.category?.flatMap((c) => c.coding?.map((coding) => coding.code)).filter(isDefined),
       datasets: resource.component.map((component) => ({
         label: this.codeService.getName(component.code, resource) + getMeasurementSettingSuffix(resource),
         yAxisID: layerName,
