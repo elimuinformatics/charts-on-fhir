@@ -81,7 +81,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
       })),
       scale: merge({}, this.linearScaleOptions, {
         id: layerName,
-        title: { text: [layerName, resource.component[0].valueQuantity.unit] },
+        title: { text: [layerName, resource.component[0].valueQuantity.code] },
         stackWeight: resource.component.length,
       }),
       annotations: resource.component

@@ -67,7 +67,7 @@ export function sortData(a: TimelineDataPoint, b: TimelineDataPoint) {
 }
 
 function generateId(layer: DataLayer): string {
-  return hashCode(extractMetadata(layer).name).toFixed(0);
+  return hashCode(JSON.stringify(extractMetadata(layer))).toFixed(0);
 }
 
 function extractMetadata(layer: DataLayer): DataLayer {
