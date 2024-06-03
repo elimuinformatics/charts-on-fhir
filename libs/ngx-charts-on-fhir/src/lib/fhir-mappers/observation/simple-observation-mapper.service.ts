@@ -21,6 +21,7 @@ export type SimpleObservation = {
   valueQuantity: {
     value: number;
     unit: string;
+    code: string;
   };
 } & Observation;
 export function isSimpleObservation(resource: Observation): resource is SimpleObservation {
@@ -29,7 +30,8 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
     resource.code?.text &&
     resource.effectiveDateTime &&
     resource.valueQuantity?.value &&
-    resource.valueQuantity?.unit
+    resource.valueQuantity?.unit &&
+    resource.valueQuantity?.code
   );
 }
 
@@ -71,7 +73,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       ],
       scale: merge({}, this.linearScaleOptions, {
         id: layerName,
-        title: { text: [layerName, resource.valueQuantity.unit] },
+        title: { text: [layerName, resource.valueQuantity.code] },
       }),
       annotations: resource.referenceRange
         ?.map((range) => this.referenceRangeService.createReferenceRangeAnnotation(range, layerName, layerName))

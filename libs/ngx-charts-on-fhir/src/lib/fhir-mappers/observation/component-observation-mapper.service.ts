@@ -23,6 +23,7 @@ export type ComponentObservation = {
     valueQuantity: {
       value: number;
       unit: string;
+      code: string;
     };
   } & ObservationComponent)[];
 } & Observation;
@@ -37,6 +38,7 @@ export function isComponentObservation(resource: Observation): resource is Compo
         c.code.text &&
         c.valueQuantity?.value &&
         c.valueQuantity?.unit &&
+        c.valueQuantity?.code &&
         // all components must have the same units of measure
         c.valueQuantity.unit === resource?.component?.[0].valueQuantity?.unit
     )

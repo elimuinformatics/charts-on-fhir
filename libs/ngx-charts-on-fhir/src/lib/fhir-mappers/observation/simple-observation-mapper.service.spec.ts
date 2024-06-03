@@ -27,7 +27,7 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.canMap(observation)).toBe(true);
     });
@@ -51,7 +51,7 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: date.toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
@@ -62,23 +62,23 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
-    it('should map valueQuantity.unit to the title of a linear scale', () => {
+    it('should map valueQuantity.code to the title of a linear scale', () => {
       const observation: SimpleObservation = {
         resourceType: 'Observation',
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.map(observation).scale).toEqual({
         id: 'text',
         type: 'linear',
-        title: { text: ['text', 'unit'] },
+        title: { text: ['text', 'code'] },
       });
     });
 
@@ -88,7 +88,7 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
         referenceRange: [
           {
             low: { value: 1 },
@@ -113,7 +113,7 @@ describe('SimpleObservationMapper', () => {
         code: { text: 'text' },
         category: [{ coding: [{ code: 'A' }] }, { coding: [{ code: 'B' }] }],
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.map(observation).category).toEqual(['A', 'B']);
     });
@@ -124,7 +124,7 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
         extension: [
           {
             url: measurementSettingExtUrl,
@@ -143,7 +143,7 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit' },
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect((mapper.map(observation, 'custom').scale as any).title.text[0]).toBe('custom');
     });
