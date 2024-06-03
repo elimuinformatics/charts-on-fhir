@@ -99,7 +99,7 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
-    it('should map valueQuantity.unit to the title of a linear scale', () => {
+    it('should map valueQuantity.code to the title of a linear scale', () => {
       const observation: ComponentObservation = {
         resourceType: 'Observation',
         status: 'final',
@@ -108,7 +108,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'unit' },
           },
         ],
       };
