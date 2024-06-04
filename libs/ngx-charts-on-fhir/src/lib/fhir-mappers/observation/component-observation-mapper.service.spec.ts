@@ -24,7 +24,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -52,11 +52,11 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'one' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
           {
             code: { text: 'two' },
-            valueQuantity: { value: 8, unit: 'unit' },
+            valueQuantity: { value: 8, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -76,7 +76,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -92,14 +92,14 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
       expect(mapper.map(observation).datasets[0].data[0].y).toEqual(7);
     });
 
-    it('should map valueQuantity.unit to the title of a linear scale', () => {
+    it('should map valueQuantity.code to the title of a linear scale', () => {
       const observation: ComponentObservation = {
         resourceType: 'Observation',
         status: 'final',
@@ -108,7 +108,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -116,7 +116,7 @@ describe('ComponentObservationMapper', () => {
         jasmine.objectContaining({
           id: 'text',
           type: 'linear',
-          title: { text: ['text', 'unit'] },
+          title: { text: ['text', 'code'] },
         })
       );
     });
@@ -130,7 +130,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
             referenceRange: [
               {
                 low: { value: 1 },
@@ -160,7 +160,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -176,7 +176,7 @@ describe('ComponentObservationMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };

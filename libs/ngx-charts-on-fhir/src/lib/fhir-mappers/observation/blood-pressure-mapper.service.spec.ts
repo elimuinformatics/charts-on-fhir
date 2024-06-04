@@ -30,7 +30,7 @@ describe('BloodPressureMapper', () => {
         component: [
           {
             code: { text: 'component' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -46,7 +46,7 @@ describe('BloodPressureMapper', () => {
         component: [
           {
             code: { text: '' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
@@ -64,11 +64,11 @@ describe('BloodPressureMapper', () => {
         component: [
           {
             code: { coding: [{ system: 'http://loinc.org', code: '8480-6' }], text: 'Systolic' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
           {
             code: { coding: [{ system: 'http://loinc.org', code: '8462-4' }], text: 'Diastolic' },
-            valueQuantity: { value: 7, unit: 'unit' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
           },
         ],
       };
