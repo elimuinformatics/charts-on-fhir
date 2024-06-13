@@ -1,0 +1,6 @@
+{
+  "extends": ["@nrwl/nx/eslint"],
+  "rules": {
+    "@nrwl/nx/dependency-checks": ["error"]
+  }
+}

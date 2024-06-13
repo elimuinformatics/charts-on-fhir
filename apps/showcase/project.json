@@ -84,16 +84,16 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "showcase:build:production"
+          "buildTarget": "showcase:build:production"
         },
         "development": {
-          "browserTarget": "showcase:build:development"
+          "buildTarget": "showcase:build:development"
         },
         "logica-open": {
-          "browserTarget": "showcase:build:development,logica-open"
+          "buildTarget": "showcase:build:development,logica-open"
         },
         "mock": {
-          "browserTarget": "showcase:build:development,mock"
+          "buildTarget": "showcase:build:development,mock"
         }
       },
       "defaultConfiguration": "logica-open"
@@ -107,7 +107,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "showcase:build"
+        "buildTarget": "showcase:build"
       }
     },
     "test": {

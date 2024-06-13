@@ -76,13 +76,13 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "cardio-patient:build:production"
+          "buildTarget": "cardio-patient:build:production"
         },
         "development": {
-          "browserTarget": "cardio-patient:build:development"
+          "buildTarget": "cardio-patient:build:development"
         },
         "logica-open": {
-          "browserTarget": "cardio-patient:build:development,logica-open"
+          "buildTarget": "cardio-patient:build:development,logica-open"
         }
       },
       "defaultConfiguration": "logica-open"
@@ -96,7 +96,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "cardio-patient:build"
+        "buildTarget": "cardio-patient:build"
       }
     },
     "test": {
