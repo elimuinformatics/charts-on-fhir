@@ -6,3 +6,5 @@ node_modules
 .ng-doc
 **/synthea-utils/**/*.json
 **/mock-fhir-server/**/*.json
+
+/.nx/cache

@@ -2,13 +2,13 @@
   "name": "documentation",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
+  "sourceRoot": "apps/documentation/src",
+  "prefix": "app",
   "generators": {
     "@schematics/angular:component": {
       "style": "scss"
     }
   },
-  "sourceRoot": "apps/documentation/src",
-  "prefix": "app",
   "targets": {
     "build": {
       "executor": "@ng-doc/builder:browser",
@@ -84,7 +84,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "documentation:build"
+        "buildTarget": "documentation:build"
       }
     },
     "test": {
