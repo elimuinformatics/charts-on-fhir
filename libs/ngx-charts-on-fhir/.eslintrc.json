@@ -1,6 +1,23 @@
 {
   "extends": ["@nrwl/nx/eslint"],
   "rules": {
-    "@nrwl/nx/dependency-checks": ["error"]
+    "overrides": [
+      {
+        "files": ["{package,project}.json"],
+        "parser": "jsonc-eslint-parser",
+        "rules": {
+          "@nrwl/nx/dependency-checks": [
+            "error",
+            {
+              "buildTargets": ["build"],
+              "checkMissingDependencies": true,
+              "checkObsoleteDependencies": true,
+              "checkVersionMismatches": true,
+              "ignoredDependencies": []
+            }
+          ]
+        }
+      }
+    ]
   }
 }
