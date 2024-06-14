@@ -1,6 +1,5 @@
 import { NgDocPage } from '@ng-doc/core';
 import ComponentsCategory from '../ng-doc.category';
-import { DataLayerBrowserDemoModule } from './ng-doc.module';
 import { DataLayerBrowserDemoComponent } from './demo/data-layer-browser-demo.component';
 
 const DataLayerBrowser: NgDocPage = {
@@ -8,7 +7,7 @@ const DataLayerBrowser: NgDocPage = {
   keyword: 'DataLayerBrowser',
   category: ComponentsCategory,
   mdFile: './index.md',
-  imports: [DataLayerBrowserDemoModule],
+  imports: [],
   demos: { DataLayerBrowserDemoComponent },
 };
 

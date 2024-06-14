@@ -1,6 +1,5 @@
 import { NgDocPage } from '@ng-doc/core';
 import ComponentsCategory from '../ng-doc.category';
-import { ChartLegendDemoModule } from './ng-doc.module';
 import { ChartLegendDemoComponent } from './demos/legend/chart-legend-demo.component';
 import { ChartTagsLegendDemoComponent } from './demos/tags-legend/chart-tags-legend-demo.component';
 
@@ -9,7 +8,7 @@ const ChartLegend: NgDocPage = {
   mdFile: './index.md',
   keyword: `ChartLegend`,
   category: ComponentsCategory,
-  imports: [ChartLegendDemoModule],
+  imports: [],
   demos: { ChartLegendDemoComponent, ChartTagsLegendDemoComponent },
 };
 

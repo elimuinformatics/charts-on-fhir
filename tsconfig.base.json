@@ -10,6 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@elimuinformatics/ngx-charts-on-fhir": ["libs/ngx-charts-on-fhir/src/index.ts"],
       "@ng-doc/generated": [".ng-doc/documentation/index.ts"],

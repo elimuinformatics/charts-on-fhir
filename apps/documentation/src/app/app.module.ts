@@ -1,8 +1,17 @@
-import { NgDocDefaultSearchEngine, NgDocModule, provideSearchEngine } from '@ng-doc/app';
-import { NG_DOC_ROUTING, NgDocGeneratedModule } from '@ng-doc/generated';
+import {
+  NG_DOC_DEFAULT_PAGE_PROCESSORS,
+  NG_DOC_DEFAULT_PAGE_SKELETON,
+  NgDocDefaultSearchEngine,
+  providePageProcessor,
+  NgDocRootComponent,
+  provideNgDocApp,
+  providePageSkeleton,
+  provideSearchEngine,
+} from '@ng-doc/app';
+import { NG_DOC_ROUTING, provideNgDocContext } from '@ng-doc/generated';
 import { RouterModule } from '@angular/router';
-import { NgDocSidebarModule } from '@ng-doc/app/components/sidebar';
-import { NgDocNavbarModule } from '@ng-doc/app/components/navbar';
+import { NgDocSidebarComponent } from '@ng-doc/app/components/sidebar';
+import { NgDocNavbarComponent } from '@ng-doc/app/components/navbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -26,8 +35,9 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgDocNavbarModule,
-    NgDocSidebarModule,
+    NgDocRootComponent,
+    NgDocNavbarComponent,
+    NgDocSidebarComponent,
     NgDocIconComponent,
     NgDocButtonIconComponent,
     RouterModule.forRoot(
@@ -36,7 +46,7 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
         // this page has a custom child route for the full-screen demo
         {
           path: 'components/chart-layout',
-          loadChildren: () => import('./pages/components/chart-layout/ng-doc.module').then((m) => m.FhirChartLayoutDemoModule),
+          loadChildren: () => import('./pages/components/chart-layout/demo/chart-layout-demo.component').then((m) => m.ChartLayoutDemoComponent),
         },
         {
           path: '**',
@@ -50,11 +60,13 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
         scrollOffset: [0, 70],
       }
     ),
-    NgDocModule.forRoot(),
-    NgDocGeneratedModule.forRoot(),
   ],
   providers: [
+    provideNgDocContext(),
+    provideNgDocApp(),
     provideSearchEngine(NgDocDefaultSearchEngine),
+    providePageSkeleton(NG_DOC_DEFAULT_PAGE_SKELETON),
+    providePageProcessor(NG_DOC_DEFAULT_PAGE_PROCESSORS),
     provideChartsOnFhir(
       withColors('#e36667', '#377eb8', '#4daf4a', '#984ea3'),
       withDataLayerServices(MockDataLayerService),
