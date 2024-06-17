@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-$material-icons-font-path: "material-icons/iconfont/";
-@import "material-icons";
+@import "material-icons/iconfont/material-icons.scss";
 
 .green-snackbar {
   --mdc-snackbar-container-color: #22ae52;
