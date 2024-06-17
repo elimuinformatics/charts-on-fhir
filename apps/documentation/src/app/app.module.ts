@@ -29,6 +29,7 @@ import {
 import { MockDataLayerService } from './mock/mock-data-layer.service';
 import { MockPatientService } from './mock/mock-patient.service';
 import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
     NgDocIconComponent,
     NgDocButtonIconComponent,
     FhirChartLegendModule,
+    HttpClientModule,
 
     RouterModule.forRoot(
       [
@@ -65,6 +67,7 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
     ),
   ],
   providers: [
+    HttpClientModule,
     provideNgDocContext(),
     provideNgDocApp(),
     provideSearchEngine(NgDocDefaultSearchEngine),
