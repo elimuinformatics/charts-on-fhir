@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+$material-icons-font-path: "material-icons/iconfont/";
+@import "material-icons";
 :root {
   --ng-doc-app-max-width: auto;
 }

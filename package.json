@@ -26,7 +26,7 @@
     "@ng-doc/app": "17.6.13",
     "@ng-doc/builder": "17.6.13",
     "@ng-doc/core": "17.6.13",
-    "@ng-doc/ui-kit": "16.12.0",
+    "@ng-doc/ui-kit": "17.6.13",
     "@nx/angular": "18.2.4",
     "backoff-rxjs": "^7.0.0",
     "chart.js": "^4.3.3",
