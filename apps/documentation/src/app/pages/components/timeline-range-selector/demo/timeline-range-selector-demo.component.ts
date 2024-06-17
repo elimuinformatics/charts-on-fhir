@@ -8,13 +8,13 @@ import {
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
-  selector: 'app-timeline-range-selector',
+  selector: 'example-timeline-range-selector-demo',
   templateUrl: './timeline-range-selector-demo.component.html',
   standalone: true,
   imports: [CommonModule, FhirChartModule, TimelineRangeSelectorModule],
   providers: [DataLayerManagerService, FhirChartConfigurationService],
 })
-export class TimelineRangeSelectorComponent implements OnInit {
+export class TimelineRangeSelectorDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
 
   ngOnInit() {

@@ -2,22 +2,23 @@ import {
   NG_DOC_DEFAULT_PAGE_PROCESSORS,
   NG_DOC_DEFAULT_PAGE_SKELETON,
   NgDocDefaultSearchEngine,
-  providePageProcessor,
+  NgDocNavbarComponent,
   NgDocRootComponent,
+  NgDocSidebarComponent,
   provideNgDocApp,
+  provideMainPageProcessor,
   providePageSkeleton,
   provideSearchEngine,
 } from '@ng-doc/app';
 import { NG_DOC_ROUTING, provideNgDocContext } from '@ng-doc/generated';
 import { RouterModule } from '@angular/router';
-import { NgDocSidebarComponent } from '@ng-doc/app/components/sidebar';
-import { NgDocNavbarComponent } from '@ng-doc/app/components/navbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
+  FhirChartLegendModule,
   PatientService,
   ScatterDataPointSummaryService,
   provideChartsOnFhir,
@@ -40,6 +41,8 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
     NgDocSidebarComponent,
     NgDocIconComponent,
     NgDocButtonIconComponent,
+    FhirChartLegendModule,
+
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
@@ -66,7 +69,7 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
     provideNgDocApp(),
     provideSearchEngine(NgDocDefaultSearchEngine),
     providePageSkeleton(NG_DOC_DEFAULT_PAGE_SKELETON),
-    providePageProcessor(NG_DOC_DEFAULT_PAGE_PROCESSORS),
+    provideMainPageProcessor(NG_DOC_DEFAULT_PAGE_PROCESSORS),
     provideChartsOnFhir(
       withColors('#e36667', '#377eb8', '#4daf4a', '#984ea3'),
       withDataLayerServices(MockDataLayerService),

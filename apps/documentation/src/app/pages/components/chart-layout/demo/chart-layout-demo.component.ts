@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ROUTES, RouterModule } from '@angular/router';
 import {
   DataLayerManagerService,
   FhirChartLayoutModule,
