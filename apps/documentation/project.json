@@ -35,10 +35,20 @@
             "input": "ng-doc/documentation/assets",
             "output": "assets/ng-doc"
           },
+          {
+            "glob": "**/*",
+            "input": "node_modules/material-icons/iconfont",
+            "output": "/assets/fonts/"
+          },
           "apps/documentation/src/favicon.ico",
           "apps/documentation/src/assets"
         ],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
+        "styles": [
+          "libs/ngx-charts-on-fhir/src/default.scss",
+          "node_modules/@ng-doc/app/styles/global.css",
+          "apps/documentation/src/styles.scss",
+          "node_modules/material-icons/iconfont/material-icons.css"
+        ],
         "scripts": [],
         "allowedCommonJsDependencies": ["@ng-doc/core"]
       },
