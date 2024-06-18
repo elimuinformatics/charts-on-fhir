@@ -8,16 +8,6 @@ A list of all data layers that have been retrieved and are available to add to t
 
 {{ NgDocActions.demo("DataLayerBrowserDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { DataLayerBrowserModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ DataLayerBrowserModule],
-})
-export class AppModule {}
-```
-
 ## API Reference
 
 - `DataLayerBrowserComponent`

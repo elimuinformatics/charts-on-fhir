@@ -44,15 +44,9 @@ import { HttpClientModule } from '@angular/common/http';
     NgDocButtonIconComponent,
     FhirChartLegendModule,
     HttpClientModule,
-
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
-        // this page has a custom child route for the full-screen demo
-        {
-          path: 'components/chart-layout',
-          loadChildren: () => import('./pages/components/chart-layout/demo/chart-layout-demo.component').then((m) => m.ChartLayoutDemoComponent),
-        },
         {
           path: '**',
           redirectTo: 'introduction',
@@ -67,7 +61,6 @@ import { HttpClientModule } from '@angular/common/http';
     ),
   ],
   providers: [
-    HttpClientModule,
     provideNgDocContext(),
     provideNgDocApp(),
     provideSearchEngine(NgDocDefaultSearchEngine),

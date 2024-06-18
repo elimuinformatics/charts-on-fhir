@@ -9,6 +9,14 @@ const ChartLayout: NgDocPage = {
   mdFile: './index.md',
   imports: [],
   demos: { ChartLayoutDemoComponent },
+  route: {
+    children: [
+      {
+        path: 'demo',
+        component: ChartLayoutDemoComponent,
+      },
+    ],
+  },
 };
 
 export default ChartLayout;

@@ -15,17 +15,7 @@ A full-page layout with a toolbar and collapsible panels on the left side of the
 
 ## Example
 
-{{ NgDocActions.demo("ChartLayoutDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
-
-```ts
-// app.module.ts
-import { FhirChartLayoutModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ FhirChartLayoutModule],
-})
-export class AppModule {}
-```
+{{ NgDocActions.demo("ChartLayoutDemoComponent", {fullscreenRoute: "demo"}) }}
 
 ## API Reference
 

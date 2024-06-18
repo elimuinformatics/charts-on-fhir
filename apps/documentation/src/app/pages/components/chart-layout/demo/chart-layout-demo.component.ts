@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import {
   DataLayerManagerService,
   FhirChartLayoutModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { AppRoutingModule } from 'apps/documentation/src/app/app-routing.module';
-import { FullPageDemoComponent } from 'apps/documentation/src/app/full-page-demo/full-page-demo.component';
 
 @Component({
   selector: 'example-chart-layout-demo',
   templateUrl: './chart-layout-demo.component.html',
   styleUrls: ['./chart-layout-demo.component.css'],
   standalone: true,
-  imports: [CommonModule, FhirChartLayoutModule, FullPageDemoComponent, AppRoutingModule],
+  imports: [CommonModule, FhirChartLayoutModule, AppRoutingModule, MatIconModule, MatButtonModule],
   providers: [DataLayerManagerService],
 })
 export class ChartLayoutDemoComponent implements OnInit {

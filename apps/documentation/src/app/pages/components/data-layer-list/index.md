@@ -8,16 +8,6 @@ A list of all data layers that have been added to the chart. The layers can be r
 
 {{ NgDocActions.demo("DataLayerListDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { DataLayerListModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ DataLayerListModule],
-})
-export class AppModule {}
-```
-
 ## API Reference
 
 - `DataLayerListComponent`
