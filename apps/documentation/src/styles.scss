@@ -1,6 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
-$material-icons-font-path: "material-icons/iconfont/";
-@import "material-icons";
+@use "@angular/material" as mat;
+@use "./libs/ngx-charts-on-fhir/src/lib/data-layer-toolbar/_data-layer-toolbar-theme.scss" as toolbar;
+@use "./libs/ngx-charts-on-fhir/src/lib/fhir-chart-layout/_fhir-chart-layout-theme.scss" as layout;
+
 :root {
   --ng-doc-app-max-width: auto;
+}
+
+$material-icons-font-path: "material-icons/iconfont/";
+@import "material-icons";
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+
+@include mat.core();
+
+// Define a theme.
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+    ),
+    typography: mat.define-typography-config(),
+    density: -1,
+  )
+);
+@include mat.typography-hierarchy($theme);
+
+// Apply theme to all @angular/material components
+@include mat.all-component-themes($theme);
+
+// Apply theme to ngx-charts-on-fhir components
+@include toolbar.theme($theme);
+@include layout.theme($theme);
+
+// Adjust density for some components
+@include mat.table-density("minimum");
+@include mat.button-toggle-density(0);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }

@@ -93,7 +93,7 @@
         "karmaConfig": "apps/documentation/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/documentation/src/favicon.ico", "apps/documentation/src/assets"],
-        "styles": ["apps/documentation/src/styles.scss"],
+        "styles": [],
         "scripts": []
       }
     }
