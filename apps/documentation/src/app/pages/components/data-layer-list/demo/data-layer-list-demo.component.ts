@@ -7,7 +7,6 @@ import { DataLayerListModule, DataLayerManagerService } from '@elimuinformatics/
   templateUrl: './data-layer-list-demo.component.html',
   standalone: true,
   imports: [CommonModule, DataLayerListModule],
-  providers: [DataLayerManagerService],
 })
 export class DataLayerListDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

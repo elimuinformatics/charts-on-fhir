@@ -6,15 +6,13 @@ import {
   DataLayerManagerService,
   FhirChartLayoutModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
-import { AppRoutingModule } from 'apps/documentation/src/app/app-routing.module';
 
 @Component({
   selector: 'example-chart-layout-demo',
   templateUrl: './chart-layout-demo.component.html',
   styleUrls: ['./chart-layout-demo.component.css'],
   standalone: true,
-  imports: [CommonModule, FhirChartLayoutModule, AppRoutingModule, MatIconModule, MatButtonModule],
-  providers: [DataLayerManagerService],
+  imports: [CommonModule, FhirChartLayoutModule, MatIconModule, MatButtonModule],
 })
 export class ChartLayoutDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

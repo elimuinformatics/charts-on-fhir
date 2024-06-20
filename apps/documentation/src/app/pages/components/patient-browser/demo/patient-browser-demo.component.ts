@@ -10,7 +10,6 @@ import {
   templateUrl: './patient-browser-demo.component.html',
   standalone: true,
   imports: [CommonModule, PatientBrowserModule],
-  providers: [DataLayerManagerService],
 })
 export class PatientBrowserDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

@@ -1,9 +1,11 @@
+/* NgDocStyleSnippetStart(CSS) */
 .example-main-content {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+/* NgDocStyleSnippetEnd(CSS) */
 
 .full-page-demo {
   position: fixed;

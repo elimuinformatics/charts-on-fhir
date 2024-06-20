@@ -4,7 +4,6 @@ import {
   DataLayerManagerService,
   DataLayerSelectorModule,
   DataLayerViews,
-  FhirChartConfigurationService,
   FhirChartModule,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
@@ -13,7 +12,6 @@ import {
   templateUrl: './data-layer-selector-demo.component.html',
   standalone: true,
   imports: [CommonModule, DataLayerSelectorModule, FhirChartModule],
-  providers: [DataLayerManagerService, FhirChartConfigurationService],
 })
 export class DataLayerSelectorDemoComponent implements OnInit {
   views: DataLayerViews = {

@@ -11,7 +11,7 @@ import {
   templateUrl: './chart-legend-demo.component.html',
   standalone: true,
   imports: [CommonModule, FhirChartLegendModule],
-  providers: [DataLayerManagerService, FhirChartTagsService],
+  providers: [FhirChartTagsService],
 })
 export class ChartLegendDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
