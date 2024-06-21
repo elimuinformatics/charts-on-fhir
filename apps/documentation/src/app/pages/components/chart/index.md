@@ -16,16 +16,6 @@ Content can be projected into a draggable floating panel on top of the chart. Th
 
 {{ NgDocActions.demo("FloatingContentDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { FhirChartModule, FhirChartLegendModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ FhirChartModule, FhirChartLegendModule],
-})
-export class AppModule {}
-```
-
 ## API Reference
 
 - `FhirChartComponent`

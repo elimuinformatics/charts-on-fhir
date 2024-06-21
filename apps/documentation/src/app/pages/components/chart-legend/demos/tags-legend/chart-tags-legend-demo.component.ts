@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
   FhirChartLegendModule,
-  FhirChartTagsService,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
@@ -11,7 +10,6 @@ import {
   templateUrl: './chart-tags-legend-demo.component.html',
   standalone: true,
   imports: [CommonModule, FhirChartLegendModule],
-  providers: [FhirChartTagsService],
 })
 export class ChartTagsLegendDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

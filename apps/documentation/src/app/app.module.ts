@@ -17,7 +17,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {
-  FhirChartLegendModule,
   PatientService,
   ScatterDataPointSummaryService,
   provideChartsOnFhir,
@@ -40,7 +39,6 @@ import { HttpClientModule } from '@angular/common/http';
     NgDocSidebarComponent,
     NgDocIconComponent,
     NgDocButtonIconComponent,
-    FhirChartLegendModule,
     HttpClientModule,
     RouterModule.forRoot(
       [
