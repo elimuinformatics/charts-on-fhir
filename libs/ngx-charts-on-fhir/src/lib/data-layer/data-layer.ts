@@ -21,7 +21,6 @@ export type DataLayer<T extends ChartType = TimelineChartType, D = TimelineDataP
   scale: ScaleOptions & { id: string };
   datasets: Dataset<T, D>[];
   annotations?: ChartAnnotations;
-  tooltipTitle?: string;
 };
 
 /** Extends the Chart.js `ChartDataset` type with additional options that are used by Charts-on-FHIR Angular services */
