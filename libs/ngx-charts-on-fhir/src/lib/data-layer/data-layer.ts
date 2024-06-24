@@ -9,6 +9,7 @@ export type TimelineDataPoint = {
   y: number | string;
   tooltip?: string | string[];
   resource?: any;
+  tooltipTitle?: string;
 };
 
 export type TimelineScaleType = 'linear' | 'category';
