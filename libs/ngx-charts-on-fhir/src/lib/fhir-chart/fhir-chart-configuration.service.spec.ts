@@ -669,4 +669,19 @@ describe('FhirChartConfigurationService', () => {
     const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
     expect(callback(tooltipItems)).toEqual(['1 Jan 2023 12:00 AM']);
   });
+
+  it('should use tooltipTitle as tooltip title if tooltipTitle present', () => {
+    const dataset: Dataset = {
+      label: 'Test',
+      yAxisID: 'scale',
+      data: [{ x: new Date('2023-01-01T00:00').getTime(), y: 1, tooltipTitle: 'title' }],
+    };
+    const scale = { id: 'scale', type: 'category' } as const;
+    const layerManager: any = { selectedLayers$: EMPTY };
+    const configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
+    const config = configService.buildConfiguration([dataset], { scale }, []);
+    const tooltipItems = [{ raw: dataset.data[0] }] as TooltipItem<TimelineChartType>[];
+    const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
+    expect(callback(tooltipItems)).toEqual(['title']);
+  });
 });

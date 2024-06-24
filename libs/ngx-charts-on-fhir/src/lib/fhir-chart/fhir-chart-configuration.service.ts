@@ -213,7 +213,9 @@ const datasetMergeCustomizer = (_objValue: any, srcValue: any, key: any) => {
 
 const getTooltipTitle = (item: TooltipItem<TimelineChartType>) => {
   const dataPoint = item.raw as TimelineDataPoint;
-  if (typeof dataPoint.y === 'string') {
+  if (dataPoint.tooltipTitle) {
+    return dataPoint.tooltipTitle;
+  } else if (typeof dataPoint.y === 'string') {
     return dataPoint.y;
   }
   const x = Array.isArray(dataPoint.x) ? dataPoint.x : [dataPoint.x];
