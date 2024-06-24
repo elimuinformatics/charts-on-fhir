@@ -18,16 +18,6 @@ Displays the symbol for each tag. Tags are used to apply the same style to multi
 
 {{ NgDocActions.demo("ChartTagsLegendDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { FhirChartModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ FhirChartLegendModule],
-})
-export class AppModule {}
-```
-
 ## Configuring Tags
 
 The built-in Observation mappers (`SimpleObservationMapper` and `ComponentObservationMapper`) add "Home" and "Clinic" tags.

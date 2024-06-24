@@ -2,21 +2,21 @@
   "name": "documentation",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
+  "sourceRoot": "apps/documentation/src",
+  "prefix": "app",
   "generators": {
     "@schematics/angular:component": {
       "style": "scss"
     }
   },
-  "sourceRoot": "apps/documentation/src",
-  "prefix": "app",
   "targets": {
     "build": {
-      "executor": "@ng-doc/builder:browser",
+      "executor": "@ng-doc/builder:application",
       "options": {
         "outputPath": "dist/apps/documentation",
         "index": "apps/documentation/src/index.html",
-        "main": "apps/documentation/src/main.ts",
-        "polyfills": "apps/documentation/src/polyfills.ts",
+        "browser": "apps/documentation/src/main.ts",
+        "polyfills": ["apps/documentation/src/polyfills.ts"],
         "tsConfig": "apps/documentation/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -32,13 +32,13 @@
           },
           {
             "glob": "**/*",
-            "input": ".ng-doc/documentation/assets",
+            "input": "ng-doc/documentation/assets",
             "output": "assets/ng-doc"
           },
           "apps/documentation/src/favicon.ico",
           "apps/documentation/src/assets"
         ],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
+        "styles": ["node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
         "scripts": [],
         "allowedCommonJsDependencies": ["@ng-doc/core"]
       },
@@ -59,9 +59,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
@@ -73,10 +71,10 @@
       "executor": "@ng-doc/builder:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "documentation:build:production"
+          "buildTarget": "documentation:build:production"
         },
         "development": {
-          "browserTarget": "documentation:build:development"
+          "buildTarget": "documentation:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -84,7 +82,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "documentation:build"
+        "buildTarget": "documentation:build"
       }
     },
     "test": {
@@ -95,7 +93,7 @@
         "karmaConfig": "apps/documentation/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/documentation/src/favicon.ico", "apps/documentation/src/assets"],
-        "styles": ["apps/documentation/src/styles.scss"],
+        "styles": [],
         "scripts": []
       }
     }

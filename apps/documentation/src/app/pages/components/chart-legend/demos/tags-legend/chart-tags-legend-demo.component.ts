@@ -1,9 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  DataLayerManagerService,
+  FhirChartLegendModule,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'example-chart-tags-legend-demo',
   templateUrl: './chart-tags-legend-demo.component.html',
+  standalone: true,
+  imports: [CommonModule, FhirChartLegendModule],
 })
 export class ChartTagsLegendDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

@@ -18,17 +18,6 @@ If the chart and summary are arranged vertically, `autoAlign` should be set to f
 
 {{ NgDocActions.demo("ChartSummaryDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { FhirChartModule, FhirChartSummaryModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ FhirChartModule, FhirChartSummaryModule],
-  providers: [provideChartsOnFhir(withSummaryServices(ScatterDataPointSummaryService))],
-})
-export class AppModule {}
-```
-
 ## Summary Services
 
 This component uses the provided `SummaryService` implementations to generate the content for each summary card. It requires at least one `SummaryService` that is capable of summarizing each layer. If more than one service is capable of a summarizing a layer, it will use the one that comes first in the providers array. Charts-on-FHIR comes with a few built-in summary services. Applications can create additional services to customize the summary information or add support for other types of data.

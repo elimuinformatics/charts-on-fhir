@@ -1,12 +1,20 @@
-import { NgDocDefaultSearchEngine, NgDocModule, provideSearchEngine } from '@ng-doc/app';
-import { NG_DOC_ROUTING, NgDocGeneratedModule } from '@ng-doc/generated';
+import {
+  NG_DOC_DEFAULT_PAGE_PROCESSORS,
+  NG_DOC_DEFAULT_PAGE_SKELETON,
+  NgDocDefaultSearchEngine,
+  NgDocNavbarComponent,
+  NgDocRootComponent,
+  NgDocSidebarComponent,
+  provideNgDocApp,
+  provideMainPageProcessor,
+  providePageSkeleton,
+  provideSearchEngine,
+} from '@ng-doc/app';
+import { NG_DOC_ROUTING, provideNgDocContext } from '@ng-doc/generated';
 import { RouterModule } from '@angular/router';
-import { NgDocSidebarModule } from '@ng-doc/app/components/sidebar';
-import { NgDocNavbarModule } from '@ng-doc/app/components/navbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
   PatientService,
@@ -19,25 +27,22 @@ import {
 import { MockDataLayerService } from './mock/mock-data-layer.service';
 import { MockPatientService } from './mock/mock-patient.service';
 import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    NgDocNavbarModule,
-    NgDocSidebarModule,
+    NgDocRootComponent,
+    NgDocNavbarComponent,
+    NgDocSidebarComponent,
     NgDocIconComponent,
     NgDocButtonIconComponent,
+    HttpClientModule,
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
-        // this page has a custom child route for the full-screen demo
-        {
-          path: 'components/chart-layout',
-          loadChildren: () => import('./pages/components/chart-layout/ng-doc.module').then((m) => m.FhirChartLayoutDemoModule),
-        },
         {
           path: '**',
           redirectTo: 'introduction',
@@ -50,11 +55,13 @@ import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
         scrollOffset: [0, 70],
       }
     ),
-    NgDocModule.forRoot(),
-    NgDocGeneratedModule.forRoot(),
   ],
   providers: [
+    provideNgDocContext(),
+    provideNgDocApp(),
     provideSearchEngine(NgDocDefaultSearchEngine),
+    providePageSkeleton(NG_DOC_DEFAULT_PAGE_SKELETON),
+    provideMainPageProcessor(NG_DOC_DEFAULT_PAGE_PROCESSORS),
     provideChartsOnFhir(
       withColors('#e36667', '#377eb8', '#4daf4a', '#984ea3'),
       withDataLayerServices(MockDataLayerService),

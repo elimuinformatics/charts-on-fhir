@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+$material-icons-font-path: "material-icons/iconfont/";
+@import "libs/ngx-charts-on-fhir/src/default.scss";
+
 :root {
-  --ng-doc-app-max-width: auto;
+  --ng-doc-app-max-width: 1600px;
 }

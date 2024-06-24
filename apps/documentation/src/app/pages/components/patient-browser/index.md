@@ -8,16 +8,6 @@ A list of all patients that are available on the FHIR server. This can be used d
 
 {{ NgDocActions.demo("PatientBrowserDemoComponent", { expanded: true, defaultTab: "HTML" }) }}
 
-```ts
-// app.module.ts
-import { PatientBrowserModule } from "@elimuinformatics/ngx-charts-on-fhir";
-
-@NgModule({
-  imports: [/* ... */ PatientBrowserModule],
-})
-export class AppModule {}
-```
-
 ## API Reference
 
 - `PatientBrowserComponent`
