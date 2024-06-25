@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
   pull_request:
-    branches: ["RT-1025-documentation-publish-failing"]
+    branches: ["main"]
 
 permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
