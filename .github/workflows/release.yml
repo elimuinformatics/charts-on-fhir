@@ -8,8 +8,8 @@ env:
   NODE_VERSION: 18.x
 
 jobs:
-  publish:
-    name: Publish to NPM
+  # publish:
+  #   name: Publish to NPM
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
-      - run: dist/apps/documentation/browser/index.html -- --base-href=/charts-on-fhir/
+      - run: npm run build documentation -- --base-href=/charts-on-fhir/
       - run: cp dist/apps/documentation/index.html dist/apps/documentation/404.html # Needed for Angular routing
       - uses: actions/upload-pages-artifact@v3
         with:
