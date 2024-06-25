@@ -8,21 +8,21 @@ env:
   NODE_VERSION: 18.x
 
 jobs:
-  publish:
-    name: Publish to NPM
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: https://registry.npmjs.org/
-          cache: npm
-      - run: npm ci
-      - run: npm run build ngx-charts-on-fhir
-      - run: npm publish dist/libs/ngx-charts-on-fhir/ --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  # publish:
+  #   name: Publish to NPM
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         registry-url: https://registry.npmjs.org/
+  #         cache: npm
+  #     - run: npm ci
+  #     - run: npm run build ngx-charts-on-fhir
+  #     - run: npm publish dist/libs/ngx-charts-on-fhir/ --access public
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   build-docs:
     name: Build Documentation
@@ -34,7 +34,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
       - run: npm ci
-      - run: npm run build documentation -- --base-href=/charts-on-fhir/
+      - run: dist/apps/documentation/browser/index.html -- --base-href=/charts-on-fhir/
+      - run: cp dist/apps/documentation/index.html dist/apps/documentation/404.html # Needed for Angular routing
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/apps/documentation
