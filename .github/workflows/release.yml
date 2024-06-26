@@ -38,7 +38,7 @@ jobs:
       - run: cp dist/apps/documentation/browser/index.html dist/apps/documentation/browser/404.html # Needed for Angular routing
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/apps/documentation
+          path: dist/apps/documentation/browser
 
   deploy-docs:
     name: Publish Documentation
