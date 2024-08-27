@@ -11,12 +11,11 @@
   },
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "options": {
         "outputPath": "dist/apps/cardio-patient",
         "index": "apps/cardio-patient/src/index.html",
-        "main": "apps/cardio-patient/src/main.ts",
-        "polyfills": "apps/cardio-patient/src/polyfills.ts",
+        "polyfills": ["apps/cardio-patient/src/polyfills.ts"],
         "tsConfig": "apps/cardio-patient/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardio-patient/src/favicon.ico", "apps/cardio-patient/src/assets", "apps/cardio-patient/src/launch.html"],
@@ -27,7 +26,8 @@
             "inject": false,
             "bundleName": "fhirclient"
           }
-        ]
+        ],
+        "browser": "apps/cardio-patient/src/main.ts"
       },
       "configurations": {
         "production": {
@@ -53,9 +53,7 @@
           "tsConfig": "apps/cardio-patient/tsconfig.app.json"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,

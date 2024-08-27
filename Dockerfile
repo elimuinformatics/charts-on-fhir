@@ -15,6 +15,6 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY nginx.conf /etc/nginx/
 COPY ./docker-entrypoint.sh /etc/nginx/
 ARG app
-COPY --from=build /home/node/dist/apps/${app} /usr/share/nginx/html
+COPY --from=build /home/node/dist/apps/${app}/browser /usr/share/nginx/html
 ENTRYPOINT ["/etc/nginx/docker-entrypoint.sh"]
 CMD ["nginx"]

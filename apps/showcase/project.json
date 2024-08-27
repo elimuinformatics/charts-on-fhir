@@ -11,12 +11,11 @@
   },
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "options": {
         "outputPath": "dist/apps/showcase",
         "index": "apps/showcase/src/index.html",
-        "main": "apps/showcase/src/main.ts",
-        "polyfills": "apps/showcase/src/polyfills.ts",
+        "polyfills": ["apps/showcase/src/polyfills.ts"],
         "tsConfig": "apps/showcase/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets", "apps/showcase/src/launch.html"],
@@ -27,7 +26,8 @@
             "inject": false,
             "bundleName": "fhirclient"
           }
-        ]
+        ],
+        "browser": "apps/showcase/src/main.ts"
       },
       "configurations": {
         "production": {
@@ -53,9 +53,7 @@
           "tsConfig": "apps/showcase/tsconfig.app.json"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,
@@ -119,7 +117,7 @@
         "karmaConfig": "apps/showcase/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/showcase/src/favicon.ico", "apps/showcase/src/assets"],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/showcase/src/styles.scss"],
+        "styles": ["apps/showcase/src/styles.scss"],
         "scripts": []
       }
     }

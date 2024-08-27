@@ -38,7 +38,7 @@
           "apps/documentation/src/favicon.ico",
           "apps/documentation/src/assets"
         ],
-        "styles": ["node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
+        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "node_modules/@ng-doc/app/styles/global.css", "apps/documentation/src/styles.scss"],
         "scripts": [],
         "allowedCommonJsDependencies": ["@ng-doc/core"]
       },
