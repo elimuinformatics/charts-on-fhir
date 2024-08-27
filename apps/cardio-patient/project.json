@@ -106,7 +106,7 @@
         "karmaConfig": "apps/cardio-patient/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardio-patient/src/favicon.ico", "apps/cardio-patient/src/assets"],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardio-patient/src/styles.scss"],
+        "styles": ["apps/cardio-patient/src/styles.scss"],
         "scripts": []
       }
     }
