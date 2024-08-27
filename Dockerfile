@@ -3,8 +3,7 @@ FROM node:18.13.0-alpine AS build
 USER node
 WORKDIR /home/node
 COPY --chown=node package*.json ./
-RUN npm ci --ignore-scripts
-RUN npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
+RUN npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
 COPY --chown=node . .
 ARG app
 RUN npm run build ${app}
