@@ -11,23 +11,23 @@
   },
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "options": {
         "outputPath": "dist/apps/cardio",
         "index": "apps/cardio/src/index.html",
-        "main": "apps/cardio/src/main.ts",
-        "polyfills": "apps/cardio/src/polyfills.ts",
+        "polyfills": ["apps/cardio/src/polyfills.ts"],
         "tsConfig": "apps/cardio/tsconfig.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardio/src/favicon.ico", "apps/cardio/src/assets", "apps/cardio/src/launch.html"],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardio/src/styles.scss"],
+        "styles": ["apps/cardio/src/styles.scss"],
         "scripts": [
           {
             "input": "node_modules/fhirclient/build/fhir-client.js",
             "inject": false,
             "bundleName": "fhirclient"
           }
-        ]
+        ],
+        "browser": "apps/cardio/src/main.ts"
       },
       "configurations": {
         "production": {
@@ -53,9 +53,7 @@
           "tsConfig": "apps/cardio/tsconfig.app.json"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,
@@ -108,7 +106,7 @@
         "karmaConfig": "apps/cardio/karma.conf.js",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/cardio/src/favicon.ico", "apps/cardio/src/assets"],
-        "styles": ["libs/ngx-charts-on-fhir/src/default.scss", "apps/cardio/src/styles.scss"],
+        "styles": ["apps/cardio/src/styles.scss"],
         "scripts": []
       }
     }
