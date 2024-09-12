@@ -4,7 +4,6 @@ import { ChartLayoutDemoComponent } from './demo/chart-layout-demo.component';
 
 const ChartLayout: NgDocPage = {
   title: 'Chart Layout',
-  keyword: 'ChartLayout',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

@@ -1,5 +1,3 @@
-# {{ NgDocPage.title }}
-
 Charts-on-FHIR provides an Angular service (`FhirDataService`) that wraps the [SMART Health IT FHIR Client](http://docs.smarthealthit.org/client-js/) and makes it easier to integrate with Angular applications. This service should be initialized during the Angular bootstrap process so it can handle the SMART launch authorization flow before the application starts up.
 
 ```ts

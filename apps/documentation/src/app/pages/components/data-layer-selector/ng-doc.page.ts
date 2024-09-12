@@ -4,7 +4,6 @@ import { DataLayerSelectorDemoComponent } from './demo/data-layer-selector-demo.
 
 const DataLayerSelector: NgDocPage = {
   title: 'Data Layer Selector',
-  keyword: 'DataLayerSelector',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

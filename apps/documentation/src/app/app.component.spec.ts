@@ -5,7 +5,7 @@ import { NG_DOC_CONTEXT, NgDocRootComponent } from '@ng-doc/app';
 import { NgDocNavbarComponent } from '@ng-doc/app/components/navbar';
 import { NgDocSidebarComponent } from '@ng-doc/app/components/sidebar';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

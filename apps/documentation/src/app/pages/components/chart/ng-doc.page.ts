@@ -5,7 +5,6 @@ import { FloatingContentDemoComponent } from './demos/floating-content/floating-
 
 const Chart: NgDocPage = {
   title: 'Chart',
-  keyword: 'Chart',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

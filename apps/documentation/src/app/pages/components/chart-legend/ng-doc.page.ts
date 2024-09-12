@@ -6,7 +6,6 @@ import { ChartTagsLegendDemoComponent } from './demos/tags-legend/chart-tags-leg
 const ChartLegend: NgDocPage = {
   title: `Chart Legend`,
   mdFile: './index.md',
-  keyword: `ChartLegend`,
   category: ComponentsCategory,
   imports: [],
   demos: { ChartLegendDemoComponent, ChartTagsLegendDemoComponent },
