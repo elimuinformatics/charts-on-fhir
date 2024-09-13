@@ -4,7 +4,6 @@ import { SummaryRangeSelectorDemoComponent } from './demo/summary-range-selector
 
 const SummaryRangeSelector: NgDocPage = {
   title: 'Summary Range Selector',
-  keyword: 'SummaryRangeSelector',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

@@ -4,7 +4,6 @@ import { DataLayerListDemoComponent } from './demo/data-layer-list-demo.componen
 
 const DataLayerList: NgDocPage = {
   title: 'Data Layer List',
-  keyword: 'DataLayerList',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

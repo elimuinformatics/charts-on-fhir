@@ -1,4 +1,6 @@
-# {{ NgDocPage.title }}
+---
+keyword: "PatientBrowser"
+---
 
 ## Overview
 

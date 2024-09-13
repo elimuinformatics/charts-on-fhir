@@ -1,4 +1,6 @@
-# {{ NgDocPage.title }}
+---
+keyword: ChartLegend
+---
 
 ## Overview
 

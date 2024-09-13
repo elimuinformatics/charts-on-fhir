@@ -1,5 +1,3 @@
-# {{ NgDocPage.title }}
-
 Before installing Charts-on-FHIR, you will need to create an Angular project.
 
 ## Install Angular

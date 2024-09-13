@@ -4,7 +4,6 @@ import { DataLayerBrowserDemoComponent } from './demo/data-layer-browser-demo.co
 
 const DataLayerBrowser: NgDocPage = {
   title: 'Data Layer Browser',
-  keyword: 'DataLayerBrowser',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

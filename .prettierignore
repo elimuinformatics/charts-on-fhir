@@ -8,3 +8,4 @@ node_modules
 **/mock-fhir-server/**/*.json
 
 /.nx/cache
+/.nx/workspace-data

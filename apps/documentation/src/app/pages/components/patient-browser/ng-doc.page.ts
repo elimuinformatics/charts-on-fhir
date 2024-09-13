@@ -4,7 +4,6 @@ import { PatientBrowserDemoComponent } from './demo/patient-browser-demo.compone
 
 const PatientBrowser: NgDocPage = {
   title: 'Patient Browser',
-  keyword: 'PatientBrowser',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

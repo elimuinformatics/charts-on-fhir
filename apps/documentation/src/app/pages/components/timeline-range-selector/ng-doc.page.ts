@@ -4,7 +4,6 @@ import { TimelineRangeSelectorDemoComponent } from './demo/timeline-range-select
 
 const TimelineRangeSelector: NgDocPage = {
   title: 'Timeline Range Selector',
-  keyword: 'TimelineRangeSelector',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],

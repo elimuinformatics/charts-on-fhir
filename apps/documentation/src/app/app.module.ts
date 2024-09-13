@@ -27,10 +27,11 @@ import {
 import { MockDataLayerService } from './mock/mock-data-layer.service';
 import { MockPatientService } from './mock/mock-patient.service';
 import { NgDocIconComponent, NgDocButtonIconComponent } from '@ng-doc/ui-kit';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -39,7 +40,6 @@ import { HttpClientModule } from '@angular/common/http';
     NgDocSidebarComponent,
     NgDocIconComponent,
     NgDocButtonIconComponent,
-    HttpClientModule,
     RouterModule.forRoot(
       [
         ...NG_DOC_ROUTING,
@@ -68,7 +68,7 @@ import { HttpClientModule } from '@angular/common/http';
       withSummaryServices(ScatterDataPointSummaryService)
     ),
     { provide: PatientService, useClass: MockPatientService },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

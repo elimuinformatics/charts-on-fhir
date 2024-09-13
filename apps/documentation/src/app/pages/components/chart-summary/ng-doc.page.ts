@@ -4,7 +4,6 @@ import { ChartSummaryDemoComponent } from './demo/chart-summary-demo.component';
 
 const ChartSummary: NgDocPage = {
   title: 'Chart Summary',
-  keyword: 'ChartSummary',
   category: ComponentsCategory,
   mdFile: './index.md',
   imports: [],
