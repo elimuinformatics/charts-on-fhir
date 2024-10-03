@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { zipObject } from 'lodash-es';
 
 @Component({
+  standalone: true,
   selector: 'dynamic-table',
+  imports: [CommonModule],
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

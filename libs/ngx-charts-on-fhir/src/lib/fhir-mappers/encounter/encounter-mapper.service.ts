@@ -21,9 +21,7 @@ export function isMappableEncounter(resource: Encounter): resource is MappableEn
 }
 
 /** Maps a FHIR Encounter resource */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class EncounterMapper implements Mapper<MappableEncounter> {
   constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>) {}
   canMap = isMappableEncounter;

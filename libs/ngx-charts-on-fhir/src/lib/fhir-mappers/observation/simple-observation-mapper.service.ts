@@ -36,9 +36,7 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
 }
 
 /** Maps a FHIR Observation resource that has a single valueQuantity */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,

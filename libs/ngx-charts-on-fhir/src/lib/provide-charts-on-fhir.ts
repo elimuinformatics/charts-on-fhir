@@ -7,6 +7,7 @@ import { FhirConverter } from './fhir-mappers/fhir-converter.service';
 import { Mapper, MultiMapper } from './fhir-mappers/multi-mapper.service';
 import { SummaryService } from './fhir-chart-summary/summary.service';
 import { ReferenceRangeService } from './fhir-mappers/observation/reference-range.service';
+import { FhirCodeService } from './fhir-mappers/fhir-code.service';
 
 /**
  * Returns a Provider array with all of the configured services.
@@ -31,13 +32,38 @@ import { ReferenceRangeService } from './fhir-mappers/observation/reference-rang
  */
 export function provideChartsOnFhir(...features: Provider[]): Provider[] {
   return [
-    DataLayerManagerService,
-    DataLayerMergeService,
-    DataLayerColorService,
-    FhirChartConfigurationService,
-    FhirConverter,
-    MultiMapper,
-    ReferenceRangeService,
+    {
+      provide: DataLayerManagerService,
+      useClass: DataLayerManagerService,
+    },
+    {
+      provide: DataLayerMergeService,
+      useClass: DataLayerMergeService,
+    },
+    {
+      provide: DataLayerColorService,
+      useClass: DataLayerColorService,
+    },
+    {
+      provide: FhirChartConfigurationService,
+      useClass: FhirChartConfigurationService,
+    },
+    {
+      provide: FhirConverter,
+      useClass: FhirConverter,
+    },
+    {
+      provide: MultiMapper,
+      useClass: MultiMapper,
+    },
+    {
+      provide: ReferenceRangeService,
+      useClass: ReferenceRangeService,
+    },
+    {
+      provide: FhirCodeService,
+      useClass: FhirCodeService,
+    },
     ...features,
   ];
 }

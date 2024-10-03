@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { DataLayer } from '../data-layer/data-layer';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 export type DataLayerViews = Record<string, DataLayerView>;
 export type DataLayerView = {
@@ -10,6 +13,8 @@ export type DataLayerView = {
 };
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatFormFieldModule, MatSelectModule],
   selector: 'data-layer-selector',
   templateUrl: './data-layer-selector.component.html',
   styleUrls: ['./data-layer-selector.component.css'],

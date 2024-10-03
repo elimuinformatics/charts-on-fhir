@@ -9,9 +9,7 @@ import { hashCode } from '../utils';
  * Merges a `DataLayer` into the matching layer in a `DataLayerCollection`.
  * Generates an ID for each layer by hashing its non-data (a.k.a. metadata) properties.
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DataLayerMergeService {
   constructor(private colorService: DataLayerColorService, private tagsService: FhirChartTagsService) {}
 

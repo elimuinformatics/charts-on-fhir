@@ -20,9 +20,7 @@ import { hashCode } from '../utils';
  */
 export const COLOR_PALETTE = new InjectionToken<string[]>('Color Palette');
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DataLayerColorService {
   /**
    * @param palette see `COLOR_PALETTE`

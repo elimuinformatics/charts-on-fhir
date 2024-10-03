@@ -1,8 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { produce, castDraft } from 'immer';
+import { AnnotationOptionsComponent } from '../annotation-options/annotation-options.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatExpansionModule, MatCheckboxModule, AnnotationOptionsComponent],
   selector: 'annotation-list',
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.css'],

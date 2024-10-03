@@ -78,9 +78,7 @@ type LayerCompareFn = (a: DataLayer, b: DataLayer) => number;
  * }
  * ```
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],

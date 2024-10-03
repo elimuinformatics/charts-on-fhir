@@ -4,11 +4,15 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { CommonModule } from '@angular/common';
+import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-chart-summary-card.component';
 
 /**
  * See `*ChartSummary` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, FhirChartSummaryCardComponent],
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
   styleUrls: ['./fhir-chart-summary.component.css'],

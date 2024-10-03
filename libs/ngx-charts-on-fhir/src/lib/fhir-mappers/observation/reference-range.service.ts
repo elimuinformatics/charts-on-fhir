@@ -4,9 +4,7 @@ import { merge } from 'lodash-es';
 import { ChartAnnotation } from '../../utils';
 import { ANNOTATION_OPTIONS, LINE_ANNOTATION_OPTIONS } from '../fhir-mapper-options';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ReferenceRangeService {
   constructor(
     @Inject(ANNOTATION_OPTIONS) private boxAnnotationOptions: ChartAnnotation,

@@ -5,9 +5,7 @@ import { DataLayer, TimelineChartType } from '../data-layer/data-layer';
 import { SummaryService } from './summary.service';
 import { groupBy } from 'lodash-es';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MedicationSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
     return layer.category?.includes('medication') ?? false;

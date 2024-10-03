@@ -6,9 +6,7 @@ import { MultiMapper } from './multi-mapper.service';
 /**
  * Converts a FHIR Bundle into `DataLayer` objects using a `MultiMapper` to map different Resource types.
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class FhirConverter {
   constructor(@Inject(MultiMapper) private mapper: MultiMapper) {}
   convert(bundle: Bundle): DataLayer[] {

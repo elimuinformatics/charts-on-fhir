@@ -11,9 +11,7 @@ export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = Tim
 /**
  * Delegates to another `Mapper` from the provided mappers array, using the first one that is capable of mapping each resource.
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MultiMapper implements Mapper<unknown, TimelineChartType, TimelineDataPoint[]> {
   constructor(@Inject(Mapper) private mappers: Mapper<unknown, TimelineChartType, TimelineDataPoint[]>[]) {}
   canMap(resource: unknown): resource is unknown {
