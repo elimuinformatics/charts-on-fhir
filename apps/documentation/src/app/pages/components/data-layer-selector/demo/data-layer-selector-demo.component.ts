@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
-  DataLayerSelectorModule,
+  DataLayerSelectorComponent,
   DataLayerViews,
-  FhirChartModule,
+  FhirChartComponent,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'example-data-layer-selector-demo',
   templateUrl: './data-layer-selector-demo.component.html',
   standalone: true,
-  imports: [CommonModule, DataLayerSelectorModule, FhirChartModule],
+  imports: [CommonModule, DataLayerSelectorComponent, FhirChartComponent],
 })
 export class DataLayerSelectorDemoComponent implements OnInit {
   views: DataLayerViews = {
