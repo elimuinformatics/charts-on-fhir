@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { DataLayerToolbarModule } from '../data-layer-toolbar.module';
 import { DataLayerToolbarComponent } from './data-layer-toolbar.component';
+import { PatientService } from '../../patient-browser/patient.service';
 
 const mockLayerManager = {
   availableLayers$: EMPTY,
@@ -15,8 +15,11 @@ describe('DataLayerToolbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataLayerToolbarModule],
-      providers: [{ provide: DataLayerManagerService, useValue: mockLayerManager }],
+      imports: [DataLayerToolbarComponent],
+      providers: [
+        { provide: DataLayerManagerService, useValue: mockLayerManager },
+        { provide: PatientService, useValue: PatientService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataLayerToolbarComponent);

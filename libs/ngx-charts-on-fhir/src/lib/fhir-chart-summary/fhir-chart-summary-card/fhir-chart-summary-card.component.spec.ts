@@ -10,12 +10,14 @@ import { SummaryService } from '../summary.service';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+import { DynamicTableComponent } from '../../dynamic-table/dynamic-table.component';
 
 class MockConfigService {
   summaryRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }
 
-@Component({ selector: 'dynamic-table', template: '' })
+@Component({ standalone: true, imports: [CommonModule], selector: 'dynamic-table', template: '' })
 class MockDynamicTableComponent {
   @Input() data: Record<string, string>[] = [];
 }
@@ -33,9 +35,12 @@ describe('FhirChartSummaryCardComponent', () => {
     summaryService.canSummarize.and.returnValue(true);
     summaryService.summarize.and.returnValue([{ name: 'summary' }]);
     colorService = jasmine.createSpyObj('ColorService', ['getColorGradient']);
+    TestBed.overrideComponent(FhirChartSummaryCardComponent, {
+      remove: { imports: [DynamicTableComponent] },
+      add: { imports: [MockDynamicTableComponent] },
+    });
     await TestBed.configureTestingModule({
-      declarations: [FhirChartSummaryCardComponent, MockDynamicTableComponent],
-      imports: [MatTooltipModule, OverlayModule],
+      imports: [MatTooltipModule, OverlayModule, FhirChartSummaryCardComponent],
       providers: [
         { provide: FhirChartConfigurationService, useValue: configService },
         { provide: SummaryService, useValue: summaryService, multi: true },

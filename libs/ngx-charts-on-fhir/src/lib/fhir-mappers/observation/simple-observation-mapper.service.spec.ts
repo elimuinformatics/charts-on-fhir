@@ -9,13 +9,20 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirCodeService } from '../fhir-code.service';
+import { ReferenceRangeService } from './reference-range.service';
 
 describe('SimpleObservationMapper', () => {
   let mapper: SimpleObservationMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } }, { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } }, FhirCodeService],
+      providers: [
+        { provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } },
+        { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } },
+        { provide: SimpleObservationMapper, useClass: SimpleObservationMapper },
+        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        FhirCodeService,
+      ],
     });
     mapper = TestBed.inject(SimpleObservationMapper);
   });

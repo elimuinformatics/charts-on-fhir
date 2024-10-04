@@ -3,13 +3,20 @@ import { ComponentObservation, ComponentObservationMapper } from './component-ob
 import { TestBed } from '@angular/core/testing';
 import { FhirCodeService } from '../fhir-code.service';
 import { LINEAR_SCALE_OPTIONS, ANNOTATION_OPTIONS } from '../fhir-mapper-options';
+import { ReferenceRangeService } from './reference-range.service';
 
 describe('ComponentObservationMapper', () => {
   let mapper: ComponentObservationMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } }, { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } }, FhirCodeService],
+      providers: [
+        { provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } },
+        { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } },
+        { provide: ComponentObservationMapper, useClass: ComponentObservationMapper },
+        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        FhirCodeService,
+      ],
     });
     mapper = TestBed.inject(ComponentObservationMapper);
   });

@@ -9,7 +9,10 @@ describe('FhirConverter', () => {
   beforeEach(() => {
     mapper = jasmine.createSpyObj<MultiMapper>('MultiMapper', ['canMap', 'map']);
     TestBed.configureTestingModule({
-      providers: [{ provide: MultiMapper, useValue: mapper }],
+      providers: [
+        { provide: FhirConverter, useClass: FhirConverter },
+        { provide: MultiMapper, useValue: mapper },
+      ],
     });
     converter = TestBed.inject(FhirConverter);
   });

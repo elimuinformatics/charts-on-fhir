@@ -8,8 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { PatientBrowserComponent } from '../patient-browser/patient-browser.component';
 import { DataLayerListComponent } from '../data-layer-list/data-layer-list/data-layer-list.component';
 import { DataLayerBrowserComponent } from '../data-layer-browser/data-layer-browser.component';
-import { DataLayerSelectorComponent } from '../data-layer-selector/data-layer-selector.component';
-import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { PatientService } from '../patient-browser/patient.service';
 
 /**

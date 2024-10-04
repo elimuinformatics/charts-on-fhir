@@ -11,7 +11,7 @@ describe('DataLayerToolbarLoadingIndicatorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataLayerToolbarLoadingIndicatorComponent],
+      declarations: [],
       imports: [MatIconModule, MatProgressSpinnerModule, MatTooltipModule],
     }).compileComponents();
 

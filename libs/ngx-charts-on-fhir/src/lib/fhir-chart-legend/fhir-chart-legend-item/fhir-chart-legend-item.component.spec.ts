@@ -9,8 +9,7 @@ describe('FhirChartLegendItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FhirChartLegendItemComponent],
-      imports: [MatIconModule],
+      imports: [MatIconModule, FhirChartLegendItemComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FhirChartLegendItemComponent);

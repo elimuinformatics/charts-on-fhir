@@ -13,7 +13,6 @@ describe('FhirChartTagsLegendComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FhirChartTagsLegendComponent],
       providers: [{ provide: DataLayerManagerService, useValue: mockLayerManager }],
     }).compileComponents();
 

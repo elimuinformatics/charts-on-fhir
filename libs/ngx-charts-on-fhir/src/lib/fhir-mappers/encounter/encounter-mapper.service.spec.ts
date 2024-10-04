@@ -9,7 +9,10 @@ describe('EncounterMapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: CATEGORY_SCALE_OPTIONS, useValue: { type: 'category' } }],
+      providers: [
+        { provide: CATEGORY_SCALE_OPTIONS, useValue: { type: 'category' } },
+        { provide: EncounterMapper, useClass: EncounterMapper },
+      ],
     });
     mapper = TestBed.inject(EncounterMapper);
   });

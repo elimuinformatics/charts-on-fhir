@@ -10,7 +10,6 @@ import { ManagedDataLayer } from '../data-layer/data-layer';
 import { DataLayerColorService, COLOR_PALETTE } from '../data-layer/data-layer-color.service';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { DataLayerBrowserComponent } from './data-layer-browser.component';
-import { DataLayerBrowserModule } from './data-layer-browser.module';
 
 const mockColorService = {
   getColor: () => '#000000',
@@ -32,7 +31,7 @@ describe('DataLayerBrowserComponent', () => {
   beforeEach(async () => {
     layerManager = new MockLayerManager();
     await TestBed.configureTestingModule({
-      imports: [DataLayerBrowserModule, NoopAnimationsModule],
+      imports: [DataLayerBrowserComponent, NoopAnimationsModule],
       providers: [
         { provide: DataLayerManagerService, useValue: layerManager },
         { provide: DataLayerColorService, useValue: mockColorService },

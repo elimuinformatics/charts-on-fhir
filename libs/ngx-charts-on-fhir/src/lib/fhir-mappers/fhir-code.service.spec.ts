@@ -5,7 +5,9 @@ describe('CodeNameService', () => {
   let service: FhirCodeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{ provide: FhirCodeService, useClass: FhirCodeService }],
+    });
     service = TestBed.inject(FhirCodeService);
   });
 

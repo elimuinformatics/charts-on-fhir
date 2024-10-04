@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SummaryRangeSelectorModule } from './summary-range-selector.module';
 import { SummaryRangeSelectorComponent } from './summary-range-selector.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -24,7 +23,7 @@ describe('SummaryRangeSelectorComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [SummaryRangeSelectorModule],
+      imports: [SummaryRangeSelectorComponent],
       providers: [
         { provide: FhirChartConfigurationService, useValue: mockConfigService },
         { provide: DataLayerManagerService, useValue: mockLayerManager },

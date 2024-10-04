@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DataLayerToolbarModule } from '../data-layer-toolbar.module';
 import { DataLayerToolbarButtonComponent } from './data-layer-toolbar-button.component';
+import { DataLayerToolbarComponent } from '../data-layer-toolbar/data-layer-toolbar.component';
 
 describe('DataLayerToolbarButtonComponent', () => {
   let component: DataLayerToolbarButtonComponent;
@@ -8,7 +8,7 @@ describe('DataLayerToolbarButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataLayerToolbarModule],
+      imports: [DataLayerToolbarComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataLayerToolbarButtonComponent);

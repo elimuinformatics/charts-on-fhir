@@ -11,6 +11,7 @@ import {
   timingAbbreviationCodeSystem,
 } from './duration-medication-mapper.service';
 import { SimpleMedicationMapper } from './simple-medication-mapper.service';
+import { FhirCodeService } from '../fhir-code.service';
 
 const basicMedication = {
   resourceType: 'MedicationRequest',
@@ -31,6 +32,7 @@ describe('DurationMedicationMapper', () => {
         SimpleMedicationMapper,
         { provide: TIME_SCALE_OPTIONS, useValue: {} },
         { provide: CATEGORY_SCALE_OPTIONS, useValue: {} },
+        { provide: FhirCodeService, useClass: FhirCodeService },
       ],
     });
 
