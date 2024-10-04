@@ -10,11 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
-  FhirChartModule,
-  DataLayerBrowserModule,
-  FhirChartSummaryModule,
+  FhirChartComponent,
+  DataLayerBrowserComponent,
+  FhirChartSummaryComponent,
   FhirDataService,
-  FhirChartLegendModule,
+  FhirChartLegendComponent,
   BloodPressureMapper,
   ScatterDataPointSummaryService,
   provideChartsOnFhir,
@@ -22,6 +22,7 @@ import {
   withDataLayerServices,
   withMappers,
   withSummaryServices,
+  FhirChartTagsLegendComponent,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 import { environment } from '../environments/environment';
 import { ReportBPModule } from './report-bp/report-bp.module';
@@ -37,12 +38,12 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    FhirChartModule,
-    FhirChartLegendModule,
-    FhirChartSummaryModule,
+    FhirChartComponent,
+    FhirChartLegendComponent,
+    FhirChartSummaryComponent,
     NgChartsModule,
     BrowserAnimationsModule,
-    DataLayerBrowserModule,
+    DataLayerBrowserComponent,
     MatCardModule,
     MatProgressBarModule,
     MatButtonModule,
@@ -51,6 +52,7 @@ function initializeFhirClientFactory(service: FhirDataService): () => Promise<vo
     ReportBPModule,
     LastReportBPModule,
     OptionsMenuModule,
+    FhirChartTagsLegendComponent,
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: initializeFhirClientFactory, deps: [FhirDataService], multi: true },

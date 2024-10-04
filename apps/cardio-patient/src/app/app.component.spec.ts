@@ -4,7 +4,14 @@ import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTabsModule } from '@angular/material/tabs';
-import { COLOR_PALETTE, DataLayerService, FhirChartComponent } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  COLOR_PALETTE,
+  DataLayerColorService,
+  DataLayerManagerService,
+  DataLayerMergeService,
+  DataLayerService,
+  FhirChartComponent,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,8 +49,11 @@ describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let loader: HarnessLoader;
+  let colorService: DataLayerColorService;
+  let palette: string[] = ['#FFFFFF', '#121212', '#000000'];
 
   beforeEach(async () => {
+    colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -57,6 +67,9 @@ describe('AppComponent', () => {
       providers: [
         { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
         { provide: COLOR_PALETTE, useValue: ['#ffffff', '#000000'] },
+        { provide: DataLayerManagerService, useClass: DataLayerManagerService },
+        { provide: DataLayerColorService, useValue: colorService },
+        { provide: DataLayerMergeService, useClass: DataLayerMergeService },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
