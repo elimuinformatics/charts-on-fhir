@@ -1,7 +1,30 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  DataLayerManagerService,
+  DataLayerSelectorComponent,
+  FhirChartComponent,
+  FhirChartLayoutComponent,
+  FhirChartLegendComponent,
+  FhirChartSummaryComponent,
+  FhirChartTagsLegendComponent,
+  SummaryRangeSelectorComponent,
+  TimelineRangeSelectorComponent,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    FhirChartComponent,
+    FhirChartLayoutComponent,
+    FhirChartLegendComponent,
+    FhirChartSummaryComponent,
+    TimelineRangeSelectorComponent,
+    SummaryRangeSelectorComponent,
+    DataLayerSelectorComponent,
+    FhirChartTagsLegendComponent,
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
