@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { COLOR_PALETTE, DataLayerColorService, DataLayerManagerService, DataLayerMergeService, DataLayerService } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  COLOR_PALETTE,
+  DataLayerColorService,
+  DataLayerManagerService,
+  DataLayerMergeService,
+  DataLayerService,
+  PatientService,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 import { EMPTY } from 'rxjs';
 import { AppComponent } from './app.component';
 
@@ -25,6 +32,7 @@ describe('AppComponent', () => {
         { provide: DataLayerColorService, useValue: colorService },
         DataLayerManagerService,
         DataLayerMergeService,
+        PatientService,
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
