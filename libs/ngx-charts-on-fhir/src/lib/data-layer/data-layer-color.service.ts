@@ -27,7 +27,7 @@ export class DataLayerColorService {
    */
   constructor(@Inject(COLOR_PALETTE) private readonly palette: string[]) {}
 
-  private lightPalette = this.palette.map((c) => tinycolor(c).brighten(20).toString());
+  private readonly lightPalette = this.palette.map((c) => tinycolor(c).brighten(20).toString());
 
   /** Chooses colors for all of the datasets and annotations in the Layer */
   chooseColorsFromPalette(layer: DataLayer): void {

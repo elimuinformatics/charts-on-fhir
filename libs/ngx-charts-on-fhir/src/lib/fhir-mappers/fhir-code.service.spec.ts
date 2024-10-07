@@ -6,7 +6,7 @@ describe('CodeNameService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: FhirCodeService, useClass: FhirCodeService }],
+      providers: [FhirCodeService],
     });
     service = TestBed.inject(FhirCodeService);
   });

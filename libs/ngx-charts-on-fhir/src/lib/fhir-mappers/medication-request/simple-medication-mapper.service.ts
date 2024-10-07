@@ -27,7 +27,7 @@ export type MedicationDataPoint = TimelineDataPoint & {
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
 @Injectable()
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private categoryScaleOptions: ScaleOptions<'category'>, private codeService: FhirCodeService) {
+  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private readonly categoryScaleOptions: ScaleOptions<'category'>, private readonly codeService: FhirCodeService) {
     this.registerCustomPlugin();
   }
   canMap = isMedication;

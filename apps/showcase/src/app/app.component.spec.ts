@@ -13,12 +13,7 @@ describe('AppComponent', () => {
     colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
       imports: [AppComponent, NoopAnimationsModule],
-      providers: [
-        { provide: DataLayerMergeService, useClass: DataLayerMergeService },
-        { provide: DataLayerManagerService, useClass: DataLayerManagerService },
-        { provide: DataLayerService, useClass: DataLayerService },
-        { provide: DataLayerColorService, useValue: colorService },
-      ],
+      providers: [DataLayerMergeService, DataLayerManagerService, DataLayerService, { provide: DataLayerColorService, useValue: colorService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

@@ -36,7 +36,7 @@ export function isBloodPressureObservation(resource: Observation): resource is B
 }
 @Injectable()
 export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
-  constructor(private baseMapper: ComponentObservationMapper) {}
+  constructor(private readonly baseMapper: ComponentObservationMapper) {}
   canMap = isBloodPressureObservation;
   map(resource: BloodPressureObservation, layerName?: string): DataLayer {
     for (let component of resource.component) {

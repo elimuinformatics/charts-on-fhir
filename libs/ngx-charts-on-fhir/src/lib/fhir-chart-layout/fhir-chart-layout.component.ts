@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { PatientBrowserComponent } from '../patient-browser/patient-browser.component';
 import { DataLayerListComponent } from '../data-layer-list/data-layer-list/data-layer-list.component';
 import { DataLayerBrowserComponent } from '../data-layer-browser/data-layer-browser.component';
-import { PatientService } from '../patient-browser/patient.service';
 
 /**
  * See `*ChartLayout` for example usage.
@@ -28,23 +27,14 @@ import { PatientService } from '../patient-browser/patient.service';
   templateUrl: './fhir-chart-layout.component.html',
   styleUrls: ['./fhir-chart-layout.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: SharedDataLayerListService,
-      useClass: SharedDataLayerListService,
-    },
-    {
-      provide: PatientService,
-      useClass: PatientService,
-    },
-  ],
+  providers: [SharedDataLayerListService],
 })
 export class FhirChartLayoutComponent implements OnChanges {
   @Input() toolbar: ToolbarButtonName[] = ['loading', 'browser', 'options'];
   @Input() active: ToolbarButtonName | null = null;
   @Input() showAdvancedOptions: boolean = true;
 
-  constructor(public fhir: FhirDataService, private sharedDataService: SharedDataLayerListService) {}
+  constructor(public fhir: FhirDataService, private readonly sharedDataService: SharedDataLayerListService) {}
 
   ngOnChanges(): void {
     this.sharedDataService.showAdvancedOptions$.next(this.showAdvancedOptions);

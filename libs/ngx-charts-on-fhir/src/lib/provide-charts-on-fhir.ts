@@ -32,38 +32,14 @@ import { FhirCodeService } from './fhir-mappers/fhir-code.service';
  */
 export function provideChartsOnFhir(...features: Provider[]): Provider[] {
   return [
-    {
-      provide: DataLayerManagerService,
-      useClass: DataLayerManagerService,
-    },
-    {
-      provide: DataLayerMergeService,
-      useClass: DataLayerMergeService,
-    },
-    {
-      provide: DataLayerColorService,
-      useClass: DataLayerColorService,
-    },
-    {
-      provide: FhirChartConfigurationService,
-      useClass: FhirChartConfigurationService,
-    },
-    {
-      provide: FhirConverter,
-      useClass: FhirConverter,
-    },
-    {
-      provide: MultiMapper,
-      useClass: MultiMapper,
-    },
-    {
-      provide: ReferenceRangeService,
-      useClass: ReferenceRangeService,
-    },
-    {
-      provide: FhirCodeService,
-      useClass: FhirCodeService,
-    },
+    DataLayerManagerService,
+    DataLayerMergeService,
+    DataLayerColorService,
+    FhirChartConfigurationService,
+    FhirConverter,
+    MultiMapper,
+    ReferenceRangeService,
+    FhirCodeService,
     ...features,
   ];
 }

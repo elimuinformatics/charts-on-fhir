@@ -39,7 +39,7 @@ export class TimelineRangeSelectorComponent {
   }
   @Input() showTimelineViewTitle: boolean = false;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {

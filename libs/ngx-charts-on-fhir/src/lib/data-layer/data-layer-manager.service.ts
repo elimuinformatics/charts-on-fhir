@@ -82,12 +82,12 @@ type LayerCompareFn = (a: DataLayer, b: DataLayer) => number;
 export class DataLayerManagerService {
   constructor(
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
-    private colorService: DataLayerColorService,
-    private tagsService: FhirChartTagsService,
-    private mergeService: DataLayerMergeService
+    private readonly colorService: DataLayerColorService,
+    private readonly tagsService: FhirChartTagsService,
+    private readonly mergeService: DataLayerMergeService
   ) {}
   dataRetrievalError$ = new BehaviorSubject<boolean>(false);
-  private stateSubject = new BehaviorSubject(initialState);
+  private readonly stateSubject = new BehaviorSubject(initialState);
   private get state() {
     return this.stateSubject.value;
   }
@@ -119,7 +119,7 @@ export class DataLayerManagerService {
     distinctUntilChanged()
   );
 
-  private cancel$ = new Subject<void>();
+  private readonly cancel$ = new Subject<void>();
 
   /**
    * Retrieve layers from all of the injected `DataLayerService` implementations.
@@ -287,7 +287,7 @@ export class DataLayerManagerService {
   }
 
   /** Reducer that returns a new state after applying the auto-select function */
-  private autoSelectLayers = (state: DataLayerManagerState) => {
+  private readonly autoSelectLayers = (state: DataLayerManagerState) => {
     let nextState = state;
     if (state.autoSelectFn) {
       for (let layer of Object.values(state.layers)) {
@@ -302,7 +302,7 @@ export class DataLayerManagerService {
   };
 
   /** Reducer that returns a new state with the given layer selected */
-  private selectLayer = produce<DataLayerManagerState, [string, string[]?]>((draft, id) => {
+  private readonly selectLayer = produce<DataLayerManagerState, [string, string[]?]>((draft, id) => {
     const layer = draft.layers[id];
     if (!draft.selected.includes(layer.id)) {
       draft.selected.push(layer.id);
@@ -318,7 +318,7 @@ export class DataLayerManagerService {
   });
 
   /** Reducer that returns a new state with the given layer un-selected */
-  private removeLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
+  private readonly removeLayer = produce<DataLayerManagerState, [string]>((draft, id) => {
     draft.layers[id].selected = false;
     const index = draft.selected.indexOf(id);
     if (index >= 0) {
@@ -327,7 +327,7 @@ export class DataLayerManagerService {
   });
 
   /** Reducer that returns a new state after applying the auto-enable function */
-  private autoEnableLayers = (state: DataLayerManagerState) => {
+  private readonly autoEnableLayers = (state: DataLayerManagerState) => {
     let nextState = state;
     if (state.autoEnableFn) {
       for (let layer of Object.values(state.layers)) {
@@ -338,7 +338,7 @@ export class DataLayerManagerService {
   };
 
   /** Reducer that returns a new state with the given layer enabled/disabled */
-  private enableLayer = produce<DataLayerManagerState, [string, boolean]>((draft, id, enabled) => {
+  private readonly enableLayer = produce<DataLayerManagerState, [string, boolean]>((draft, id, enabled) => {
     const layer = draft.layers[id];
     layer.enabled = enabled;
     for (let dataset of layer.datasets) {
@@ -347,7 +347,7 @@ export class DataLayerManagerService {
   });
 
   /** Reducer that returns a new state after applying the auto-sort function */
-  private autoSortLayers = produce<DataLayerManagerState>((draft) => {
+  private readonly autoSortLayers = produce<DataLayerManagerState>((draft) => {
     if (draft.autoSortFn) {
       draft.selected.sort((idA, idB) => draft.autoSortFn!(draft.layers[idA], draft.layers[idB]));
     }

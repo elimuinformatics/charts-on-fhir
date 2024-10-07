@@ -15,38 +15,14 @@ describe('provideChartsOnFhir', () => {
     const MyDataLayerService = {} as any;
     const MySummaryService = {} as any;
     const expectedProviders = [
-      {
-        provide: DataLayerManagerService,
-        useClass: DataLayerManagerService,
-      },
-      {
-        provide: DataLayerMergeService,
-        useClass: DataLayerMergeService,
-      },
-      {
-        provide: DataLayerColorService,
-        useClass: DataLayerColorService,
-      },
-      {
-        provide: FhirChartConfigurationService,
-        useClass: FhirChartConfigurationService,
-      },
-      {
-        provide: FhirConverter,
-        useClass: FhirConverter,
-      },
-      {
-        provide: MultiMapper,
-        useClass: MultiMapper,
-      },
-      {
-        provide: ReferenceRangeService,
-        useClass: ReferenceRangeService,
-      },
-      {
-        provide: FhirCodeService,
-        useClass: FhirCodeService,
-      },
+      DataLayerManagerService,
+      DataLayerMergeService,
+      DataLayerColorService,
+      FhirChartConfigurationService,
+      FhirConverter,
+      MultiMapper,
+      ReferenceRangeService,
+      FhirCodeService,
       [{ provide: DataLayerService, useClass: MyDataLayerService, multi: true }],
       [MyMapper, { provide: Mapper, useClass: MyMapper, multi: true }],
       [{ provide: SummaryService, useClass: MySummaryService, multi: true }],

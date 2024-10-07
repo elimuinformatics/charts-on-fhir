@@ -9,6 +9,7 @@ import { EMPTY } from 'rxjs';
 import { SharedDataLayerListService } from '../data-layer-list/shared-data-layer-list.service';
 import { DataLayerColorService } from '../data-layer/data-layer-color.service';
 import { DataLayerMergeService } from '../data-layer/data-layer-merge.service';
+import { PatientService } from '../patient-browser/patient.service';
 
 @Component({ selector: 'data-layer-toolbar', template: '' })
 class MockDataLayerToolbarComponent {
@@ -41,10 +42,11 @@ describe('FhirChartLayoutComponent', () => {
       imports: [NoopAnimationsModule, MatSidenavModule, MatIconModule],
       providers: [
         { provide: SharedDataLayerListService, useValue: mockSharedDataLayerListService },
-        { provide: DataLayerManagerService, useClass: DataLayerManagerService },
-        { provide: DataLayerMergeService, useClass: DataLayerMergeService },
-        { provide: DataLayerService, useClass: DataLayerService },
         { provide: DataLayerColorService, useValue: colorService },
+        DataLayerManagerService,
+        DataLayerMergeService,
+        DataLayerService,
+        PatientService,
       ],
     }).compileComponents();
 

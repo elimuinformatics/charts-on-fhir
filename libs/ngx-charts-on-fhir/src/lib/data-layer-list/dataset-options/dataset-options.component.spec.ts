@@ -50,7 +50,7 @@ describe('DatasetOptionsComponent', () => {
       providers: [
         { provide: DataLayerColorService, useValue: mockColorService },
         { provide: COLOR_PALETTE, useValue: ['#000000', '#ffffff'] },
-        { provide: SharedDataLayerListService, useClass: SharedDataLayerListService },
+        SharedDataLayerListService,
       ],
     }).compileComponents();
 

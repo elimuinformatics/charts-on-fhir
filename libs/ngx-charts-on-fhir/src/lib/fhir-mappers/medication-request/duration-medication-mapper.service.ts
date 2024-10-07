@@ -195,7 +195,7 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
  */
 @Injectable()
 export class DurationMedicationMapper implements Mapper<DurationMedication> {
-  constructor(private baseMapper: SimpleMedicationMapper) {}
+  constructor(private readonly baseMapper: SimpleMedicationMapper) {}
   canMap = isDurationMedication;
   map(resource: DurationMedication): DataLayer<'bar', MedicationDataPoint[]> {
     const duration = computeDuration(resource);

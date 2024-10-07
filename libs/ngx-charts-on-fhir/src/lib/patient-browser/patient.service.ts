@@ -6,7 +6,7 @@ import { isDefined } from '../utils';
 
 @Injectable()
 export class PatientService {
-  constructor(private fhir: FhirDataService) {
+  constructor(private readonly fhir: FhirDataService) {
     const patient = this.fhir.client?.getPatientId();
     if (patient) {
       this.selectedPatientSubject.next(patient);

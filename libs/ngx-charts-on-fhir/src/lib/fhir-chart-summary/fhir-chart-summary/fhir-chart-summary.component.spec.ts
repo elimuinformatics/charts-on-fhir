@@ -59,7 +59,6 @@ describe('FhirChartSummaryComponent', () => {
         { provide: FhirChartLifecycleService, useValue: lifecycleService },
         { provide: FhirChartConfigurationService, useValue: fhirChartConfigurationService },
         { provide: DataLayerColorService, useValue: colorService },
-        { provide: SummaryService, useClass: SummaryService },
       ],
     }).compileComponents();
 

@@ -16,7 +16,7 @@ describe('BloodPressureMapper', () => {
         ComponentObservationMapper,
         { provide: LINEAR_SCALE_OPTIONS, useValue: {} },
         { provide: ANNOTATION_OPTIONS, useValue: {} },
-        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        ReferenceRangeService,
       ],
     });
     mapper = TestBed.inject(BloodPressureMapper);

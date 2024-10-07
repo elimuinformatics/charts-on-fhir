@@ -67,13 +67,12 @@ describe('AppComponent', () => {
       providers: [
         { provide: DataLayerService, useClass: MockDataLayerService, multi: true },
         { provide: COLOR_PALETTE, useValue: ['#ffffff', '#000000'] },
-        { provide: DataLayerManagerService, useClass: DataLayerManagerService },
         { provide: DataLayerColorService, useValue: colorService },
-        { provide: DataLayerMergeService, useClass: DataLayerMergeService },
+        DataLayerManagerService,
+        DataLayerMergeService,
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });

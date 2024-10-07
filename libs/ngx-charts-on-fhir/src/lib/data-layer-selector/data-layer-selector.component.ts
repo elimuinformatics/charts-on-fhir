@@ -24,7 +24,7 @@ export class DataLayerSelectorComponent implements OnChanges {
   @Input() views: DataLayerViews = {};
   @Input() active?: string;
 
-  constructor(private layerManager: DataLayerManagerService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private readonly layerManager: DataLayerManagerService, private readonly changeDetectorRef: ChangeDetectorRef) {}
 
   unsubscribe$ = new Subject<void>();
 

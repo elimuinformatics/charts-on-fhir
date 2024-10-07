@@ -19,8 +19,8 @@ describe('SimpleObservationMapper', () => {
       providers: [
         { provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } },
         { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } },
-        { provide: SimpleObservationMapper, useClass: SimpleObservationMapper },
-        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        SimpleObservationMapper,
+        ReferenceRangeService,
         FhirCodeService,
       ],
     });

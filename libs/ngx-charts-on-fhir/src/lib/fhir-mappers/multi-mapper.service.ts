@@ -13,7 +13,7 @@ export abstract class Mapper<R, T extends ChartType = TimelineChartType, D = Tim
  */
 @Injectable()
 export class MultiMapper implements Mapper<unknown, TimelineChartType, TimelineDataPoint[]> {
-  constructor(@Inject(Mapper) private mappers: Mapper<unknown, TimelineChartType, TimelineDataPoint[]>[]) {}
+  constructor(@Inject(Mapper) private readonly mappers: Mapper<unknown, TimelineChartType, TimelineDataPoint[]>[]) {}
   canMap(resource: unknown): resource is unknown {
     return this.mappers.some((mapper) => mapper.canMap(resource));
   }

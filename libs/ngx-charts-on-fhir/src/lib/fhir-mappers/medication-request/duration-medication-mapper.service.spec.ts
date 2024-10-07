@@ -32,7 +32,7 @@ describe('DurationMedicationMapper', () => {
         SimpleMedicationMapper,
         { provide: TIME_SCALE_OPTIONS, useValue: {} },
         { provide: CATEGORY_SCALE_OPTIONS, useValue: {} },
-        { provide: FhirCodeService, useClass: FhirCodeService },
+        FhirCodeService,
       ],
     });
 

@@ -21,8 +21,8 @@ import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-c
 export class FhirChartSummaryComponent {
   constructor(
     public layerManager: DataLayerManagerService,
-    private lifecycleService: FhirChartLifecycleService,
-    private configService: FhirChartConfigurationService
+    private readonly lifecycleService: FhirChartLifecycleService,
+    private readonly configService: FhirChartConfigurationService
   ) {}
 
   /** When set to `true`, each card will be vertically aligned with the corresponding chart. */

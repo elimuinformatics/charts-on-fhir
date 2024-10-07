@@ -12,7 +12,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   standalone: true,
@@ -38,7 +37,7 @@ export class DatasetOptionsComponent implements OnInit {
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
+  constructor(private readonly fb: FormBuilder, private readonly colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;

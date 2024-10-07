@@ -48,9 +48,9 @@ export function isComponentObservation(resource: Observation): resource is Compo
 @Injectable()
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
-    @Inject(LINEAR_SCALE_OPTIONS) private linearScaleOptions: ScaleOptions<'linear'>,
-    private codeService: FhirCodeService,
-    private referenceRangeService: ReferenceRangeService
+    @Inject(LINEAR_SCALE_OPTIONS) private readonly linearScaleOptions: ScaleOptions<'linear'>,
+    private readonly codeService: FhirCodeService,
+    private readonly referenceRangeService: ReferenceRangeService
   ) {}
   canMap = isComponentObservation;
   map(resource: ComponentObservation, overrideLayerName?: string): DataLayer {

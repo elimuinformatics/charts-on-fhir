@@ -11,7 +11,7 @@ import { hashCode } from '../utils';
  */
 @Injectable()
 export class DataLayerMergeService {
-  constructor(private colorService: DataLayerColorService, private tagsService: FhirChartTagsService) {}
+  constructor(private readonly colorService: DataLayerColorService, private readonly tagsService: FhirChartTagsService) {}
 
   merge(collection: DataLayerCollection, layer: DataLayer): DataLayerCollection {
     return produce(collection, (draft) => {

@@ -40,7 +40,7 @@ export class FhirChartComponent implements OnInit {
 
   @Input() emptyMessage: string = 'No data';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(private readonly configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
     Chart.register(scaleStackDividerPlugin, annotationPlugin, zoomPlugin);

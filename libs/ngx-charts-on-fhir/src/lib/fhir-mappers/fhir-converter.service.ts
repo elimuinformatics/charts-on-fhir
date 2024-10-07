@@ -8,7 +8,7 @@ import { MultiMapper } from './multi-mapper.service';
  */
 @Injectable()
 export class FhirConverter {
-  constructor(@Inject(MultiMapper) private mapper: MultiMapper) {}
+  constructor(@Inject(MultiMapper) private readonly mapper: MultiMapper) {}
   convert(bundle: Bundle): DataLayer[] {
     if (!bundle.entry) {
       return [];

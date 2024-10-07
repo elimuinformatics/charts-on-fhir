@@ -1,5 +1,5 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { produce } from 'immer';
 import { merge } from 'lodash-es';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
@@ -27,7 +27,7 @@ export class AnnotationOptionsComponent implements OnInit {
 
   @Output() annotationChange = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService) {}
+  constructor(private readonly fb: FormBuilder, private readonly colorService: DataLayerColorService) {}
 
   form = this.fb.group({
     color: this.fb.control('', { nonNullable: true }),

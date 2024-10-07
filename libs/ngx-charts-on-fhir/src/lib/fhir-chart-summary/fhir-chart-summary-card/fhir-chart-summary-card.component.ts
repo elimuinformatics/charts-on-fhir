@@ -35,10 +35,10 @@ export class FhirChartSummaryCardComponent {
 
   constructor(
     public configService: FhirChartConfigurationService,
-    private colorService: DataLayerColorService,
-    private elementRef: ElementRef,
-    @Inject(SummaryService) private summaryServices: SummaryService[],
-    private changeDetectorRef: ChangeDetectorRef
+    private readonly colorService: DataLayerColorService,
+    private readonly elementRef: ElementRef,
+    @Inject(SummaryService) private readonly summaryServices: SummaryService[],
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
 
   overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];

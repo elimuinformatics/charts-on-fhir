@@ -26,12 +26,7 @@ import {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [
-    {
-      provide: PatientService,
-      useClass: PatientService,
-    },
-  ],
+  providers: [PatientService],
 })
 export class AppComponent implements OnInit {
   readonly toolbar: ToolbarButtonName[];

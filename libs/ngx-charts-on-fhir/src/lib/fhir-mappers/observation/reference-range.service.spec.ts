@@ -10,7 +10,7 @@ describe('ReferenceRangeService', () => {
       providers: [
         { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } },
         { provide: LINE_ANNOTATION_OPTIONS, useValue: { type: 'line' } },
-        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        ReferenceRangeService,
       ],
     });
     service = TestBed.inject(ReferenceRangeService);

@@ -2,8 +2,6 @@ import {
   BloodPressureMapper,
   ComponentObservationMapper,
   DurationMedicationMapper,
-  EncounterMapper,
-  EncounterSummaryService,
   MedicationSummaryService,
   ScatterDataPointSummaryService,
   SimpleMedicationMapper,

@@ -13,8 +13,8 @@ describe('ComponentObservationMapper', () => {
       providers: [
         { provide: LINEAR_SCALE_OPTIONS, useValue: { type: 'linear' } },
         { provide: ANNOTATION_OPTIONS, useValue: { type: 'box' } },
-        { provide: ComponentObservationMapper, useClass: ComponentObservationMapper },
-        { provide: ReferenceRangeService, useClass: ReferenceRangeService },
+        ComponentObservationMapper,
+        ReferenceRangeService,
         FhirCodeService,
       ],
     });

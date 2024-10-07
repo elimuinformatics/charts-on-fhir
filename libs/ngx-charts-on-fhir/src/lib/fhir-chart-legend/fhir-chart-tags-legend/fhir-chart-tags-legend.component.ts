@@ -14,7 +14,7 @@ import { FhirChartLegendItemComponent } from '../fhir-chart-legend-item/fhir-cha
   styleUrls: ['./fhir-chart-tags-legend.component.css'],
 })
 export class FhirChartTagsLegendComponent {
-  constructor(readonly tagsService: FhirChartTagsService, private layerManager: DataLayerManagerService) {}
+  constructor(readonly tagsService: FhirChartTagsService, private readonly layerManager: DataLayerManagerService) {}
 
   enabledTags$ = this.layerManager.enabledLayers$.pipe(
     map((layers) => uniq(layers.flatMap((layer) => layer.datasets.flatMap((dataset) => dataset.chartsOnFhir?.tags))))
