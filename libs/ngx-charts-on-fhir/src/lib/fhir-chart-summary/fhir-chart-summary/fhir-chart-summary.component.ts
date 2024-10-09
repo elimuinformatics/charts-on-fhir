@@ -4,11 +4,15 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { mapValues } from 'lodash-es';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { CommonModule } from '@angular/common';
+import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-chart-summary-card.component';
 
 /**
  * See `*ChartSummary` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, FhirChartSummaryCardComponent],
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
   styleUrls: ['./fhir-chart-summary.component.css'],
@@ -17,8 +21,8 @@ import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-confi
 export class FhirChartSummaryComponent {
   constructor(
     public layerManager: DataLayerManagerService,
-    private lifecycleService: FhirChartLifecycleService,
-    private configService: FhirChartConfigurationService
+    private readonly lifecycleService: FhirChartLifecycleService,
+    private readonly configService: FhirChartConfigurationService
   ) {}
 
   /** When set to `true`, each card will be vertically aligned with the corresponding chart. */

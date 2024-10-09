@@ -1,13 +1,30 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Chart } from 'chart.js';
 import { produce } from 'immer';
 import { merge } from 'lodash-es';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { SharedDataLayerListService } from '../shared-data-layer-list.service';
+import { CommonModule } from '@angular/common';
+import { ColorPickerComponent } from '../../color-picker/color-picker.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    ColorPickerComponent,
+    MatButtonToggleModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatIconModule,
+  ],
   selector: 'dataset-options',
   templateUrl: './dataset-options.component.html',
   styleUrls: ['./dataset-options.component.css'],
@@ -20,7 +37,7 @@ export class DatasetOptionsComponent implements OnInit {
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private fb: FormBuilder, private colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
+  constructor(private readonly fb: FormBuilder, private readonly colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;

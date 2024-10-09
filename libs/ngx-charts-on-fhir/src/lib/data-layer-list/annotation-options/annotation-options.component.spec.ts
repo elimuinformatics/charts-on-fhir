@@ -2,7 +2,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { AnnotationOptionsComponent } from './annotation-options.component';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,9 +40,9 @@ describe('AnnotationOptionsComponent', () => {
   beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule],
-      declarations: [AnnotationOptionsComponent, MockColorPickerComponent],
-      providers: [FormBuilder, { provide: DataLayerColorService, useValue: colorService }],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, AnnotationOptionsComponent],
+      declarations: [MockColorPickerComponent],
+      providers: [FormBuilder, { provide: DataLayerColorService, useValue: colorService }, { provide: COLOR_PALETTE, useValue: palette }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AnnotationOptionsComponent);

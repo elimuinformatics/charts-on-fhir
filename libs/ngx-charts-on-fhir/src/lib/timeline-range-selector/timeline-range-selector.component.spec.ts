@@ -39,8 +39,17 @@ describe('TimelineRangeSelectorComponent', () => {
   beforeEach(async () => {
     mockConfigService = new MockConfigService();
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
-      declarations: [TimelineRangeSelectorComponent, SummaryRangeSelectorComponent],
+      imports: [
+        NoopAnimationsModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatMenuModule,
+        TimelineRangeSelectorComponent,
+        SummaryRangeSelectorComponent,
+      ],
       providers: [{ provide: FhirChartConfigurationService, useValue: mockConfigService }, SummaryService],
     }).compileComponents();
 

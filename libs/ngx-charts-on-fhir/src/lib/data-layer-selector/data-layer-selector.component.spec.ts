@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataLayerSelectorComponent } from './data-layer-selector.component';
-import { DataLayerSelectorModule } from './data-layer-selector.module';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
@@ -21,7 +20,7 @@ describe('DataLayerSelectorComponent', () => {
       settings$: layerManagerSettings$,
     });
     await TestBed.configureTestingModule({
-      imports: [DataLayerSelectorModule, NoopAnimationsModule],
+      imports: [DataLayerSelectorComponent, NoopAnimationsModule],
       providers: [{ provide: DataLayerManagerService, useValue: layerManager }],
     }).compileComponents();
 

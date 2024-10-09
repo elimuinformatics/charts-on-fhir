@@ -1,8 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { PatientService } from './patient.service';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 type PatientRow = {
   id: string;
@@ -13,6 +17,8 @@ type PatientRow = {
  * See `*PatientBrowser` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatIconModule, MatTableModule, MatSortModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
   selector: 'patient-browser',
   templateUrl: './patient-browser.component.html',
   styleUrls: ['./patient-browser.component.css'],

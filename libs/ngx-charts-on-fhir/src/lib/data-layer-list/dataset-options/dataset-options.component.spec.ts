@@ -13,8 +13,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { COLOR_PALETTE, DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { DatasetOptionsComponent } from './dataset-options.component';
 import { Chart } from 'chart.js';
+import { SharedDataLayerListService } from '../shared-data-layer-list.service';
 
 @Component({
+  standalone: true,
   selector: 'color-picker',
   template: '',
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
@@ -35,11 +37,20 @@ describe('DatasetOptionsComponent', () => {
   beforeEach(async () => {
     mockColorService = jasmine.createSpyObj('DataLayerColorService', ['getColor', 'setColor']);
     await TestBed.configureTestingModule({
-      declarations: [DatasetOptionsComponent, MockColorPickerComponent],
-      imports: [MatButtonModule, MatButtonToggleModule, MatSlideToggleModule, MatSliderModule, MatIconModule, ReactiveFormsModule],
+      imports: [
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatSlideToggleModule,
+        MatSliderModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        DatasetOptionsComponent,
+        MockColorPickerComponent,
+      ],
       providers: [
         { provide: DataLayerColorService, useValue: mockColorService },
         { provide: COLOR_PALETTE, useValue: ['#000000', '#ffffff'] },
+        SharedDataLayerListService,
       ],
     }).compileComponents();
 

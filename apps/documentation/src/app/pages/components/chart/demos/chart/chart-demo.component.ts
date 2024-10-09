@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
-  FhirChartLegendModule,
-  FhirChartModule,
+  FhirChartLegendComponent,
+  FhirChartComponent,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
   selector: 'example-chart-demo',
   templateUrl: './chart-demo.component.html',
   standalone: true,
-  imports: [CommonModule, FhirChartModule, FhirChartLegendModule],
+  imports: [CommonModule, FhirChartComponent, FhirChartLegendComponent],
 })
 export class ChartDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

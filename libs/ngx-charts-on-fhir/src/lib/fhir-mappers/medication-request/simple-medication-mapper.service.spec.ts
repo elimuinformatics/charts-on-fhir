@@ -10,7 +10,7 @@ describe('SimpleMedicationMapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: CATEGORY_SCALE_OPTIONS, useValue: { type: 'category' } }, FhirCodeService],
+      providers: [{ provide: CATEGORY_SCALE_OPTIONS, useValue: { type: 'category' } }, SimpleMedicationMapper, FhirCodeService],
     });
     mapper = TestBed.inject(SimpleMedicationMapper);
   });

@@ -34,11 +34,9 @@ export type BloodPressureObservation = {
 export function isBloodPressureObservation(resource: Observation): resource is BloodPressureObservation {
   return isComponentObservation(resource) && !!codeEquals(resource.code, bpCode);
 }
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class BloodPressureMapper implements Mapper<BloodPressureObservation> {
-  constructor(private baseMapper: ComponentObservationMapper) {}
+  constructor(private readonly baseMapper: ComponentObservationMapper) {}
   canMap = isBloodPressureObservation;
   map(resource: BloodPressureObservation, layerName?: string): DataLayer {
     for (let component of resource.component) {

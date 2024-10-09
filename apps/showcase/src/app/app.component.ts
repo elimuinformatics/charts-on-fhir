@@ -1,10 +1,32 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DataLayerManagerService, PatientService, ToolbarButtonName } from '@elimuinformatics/ngx-charts-on-fhir';
+import {
+  DataLayerManagerService,
+  FhirChartComponent,
+  FhirChartLayoutComponent,
+  FhirChartSummaryComponent,
+  FhirChartTagsLegendComponent,
+  PatientService,
+  SummaryRangeSelectorComponent,
+  TimelineRangeSelectorComponent,
+  ToolbarButtonName,
+} from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    SummaryRangeSelectorComponent,
+    FhirChartLayoutComponent,
+    FhirChartComponent,
+    FhirChartSummaryComponent,
+    FhirChartTagsLegendComponent,
+    TimelineRangeSelectorComponent,
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [PatientService],
 })
 export class AppComponent implements OnInit {
   readonly toolbar: ToolbarButtonName[];

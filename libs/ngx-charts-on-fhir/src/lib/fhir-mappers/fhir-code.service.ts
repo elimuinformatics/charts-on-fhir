@@ -40,7 +40,7 @@ import { CodeableConcept, Coding, FhirResource } from 'fhir/r4';
  * export class AppModule {}
  * ```
  */
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class FhirCodeService {
   getName(code: CodeableConcept, resource?: FhirResource): string {
     return code.text ?? '';

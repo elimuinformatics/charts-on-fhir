@@ -8,11 +8,17 @@ import { TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { FhirChartConfigurationService } from './fhir-chart-configuration.service';
 import { scaleStackDividerPlugin } from './scale-stack-divider-plugin';
+import { CommonModule } from '@angular/common';
+import { NgChartsModule } from 'ng2-charts';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 /**
  * See `*Chart` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, NgChartsModule, MatProgressBarModule, DragDropModule],
   selector: 'fhir-chart',
   templateUrl: './fhir-chart.component.html',
   styleUrls: ['./fhir-chart.component.css'],
@@ -34,7 +40,7 @@ export class FhirChartComponent implements OnInit {
 
   @Input() emptyMessage: string = 'No data';
 
-  constructor(private configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(private readonly configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
 
   ngOnInit(): void {
     Chart.register(scaleStackDividerPlugin, annotationPlugin, zoomPlugin);

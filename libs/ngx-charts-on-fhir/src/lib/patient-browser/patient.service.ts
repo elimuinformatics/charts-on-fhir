@@ -4,11 +4,9 @@ import { EMPTY, filter, map, ReplaySubject, scan, shareReplay } from 'rxjs';
 import { FhirDataService } from '../fhir-data/fhir-data.service';
 import { isDefined } from '../utils';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PatientService {
-  constructor(private fhir: FhirDataService) {
+  constructor(private readonly fhir: FhirDataService) {
     const patient = this.fhir.client?.getPatientId();
     if (patient) {
       this.selectedPatientSubject.next(patient);

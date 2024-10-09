@@ -7,6 +7,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, Input } from '@angular/core';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 
 @Component({ selector: 'annotation-options', template: '' })
 class MockAnnotationOptionsComponent {
@@ -17,10 +18,17 @@ describe('DatasetAnnotationListComponent', () => {
   let component: AnnotationListComponent;
   let fixture: ComponentFixture<AnnotationListComponent>;
   let loader: HarnessLoader;
+  let colorService: DataLayerColorService;
+
+  let palette: string[] = ['#FFFFFF', '#121212', '#000000'];
+
   beforeEach(async () => {
+    colorService = new DataLayerColorService(palette);
+
     await TestBed.configureTestingModule({
-      declarations: [AnnotationListComponent, MockAnnotationOptionsComponent],
+      declarations: [MockAnnotationOptionsComponent],
       imports: [MatExpansionModule, MatCheckboxModule, BrowserAnimationsModule],
+      providers: [{ provide: DataLayerColorService, useValue: colorService }],
     }).compileComponents();
     fixture = TestBed.createComponent(AnnotationListComponent);
     component = fixture.componentInstance;

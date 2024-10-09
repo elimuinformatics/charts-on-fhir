@@ -1,13 +1,21 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DateRange, MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { subtractMonths } from '../utils';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 
 /**
  * See `*TimelineRangeSelector` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
   selector: 'timeline-range-selector',
   templateUrl: './timeline-range-selector.component.html',
   styleUrls: ['./timeline-range-selector.component.css'],
@@ -31,7 +39,7 @@ export class TimelineRangeSelectorComponent {
   }
   @Input() showTimelineViewTitle: boolean = false;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private configService: FhirChartConfigurationService) {}
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly configService: FhirChartConfigurationService) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {

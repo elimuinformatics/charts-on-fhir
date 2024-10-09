@@ -9,6 +9,10 @@ import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle
 import { Chart } from 'chart.js';
 import { DeepPartial } from 'chart.js/dist/types/utils';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { SummaryService } from '../summary.service';
+import { CommonModule } from '@angular/common';
+import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-chart-summary-card.component';
 
 class MockLayerManager {
   enabledLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
@@ -22,7 +26,7 @@ class MockFhirChartConfigurationService {
   setSummaryRange = () => {};
 }
 
-@Component({ selector: 'fhir-chart-summary-card' })
+@Component({ standalone: true, imports: [CommonModule], selector: 'fhir-chart-summary-card' })
 class MockFhirChartSummaryCardComponent {
   @Input() layer: unknown;
   @Input() expanded = false;
@@ -36,17 +40,25 @@ describe('FhirChartSummaryComponent', () => {
   let layerManager: MockLayerManager;
   let lifecycleService: MockLifecycleService;
   let fhirChartConfigurationService: MockFhirChartConfigurationService;
+  let colorService: DataLayerColorService;
+  let palette: string[] = ['#FFFFFF', '#121212', '#000000'];
 
   beforeEach(async () => {
+    colorService = new DataLayerColorService(palette);
     layerManager = new MockLayerManager();
     lifecycleService = new MockLifecycleService();
     fhirChartConfigurationService = new MockFhirChartConfigurationService();
+    TestBed.overrideComponent(FhirChartSummaryComponent, {
+      remove: { imports: [FhirChartSummaryCardComponent] },
+      add: { imports: [MockFhirChartSummaryCardComponent] },
+    });
     await TestBed.configureTestingModule({
-      declarations: [FhirChartSummaryComponent, MockFhirChartSummaryCardComponent],
+      imports: [FhirChartSummaryComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: layerManager },
         { provide: FhirChartLifecycleService, useValue: lifecycleService },
         { provide: FhirChartConfigurationService, useValue: fhirChartConfigurationService },
+        { provide: DataLayerColorService, useValue: colorService },
       ],
     }).compileComponents();
 

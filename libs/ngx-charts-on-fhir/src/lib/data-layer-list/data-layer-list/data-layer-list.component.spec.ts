@@ -21,7 +21,7 @@ const mockLayerManager = {
   move() {},
 };
 
-@Component({ selector: 'data-layer-options', template: '' })
+@Component({ standalone: true, selector: 'data-layer-options', template: '' })
 class MockDataLayerOptionsComponent {
   @Input() layer?: DataLayer;
 }
@@ -32,8 +32,7 @@ describe('FhirDatasetsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataLayerListComponent, MockDataLayerOptionsComponent],
-      imports: [MatExpansionModule, DragDropModule],
+      imports: [MatExpansionModule, DragDropModule, DataLayerListComponent, MockDataLayerOptionsComponent],
       providers: [
         { provide: DataLayerManagerService, useValue: mockLayerManager },
         { provide: DataLayerColorService, useValue: mockColorService },

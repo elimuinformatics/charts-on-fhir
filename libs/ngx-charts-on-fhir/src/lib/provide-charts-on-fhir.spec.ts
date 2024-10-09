@@ -3,6 +3,7 @@ import { DataLayerManagerService, DataLayerService } from './data-layer/data-lay
 import { DataLayerMergeService } from './data-layer/data-layer-merge.service';
 import { SummaryService } from './fhir-chart-summary/summary.service';
 import { FhirChartConfigurationService } from './fhir-chart/fhir-chart-configuration.service';
+import { FhirCodeService } from './fhir-mappers/fhir-code.service';
 import { FhirConverter } from './fhir-mappers/fhir-converter.service';
 import { Mapper, MultiMapper } from './fhir-mappers/multi-mapper.service';
 import { ReferenceRangeService } from './fhir-mappers/observation/reference-range.service';
@@ -21,6 +22,7 @@ describe('provideChartsOnFhir', () => {
       FhirConverter,
       MultiMapper,
       ReferenceRangeService,
+      FhirCodeService,
       [{ provide: DataLayerService, useClass: MyDataLayerService, multi: true }],
       [MyMapper, { provide: Mapper, useClass: MyMapper, multi: true }],
       [{ provide: SummaryService, useClass: MySummaryService, multi: true }],

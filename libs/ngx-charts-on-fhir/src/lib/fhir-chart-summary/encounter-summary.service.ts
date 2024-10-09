@@ -5,9 +5,7 @@ import { SummaryService } from './summary.service';
 import { MappableEncounter, isMappableEncounter } from '../fhir-mappers/encounter/encounter-mapper.service';
 import { groupBy } from 'lodash-es';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class EncounterSummaryService implements SummaryService {
   canSummarize(layer: DataLayer): boolean {
     return !!(layer.category?.includes('encounter') && layer.datasets?.some((d) => d.data.length && isMappableEncounter(d.data.at(-1)?.resource)));

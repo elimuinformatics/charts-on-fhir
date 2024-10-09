@@ -11,7 +11,7 @@ describe('MultiMapper', () => {
       mappers.push(jasmine.createSpyObj<Mapper<any, any, any[]>>('Mapper', ['canMap', 'map']));
     }
     TestBed.configureTestingModule({
-      providers: [{ provide: Mapper, useValue: mappers }],
+      providers: [{ provide: Mapper, useValue: mappers }, MultiMapper],
     });
     multiMapper = TestBed.inject(MultiMapper);
   });

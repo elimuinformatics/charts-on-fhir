@@ -3,6 +3,7 @@ import { ANNOTATION_OPTIONS, LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options
 import { BloodPressureMapper, BloodPressureObservation } from './blood-pressure-mapper.service';
 import { ComponentObservationMapper } from './component-observation-mapper.service';
 import { FhirCodeService } from '../fhir-code.service';
+import { ReferenceRangeService } from './reference-range.service';
 
 describe('BloodPressureMapper', () => {
   let mapper: BloodPressureMapper;
@@ -15,6 +16,7 @@ describe('BloodPressureMapper', () => {
         ComponentObservationMapper,
         { provide: LINEAR_SCALE_OPTIONS, useValue: {} },
         { provide: ANNOTATION_OPTIONS, useValue: {} },
+        ReferenceRangeService,
       ],
     });
     mapper = TestBed.inject(BloodPressureMapper);

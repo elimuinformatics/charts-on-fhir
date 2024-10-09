@@ -1,14 +1,21 @@
 import { Component, Input } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { MatExpansionPanel } from '@angular/material/expansion';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { ManagedDataLayer } from '../../data-layer/data-layer';
 import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
+import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { DataLayerOptionsComponent } from '../data-layer-options/data-layer-options.component';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 
 /**
  * See `*DataLayerList` for example usage.
  */
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatTooltipModule, MatIconModule, MatButtonModule, DataLayerOptionsComponent, MatCheckboxModule, MatExpansionModule, DragDropModule],
   selector: 'data-layer-list',
   templateUrl: './data-layer-list.component.html',
   styleUrls: ['./data-layer-list.component.css'],

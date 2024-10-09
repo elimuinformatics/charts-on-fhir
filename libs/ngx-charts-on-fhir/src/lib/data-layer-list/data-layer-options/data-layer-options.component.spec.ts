@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dataset } from '../../data-layer/data-layer';
 import { DataLayerOptionsComponent } from './data-layer-options.component';
 
-@Component({ selector: 'dataset-list', template: '' })
+@Component({ standalone: true, selector: 'dataset-list', template: '' })
 class MockDatasetListComponent {
   @Input() datasets?: Dataset[];
 }
 
-@Component({ selector: 'annotation-list', template: '' })
+@Component({ standalone: true, selector: 'annotation-list', template: '' })
 class MockAnnotationListComponent {
   @Input() annotations?: any[];
 }
@@ -19,7 +19,7 @@ describe('DataLayerOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DataLayerOptionsComponent, MockDatasetListComponent, MockAnnotationListComponent],
+      imports: [DataLayerOptionsComponent, MockDatasetListComponent, MockAnnotationListComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataLayerOptionsComponent);

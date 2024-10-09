@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
   DataLayerManagerService,
-  FhirChartLayoutModule,
+  FhirChartLayoutComponent,
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
@@ -12,7 +12,7 @@ import {
   templateUrl: './chart-layout-demo.component.html',
   styleUrls: ['./chart-layout-demo.component.css'],
   standalone: true,
-  imports: [CommonModule, FhirChartLayoutModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, FhirChartLayoutComponent, MatIconModule, MatButtonModule],
 })
 export class ChartLayoutDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

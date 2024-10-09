@@ -2,11 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Even
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { DataLayer } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { ConnectionPositionPair } from '@angular/cdk/overlay';
+import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { SummaryService } from '../summary.service';
 import { NumberRange } from '../../utils';
-
+import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DynamicTableComponent } from '../../dynamic-table/dynamic-table.component';
 @Component({
+  standalone: true,
+  imports: [CommonModule, MatTooltipModule, DynamicTableComponent, OverlayModule],
   selector: 'fhir-chart-summary-card',
   templateUrl: './fhir-chart-summary-card.component.html',
   styleUrls: ['./fhir-chart-summary-card.component.css'],
@@ -31,10 +35,10 @@ export class FhirChartSummaryCardComponent {
 
   constructor(
     public configService: FhirChartConfigurationService,
-    private colorService: DataLayerColorService,
-    private elementRef: ElementRef,
-    @Inject(SummaryService) private summaryServices: SummaryService[],
-    private changeDetectorRef: ChangeDetectorRef
+    private readonly colorService: DataLayerColorService,
+    private readonly elementRef: ElementRef,
+    @Inject(SummaryService) private readonly summaryServices: SummaryService[],
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) {}
 
   overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];
