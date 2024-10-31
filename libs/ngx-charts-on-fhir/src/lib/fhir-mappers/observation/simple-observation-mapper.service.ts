@@ -71,7 +71,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
       ],
       scale: merge({}, this.linearScaleOptions, {
         id: layerName,
-        title: { text: [layerName, resource.valueQuantity?.code ?? ''] },
+        title: { text: [layerName, resource.valueQuantity?.code].filter(isDefined) },
       }),
       annotations: resource.referenceRange
         ?.map((range) => this.referenceRangeService.createReferenceRangeAnnotation(range, layerName, layerName))
