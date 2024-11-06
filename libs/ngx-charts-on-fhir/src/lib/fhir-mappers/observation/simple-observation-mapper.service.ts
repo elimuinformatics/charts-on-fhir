@@ -30,8 +30,8 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
     resource.code?.text &&
     resource.effectiveDateTime &&
     resource.valueQuantity?.value &&
-    resource.valueQuantity?.unit &&
-    resource.valueQuantity?.code
+    (!resource.valueQuantity.unit || !!resource.valueQuantity.unit) &&
+    (!resource.valueQuantity.code || !!resource.valueQuantity.code)
   );
 }
 
