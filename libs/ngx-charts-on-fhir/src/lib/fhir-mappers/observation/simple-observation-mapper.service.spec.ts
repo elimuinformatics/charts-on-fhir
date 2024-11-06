@@ -28,25 +28,100 @@ describe('SimpleObservationMapper', () => {
   });
 
   describe('canMap', () => {
-    it('should return true for a SimpleObservation', () => {
+    it('should return true for a valid SimpleObservation', () => {
       const observation: SimpleObservation = {
         resourceType: 'Observation',
         status: 'final',
-        code: { text: 'text' },
+        code: { text: 'Blood Pressure' },
         effectiveDateTime: new Date().toISOString(),
-        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
+        valueQuantity: { value: 120, unit: 'mmHg', code: 'BP' },
       };
       expect(mapper.canMap(observation)).toBe(true);
     });
 
-    it('should return false for an Observation with no valueQuantity', () => {
+    it('should return false if resourceType is not "Observation"', () => {
+      const invalidResource = {
+        resourceType: 'Condition',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 120, unit: 'mmHg', code: 'BP' },
+      };
+      expect(mapper.canMap(invalidResource as Observation)).toBe(false);
+    });
+
+    it('should return false if code.text is missing', () => {
       const observation: Observation = {
         resourceType: 'Observation',
         status: 'final',
-        code: { text: 'text' },
+        code: {},
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 120, unit: 'mmHg', code: 'BP' },
+      };
+      expect(mapper.canMap(observation)).toBe(false);
+    });
+
+    it('should return false if effectiveDateTime is missing', () => {
+      const observation: Observation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        valueQuantity: { value: 120, unit: 'mmHg', code: 'BP' },
+      };
+      expect(mapper.canMap(observation)).toBe(false);
+    });
+
+    it('should return false if valueQuantity is missing', () => {
+      const observation: Observation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
         effectiveDateTime: new Date().toISOString(),
       };
       expect(mapper.canMap(observation)).toBe(false);
+    });
+
+    it('should return false if valueQuantity.value is missing', () => {
+      const observation: Observation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { unit: 'mmHg', code: 'BP' },
+      };
+      expect(mapper.canMap(observation)).toBe(false);
+    });
+
+    it('should return true if valueQuantity.unit and valueQuantity.code are optional', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 120 },
+      };
+      expect(mapper.canMap(observation)).toBe(true);
+    });
+
+    it('should return true if valueQuantity.unit is missing but value and code are present', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 120, code: 'BP' },
+      };
+      expect(mapper.canMap(observation)).toBe(true);
+    });
+
+    it('should return true if valueQuantity.code is missing but value and unit are present', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 120, unit: 'mmHg' },
+      };
+      expect(mapper.canMap(observation)).toBe(true);
     });
   });
 
