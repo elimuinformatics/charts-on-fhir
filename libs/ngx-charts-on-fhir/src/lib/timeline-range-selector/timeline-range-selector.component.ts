@@ -2,13 +2,15 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DateRange, MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
-import { subtractMonths } from '../utils';
+import { MILLISECONDS_PER_DAY, subtractMonths } from '../utils';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
+
+type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
 
 /**
  * See `*TimelineRangeSelector` for example usage.
@@ -23,40 +25,30 @@ import { MatMenuModule } from '@angular/material/menu';
 export class TimelineRangeSelectorComponent {
   selectedDateRange: DateRange<Date> = new DateRange<Date>(null, null);
   calendarDateRange: DateRange<Date> = new DateRange<Date>(null, null);
-  rangeSelectorButtons = [
-    { month: 1, value: '1 mo' },
-    { month: 3, value: '3 mo' },
-    { month: 6, value: '6 mo' },
-    { month: 12, value: '1 y' },
-  ];
-  selectedButton: number | 'All' = 'All';
-  get selectedButtonLabel(): string {
-    if (this.selectedButton === 'All') {
-      return 'All';
-    }
-    const button = this.rangeSelectorButtons.find((b) => b.month === this.selectedButton);
-    return button ? button.value : 'Custom';
-  }
+  selectedButton: DateRangeString = 'All';
   @Input() showTimelineViewTitle: boolean = false;
+  @Input() buttons: DateRangeString[] = ['1 mo', '3 mo', '6 mo', '1 y', 'All'];
 
-  constructor(private readonly changeDetectorRef: ChangeDetectorRef, private readonly configService: FhirChartConfigurationService) {}
+  constructor(
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly configService: FhirChartConfigurationService,
+  ) {}
 
   ngOnInit(): void {
     this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
       this.selectedDateRange = new DateRange(new Date(timelineRange.min), new Date(timelineRange.max));
-      if (this.configService.isAutoZoom || !this.selectedDateRange.start || !this.selectedDateRange.end) {
-        this.selectedButton = 'All';
-      } else {
-        this.selectedButton = this.calculateMonthDiff(this.selectedDateRange.start, this.selectedDateRange.end);
-      }
+      this.selectedButton = this.findMatchingButton(this.selectedDateRange);
       this.changeDetectorRef.markForCheck();
     });
   }
 
-  updateRangeSelector(monthCount: number) {
-    if (this.selectedDateRange.end && monthCount) {
-      const maxDate = new Date();
-      this.selectedDateRange = new DateRange(subtractMonths(maxDate, monthCount), maxDate);
+  updateRangeSelector(range: DateRangeString) {
+    console.log('update Range', range);
+    if (range === 'All') {
+      this.resetZoomChart();
+    }
+    if (this.selectedDateRange.end && range) {
+      this.selectedDateRange = this.convertStringToDateRange(range);
       this.zoomChart();
     }
   }
@@ -105,6 +97,51 @@ export class TimelineRangeSelectorComponent {
   applyCalendarDateRange() {
     this.selectedDateRange = this.calendarDateRange;
     this.zoomChart();
+  }
+
+  findMatchingButton(dateRange: DateRange<Date>) {
+    if (this.configService.isAutoZoom || !dateRange.start || !dateRange.end) {
+      return 'All';
+    }
+    const days = this.calculateDayDiff(dateRange.start, dateRange.end);
+    const months = this.calculateMonthDiff(dateRange.start, dateRange.end);
+    const years = Math.floor(months / 12);
+    const dayString: DateRangeString = `${days} d`;
+    const monthString: DateRangeString = `${months} mo`;
+    const yearString: DateRangeString = `${years} y`;
+    if (this.buttons.includes(dayString)) {
+      return dayString;
+    }
+    if (this.buttons.includes(monthString)) {
+      return monthString;
+    }
+    if (this.buttons.includes(yearString)) {
+      return yearString;
+    }
+    return 'Custom';
+  }
+
+  convertStringToDateRange(rangeString: DateRangeString): DateRange<Date> {
+    if (rangeString === 'All') {
+      return new DateRange<Date>(null, null);
+    }
+    const maxDate = new Date();
+    const [value, unit] = rangeString.split(' ');
+    if (unit === 'y') {
+      return new DateRange<Date>(subtractMonths(maxDate, parseInt(value) * 12), maxDate);
+    }
+    if (unit === 'mo') {
+      return new DateRange<Date>(subtractMonths(maxDate, parseInt(value)), maxDate);
+    }
+    if (unit === 'd') {
+      return new DateRange<Date>(new Date(maxDate.getTime() - parseInt(value) * MILLISECONDS_PER_DAY), maxDate);
+    }
+    throw new Error('Invalid range');
+  }
+
+  calculateDayDiff(minDateValue: Date, maxDateValue: Date): number {
+    const diffTime = maxDateValue.getTime() - minDateValue.getTime();
+    return Math.ceil(diffTime / MILLISECONDS_PER_DAY);
   }
 
   calculateMonthDiff(minDateValue: Date, maxDateValue: Date): number {

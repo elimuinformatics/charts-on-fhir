@@ -3,28 +3,22 @@
   <div class="range-selector-controls">
     <div id="toggle-buttons">
       <mat-button-toggle-group id="rangeselector" name="fontStyle" aria-label="Font Style" [value]="selectedButton">
-        <mat-button-toggle
-          *ngFor="let rangeButton of rangeSelectorButtons"
-          [id]="rangeButton.value"
-          [value]="rangeButton.month"
-          (click)="updateRangeSelector(rangeButton.month)"
-          >{{ rangeButton.value }}</mat-button-toggle
-        >
-        <mat-button-toggle id="resetzoom" value="All" (click)="resetZoomChart()">All</mat-button-toggle>
+        @for (button of buttons; track button) {
+          <mat-button-toggle [value]="button" (change)="updateRangeSelector(button)">{{ button }}</mat-button-toggle>
+        }
       </mat-button-toggle-group>
     </div>
     <div id="menu-buttons">
       <button mat-stroked-button [matMenuTriggerFor]="buttonsMenu" class="button-menu-trigger">
-        {{ selectedButtonLabel }}
+        {{ selectedButton }}
         <svg viewBox="0 0 24 24" width="24px" height="24px" focusable="false" aria-hidden="true" class="dropdown-arrow">
           <path d="M7 10l5 5 5-5z"></path>
         </svg>
       </button>
       <mat-menu #buttonsMenu="matMenu">
-        <button mat-menu-item *ngFor="let rangeButton of rangeSelectorButtons" [value]="rangeButton.month" (click)="updateRangeSelector(rangeButton.month)">
-          {{ rangeButton.value }}
-        </button>
-        <button mat-menu-item value="All" (click)="resetZoomChart()">All</button>
+        @for (button of buttons; track button) {
+          <button mat-menu-item [value]="button" (click)="updateRangeSelector(button)">{{ button }}</button>
+        }
       </mat-menu>
     </div>
     <div id="range-selector-dropdown">
