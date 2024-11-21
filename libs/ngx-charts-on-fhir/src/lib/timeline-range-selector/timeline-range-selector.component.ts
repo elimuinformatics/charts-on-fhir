@@ -43,7 +43,6 @@ export class TimelineRangeSelectorComponent {
   }
 
   updateRangeSelector(range: DateRangeString) {
-    console.log('update Range', range);
     if (range === 'All') {
       this.resetZoomChart();
     }
