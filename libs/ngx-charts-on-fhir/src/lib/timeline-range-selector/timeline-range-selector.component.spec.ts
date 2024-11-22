@@ -71,9 +71,18 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(rangeSelector).toBeTruthy();
   });
 
+  it('should support custom button with range specified in days', async () => {
+    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
+    component.buttons = ['2 d'];
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '2 d' }));
+    await ButtonInput.check();
+    const expectedMinDate = new Date('2022-03-28T00:00');
+    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+  });
+
   it('should calculate proper 1 month ago date from max layer date', async () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 mo']" }));
+    let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 mo' }));
     await ButtonInputGroup.check();
     const expectedMinDate = new Date('2022-02-28T00:00');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
@@ -81,7 +90,7 @@ describe('TimelineRangeSelectorComponent', () => {
 
   it('should calculate proper 3 month ago date from max layer date', async () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='3 mo']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '3 mo' }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-12-30T00:00');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
@@ -89,7 +98,7 @@ describe('TimelineRangeSelectorComponent', () => {
 
   it('should calculate proper 6 month ago date from max layer date', async () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='6 mo']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '6 mo' }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-09-30T00:00');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
@@ -97,14 +106,14 @@ describe('TimelineRangeSelectorComponent', () => {
 
   it('should calculate proper 12 month ago date from max layer date', async () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='1 y']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 y' }));
     await ButtonInput.check();
     const expectedMinDate = new Date('2021-03-30T00:00');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
   it('should reset a chart when click on all button', async () => {
-    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ selector: "[id='resetzoom']" }));
+    let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: 'All' }));
     await ButtonInput.check();
     expect(mockConfigService.resetZoom).toHaveBeenCalled();
   });
@@ -133,7 +142,7 @@ describe('TimelineRangeSelectorComponent', () => {
   it('should subscribe timelineRange when the component initializes and set selectedDateRange', async () => {
     expect(component.selectedDateRange.start).toEqual(new Date(min));
     expect(component.selectedDateRange.end).toEqual(new Date(max));
-    expect(component.selectedButton).toEqual(2);
+    expect(component.selectedButton).toEqual('Custom');
   });
 
   it('should call configService.zoom when start date is changed', async () => {
