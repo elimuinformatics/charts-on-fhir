@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, distinctUntilChanged, EMPTY, map, merge, Observable, Subject, takeUntil } from 'rxjs';
+import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
+import { BehaviorSubject, catchError, distinctUntilChanged, EMPTY, map, merge, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { DataLayer, DataLayerCollection, ManagedDataLayer } from './data-layer';
 import { DataLayerColorService } from './data-layer-color.service';
 import { DataLayerMergeService } from './data-layer-merge.service';
@@ -42,6 +42,8 @@ import { FhirChartTagsService } from '../fhir-chart-legend/fhir-chart-tags-legen
  * export class AppModule {}
  * ```
  */
+export const DEFAULT_CHART_LAYERS = new InjectionToken<DataLayer[]>('Default Data Layers');
+
 export abstract class DataLayerService {
   abstract name: string;
   abstract retrieve: () => Observable<DataLayer>;
@@ -84,7 +86,8 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private readonly colorService: DataLayerColorService,
     private readonly tagsService: FhirChartTagsService,
-    private readonly mergeService: DataLayerMergeService
+    private readonly mergeService: DataLayerMergeService,
+    @Optional() @Inject(DEFAULT_CHART_LAYERS) private readonly defaultChartLayers: any[]
   ) {}
   dataRetrievalError$ = new BehaviorSubject<boolean>(false);
   private readonly stateSubject = new BehaviorSubject(initialState);
@@ -134,6 +137,7 @@ export class DataLayerManagerService {
   retrieveAll() {
     this.reset();
     this.loading$.next(true);
+    this.mergeDefaultChartLayer();
     merge(
       ...this.dataLayerServices.map((service) =>
         service.retrieve().pipe(
@@ -148,14 +152,40 @@ export class DataLayerManagerService {
       .pipe(takeUntil(this.cancel$))
       .subscribe({
         next: (layer) => {
-          const layers = this.mergeService.merge(this.state.layers, layer);
-          this.state = { ...this.state, layers };
+          const existingLayerKey = Object.keys(this.state.layers).find((key) => this.state.layers[key].scale.id === layer.scale.id);
+          if (existingLayerKey) {
+            const updatedLayers = {
+              ...this.state.layers,
+              [existingLayerKey]: { ...this.state.layers[existingLayerKey], ...layer },
+            };
+            this.state = { ...this.state, layers: updatedLayers };
+          } else {
+            const updatedLayers = this.mergeService.merge(this.state.layers, layer);
+            this.state = { ...this.state, layers: updatedLayers };
+          }
         },
         complete: () => {
           this.loading$.next(false);
         },
       });
   }
+
+  private readonly mergeDefaultChartLayer = () => {
+    if (this.defaultChartLayers && this.defaultChartLayers.length > 0) {
+      let updatedLayers = this.state.layers;
+      this.defaultChartLayers.forEach((layer) => {
+        updatedLayers = this.mergeService.merge(updatedLayers, layer);
+        this.state = { ...this.state, layers: updatedLayers };
+        this.state = produce(this.state, (draft) => {
+          const layerId = Object.keys(draft.layers)[0];
+          if (layerId && draft.layers[layerId]) {
+            const layer = draft.layers[layerId];
+            draft.selected = [...draft.selected, layer.id];
+          }
+        });
+      });
+    }
+  };
 
   /** Cancels any in-progress data retrieval and resets the DataLayerManager to its initial state */
   reset() {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MedicationRequest } from 'fhir/r4';
+import { Bundle, MedicationRequest } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
-
+import medication from './medication.json';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +12,6 @@ export class MedicationLayerService extends DataLayerService {
   }
   name = 'Medications';
   retrieve = () => {
-    return this.fhir.getPatientData<MedicationRequest>('MedicationRequest').pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return from(this.converter.convert(medication as Bundle));
   };
 }

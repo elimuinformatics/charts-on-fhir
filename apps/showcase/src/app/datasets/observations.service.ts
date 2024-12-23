@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observation } from 'fhir/r4';
+import { Bundle, Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
-
+import data from './data.json';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +12,6 @@ export class ObservationLayerService extends DataLayerService {
   }
   name = 'Observations';
   retrieve = () => {
-    return this.fhir.getPatientData<Observation>('Observation?_sort=-date').pipe(mergeMap((bundle) => from(this.converter.convert(bundle))));
+    return from(this.converter.convert(data as Bundle));
   };
 }

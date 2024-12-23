@@ -1,6 +1,6 @@
 import { Provider, Type } from '@angular/core';
 import { COLOR_PALETTE, DataLayerColorService } from './data-layer/data-layer-color.service';
-import { DataLayerManagerService, DataLayerService } from './data-layer/data-layer-manager.service';
+import { DEFAULT_CHART_LAYERS, DataLayerManagerService, DataLayerService } from './data-layer/data-layer-manager.service';
 import { DataLayerMergeService } from './data-layer/data-layer-merge.service';
 import { FhirChartConfigurationService } from './fhir-chart/fhir-chart-configuration.service';
 import { FhirConverter } from './fhir-mappers/fhir-converter.service';
@@ -8,6 +8,7 @@ import { Mapper, MultiMapper } from './fhir-mappers/multi-mapper.service';
 import { SummaryService } from './fhir-chart-summary/summary.service';
 import { ReferenceRangeService } from './fhir-mappers/observation/reference-range.service';
 import { FhirCodeService } from './fhir-mappers/fhir-code.service';
+import { ManagedDataLayer } from './data-layer/data-layer';
 
 /**
  * Returns a Provider array with all of the configured services.
@@ -62,4 +63,8 @@ export function withMappers(...mappers: Type<Mapper<any, any, any>>[]): Provider
 /** Configures the color palette for the Charts-on-FHIR library */
 export function withColors(...palette: string[]): Provider[] {
   return [{ provide: COLOR_PALETTE, useValue: palette }];
+}
+
+export function withChartLayer(layers: ManagedDataLayer): Provider[] {
+  return [{ provide: DEFAULT_CHART_LAYERS, useValue: layers }];
 }
