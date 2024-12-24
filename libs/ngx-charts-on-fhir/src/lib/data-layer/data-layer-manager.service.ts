@@ -152,14 +152,17 @@ export class DataLayerManagerService {
       .pipe(takeUntil(this.cancel$))
       .subscribe({
         next: (layer) => {
+          console.log('layer', layer);
           const existingLayerKey = Object.keys(this.state.layers).find((key) => this.state.layers[key].scale.id === layer.scale.id);
           if (existingLayerKey) {
+            console.log(`replacing existing layer ${JSON.stringify(this.state.layers[existingLayerKey])}`);
             const updatedLayers = {
               ...this.state.layers,
               [existingLayerKey]: { ...this.state.layers[existingLayerKey], ...layer },
             };
             this.state = { ...this.state, layers: updatedLayers };
           } else {
+            console.log(`Adding layer ${JSON.stringify(layer)}`);
             const updatedLayers = this.mergeService.merge(this.state.layers, layer);
             this.state = { ...this.state, layers: updatedLayers };
           }
@@ -176,13 +179,10 @@ export class DataLayerManagerService {
       this.defaultChartLayers.forEach((layer) => {
         updatedLayers = this.mergeService.merge(updatedLayers, layer);
         this.state = { ...this.state, layers: updatedLayers };
-        this.state = produce(this.state, (draft) => {
-          const layerId = Object.keys(draft.layers)[0];
-          if (layerId && draft.layers[layerId]) {
-            const layer = draft.layers[layerId];
-            draft.selected = [...draft.selected, layer.id];
-          }
-        });
+      });
+      this.state = produce(this.state, (draft) => {
+        const layerIds = Object.keys(draft.layers);
+        draft.selected = [...draft.selected, ...layerIds];
       });
     }
   };
