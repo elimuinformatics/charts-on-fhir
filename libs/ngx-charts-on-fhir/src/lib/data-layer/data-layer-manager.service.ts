@@ -182,7 +182,7 @@ export class DataLayerManagerService {
       });
       this.state = produce(this.state, (draft) => {
         const layerIds = Object.keys(draft.layers);
-        draft.selected = [...draft.selected, ...layerIds];
+        draft.selected = [...layerIds];
       });
     }
   };
