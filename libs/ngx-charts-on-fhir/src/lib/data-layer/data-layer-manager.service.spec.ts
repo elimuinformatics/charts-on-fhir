@@ -10,6 +10,7 @@ describe('DataLayerManagerService', () => {
   let mergeService: jasmine.SpyObj<DataLayerMergeService>;
   let colorService: jasmine.SpyObj<DataLayerColorService>;
   let tagsService: jasmine.SpyObj<FhirChartTagsService>;
+  let defaultChartLayersService: jasmine.SpyObj<[]>;
   // DataLayers
   const a: ManagedDataLayer = { name: 'a', id: 'a', datasets: [], scale: { id: 'a' } };
   const b: ManagedDataLayer = { name: 'b', id: 'b', datasets: [], scale: { id: 'b' } };
@@ -24,6 +25,7 @@ describe('DataLayerManagerService', () => {
     colorService.chooseColorsFromPalette.and.callFake((l) => l.datasets.forEach((d) => (d.borderColor = '#000000')));
     // fake tagsService does nothing
     tagsService = jasmine.createSpyObj('DatasetTagsService', ['applyTagStyles']);
+    defaultChartLayersService = jasmine.createSpyObj('DefaultDataLayerService', [{ data: [] }]);
   });
 
   describe('retrieveAll', () => {
@@ -32,27 +34,27 @@ describe('DataLayerManagerService', () => {
         { name: 'one', retrieve: () => cold('a-c|', { a, c }) },
         { name: 'two', retrieve: () => cold('-b|', { b }) },
       ];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       expect(manager.allLayers$).toBeObservable(
         hot('xyz', {
           x: jasmine.arrayWithExactContents([a]),
           y: jasmine.arrayWithExactContents([a, b]),
           z: jasmine.arrayWithExactContents([a, b, c]),
-        })
+        }),
       );
     });
 
     it('should not change selectedLayers$ when a new layer is retrieved', () => {
       const services = [{ name: 'one', retrieve: () => cold('a-b|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy-', {
           x: [],
           y: [jasmine.objectContaining(a)],
-        })
+        }),
       );
     });
 
@@ -62,7 +64,7 @@ describe('DataLayerManagerService', () => {
         { name: 'error', retrieve: () => throwError(() => error) },
         { name: 'successful', retrieve: () => of(a) },
       ];
-      const manager = new DataLayerManagerService(servicesWithError, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(servicesWithError, colorService, tagsService, mergeService, defaultChartLayersService);
       spyOn(console, 'error');
       manager.retrieveAll();
       expect(manager.dataRetrievalError$.getValue()).toBe(true);
@@ -72,7 +74,7 @@ describe('DataLayerManagerService', () => {
       expect(manager.allLayers$).toBeObservable(
         hot('x', {
           x: jasmine.arrayWithExactContents([a]),
-        })
+        }),
       );
     });
   });
@@ -80,38 +82,38 @@ describe('DataLayerManagerService', () => {
   describe('autoSelect', () => {
     it('should select all layers when true', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(true);
       manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
           x: [jasmine.objectContaining(a)],
           y: [jasmine.objectContaining(a), jasmine.objectContaining(b)],
-        })
+        }),
       );
     });
 
     it('should select no layers when false', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(false);
       manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
         hot('x', {
           x: [],
-        })
+        }),
       );
     });
 
     it('should select layer when callback returns true', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect((layer) => layer.name === 'a');
       manager.retrieveAll();
       expect(manager.selectedLayers$).toBeObservable(
         hot('x', {
           x: [jasmine.objectContaining(a)],
-        })
+        }),
       );
     });
   });
@@ -119,7 +121,7 @@ describe('DataLayerManagerService', () => {
   describe('autoEnable', () => {
     it('should enable all layers when true', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(true);
       manager.autoEnable(true);
       manager.retrieveAll();
@@ -127,20 +129,20 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: [jasmine.objectContaining({ name: 'a', enabled: true })],
           y: [jasmine.objectContaining({ name: 'a', enabled: true }), jasmine.objectContaining({ name: 'b', enabled: true })],
-        })
+        }),
       );
     });
 
     it('should disable all layers when false', () => {
       const services = [{ name: 'one', retrieve: () => cold('ab|', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(true);
       manager.autoEnable(false);
       manager.retrieveAll();
       expect(manager.enabledLayers$).toBeObservable(
         hot('x', {
           x: [],
-        })
+        }),
       );
     });
 
@@ -149,7 +151,7 @@ describe('DataLayerManagerService', () => {
         { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
         { name: 'two', retrieve: () => cold('-a|', { a }) },
       ];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(true);
       manager.autoEnable((layer) => layer.name !== 'a');
       manager.retrieveAll();
@@ -162,7 +164,7 @@ describe('DataLayerManagerService', () => {
             jasmine.objectContaining(b),
             jasmine.objectContaining(c),
           ]),
-        })
+        }),
       );
     });
   });
@@ -173,7 +175,7 @@ describe('DataLayerManagerService', () => {
         { name: 'one', retrieve: () => cold('c-b|', { c, b }) },
         { name: 'two', retrieve: () => cold('-a|', { a }) },
       ];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(true);
       manager.autoSort((one, two) => one.name.localeCompare(two.name));
       manager.retrieveAll();
@@ -182,7 +184,7 @@ describe('DataLayerManagerService', () => {
           x: [jasmine.objectContaining(c)],
           y: [jasmine.objectContaining(a), jasmine.objectContaining(c)],
           z: [jasmine.objectContaining(a), jasmine.objectContaining(b), jasmine.objectContaining(c)],
-        })
+        }),
       );
     });
   });
@@ -190,20 +192,20 @@ describe('DataLayerManagerService', () => {
   describe('select', () => {
     it('should emit selectedLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
           x: [],
           y: [jasmine.objectContaining(a)],
-        })
+        }),
       );
     });
 
     it('should turn off autoSelect', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(() => false);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
@@ -211,27 +213,27 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoSelect: true }),
           y: jasmine.objectContaining({ isAutoSelect: false }),
-        })
+        }),
       );
     });
 
     it('should enable the layer', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
           x: [],
           y: [jasmine.objectContaining({ ...a, enabled: true })],
-        })
+        }),
       );
     });
 
     it('should set layer color', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       expect(manager.selectedLayers$).toBeObservable(
@@ -243,13 +245,13 @@ describe('DataLayerManagerService', () => {
               datasets: [jasmine.objectContaining({ borderColor: '#000000' })],
             }),
           ],
-        })
+        }),
       );
     });
 
     it('should throw an error if layer is already selected', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().flush();
       manager.select('a');
@@ -257,7 +259,7 @@ describe('DataLayerManagerService', () => {
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService, defaultChartLayersService);
       expect(() => manager.select('a')).toThrowError(/not found/);
     });
   });
@@ -265,7 +267,7 @@ describe('DataLayerManagerService', () => {
   describe('remove', () => {
     it('should remove the layer from selectedLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('(ab|)', { a, b }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 0);
       getTestScheduler().schedule(() => manager.select('b'), 0);
@@ -275,13 +277,13 @@ describe('DataLayerManagerService', () => {
           x: [],
           y: [jasmine.objectContaining(a), jasmine.objectContaining(b)],
           z: [jasmine.objectContaining(b)],
-        })
+        }),
       );
     });
 
     it('should turn off autoSelect', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(() => true);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.remove('a'), 10);
@@ -289,13 +291,13 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoSelect: true }),
           y: jasmine.objectContaining({ isAutoSelect: false }),
-        })
+        }),
       );
     });
 
     it('should throw an error if layer is not selected', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().flush();
       expect(() => manager.remove('a')).toThrowError(/not selected/);
@@ -305,20 +307,20 @@ describe('DataLayerManagerService', () => {
   describe('enable', () => {
     it('should enable the layer in allLayers$', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.enable('a'), 10);
       expect(manager.allLayers$).toBeObservable(
         hot('xy', {
           x: [a],
           y: [jasmine.objectContaining({ id: 'a', enabled: true })],
-        })
+        }),
       );
     });
 
     it('should turn off autoEnable', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoEnable(() => false);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.enable('a'), 10);
@@ -326,27 +328,27 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoEnable: true }),
           y: jasmine.objectContaining({ isAutoEnable: false }),
-        })
+        }),
       );
     });
 
     it('should show datasets for the layer in allLayers$', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.enable('a'), 10);
       expect(manager.allLayers$).toBeObservable(
         hot('xy', {
           x: [layer],
           y: [jasmine.objectContaining({ id: 'a', datasets: [jasmine.objectContaining({ hidden: false })] })],
-        })
+        }),
       );
     });
 
     it('should disable the layer in selectedLayers$ when enabled=false', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       getTestScheduler().schedule(() => manager.enable('a', false), 20);
@@ -355,14 +357,14 @@ describe('DataLayerManagerService', () => {
           x: [],
           y: [jasmine.objectContaining({ id: 'a', enabled: true })],
           z: [jasmine.objectContaining({ id: 'a', enabled: false })],
-        })
+        }),
       );
     });
 
     it('should hide datasets for the layer in selectedLayers$ when enabled=false', () => {
       const layer: ManagedDataLayer = { name: 'a', id: 'a', datasets: [{ data: [] }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: layer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 10);
       getTestScheduler().schedule(() => manager.enable('a', false), 20);
@@ -371,12 +373,12 @@ describe('DataLayerManagerService', () => {
           x: [],
           y: [jasmine.objectContaining({ id: 'a' })],
           z: [jasmine.objectContaining({ id: 'a', datasets: [jasmine.objectContaining({ hidden: true })] })],
-        })
+        }),
       );
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService, defaultChartLayersService);
       expect(() => manager.enable('a')).toThrowError(/not found/);
     });
   });
@@ -385,19 +387,19 @@ describe('DataLayerManagerService', () => {
     it('should emit updated layer in allLayers$', () => {
       const updatedLayer = { name: 'updated', id: 'a', datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
       expect(manager.allLayers$).toBeObservable(
         hot('xy', {
           x: [a],
           y: [jasmine.objectContaining({ id: 'a', name: 'updated' })],
-        })
+        }),
       );
     });
 
     it('should throw an error if layer does not exist', () => {
-      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService, defaultChartLayersService);
       expect(() => manager.enable('a')).toThrowError(/not found/);
     });
 
@@ -405,7 +407,7 @@ describe('DataLayerManagerService', () => {
       const originalLayer = { name: 'a', id: 'a', datasets: [{ label: 'aa', data: [], hidden: false }], scale: { id: 'a' } };
       const updatedLayer = { name: 'a', id: 'a', datasets: [{ label: 'aa', data: [], hidden: true }], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoEnable(() => true);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
@@ -413,7 +415,7 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoEnable: true }),
           y: jasmine.objectContaining({ isAutoEnable: false }),
-        })
+        }),
       );
     });
 
@@ -421,7 +423,7 @@ describe('DataLayerManagerService', () => {
       const originalLayer = { name: 'a', id: 'a', enabled: true, datasets: [], scale: { id: 'a' } };
       const updatedLayer = { name: 'a', id: 'a', enabled: false, datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoEnable(() => true);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
@@ -429,7 +431,7 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoEnable: true }),
           y: jasmine.objectContaining({ isAutoEnable: false }),
-        })
+        }),
       );
     });
 
@@ -437,7 +439,7 @@ describe('DataLayerManagerService', () => {
       const originalLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
       const updatedLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(() => true);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
@@ -445,7 +447,7 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoSelect: true }),
           y: jasmine.objectContaining({ isAutoSelect: false }),
-        })
+        }),
       );
     });
 
@@ -453,14 +455,14 @@ describe('DataLayerManagerService', () => {
       const originalLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
       const updatedLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
       expect(manager.selectedLayers$).toBeObservable(
         hot('xy', {
           x: [],
           y: [jasmine.objectContaining({ name: 'a', selected: true })],
-        })
+        }),
       );
     });
 
@@ -468,7 +470,7 @@ describe('DataLayerManagerService', () => {
       const originalLayer = { name: 'a', id: 'a', selected: true, datasets: [], scale: { id: 'a' } };
       const updatedLayer = { name: 'a', id: 'a', selected: false, datasets: [], scale: { id: 'a' } };
       const services = [{ name: 'one', retrieve: () => cold('a|', { a: originalLayer }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSelect(() => true);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.update(updatedLayer), 10);
@@ -476,7 +478,7 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: [jasmine.objectContaining({ name: 'a', selected: true })],
           y: [],
-        })
+        }),
       );
     });
   });
@@ -484,7 +486,7 @@ describe('DataLayerManagerService', () => {
   describe('move', () => {
     it('should emit selectedLayers$ in new order', () => {
       const services = [{ name: 'one', retrieve: () => cold('(abc|)', { a, b, c }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.select('a'), 0);
       getTestScheduler().schedule(() => manager.select('b'), 0);
@@ -494,13 +496,13 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: [jasmine.objectContaining(a), jasmine.objectContaining(b), jasmine.objectContaining(c)],
           y: [jasmine.objectContaining(b), jasmine.objectContaining(c), jasmine.objectContaining(a)],
-        })
+        }),
       );
     });
 
     it('should turn off autoSort', () => {
       const services = [{ name: 'one', retrieve: () => cold('a|', { a }) }];
-      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService(services, colorService, tagsService, mergeService, defaultChartLayersService);
       manager.autoSort(() => 0);
       manager.retrieveAll();
       getTestScheduler().schedule(() => manager.move(0, 0), 10);
@@ -508,12 +510,12 @@ describe('DataLayerManagerService', () => {
         hot('xy', {
           x: jasmine.objectContaining({ isAutoSort: true }),
           y: jasmine.objectContaining({ isAutoSort: false }),
-        })
+        }),
       );
     });
 
     it('should throw an error if previousIndex is invalid', () => {
-      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService);
+      const manager = new DataLayerManagerService([], colorService, tagsService, mergeService, defaultChartLayersService);
       expect(() => manager.move(1, 0)).toThrowError(/out of range/);
     });
   });
