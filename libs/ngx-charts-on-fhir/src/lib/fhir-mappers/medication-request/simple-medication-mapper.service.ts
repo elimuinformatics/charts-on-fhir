@@ -78,7 +78,9 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
       afterDatasetsDraw: (chart) => {
         const ctx = chart.ctx;
         chart.data.datasets.forEach((dataset, datasetIndex) => {
-          if (dataset.data.length === 0) return;
+          if (dataset.data.length === 0) {
+            return;
+          }
           const meta = chart.getDatasetMeta(datasetIndex);
           if (meta.yAxisID === 'medications') {
             const label = dataset.label;
