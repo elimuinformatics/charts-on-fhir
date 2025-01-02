@@ -119,7 +119,6 @@ describe('SimpleMedicationMapper', () => {
           datasets: [
             {
               label: 'TestLabel',
-              data: [{ y: 20 }],
             },
           ],
         },
