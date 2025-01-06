@@ -27,7 +27,10 @@ export type MedicationDataPoint = TimelineDataPoint & {
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
 @Injectable()
 export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
-  constructor(@Inject(CATEGORY_SCALE_OPTIONS) private readonly categoryScaleOptions: ScaleOptions<'category'>, private readonly codeService: FhirCodeService) {
+  constructor(
+    @Inject(CATEGORY_SCALE_OPTIONS) private readonly categoryScaleOptions: ScaleOptions<'category'>,
+    private readonly codeService: FhirCodeService,
+  ) {
     this.registerCustomPlugin();
   }
   canMap = isMedication;
@@ -76,6 +79,9 @@ export class SimpleMedicationMapper implements Mapper<SimpleMedication> {
         const ctx = chart.ctx;
         chart.data.datasets.forEach((dataset, datasetIndex) => {
           const meta = chart.getDatasetMeta(datasetIndex);
+          if (meta.data.length === 0) {
+            return;
+          }
           if (meta.yAxisID === 'medications') {
             const label = dataset.label;
             const centerY = (meta.data[0].y + meta.data[meta.data.length - 1].y) / 2;
