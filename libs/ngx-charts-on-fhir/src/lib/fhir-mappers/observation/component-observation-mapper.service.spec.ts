@@ -67,10 +67,7 @@ describe('ComponentObservationMapper', () => {
           },
         ],
       };
-      expect(mapper.map(observation).datasets).toEqual([
-        jasmine.objectContaining({ label: 'one (Clinic)' }),
-        jasmine.objectContaining({ label: 'two (Clinic)' }),
-      ]);
+      expect(mapper.map(observation).datasets).toEqual([jasmine.objectContaining({ label: 'one' }), jasmine.objectContaining({ label: 'two' })]);
     });
 
     it('should map effectiveDateTime to x value in milliseconds', () => {
@@ -124,7 +121,7 @@ describe('ComponentObservationMapper', () => {
           id: 'text',
           type: 'linear',
           title: { text: ['text', 'code'] },
-        })
+        }),
       );
     });
 
@@ -153,7 +150,7 @@ describe('ComponentObservationMapper', () => {
           yScaleID: 'text',
           yMin: 1,
           yMax: 10,
-        })
+        }),
       );
     });
 
