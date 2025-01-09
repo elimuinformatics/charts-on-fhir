@@ -10,7 +10,6 @@ import { FhirCodeService } from '../fhir-code.service';
 import { ReferenceRangeService } from './reference-range.service';
 
 export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
-export const CLINIC_DATASET_LABEL_SUFFIX = ' (Clinic)';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
 export type SimpleObservation = {
@@ -41,7 +40,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private readonly linearScaleOptions: ScaleOptions<'linear'>,
     private readonly codeService: FhirCodeService,
-    private readonly referenceRangeService: ReferenceRangeService
+    private readonly referenceRangeService: ReferenceRangeService,
   ) {}
   canMap = isSimpleObservation;
   map(resource: SimpleObservation, overrideLayerName?: string): DataLayer {
@@ -83,7 +82,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
 export const measurementSettingExtUrl = 'http://hl7.org/fhir/us/vitals/StructureDefinition/MeasurementSettingExt';
 export const homeEnvironmentCode = '264362003';
 export function getMeasurementSettingSuffix(resource: Observation): string {
-  return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : CLINIC_DATASET_LABEL_SUFFIX;
+  return isHomeMeasurement(resource) ? HOME_DATASET_LABEL_SUFFIX : '';
 }
 export function isHomeMeasurement(resource: Observation): boolean {
   if (resource.extension) {
