@@ -10,6 +10,7 @@ import { TIME_SCALE_OPTIONS, TIMEFRAME_ANNOTATION_OPTIONS } from '../fhir-mapper
 import { ChartAnnotation, ChartAnnotations, ChartScales, formatDateTime, formatMonths, isDefined, MonthRange, NumberRange, subtractMonths } from '../utils';
 import './center-tooltip-positioner';
 import { sortData } from '../data-layer/data-layer-merge.service';
+import { LineAnnotationOptions } from 'chartjs-plugin-annotation';
 export type TimelineConfiguration = ChartConfiguration<TimelineChartType, TimelineDataPoint[]>;
 
 type MergedDataLayer = {
@@ -273,7 +274,8 @@ function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], an
         const annotationValues: number[] = [];
         if (isNotNaN(anno[annoMin])) annotationValues.push(anno[annoMin]);
         if (isNotNaN(anno[annoMax])) annotationValues.push(anno[annoMax]);
-        if (isNotNaN((anno as any).value)) annotationValues.push((anno as any).value);
+        const annoValue = (anno as LineAnnotationOptions).value;
+        if (isNotNaN(annoValue)) annotationValues.push(annoValue);
         return annotationValues;
       }),
     );
