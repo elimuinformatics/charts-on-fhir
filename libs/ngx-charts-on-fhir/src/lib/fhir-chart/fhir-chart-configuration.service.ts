@@ -27,7 +27,7 @@ export class FhirChartConfigurationService {
     private layerManager: DataLayerManagerService,
     @Inject(TIME_SCALE_OPTIONS) private timeScaleOptions: ScaleOptions<'time'>,
     @Inject(TIMEFRAME_ANNOTATION_OPTIONS) private timeframeAnnotationOptions: ChartAnnotation,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) {
     this.setSummaryRange(0);
   }
@@ -50,7 +50,7 @@ export class FhirChartConfigurationService {
   chartConfig$ = combineLatest([this.mergedLayer$, this.annotationSubject]).pipe(
     map(([layer, annotations]) => ({ ...layer, annotations: layer.annotations.concat(annotations) })),
     scan((config, layer) => this.updateConfiguration(config, layer), this.buildConfiguration()),
-    tap((config) => this.updateTimelineBounds(config.data.datasets))
+    tap((config) => this.updateTimelineBounds(config.data.datasets)),
   );
 
   private timelineDataBounds: Partial<NumberRange> = { min: undefined, max: undefined };
@@ -268,7 +268,15 @@ function computeBounds(axis: 'x' | 'y', padding: number, datasets: Dataset[], an
   if (annotations) {
     const annoMin = axis === 'x' ? 'xMin' : 'yMin';
     const annoMax = axis === 'x' ? 'xMax' : 'yMax';
-    values.push(...annotations.flatMap((anno) => [anno[annoMin], anno[annoMax]]).filter(isNotNaN));
+    values.push(
+      ...annotations.flatMap((anno) => {
+        const annotationValues: number[] = [];
+        if (isNotNaN(anno[annoMin])) annotationValues.push(anno[annoMin]);
+        if (isNotNaN(anno[annoMax])) annotationValues.push(anno[annoMax]);
+        if (isNotNaN((anno as any).value)) annotationValues.push((anno as any).value);
+        return annotationValues;
+      }),
+    );
   }
   if (values.length > 0) {
     const min = Math.min(...values);
