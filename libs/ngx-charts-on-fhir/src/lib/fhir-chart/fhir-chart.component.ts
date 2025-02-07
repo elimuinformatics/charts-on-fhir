@@ -40,12 +40,26 @@ export class FhirChartComponent implements OnInit {
 
   @Input() emptyMessage: string = 'No data';
 
-  constructor(private readonly configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(
+    private readonly configService: FhirChartConfigurationService,
+    public layerManager: DataLayerManagerService,
+  ) {}
 
   ngOnInit(): void {
     Chart.register(scaleStackDividerPlugin, annotationPlugin, zoomPlugin);
-
-    // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
+    document.addEventListener('keydown', (event) => {
+      const chart = Chart.getChart('baseChart');
+      if (chart) {
+        switch (event.key) {
+          case 'ArrowRight':
+            chart.pan({ x: -50 });
+            break;
+          case 'ArrowLeft':
+            chart.pan({ x: 50 });
+            break;
+        }
+      }
+    });
     Chart.defaults.maintainAspectRatio = false;
 
     Chart.defaults.plugins.zoom = merge(Chart.defaults.plugins.zoom, {

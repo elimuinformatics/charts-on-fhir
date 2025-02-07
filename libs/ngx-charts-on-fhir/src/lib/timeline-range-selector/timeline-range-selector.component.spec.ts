@@ -8,7 +8,7 @@ import { TimelineRangeSelectorComponent } from './timeline-range-selector.compon
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateRange, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { SummaryRangeSelectorComponent } from '../summary-range-selector/summary-range-selector.component';
@@ -187,6 +187,26 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(mockConfigService.zoom).toHaveBeenCalledWith({
       min: new Date(`1 ${monthYear}`).getTime(),
       max: new Date(`22 ${monthYear}`).getTime(),
+    });
+  });
+
+  it('should zoom in and out using keyboard events', () => {
+    const zoomInEvent = new KeyboardEvent('keydown', { key: '+' });
+    const zoomOutEvent = new KeyboardEvent('keydown', { key: '-' });
+
+    component.selectedDateRange = new DateRange<Date>(new Date('2022-01-01'), new Date('2022-03-30'));
+    fixture.detectChanges();
+
+    window.dispatchEvent(zoomInEvent);
+    expect(mockConfigService.zoom).toHaveBeenCalledWith({
+      min: jasmine.any(Number),
+      max: jasmine.any(Number),
+    });
+
+    window.dispatchEvent(zoomOutEvent);
+    expect(mockConfigService.zoom).toHaveBeenCalledWith({
+      min: jasmine.any(Number),
+      max: jasmine.any(Number),
     });
   });
 });
