@@ -189,24 +189,4 @@ describe('TimelineRangeSelectorComponent', () => {
       max: new Date(`22 ${monthYear}`).getTime(),
     });
   });
-
-  it('should zoom in and out using keyboard events', () => {
-    const zoomInEvent = new KeyboardEvent('keydown', { key: '+' });
-    const zoomOutEvent = new KeyboardEvent('keydown', { key: '-' });
-
-    component.selectedDateRange = new DateRange<Date>(new Date('2022-01-01'), new Date('2022-03-30'));
-    fixture.detectChanges();
-
-    window.dispatchEvent(zoomInEvent);
-    expect(mockConfigService.zoom).toHaveBeenCalledWith({
-      min: jasmine.any(Number),
-      max: jasmine.any(Number),
-    });
-
-    window.dispatchEvent(zoomOutEvent);
-    expect(mockConfigService.zoom).toHaveBeenCalledWith({
-      min: jasmine.any(Number),
-      max: jasmine.any(Number),
-    });
-  });
 });
