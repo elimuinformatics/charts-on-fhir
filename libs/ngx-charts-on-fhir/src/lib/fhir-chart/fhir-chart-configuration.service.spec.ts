@@ -708,4 +708,45 @@ describe('FhirChartConfigurationService', () => {
     const callback = config.options!.plugins!.tooltip!.callbacks!.title!.bind({} as any);
     expect(callback(tooltipItems)).toEqual(['title']);
   });
+
+  describe('isFormElementFocused', () => {
+    let configService: FhirChartConfigurationService;
+    beforeEach(() => {
+      const layers: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];
+      const layerManager: any = { selectedLayers$: of(layers) };
+      configService = new FhirChartConfigurationService(layerManager, timeScaleOptions, timeframeAnnotationOptions, ngZone);
+    });
+    it('should return true if an form fields is focused', () => {
+      const inputElement = document.createElement('input');
+      document.body.appendChild(inputElement);
+      inputElement.focus();
+      expect(configService.isFormElementFocused()).toBe(true);
+      document.body.removeChild(inputElement);
+
+      const textareaElement = document.createElement('textarea');
+      document.body.appendChild(textareaElement);
+      textareaElement.focus();
+      expect(configService.isFormElementFocused()).toBe(true);
+
+      const selectElement = document.createElement('select');
+      document.body.appendChild(selectElement);
+      selectElement.focus();
+      expect(configService.isFormElementFocused()).toBe(true);
+      document.body.removeChild(selectElement);
+
+      const buttonElement = document.createElement('button');
+      document.body.appendChild(buttonElement);
+      buttonElement.focus();
+      expect(configService.isFormElementFocused()).toBe(true);
+      document.body.removeChild(buttonElement);
+    });
+
+    it('should return false if no form element is focused', () => {
+      const divElement = document.createElement('div');
+      document.body.appendChild(divElement);
+      divElement.focus();
+      expect(configService.isFormElementFocused()).toBe(false);
+      document.body.removeChild(divElement);
+    });
+  });
 });

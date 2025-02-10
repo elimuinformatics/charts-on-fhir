@@ -40,10 +40,10 @@ export class FhirChartComponent implements OnInit, OnDestroy {
 
   @Input() emptyMessage: string = 'No data';
 
-  private keyboardListener: (event: KeyboardEvent) => void;
+  private readonly keyboardListener: (event: KeyboardEvent) => void;
 
   constructor(
-    private readonly configService: FhirChartConfigurationService,
+    public configService: FhirChartConfigurationService,
     public layerManager: DataLayerManagerService,
   ) {
     this.keyboardListener = this.handleKeyboardZoomAndPan.bind(this);
