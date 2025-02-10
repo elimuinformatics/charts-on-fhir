@@ -74,7 +74,7 @@ describe('FhirChartConfigurationService', () => {
               ],
             },
           },
-        })
+        }),
       );
     });
 
@@ -123,7 +123,7 @@ describe('FhirChartConfigurationService', () => {
               }),
             },
           },
-        })
+        }),
       );
     });
 
@@ -164,7 +164,7 @@ describe('FhirChartConfigurationService', () => {
               }),
             },
           },
-        })
+        }),
       );
     });
 
@@ -203,7 +203,7 @@ describe('FhirChartConfigurationService', () => {
               }),
             },
           },
-        })
+        }),
       );
     });
 
@@ -261,7 +261,7 @@ describe('FhirChartConfigurationService', () => {
               }),
             },
           },
-        })
+        }),
       );
     });
   });
@@ -280,7 +280,7 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.chartConfig$).toBeObservable(
         hot('x', {
           x: emptyConfig,
-        })
+        }),
       );
     });
 
@@ -302,7 +302,7 @@ describe('FhirChartConfigurationService', () => {
             ...emptyConfig,
             data: { datasets: [{ label: 'one', data: [] }] },
           },
-        })
+        }),
       );
     });
 
@@ -336,7 +336,7 @@ describe('FhirChartConfigurationService', () => {
               datasets: [{ label: 'one', data: [], borderColor: '#ffffff' }],
             },
           },
-        })
+        }),
       );
     });
 
@@ -370,7 +370,7 @@ describe('FhirChartConfigurationService', () => {
               datasets: [{ label: 'one', data: [{ x: 1, y: 1 }] }],
             },
           },
-        })
+        }),
       );
     });
 
@@ -404,7 +404,7 @@ describe('FhirChartConfigurationService', () => {
               datasets: [{ label: 'one', data: [] }],
             },
           },
-        })
+        }),
       );
     });
   });
@@ -420,7 +420,7 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.timelineRange$).toBeObservable(
         hot('--x', {
           x: { min: 2, max: 3 },
-        })
+        }),
       );
     }));
 
@@ -446,7 +446,7 @@ describe('FhirChartConfigurationService', () => {
       expect(configService.summaryRange$).toBeObservable(
         hot('--x', {
           x: { months: 3, min: new Date('2022-10-31T00:00').getTime(), max: new Date('2023-01-31T00:00').getTime() },
-        })
+        }),
       );
     });
 
@@ -489,7 +489,7 @@ describe('FhirChartConfigurationService', () => {
               }),
             },
           },
-        })
+        }),
       );
     });
   });
@@ -528,6 +528,30 @@ describe('FhirChartConfigurationService', () => {
         expect(config.options?.scales?.['x']?.max).toBe(2);
       });
     }));
+
+    it('should zoom in correctly', () => {
+      const mockChart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale'], {
+        scales: {
+          x: jasmine.createSpyObj('xScale', ['getUserBounds']),
+        },
+      });
+      mockChart.scales['x'].getUserBounds = jasmine.createSpy().and.returnValue({ min: 1, max: 2, minDefined: true, maxDefined: true });
+      configService.chart = mockChart;
+      configService.zoomIn();
+      expect(mockChart.zoomScale).toHaveBeenCalledWith('x', { min: 1.05, max: 1.95 }, 'zoom');
+    });
+
+    it('should zoom out correctly', () => {
+      const mockChart = jasmine.createSpyObj<Chart>('Chart', ['zoomScale'], {
+        scales: {
+          x: jasmine.createSpyObj('xScale', ['getUserBounds']),
+        },
+      });
+      mockChart.scales['x'].getUserBounds = jasmine.createSpy().and.returnValue({ min: 1, max: 2, minDefined: true, maxDefined: true });
+      configService.chart = mockChart;
+      configService.zoomOut();
+      expect(mockChart.zoomScale).toHaveBeenCalledWith('x', { min: 0.95, max: 2.05 }, 'zoom');
+    });
   });
 
   describe('resetZoom', () => {

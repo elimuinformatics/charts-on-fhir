@@ -41,19 +41,6 @@ export class TimelineRangeSelectorComponent {
       this.selectedButton = this.findMatchingButton(this.selectedDateRange);
       this.changeDetectorRef.markForCheck();
     });
-    window.addEventListener('keydown', this.handleKeyboardZoom.bind(this));
-  }
-
-  handleKeyboardZoom(event: KeyboardEvent): void {
-    if (ZOOM_KEYS.includes(event.key)) {
-      const zoomFactor = event.key === '+' ? 0.9 : 1.1;
-      const currentRange = this.selectedDateRange;
-      if (currentRange.start && currentRange.end) {
-        const newMin = currentRange.start.getTime() + (currentRange.end.getTime() - currentRange.start.getTime()) * (1 - zoomFactor);
-        const newMax = currentRange.end.getTime() - (currentRange.end.getTime() - currentRange.start.getTime()) * (1 - zoomFactor);
-        this.configService.zoom({ min: newMin, max: newMax });
-      }
-    }
   }
 
   updateRangeSelector(range: DateRangeString) {
