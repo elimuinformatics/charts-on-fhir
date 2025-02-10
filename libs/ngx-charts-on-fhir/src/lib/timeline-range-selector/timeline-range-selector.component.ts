@@ -11,7 +11,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 
 type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
-const ZOOM_KEYS = ['+', '-'];
 
 /**
  * See `*TimelineRangeSelector` for example usage.

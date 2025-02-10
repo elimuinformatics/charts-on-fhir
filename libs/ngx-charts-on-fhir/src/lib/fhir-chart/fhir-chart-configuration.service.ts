@@ -158,34 +158,6 @@ export class FhirChartConfigurationService {
     }
   }
 
-  // zoomIn(): void {
-  //   const currentRange = this.getCurrentZoomRange();
-  //   if (currentRange) {
-  //     const midPoint = (currentRange.min + currentRange.max) / 2;
-  //     const zoomFactor = (currentRange.max - currentRange.min) * 0.5;
-  //     this.zoom({ min: midPoint - zoomFactor / 2, max: midPoint + zoomFactor / 2 });
-  //   }
-  // }
-
-  // zoomOut(): void {
-  //   const currentRange = this.getCurrentZoomRange();
-  //   if (currentRange) {
-  //     const midPoint = (currentRange.min + currentRange.max) / 2;
-  //     const zoomFactor = (currentRange.max - currentRange.min) * 1.5;
-  //     this.zoom({ min: midPoint - zoomFactor / 2, max: midPoint + zoomFactor / 2 });
-  //   }
-  // }
-
-  // private getCurrentZoomRange(): { min: number; max: number } | null {
-  //   let range = null;
-  //   this.timelineRange$.subscribe((timelineRange) => {
-  //     if (timelineRange?.min !== undefined && timelineRange?.max !== undefined) {
-  //       range = { min: timelineRange.min, max: timelineRange.max };
-  //     }
-  //   }).unsubscribe();
-  //   return range;
-  // }
-
   private updateTimelineBounds(datasets: Dataset[]) {
     this.timelineDataBounds = computeBounds('x', 0, datasets);
     if (!this.isZoomRangeLocked) {

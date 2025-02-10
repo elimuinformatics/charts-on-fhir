@@ -8,7 +8,7 @@ import { TimelineRangeSelectorComponent } from './timeline-range-selector.compon
 import { DebugElement } from '@angular/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { DateRange, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { SummaryRangeSelectorComponent } from '../summary-range-selector/summary-range-selector.component';
