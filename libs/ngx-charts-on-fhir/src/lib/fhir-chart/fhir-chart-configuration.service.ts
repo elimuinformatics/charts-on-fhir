@@ -141,11 +141,6 @@ export class FhirChartConfigurationService {
     return { min: 0, max: 0 };
   }
 
-  isFormElementFocused(): boolean | null {
-    const activeElement = document.activeElement;
-    return (activeElement && ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(activeElement.tagName)) || activeElement?.closest('.mat-calendar') !== null;
-  }
-
   /** Reset the zoom so it will change automatically to fit the data */
   resetZoom() {
     if (this.chart) {

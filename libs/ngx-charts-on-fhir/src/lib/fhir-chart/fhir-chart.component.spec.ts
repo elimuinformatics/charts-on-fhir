@@ -52,30 +52,73 @@ describe('FhirChartComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should zoom in on "+" key press', async () => {
-    component.ngOnInit();
-    mockConfigService.chart = jasmine.createSpyObj<Chart>('Chart', ['pan']);
-    spyOn(mockConfigService, 'zoomIn');
-    const eventZoomIn = new KeyboardEvent('keydown', { key: '+' });
-    component.handleKeyboardZoomAndPan(eventZoomIn);
-    expect(mockConfigService.zoomIn).toHaveBeenCalled();
-  });
-  it('should zoom in on "-" key press', async () => {
-    spyOn(mockConfigService, 'zoomOut');
-    const eventZoomOut = new KeyboardEvent('keydown', { key: '-' });
-    component.handleKeyboardZoomAndPan(eventZoomOut);
-    expect(mockConfigService.zoomOut).toHaveBeenCalled();
+  describe('triggerKeyboardEvent', () => {
+    function triggerKeyboardEvent(key: string) {
+      const event = new KeyboardEvent('keydown', { key });
+      document.dispatchEvent(event);
+    }
+    it('should zoom in on "+" key press', () => {
+      spyOn(mockConfigService, 'zoomIn');
+      triggerKeyboardEvent('+');
+      expect(mockConfigService.zoomIn).toHaveBeenCalled();
+    });
+
+    it('should zoom out on "-" key press', () => {
+      spyOn(mockConfigService, 'zoomOut');
+      triggerKeyboardEvent('-');
+      expect(mockConfigService.zoomOut).toHaveBeenCalled();
+    });
+
+    it('should pan left on "ArrowLeft" key press', () => {
+      triggerKeyboardEvent('ArrowLeft');
+      expect(mockConfigService.chart.pan).toHaveBeenCalledWith({ x: 50 });
+    });
+
+    it('should pan right on "ArrowRight" key press', () => {
+      triggerKeyboardEvent('ArrowRight');
+      expect(mockConfigService.chart.pan).toHaveBeenCalledWith({ x: -50 });
+    });
+
+    it('should not trigger zoom or pan when form element is focused', () => {
+      spyOn(component, 'isFormElementFocused').and.returnValue(true);
+      spyOn(mockConfigService, 'zoomIn');
+      triggerKeyboardEvent('+');
+      expect(mockConfigService.zoomIn).not.toHaveBeenCalled();
+    });
   });
 
-  it('should pan left on "ArrowLeft" key press', () => {
-    const eventPanLeft = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-    component.handleKeyboardZoomAndPan(eventPanLeft);
-    expect(mockConfigService.chart.pan).toHaveBeenCalledWith({ x: 50 });
-  });
+  describe('isFormElementFocused', () => {
+    it('should return true if an form fields is focused', () => {
+      const inputElement = document.createElement('input');
+      document.body.appendChild(inputElement);
+      inputElement.focus();
+      expect(component.isFormElementFocused()).toBe(true);
+      document.body.removeChild(inputElement);
 
-  it('should pan right on "ArrowRight" key press', () => {
-    const eventPanRight = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-    component.handleKeyboardZoomAndPan(eventPanRight);
-    expect(mockConfigService.chart.pan).toHaveBeenCalledWith({ x: -50 });
+      const textareaElement = document.createElement('textarea');
+      document.body.appendChild(textareaElement);
+      textareaElement.focus();
+      expect(component.isFormElementFocused()).toBe(true);
+
+      const selectElement = document.createElement('select');
+      document.body.appendChild(selectElement);
+      selectElement.focus();
+      expect(component.isFormElementFocused()).toBe(true);
+      document.body.removeChild(selectElement);
+
+      const buttonElement = document.createElement('button');
+      document.body.appendChild(buttonElement);
+      buttonElement.focus();
+      expect(component.isFormElementFocused()).toBe(true);
+      document.body.removeChild(buttonElement);
+    });
+
+    it('should return false if no form element is focused', () => {
+      const divElement = document.createElement('div');
+      document.body.appendChild(divElement);
+      divElement.focus();
+      expect(component.isFormElementFocused()).toBe(false);
+      document.body.removeChild(divElement);
+    });
   });
 });

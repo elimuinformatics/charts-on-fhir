@@ -40,14 +40,10 @@ export class FhirChartComponent implements OnInit, OnDestroy {
 
   @Input() emptyMessage: string = 'No data';
 
-  private readonly keyboardListener: (event: KeyboardEvent) => void;
-
   constructor(
     public configService: FhirChartConfigurationService,
     public layerManager: DataLayerManagerService,
-  ) {
-    this.keyboardListener = this.handleKeyboardZoomAndPan.bind(this);
-  }
+  ) {}
 
   ngOnInit(): void {
     Chart.register(scaleStackDividerPlugin, annotationPlugin, zoomPlugin);
@@ -102,8 +98,8 @@ export class FhirChartComponent implements OnInit, OnDestroy {
     document.removeEventListener('keydown', this.keyboardListener);
   }
 
-  handleKeyboardZoomAndPan(event: KeyboardEvent): void {
-    if (this.configService.isFormElementFocused()) {
+  private readonly keyboardListener = (event: KeyboardEvent) => {
+    if (this.isFormElementFocused()) {
       return;
     }
     const chart = this.configService.chart;
@@ -123,5 +119,10 @@ export class FhirChartComponent implements OnInit, OnDestroy {
           break;
       }
     }
+  };
+
+  isFormElementFocused(): boolean | null {
+    const activeElement = document.activeElement;
+    return (activeElement && ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(activeElement.tagName)) || activeElement?.closest('.mat-calendar') !== null;
   }
 }
