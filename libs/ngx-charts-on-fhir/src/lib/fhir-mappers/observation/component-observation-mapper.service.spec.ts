@@ -38,6 +38,22 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.canMap(observation)).toBe(true);
     });
 
+    it('should return true for a ComponentObservation with 0 value', () => {
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveDateTime: new Date().toISOString(),
+        component: [
+          {
+            code: { text: 'component' },
+            valueQuantity: { value: 0, unit: 'unit', code: 'code' },
+          },
+        ],
+      };
+      expect(mapper.canMap(observation)).toBe(true);
+    });
+
     it('should return false for an Observation with no component', () => {
       const observation: Observation = {
         resourceType: 'Observation',
