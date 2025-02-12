@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { Chart, ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -23,7 +23,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   templateUrl: './fhir-chart.component.html',
   styleUrls: ['./fhir-chart.component.css'],
 })
-export class FhirChartComponent implements OnInit {
+export class FhirChartComponent implements OnInit, OnDestroy {
   defaultType: ChartConfiguration['type'] = 'line';
   @Input() type: ChartConfiguration['type'] | null = this.defaultType;
 
@@ -40,12 +40,16 @@ export class FhirChartComponent implements OnInit {
 
   @Input() emptyMessage: string = 'No data';
 
-  constructor(private readonly configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(
+    public configService: FhirChartConfigurationService,
+    public layerManager: DataLayerManagerService,
+  ) {}
 
   ngOnInit(): void {
     Chart.register(scaleStackDividerPlugin, annotationPlugin, zoomPlugin);
 
-    // To responsively resize the chart based on its container size, we must set maintainAspectRatio = false
+    document.addEventListener('keydown', this.keyboardListener);
+
     Chart.defaults.maintainAspectRatio = false;
 
     Chart.defaults.plugins.zoom = merge(Chart.defaults.plugins.zoom, {
@@ -88,5 +92,37 @@ export class FhirChartComponent implements OnInit {
 
   ngAfterViewChecked() {
     this.configService.chart = Chart.getChart('baseChart');
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('keydown', this.keyboardListener);
+  }
+
+  private readonly keyboardListener = (event: KeyboardEvent) => {
+    if (this.isFormElementFocused()) {
+      return;
+    }
+    const chart = this.configService.chart;
+    if (chart) {
+      switch (event.key) {
+        case '+':
+          this.configService.zoomIn();
+          break;
+        case '-':
+          this.configService.zoomOut();
+          break;
+        case 'ArrowRight':
+          chart.pan({ x: -50 });
+          break;
+        case 'ArrowLeft':
+          chart.pan({ x: 50 });
+          break;
+      }
+    }
+  };
+
+  isFormElementFocused(): boolean | null {
+    const activeElement = document.activeElement;
+    return (activeElement && ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(activeElement.tagName)) || activeElement?.closest('.mat-calendar') !== null;
   }
 }
