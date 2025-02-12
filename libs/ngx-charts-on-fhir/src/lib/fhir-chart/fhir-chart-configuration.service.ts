@@ -113,6 +113,34 @@ export class FhirChartConfigurationService {
     }
   }
 
+  zoomIn() {
+    if (this.chart) {
+      const range = this.calculateZoomRange(0.1);
+      this.zoom(range);
+    }
+  }
+
+  zoomOut() {
+    if (this.chart) {
+      const range = this.calculateZoomRange(-0.1);
+      this.zoom(range);
+    }
+  }
+
+  private calculateZoomRange(factor: number): { min: number; max: number } {
+    if (this.chart) {
+      const currentBounds = this.chart.scales['x'].getUserBounds();
+      if (!isNaN(currentBounds.min) && !isNaN(currentBounds.max)) {
+        const rangeSpan = currentBounds.max - currentBounds.min;
+        const zoomSpan = rangeSpan * factor;
+        const newMin = currentBounds.min + zoomSpan / 2;
+        const newMax = currentBounds.max - zoomSpan / 2;
+        return { min: newMin, max: newMax };
+      }
+    }
+    return { min: 0, max: 0 };
+  }
+
   /** Reset the zoom so it will change automatically to fit the data */
   resetZoom() {
     if (this.chart) {
