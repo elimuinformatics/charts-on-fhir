@@ -28,7 +28,7 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
     resource.resourceType === 'Observation' &&
     resource.code?.text &&
     resource.effectiveDateTime &&
-    resource.valueQuantity?.value &&
+    resource.valueQuantity?.value != null &&
     (!resource.valueQuantity.unit || !!resource.valueQuantity.unit) &&
     (!resource.valueQuantity.code || !!resource.valueQuantity.code)
   );

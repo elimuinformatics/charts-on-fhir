@@ -39,6 +39,17 @@ describe('SimpleObservationMapper', () => {
       expect(mapper.canMap(observation)).toBe(true);
     });
 
+    it('should return true for a valid SimpleObservation with 0 value', () => {
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'Blood Pressure' },
+        effectiveDateTime: new Date().toISOString(),
+        valueQuantity: { value: 0, unit: 'mmHg', code: 'BP' },
+      };
+      expect(mapper.canMap(observation)).toBe(true);
+    });
+
     it('should return false if resourceType is not "Observation"', () => {
       const invalidResource = {
         resourceType: 'Condition',
@@ -184,7 +195,7 @@ describe('SimpleObservationMapper', () => {
           yScaleID: 'text',
           yMin: 1,
           yMax: 10,
-        })
+        }),
       );
     });
 
