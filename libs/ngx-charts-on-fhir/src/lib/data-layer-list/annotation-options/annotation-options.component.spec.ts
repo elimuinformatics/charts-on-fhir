@@ -14,6 +14,7 @@ import { Component, forwardRef } from '@angular/core';
   selector: 'color-picker',
   template: '',
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
+  standalone: false,
 })
 class MockColorPickerComponent implements ControlValueAccessor {
   writeValue(obj: any): void {

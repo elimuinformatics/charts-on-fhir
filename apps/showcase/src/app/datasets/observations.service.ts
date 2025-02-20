@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observation } from 'fhir/r4';
+import { Bundle, Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
 
@@ -7,7 +7,10 @@ import { from, mergeMap } from 'rxjs';
   providedIn: 'root',
 })
 export class ObservationLayerService extends DataLayerService {
-  constructor(private fhir: FhirDataService, private converter: FhirConverter) {
+  constructor(
+    private readonly fhir: FhirDataService,
+    private readonly converter: FhirConverter,
+  ) {
     super();
   }
   name = 'Observations';

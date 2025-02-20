@@ -21,7 +21,10 @@ export class ObservationLayerService extends DataLayerService {
     },
   ];
   query: string = '';
-  constructor(private fhir: FhirDataService, private converter: FhirConverter) {
+  constructor(
+    private readonly fhir: FhirDataService,
+    private readonly converter: FhirConverter,
+  ) {
     super();
     this.query = this.getQueryfromCoding(this.codings);
   }

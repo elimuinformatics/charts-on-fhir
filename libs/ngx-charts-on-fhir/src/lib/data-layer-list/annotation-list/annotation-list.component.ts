@@ -6,7 +6,6 @@ import { AnnotationOptionsComponent } from '../annotation-options/annotation-opt
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, MatExpansionModule, MatCheckboxModule, AnnotationOptionsComponent],
   selector: 'annotation-list',
   templateUrl: './annotation-list.component.html',
@@ -26,7 +25,7 @@ export class AnnotationListComponent {
       this.annotationsChange.emit(
         produce(this._annotations, (draft) => {
           draft[index].display = event.checked;
-        })
+        }),
       );
     }
   }
@@ -37,7 +36,7 @@ export class AnnotationListComponent {
       this.annotationsChange.emit(
         produce(this._annotations, (draft) => {
           draft[index] = castDraft(newAnnotation);
-        })
+        }),
       );
     }
   }

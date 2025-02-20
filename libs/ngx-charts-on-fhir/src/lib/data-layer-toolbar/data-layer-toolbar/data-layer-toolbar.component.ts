@@ -8,7 +8,6 @@ import { DataLayerToolbarButtonComponent } from '../data-layer-toolbar-button/da
 export type ToolbarButtonName = 'loading' | 'patients' | 'browser' | 'options';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, DataLayerToolbarButtonComponent, DataLayerToolbarLoadingIndicatorComponent],
   selector: 'data-layer-toolbar',
   templateUrl: './data-layer-toolbar.component.html',
@@ -20,7 +19,10 @@ export class DataLayerToolbarComponent implements OnChanges {
 
   @Input() buttons?: ToolbarButtonName[];
 
-  constructor(public layerManager: DataLayerManagerService, public patientService: PatientService) {}
+  constructor(
+    public layerManager: DataLayerManagerService,
+    public patientService: PatientService,
+  ) {}
 
   ngOnChanges(): void {
     this.activeChange.emit(this.active);

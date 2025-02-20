@@ -1,14 +1,12 @@
-import { Provider, APP_INITIALIZER } from '@angular/core';
+import { Provider, inject, provideAppInitializer } from '@angular/core';
 import { FhirDataService } from './fhir-data.service';
 
 export function provideFhirInitializer(environment: any): Provider {
   return [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeFhirFactory(environment),
-      deps: [FhirDataService],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+      const initializerFn = initializeFhirFactory(environment)(inject(FhirDataService));
+      return initializerFn();
+    }),
   ];
 }
 

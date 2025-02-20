@@ -14,7 +14,6 @@ import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansi
  * See `*DataLayerList` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatTooltipModule, MatIconModule, MatButtonModule, DataLayerOptionsComponent, MatCheckboxModule, MatExpansionModule, DragDropModule],
   selector: 'data-layer-list',
   templateUrl: './data-layer-list.component.html',

@@ -5,7 +5,6 @@ import {
   DataLayerSelectorComponent,
   FhirChartComponent,
   FhirChartLayoutComponent,
-  FhirChartLegendComponent,
   FhirChartSummaryComponent,
   FhirChartTagsLegendComponent,
   SummaryRangeSelectorComponent,
@@ -13,12 +12,10 @@ import {
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     FhirChartComponent,
     FhirChartLayoutComponent,
-    FhirChartLegendComponent,
     FhirChartSummaryComponent,
     TimelineRangeSelectorComponent,
     SummaryRangeSelectorComponent,

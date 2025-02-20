@@ -3,15 +3,13 @@ import { Dataset } from '../../data-layer/data-layer';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { SortDatasets } from '../fhir-chart-legend/sort-datasets.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 const SVG_TRIANGLE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M2 20 12.05 4 22 20Z"/></svg>';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, SortDatasets, MatIconModule, MatButtonModule, OverlayModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, OverlayModule],
   selector: 'fhir-chart-legend-item',
   templateUrl: './fhir-chart-legend-item.component.html',
   styleUrls: ['./fhir-chart-legend-item.component.css'],

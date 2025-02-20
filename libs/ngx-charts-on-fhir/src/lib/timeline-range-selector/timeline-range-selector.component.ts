@@ -16,7 +16,6 @@ type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
  * See `*TimelineRangeSelector` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
   selector: 'timeline-range-selector',
   templateUrl: './timeline-range-selector.component.html',

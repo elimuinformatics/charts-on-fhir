@@ -14,7 +14,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     ColorPickerComponent,
@@ -37,7 +36,11 @@ export class DatasetOptionsComponent implements OnInit {
   }
   @Output() datasetChange = new EventEmitter<Dataset>();
 
-  constructor(private readonly fb: FormBuilder, private readonly colorService: DataLayerColorService, public sharedDataService: SharedDataLayerListService) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly colorService: DataLayerColorService,
+    public sharedDataService: SharedDataLayerListService,
+  ) {}
 
   get datasetLineOptions(): Dataset<'line'> {
     return this._dataset as Dataset<'line'>;
@@ -73,7 +76,7 @@ export class DatasetOptionsComponent implements OnInit {
           if (formValue.color) {
             this.colorService.setColor(draft, formValue.color ?? '');
           }
-        })
+        }),
       );
     }
   }

@@ -13,7 +13,6 @@ import {
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     SummaryRangeSelectorComponent,
@@ -32,7 +31,10 @@ export class AppComponent implements OnInit {
   readonly toolbar: ToolbarButtonName[];
   active: ToolbarButtonName | null;
 
-  constructor(readonly layerManager: DataLayerManagerService, readonly patientService: PatientService) {
+  constructor(
+    readonly layerManager: DataLayerManagerService,
+    readonly patientService: PatientService,
+  ) {
     if (patientService.isSinglePatientContext) {
       this.toolbar = ['loading', 'browser', 'options'];
       this.active = 'browser';

@@ -11,16 +11,28 @@ import { DataLayerColorService } from '../data-layer/data-layer-color.service';
 import { DataLayerMergeService } from '../data-layer/data-layer-merge.service';
 import { PatientService } from '../patient-browser/patient.service';
 
-@Component({ selector: 'data-layer-toolbar', template: '' })
+@Component({
+  selector: 'data-layer-toolbar',
+  template: '',
+  standalone: false,
+})
 class MockDataLayerToolbarComponent {
   @Input() active?: any;
   @Input() buttons?: any;
 }
 
-@Component({ selector: 'data-layer-browser', template: '' })
+@Component({
+  selector: 'data-layer-browser',
+  template: '',
+  standalone: false,
+})
 class MockDataLayerBrowserComponent {}
 
-@Component({ selector: 'data-layer-list', template: '' })
+@Component({
+  selector: 'data-layer-list',
+  template: '',
+  standalone: false,
+})
 class MockDataLayerListComponent {
   @Input() hideRemoveLayerButton?: boolean = false;
 }

@@ -9,7 +9,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, Input } from '@angular/core';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 
-@Component({ selector: 'annotation-options', template: '' })
+@Component({
+  selector: 'annotation-options',
+  template: '',
+  standalone: false,
+})
 class MockAnnotationOptionsComponent {
   @Input() annotation?: any;
 }
