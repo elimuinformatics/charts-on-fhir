@@ -45,9 +45,7 @@ export function isComponentObservation(resource: Observation): resource is Compo
   );
 }
 /** Maps a FHIR Observation resource that has multiple components */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ComponentObservationMapper implements Mapper<ComponentObservation> {
   constructor(
     @Inject(LINEAR_SCALE_OPTIONS) private readonly linearScaleOptions: ScaleOptions<'linear'>,

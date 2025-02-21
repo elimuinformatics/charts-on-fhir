@@ -7,6 +7,7 @@ import {
   FhirChartLayoutComponent,
   FhirChartSummaryComponent,
   FhirChartTagsLegendComponent,
+  PatientService,
   SummaryRangeSelectorComponent,
   TimelineRangeSelectorComponent,
 } from '@elimuinformatics/ngx-charts-on-fhir';
@@ -25,6 +26,7 @@ import {
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [PatientService],
 })
 export class AppComponent implements OnInit {
   layers = ['Blood Pressure', 'Heart Rate', 'Glucose', 'Hemoglobin A1c', 'O2 Saturation', 'Step Count', 'Body Weight', 'Prescribed Medications'];
