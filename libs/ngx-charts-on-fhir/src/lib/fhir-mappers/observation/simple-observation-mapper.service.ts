@@ -8,7 +8,6 @@ import { isDefined } from '../../utils';
 import { LINEAR_SCALE_OPTIONS } from '../fhir-mapper-options';
 import { FhirCodeService } from '../fhir-code.service';
 import { ReferenceRangeService } from './reference-range.service';
-
 export const HOME_DATASET_LABEL_SUFFIX = ' (Home)';
 
 /** Required properties for mapping an Observation with `SimpleObservationMapper` */
@@ -16,7 +15,11 @@ export type SimpleObservation = {
   code: {
     text: string;
   };
-  effectiveDateTime: string;
+  effectiveDateTime?: string;
+  effectiveInstant?: string;
+  effectivePerio?: {
+    start: string;
+  };
   valueQuantity: {
     value: number;
     unit?: string;
@@ -27,7 +30,7 @@ export function isSimpleObservation(resource: Observation): resource is SimpleOb
   return !!(
     resource.resourceType === 'Observation' &&
     resource.code?.text &&
-    resource.effectiveDateTime &&
+    (resource.effectiveDateTime || resource.effectiveInstant || resource.effectivePeriod?.start) &&
     resource.valueQuantity?.value != null &&
     (!resource.valueQuantity.unit || !!resource.valueQuantity.unit) &&
     (!resource.valueQuantity.code || !!resource.valueQuantity.code)
@@ -55,7 +58,7 @@ export class SimpleObservationMapper implements Mapper<SimpleObservation> {
           yAxisID: layerName,
           data: [
             {
-              x: new Date(resource.effectiveDateTime).getTime(),
+              x: new Date(resource.effectiveDateTime ?? resource.effectiveInstant ?? resource.effectivePeriod?.start ?? '').getTime(),
               y: resource.valueQuantity.value,
               resource,
             },

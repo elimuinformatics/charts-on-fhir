@@ -71,7 +71,7 @@ describe('SimpleObservationMapper', () => {
       expect(mapper.canMap(observation)).toBe(false);
     });
 
-    it('should return false if effectiveDateTime is missing', () => {
+    it('should return false if effectiveDateTime, effectiveInstant and .effectivePeriod.start is missing', () => {
       const observation: Observation = {
         resourceType: 'Observation',
         status: 'final',
@@ -144,6 +144,30 @@ describe('SimpleObservationMapper', () => {
         status: 'final',
         code: { text: 'text' },
         effectiveDateTime: date.toISOString(),
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
+      };
+      expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
+    });
+
+    it('should map effectiveInstant to x value in milliseconds', () => {
+      const date = new Date();
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveInstant: date.toISOString(),
+        valueQuantity: { value: 7, unit: 'unit', code: 'code' },
+      };
+      expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
+    });
+
+    it('should map effectivePeriod.start to x value in milliseconds', () => {
+      const date = new Date();
+      const observation: SimpleObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectivePeriod: { start: date.toISOString() },
         valueQuantity: { value: 7, unit: 'unit', code: 'code' },
       };
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());

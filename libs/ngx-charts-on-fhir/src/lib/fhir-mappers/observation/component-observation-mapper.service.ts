@@ -15,7 +15,11 @@ export type ComponentObservation = {
   code: {
     text: string;
   };
-  effectiveDateTime: string;
+  effectiveDateTime?: string;
+  effectiveInstant?: string;
+  effectivePeriod?: {
+    start: string;
+  };
   component: ({
     code: {
       text: string;
@@ -31,7 +35,7 @@ export function isComponentObservation(resource: Observation): resource is Compo
   return !!(
     resource.resourceType === 'Observation' &&
     resource.code?.text &&
-    resource.effectiveDateTime &&
+    (resource.effectiveDateTime ?? resource.effectiveInstant ?? resource.effectivePeriod?.start) &&
     resource.component?.length &&
     resource.component.every(
       (c) =>
@@ -64,7 +68,7 @@ export class ComponentObservationMapper implements Mapper<ComponentObservation> 
         yAxisID: layerName,
         data: [
           {
-            x: new Date(resource.effectiveDateTime).getTime(),
+            x: new Date(resource.effectiveDateTime ?? resource.effectiveInstant ?? resource.effectivePeriod?.start ?? '').getTime(),
             y: component.valueQuantity.value,
             resource,
           },
