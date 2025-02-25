@@ -22,7 +22,7 @@ export class PatientService {
         filter(isDefined),
         map(getPatientList),
         scan((acc, value) => [...acc, ...value]),
-        shareReplay(1)
+        shareReplay(1),
       );
 
   selectedPatientSubject = new ReplaySubject<string>();
