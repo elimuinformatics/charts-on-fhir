@@ -17,7 +17,7 @@ export type SimpleObservation = {
   };
   effectiveDateTime?: string;
   effectiveInstant?: string;
-  effectivePerio?: {
+  effectivePeriod?: {
     start: string;
   };
   valueQuantity: {
