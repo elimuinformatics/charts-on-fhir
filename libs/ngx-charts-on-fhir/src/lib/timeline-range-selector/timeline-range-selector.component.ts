@@ -44,7 +44,7 @@ export class TimelineRangeSelectorComponent {
   ngAfterViewChecked(): void {
     setTimeout(() => {
       this.changeDetectorRef.detectChanges();
-    });
+    }, 0);
   }
 
   updateRangeSelector(range: DateRangeString) {
