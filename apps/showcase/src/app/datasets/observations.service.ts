@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Bundle, Observation } from 'fhir/r4';
+import { Observation } from 'fhir/r4';
 import { DataLayerService, FhirDataService, FhirConverter } from '@elimuinformatics/ngx-charts-on-fhir';
 import { from, mergeMap } from 'rxjs';
 
