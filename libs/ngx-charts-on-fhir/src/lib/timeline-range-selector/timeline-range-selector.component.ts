@@ -41,6 +41,12 @@ export class TimelineRangeSelectorComponent {
     });
   }
 
+  ngAfterViewChecked(): void {
+    setTimeout(() => {
+      this.changeDetectorRef.detectChanges();
+    });
+  }
+
   updateRangeSelector(range: DateRangeString) {
     if (range === 'All') {
       this.resetZoomChart();
