@@ -103,6 +103,40 @@ describe('ComponentObservationMapper', () => {
       expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
     });
 
+    it('should map effectiveInstant to x value in milliseconds', () => {
+      const date = new Date();
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectiveInstant: date.toISOString(),
+        component: [
+          {
+            code: { text: 'component' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
+          },
+        ],
+      };
+      expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
+    });
+
+    it('should map effectivePeriod.start to x value in milliseconds', () => {
+      const date = new Date();
+      const observation: ComponentObservation = {
+        resourceType: 'Observation',
+        status: 'final',
+        code: { text: 'text' },
+        effectivePeriod: { start: date.toISOString() },
+        component: [
+          {
+            code: { text: 'component' },
+            valueQuantity: { value: 7, unit: 'unit', code: 'code' },
+          },
+        ],
+      };
+      expect(mapper.map(observation).datasets[0].data[0].x).toEqual(date.getTime());
+    });
+
     it('should map valueQuantity.value to y value', () => {
       const observation: ComponentObservation = {
         resourceType: 'Observation',
