@@ -17,7 +17,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
  * See `*Chart` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, NgChartsModule, MatProgressBarModule, DragDropModule],
   selector: 'fhir-chart',
   templateUrl: './fhir-chart.component.html',

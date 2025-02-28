@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, OverlayModule],
   selector: 'color-picker',
   templateUrl: './color-picker.component.html',

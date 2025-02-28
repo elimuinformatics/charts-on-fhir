@@ -26,7 +26,10 @@ class MockFhirChartConfigurationService {
   setSummaryRange = () => {};
 }
 
-@Component({ standalone: true, imports: [CommonModule], selector: 'fhir-chart-summary-card' })
+@Component({
+  imports: [CommonModule],
+  selector: 'fhir-chart-summary-card',
+})
 class MockFhirChartSummaryCardComponent {
   @Input() layer: unknown;
   @Input() expanded = false;

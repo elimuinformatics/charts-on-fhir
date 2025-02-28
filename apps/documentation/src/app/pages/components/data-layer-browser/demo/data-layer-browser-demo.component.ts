@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'example-data-layer-browser-demo',
   templateUrl: './data-layer-browser-demo.component.html',
-  standalone: true,
   imports: [CommonModule, DataLayerBrowserComponent],
 })
 export class DataLayerBrowserDemoComponent implements OnInit {

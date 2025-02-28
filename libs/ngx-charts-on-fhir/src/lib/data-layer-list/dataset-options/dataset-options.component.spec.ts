@@ -16,7 +16,6 @@ import { Chart } from 'chart.js';
 import { SharedDataLayerListService } from '../shared-data-layer-list.service';
 
 @Component({
-  standalone: true,
   selector: 'color-picker',
   template: '',
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],

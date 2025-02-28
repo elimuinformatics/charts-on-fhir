@@ -6,12 +6,14 @@ import { FhirChartLegendItemComponent } from '../fhir-chart-legend-item/fhir-cha
 import { SortDatasets } from './sort-datasets.pipe';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, FhirChartLegendItemComponent, SortDatasets],
   selector: 'fhir-chart-legend',
   templateUrl: './fhir-chart-legend.component.html',
   styleUrls: ['./fhir-chart-legend.component.css'],
 })
 export class FhirChartLegendComponent {
-  constructor(public layerManager: DataLayerManagerService, public colorService: DataLayerColorService) {}
+  constructor(
+    public layerManager: DataLayerManagerService,
+    public colorService: DataLayerColorService,
+  ) {}
 }

@@ -13,7 +13,6 @@ export type DataLayerView = {
 };
 
 @Component({
-  standalone: true,
   imports: [CommonModule, MatFormFieldModule, MatSelectModule],
   selector: 'data-layer-selector',
   templateUrl: './data-layer-selector.component.html',
@@ -24,7 +23,10 @@ export class DataLayerSelectorComponent implements OnChanges {
   @Input() views: DataLayerViews = {};
   @Input() active?: string;
 
-  constructor(private readonly layerManager: DataLayerManagerService, private readonly changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private readonly layerManager: DataLayerManagerService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   unsubscribe$ = new Subject<void>();
 

@@ -10,7 +10,6 @@ import {
 @Component({
   selector: 'example-data-layer-selector-demo',
   templateUrl: './data-layer-selector-demo.component.html',
-  standalone: true,
   imports: [CommonModule, DataLayerSelectorComponent, FhirChartComponent],
 })
 export class DataLayerSelectorDemoComponent implements OnInit {

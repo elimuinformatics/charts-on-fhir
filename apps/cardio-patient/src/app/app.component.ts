@@ -6,6 +6,7 @@ import { environment } from '../environments/environment';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent implements OnInit {
   appTitle: string = environment.env.appTitle;
@@ -13,7 +14,10 @@ export class AppComponent implements OnInit {
   selectedIndex?: number;
   showLegend = false;
 
-  constructor(readonly layerManager: DataLayerManagerService, private configService: FhirChartConfigurationService) {}
+  constructor(
+    readonly layerManager: DataLayerManagerService,
+    private readonly configService: FhirChartConfigurationService,
+  ) {}
 
   ngOnInit(): void {
     this.layerManager.autoSelect(true);
