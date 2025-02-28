@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
  * See `*DataLayerBrowser` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatIconModule, MatTableModule, MatSortModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
   selector: 'data-layer-browser',
   templateUrl: './data-layer-browser.component.html',

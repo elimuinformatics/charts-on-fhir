@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DynamicTableComponent } from '../../dynamic-table/dynamic-table.component';
 @Component({
-  standalone: true,
   imports: [CommonModule, MatTooltipModule, DynamicTableComponent, OverlayModule],
   selector: 'fhir-chart-summary-card',
   templateUrl: './fhir-chart-summary-card.component.html',
@@ -38,7 +37,7 @@ export class FhirChartSummaryCardComponent {
     private readonly colorService: DataLayerColorService,
     private readonly elementRef: ElementRef,
     @Inject(SummaryService) private readonly summaryServices: SummaryService[],
-    private readonly changeDetectorRef: ChangeDetectorRef
+    private readonly changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   overlayPositions: ConnectionPositionPair[] = [{ originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'top', offsetX: -8 }];

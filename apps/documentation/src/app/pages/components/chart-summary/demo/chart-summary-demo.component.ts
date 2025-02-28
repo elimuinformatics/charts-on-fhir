@@ -10,7 +10,6 @@ import {
   selector: 'example-chart-summary-demo',
   templateUrl: './chart-summary-demo.component.html',
   styleUrls: ['./chart-summary-demo.css'],
-  standalone: true,
   imports: [CommonModule, FhirChartComponent, FhirChartSummaryComponent],
 })
 export class ChartSummaryDemoComponent implements OnInit {

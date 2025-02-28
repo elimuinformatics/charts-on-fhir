@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'example-chart-legend-demo',
   templateUrl: './chart-legend-demo.component.html',
-  standalone: true,
   imports: [CommonModule, FhirChartLegendComponent],
 })
 export class ChartLegendDemoComponent implements OnInit {

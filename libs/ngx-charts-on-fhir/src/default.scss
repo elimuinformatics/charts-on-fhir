@@ -2,9 +2,10 @@
 @use "./lib/data-layer-toolbar/data-layer-toolbar-theme" as toolbar;
 @use "./lib/fhir-chart-layout/fhir-chart-layout-theme" as layout;
 
-@import "./default-fonts.scss";
+@use "./default-fonts.scss";
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define a theme.
 $primary: mat.m2-define-palette(mat.$m2-indigo-palette);

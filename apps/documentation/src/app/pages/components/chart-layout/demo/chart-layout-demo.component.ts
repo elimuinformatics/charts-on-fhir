@@ -11,7 +11,6 @@ import {
   selector: 'example-chart-layout-demo',
   templateUrl: './chart-layout-demo.component.html',
   styleUrls: ['./chart-layout-demo.component.css'],
-  standalone: true,
   imports: [CommonModule, FhirChartLayoutComponent, MatIconModule, MatButtonModule],
 })
 export class ChartLayoutDemoComponent implements OnInit {

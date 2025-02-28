@@ -10,7 +10,6 @@ import {
 @Component({
   selector: 'example-summary-range-selector-demo',
   templateUrl: './summary-range-selector-demo.component.html',
-  standalone: true,
   styleUrls: ['./summary-range-selector-demo.css'],
   imports: [
     CommonModule,

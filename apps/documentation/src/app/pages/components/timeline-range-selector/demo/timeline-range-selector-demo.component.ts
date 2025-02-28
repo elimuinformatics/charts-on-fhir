@@ -9,7 +9,6 @@ import {
 @Component({
   selector: 'example-timeline-range-selector-demo',
   templateUrl: './timeline-range-selector-demo.component.html',
-  standalone: true,
   imports: [CommonModule, FhirChartComponent, TimelineRangeSelectorComponent],
 })
 export class TimelineRangeSelectorDemoComponent implements OnInit {

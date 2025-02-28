@@ -10,7 +10,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 const SVG_TRIANGLE = '<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M2 20 12.05 4 22 20Z"/></svg>';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, SortDatasets, MatIconModule, MatButtonModule, OverlayModule],
   selector: 'fhir-chart-legend-item',
   templateUrl: './fhir-chart-legend-item.component.html',

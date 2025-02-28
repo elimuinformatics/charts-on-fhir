@@ -164,9 +164,13 @@ describe('TimelineRangeSelectorComponent', () => {
     await menu.open();
     const rangeInput = await menu.getHarness(MatDateRangeInputHarness);
     const startInput = await rangeInput.getStartInput();
+    await startInput.focus();
     await startInput.setValue('3/2/2020');
+    await startInput.blur();
     const endInput = await rangeInput.getEndInput();
+    await endInput.focus();
     await endInput.setValue('3/2/2023');
+    await endInput.blur();
     const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
     await apply.click();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({
@@ -182,6 +186,12 @@ describe('TimelineRangeSelectorComponent', () => {
     const monthYear = await calendar.getCurrentViewLabel();
     await calendar.selectCell({ text: '1' });
     await calendar.selectCell({ text: '22' });
+    const startInput = await menu.getHarness(MatDateRangeInputHarness).then((input) => input.getStartInput());
+    await startInput.focus();
+    await startInput.blur();
+    const endInput = await menu.getHarness(MatDateRangeInputHarness).then((input) => input.getEndInput());
+    await endInput.focus();
+    await endInput.blur();
     const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
     await apply.click();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({

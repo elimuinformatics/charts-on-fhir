@@ -13,7 +13,6 @@ import { DataLayerBrowserComponent } from '../data-layer-browser/data-layer-brow
  * See `*ChartLayout` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -34,7 +33,10 @@ export class FhirChartLayoutComponent implements OnChanges {
   @Input() active: ToolbarButtonName | null = null;
   @Input() showAdvancedOptions: boolean = true;
 
-  constructor(public fhir: FhirDataService, private readonly sharedDataService: SharedDataLayerListService) {}
+  constructor(
+    public fhir: FhirDataService,
+    private readonly sharedDataService: SharedDataLayerListService,
+  ) {}
 
   ngOnChanges(): void {
     this.sharedDataService.showAdvancedOptions$.next(this.showAdvancedOptions);

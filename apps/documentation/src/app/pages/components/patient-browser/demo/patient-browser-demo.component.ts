@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'example-patient-browser-demo',
   templateUrl: './patient-browser-demo.component.html',
-  standalone: true,
   imports: [CommonModule, PatientBrowserComponent],
 })
 export class PatientBrowserDemoComponent implements OnInit {

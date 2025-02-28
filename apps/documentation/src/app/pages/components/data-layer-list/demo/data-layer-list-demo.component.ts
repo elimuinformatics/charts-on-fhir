@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'example-data-layer-list-demo',
   templateUrl: './data-layer-list-demo.component.html',
-  standalone: true,
   imports: [CommonModule, DataLayerListComponent],
 })
 export class DataLayerListDemoComponent implements OnInit {

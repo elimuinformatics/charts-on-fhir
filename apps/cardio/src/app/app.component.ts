@@ -13,7 +13,6 @@ import {
 } from '@elimuinformatics/ngx-charts-on-fhir';
 
 @Component({
-  standalone: true,
   imports: [
     CommonModule,
     FhirChartComponent,
