@@ -21,7 +21,7 @@ const mockLayerManager = {
   move() {},
 };
 
-@Component({ standalone: true, selector: 'data-layer-options', template: '' })
+@Component({ selector: 'data-layer-options', template: '' })
 class MockDataLayerOptionsComponent {
   @Input() layer?: DataLayer;
 }

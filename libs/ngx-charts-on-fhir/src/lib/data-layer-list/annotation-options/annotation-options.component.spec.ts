@@ -14,7 +14,6 @@ import { Component, forwardRef } from '@angular/core';
   selector: 'color-picker',
   template: '',
   providers: [{ provide: NG_VALUE_ACCESSOR, multi: true, useExisting: forwardRef(() => MockColorPickerComponent) }],
-  standalone: false,
 })
 class MockColorPickerComponent implements ControlValueAccessor {
   writeValue(obj: any): void {
@@ -41,8 +40,7 @@ describe('AnnotationOptionsComponent', () => {
   beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, AnnotationOptionsComponent],
-      declarations: [MockColorPickerComponent],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, AnnotationOptionsComponent, MockColorPickerComponent],
       providers: [FormBuilder, { provide: DataLayerColorService, useValue: colorService }, { provide: COLOR_PALETTE, useValue: palette }],
     }).compileComponents();
 

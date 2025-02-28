@@ -12,7 +12,6 @@ import { DataLayerColorService } from '../../data-layer/data-layer-color.service
 @Component({
   selector: 'annotation-options',
   template: '',
-  standalone: false,
 })
 class MockAnnotationOptionsComponent {
   @Input() annotation?: any;
@@ -30,8 +29,7 @@ describe('DatasetAnnotationListComponent', () => {
     colorService = new DataLayerColorService(palette);
 
     await TestBed.configureTestingModule({
-      declarations: [MockAnnotationOptionsComponent],
-      imports: [MatExpansionModule, MatCheckboxModule, BrowserAnimationsModule],
+      imports: [MatExpansionModule, MatCheckboxModule, BrowserAnimationsModule, MockAnnotationOptionsComponent],
       providers: [{ provide: DataLayerColorService, useValue: colorService }],
     }).compileComponents();
     fixture = TestBed.createComponent(AnnotationListComponent);
