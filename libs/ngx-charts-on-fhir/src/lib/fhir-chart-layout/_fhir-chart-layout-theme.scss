@@ -2,7 +2,9 @@
 @use "@angular/material" as mat;
 
 @mixin theme($theme) {
+  $primary-color-40: mat.get-theme-color($theme, "primary", 40);
+
   .sidebar-close-button {
-    background-color: #3f51b5;
+    background-color: $primary-color-40;
   }
 }

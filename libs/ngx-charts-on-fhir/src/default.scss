@@ -9,7 +9,7 @@
 
 // Define a theme.
 $primary: mat.$azure-palette;
-$tertiary: mat.$yellow-palette;
+$tertiary: mat.$rose-palette;
 
 $theme: mat.define-theme(
   (
@@ -19,7 +19,11 @@ $theme: mat.define-theme(
       tertiary: $primary,
     ),
     typography: (
-      brand-family: "Roboto, Helvetica Neue, sans-serif",
+      brand-family: (
+        Roboto,
+        "Helvetica Neue",
+        sans-serif,
+      ),
     ),
     density: (
       scale: -1,
