@@ -1,6 +1,6 @@
 {
   "name": "@elimuinformatics/ngx-charts-on-fhir",
-  "version": "7.0.0",
+  "version": "7.0.2",
   "description": "Charts-on-FHIR: A data visualization library for SMART-on-FHIR healthcare applications",
   "license": "Apache-2.0",
   "homepage": "https://elimuinformatics.github.io/charts-on-fhir",
