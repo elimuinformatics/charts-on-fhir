@@ -17,7 +17,6 @@ type PatientRow = {
  * See `*PatientBrowser` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatIconModule, MatTableModule, MatSortModule, MatInputModule, MatButtonModule, ReactiveFormsModule],
   selector: 'patient-browser',
   templateUrl: './patient-browser.component.html',

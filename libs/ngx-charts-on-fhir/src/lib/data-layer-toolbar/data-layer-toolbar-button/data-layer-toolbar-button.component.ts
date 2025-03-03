@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, MatBadgeModule],
   selector: 'data-layer-toolbar-button',
   templateUrl: './data-layer-toolbar-button.component.html',

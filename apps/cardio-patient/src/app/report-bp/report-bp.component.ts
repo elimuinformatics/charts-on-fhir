@@ -14,6 +14,7 @@ const BloodPressureRangeValidator: ValidatorFn = (control: AbstractControl): Val
   selector: 'report-bp',
   templateUrl: './report-bp.component.html',
   styleUrls: ['./report-bp.component.css'],
+  standalone: false,
 })
 export class ReportBPComponent {
   submitted = false;
@@ -27,10 +28,14 @@ export class ReportBPComponent {
       systolic: [null, [Validators.required, Validators.min(this.min), Validators.max(this.max)]],
       diastolic: [null, [Validators.required, Validators.min(this.min), Validators.max(this.max)]],
     },
-    { validators: [BloodPressureRangeValidator] }
+    { validators: [BloodPressureRangeValidator] },
   );
 
-  constructor(private fb: FormBuilder, private dataService: FhirDataService, private snackBar: MatSnackBar) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly dataService: FhirDataService,
+    private readonly snackBar: MatSnackBar,
+  ) {}
 
   open(message: string, action = '', config?: MatSnackBarConfig) {
     return this.snackBar.open(message, action, config);

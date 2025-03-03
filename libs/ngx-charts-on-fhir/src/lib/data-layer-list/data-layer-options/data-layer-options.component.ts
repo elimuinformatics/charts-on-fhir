@@ -6,7 +6,6 @@ import { DatasetListComponent } from '../dataset-list/dataset-list.component';
 import { AnnotationListComponent } from '../annotation-list/annotation-list.component';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, DatasetListComponent, AnnotationListComponent],
   selector: 'data-layer-options',
   templateUrl: './data-layer-options.component.html',
@@ -21,7 +20,7 @@ export class DataLayerOptionsComponent {
         produce(this.layer, (draft) => {
           draft.datasets = castDraft(datasets);
           draft.enabled = datasets.some((dataset) => !dataset.hidden);
-        })
+        }),
       );
     }
   }
@@ -31,7 +30,7 @@ export class DataLayerOptionsComponent {
       this.layerChange.emit(
         produce(this.layer, (draft) => {
           draft.annotations = castDraft(annotations);
-        })
+        }),
       );
     }
   }

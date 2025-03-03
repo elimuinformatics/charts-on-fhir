@@ -40,8 +40,7 @@ describe('AnnotationOptionsComponent', () => {
   beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, AnnotationOptionsComponent],
-      declarations: [MockColorPickerComponent],
+      imports: [ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatFormFieldModule, AnnotationOptionsComponent, MockColorPickerComponent],
       providers: [FormBuilder, { provide: DataLayerColorService, useValue: colorService }, { provide: COLOR_PALETTE, useValue: palette }],
     }).compileComponents();
 

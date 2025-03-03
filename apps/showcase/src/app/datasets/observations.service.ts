@@ -7,7 +7,10 @@ import { from, mergeMap } from 'rxjs';
   providedIn: 'root',
 })
 export class ObservationLayerService extends DataLayerService {
-  constructor(private fhir: FhirDataService, private converter: FhirConverter) {
+  constructor(
+    private readonly fhir: FhirDataService,
+    private readonly converter: FhirConverter,
+  ) {
     super();
   }
   name = 'Observations';

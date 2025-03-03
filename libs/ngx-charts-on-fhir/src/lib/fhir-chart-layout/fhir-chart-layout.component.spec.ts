@@ -11,16 +11,25 @@ import { DataLayerColorService } from '../data-layer/data-layer-color.service';
 import { DataLayerMergeService } from '../data-layer/data-layer-merge.service';
 import { PatientService } from '../patient-browser/patient.service';
 
-@Component({ selector: 'data-layer-toolbar', template: '' })
+@Component({
+  selector: 'data-layer-toolbar',
+  template: '',
+})
 class MockDataLayerToolbarComponent {
   @Input() active?: any;
   @Input() buttons?: any;
 }
 
-@Component({ selector: 'data-layer-browser', template: '' })
+@Component({
+  selector: 'data-layer-browser',
+  template: '',
+})
 class MockDataLayerBrowserComponent {}
 
-@Component({ selector: 'data-layer-list', template: '' })
+@Component({
+  selector: 'data-layer-list',
+  template: '',
+})
 class MockDataLayerListComponent {
   @Input() hideRemoveLayerButton?: boolean = false;
 }
@@ -38,8 +47,14 @@ describe('FhirChartLayoutComponent', () => {
   beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
     await TestBed.configureTestingModule({
-      declarations: [MockDataLayerToolbarComponent, MockDataLayerBrowserComponent, MockDataLayerListComponent],
-      imports: [NoopAnimationsModule, MatSidenavModule, MatIconModule],
+      imports: [
+        NoopAnimationsModule,
+        MatSidenavModule,
+        MatIconModule,
+        MockDataLayerToolbarComponent,
+        MockDataLayerBrowserComponent,
+        MockDataLayerListComponent,
+      ],
       providers: [
         { provide: SharedDataLayerListService, useValue: mockSharedDataLayerListService },
         { provide: DataLayerColorService, useValue: colorService },

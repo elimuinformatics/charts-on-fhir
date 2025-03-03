@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
  * See `*SummaryRangeSelector` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, MatDatepickerModule, MatInputModule, MatButtonToggleModule, MatNativeDateModule, FormsModule],
   selector: 'summary-range-selector',
   templateUrl: './summary-range-selector.component.html',
@@ -26,5 +25,8 @@ export class SummaryRangeSelectorComponent {
     { month: 12, value: '1 y' },
   ];
 
-  constructor(public configService: FhirChartConfigurationService, public layerManager: DataLayerManagerService) {}
+  constructor(
+    public configService: FhirChartConfigurationService,
+    public layerManager: DataLayerManagerService,
+  ) {}
 }

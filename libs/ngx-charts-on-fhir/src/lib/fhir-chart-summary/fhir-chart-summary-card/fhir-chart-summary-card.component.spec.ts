@@ -17,7 +17,11 @@ class MockConfigService {
   summaryRange$ = new BehaviorSubject<NumberRange>({ min: 0, max: 10 });
 }
 
-@Component({ standalone: true, imports: [CommonModule], selector: 'dynamic-table', template: '' })
+@Component({
+  imports: [CommonModule],
+  selector: 'dynamic-table',
+  template: '',
+})
 class MockDynamicTableComponent {
   @Input() data: Record<string, string>[] = [];
 }

@@ -11,7 +11,6 @@ import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-c
  * See `*ChartSummary` for example usage.
  */
 @Component({
-  standalone: true,
   imports: [CommonModule, FhirChartSummaryCardComponent],
   selector: 'fhir-chart-summary',
   templateUrl: './fhir-chart-summary.component.html',
@@ -22,7 +21,7 @@ export class FhirChartSummaryComponent {
   constructor(
     public layerManager: DataLayerManagerService,
     private readonly lifecycleService: FhirChartLifecycleService,
-    private readonly configService: FhirChartConfigurationService
+    private readonly configService: FhirChartConfigurationService,
   ) {}
 
   /** When set to `true`, each card will be vertically aligned with the corresponding chart. */
@@ -34,7 +33,7 @@ export class FhirChartSummaryComponent {
 
   scalePositions$ = this.lifecycleService.afterUpdate$.pipe(
     map(([chart]) => mapValues(chart.scales, ({ axis, top, bottom, height }) => ({ axis, top, bottom, height }))),
-    shareReplay(1)
+    shareReplay(1),
   );
   gridTemplateRows$ = combineLatest([this.layerManager.enabledLayers$, this.scalePositions$]).pipe(
     map(
@@ -42,8 +41,8 @@ export class FhirChartSummaryComponent {
         layers
           .filter((layer) => layer.scale.id in scales)
           .map((layer) => (scales[layer.scale.id].height - 5).toFixed(0) + 'px')
-          .join(' ') + ' auto'
-    )
+          .join(' ') + ' auto',
+    ),
   );
 
   expandedCard: string | null = null;

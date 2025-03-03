@@ -8,7 +8,6 @@ import { DatasetOptionsComponent } from '../dataset-options/dataset-options.comp
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, MatExpansionModule, DatasetOptionsComponent, MatTooltipModule, MatCheckboxModule],
   selector: 'dataset-list',
   templateUrl: './dataset-list.component.html',
@@ -33,7 +32,7 @@ export class DatasetListComponent {
       this.datasetsChange.emit(
         produce(this._datasets, (draft) => {
           draft[index].hidden = !event.checked;
-        })
+        }),
       );
     }
   }
@@ -44,7 +43,7 @@ export class DatasetListComponent {
       this.datasetsChange.emit(
         produce(this._datasets, (draft) => {
           draft[index] = castDraft(newDataset);
-        })
+        }),
       );
     }
   }

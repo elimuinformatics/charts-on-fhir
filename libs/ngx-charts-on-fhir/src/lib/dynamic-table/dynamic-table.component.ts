@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { zipObject } from 'lodash-es';
 
 @Component({
-  standalone: true,
   selector: 'dynamic-table',
   imports: [CommonModule],
   templateUrl: './dynamic-table.component.html',

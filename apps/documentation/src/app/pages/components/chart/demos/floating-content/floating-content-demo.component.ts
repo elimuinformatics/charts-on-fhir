@@ -9,7 +9,6 @@ import {
 @Component({
   selector: 'example-floating-content-demo',
   templateUrl: './floating-content-demo.component.html',
-  standalone: true,
   imports: [CommonModule, FhirChartComponent, FhirChartLegendComponent],
 })
 export class FloatingContentDemoComponent implements OnInit {

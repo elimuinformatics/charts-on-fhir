@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dataset } from '../../data-layer/data-layer';
 import { DataLayerOptionsComponent } from './data-layer-options.component';
 
-@Component({ standalone: true, selector: 'dataset-list', template: '' })
+@Component({ selector: 'dataset-list', template: '' })
 class MockDatasetListComponent {
   @Input() datasets?: Dataset[];
 }
 
-@Component({ standalone: true, selector: 'annotation-list', template: '' })
+@Component({ selector: 'annotation-list', template: '' })
 class MockAnnotationListComponent {
   @Input() annotations?: any[];
 }

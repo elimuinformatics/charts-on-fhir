@@ -12,6 +12,7 @@ export interface LastReportedBPdata {
   selector: 'last-report-bp',
   templateUrl: './last-report-bp.component.html',
   styleUrls: ['./last-report-bp.component.css'],
+  standalone: false,
 })
 export class LastReportBPComponent {
   lastReportedBPdata?: LastReportedBPdata;
@@ -31,7 +32,7 @@ export class LastReportBPComponent {
             systolic: { date: mostRecentData['systolic']?.x, value: mostRecentData['systolic']?.y },
             diastolic: { date: mostRecentData['diastolic']?.x, value: mostRecentData['diastolic']?.y },
           };
-        })
+        }),
       )
       .subscribe((layers: any) => {
         if (layers.diastolic.date !== undefined && layers.systolic.date !== undefined) {

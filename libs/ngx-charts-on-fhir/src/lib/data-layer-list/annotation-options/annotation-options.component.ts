@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { ColorPickerComponent } from '../../color-picker/color-picker.component';
 
 @Component({
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, ColorPickerComponent],
   selector: 'annotation-options',
   templateUrl: './annotation-options.component.html',
@@ -27,7 +26,10 @@ export class AnnotationOptionsComponent implements OnInit {
 
   @Output() annotationChange = new EventEmitter<any>();
 
-  constructor(private readonly fb: FormBuilder, private readonly colorService: DataLayerColorService) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly colorService: DataLayerColorService,
+  ) {}
 
   form = this.fb.group({
     color: this.fb.control('', { nonNullable: true }),
@@ -55,7 +57,7 @@ export class AnnotationOptionsComponent implements OnInit {
       this.annotationChange.emit(
         produce(this._annotation, (draft: any) => {
           merge(draft, props);
-        })
+        }),
       );
     }
   }
