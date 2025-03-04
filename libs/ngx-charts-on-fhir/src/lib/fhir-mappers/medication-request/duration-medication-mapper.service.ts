@@ -16,7 +16,7 @@ export type BoundsDurationMedication = {
           };
         };
       };
-    }
+    },
   ];
 } & SimpleMedication;
 
@@ -40,7 +40,7 @@ export type BoundsPeriodMedication = {
           };
         };
       };
-    }
+    },
   ];
 } & SimpleMedication;
 
@@ -49,7 +49,10 @@ export function isBoundsPeriodMedication(resource: MedicationRequest): resource 
     isMedication(resource) &&
     resource.dosageInstruction?.length === 1 &&
     resource.dosageInstruction[0].timing?.repeat?.boundsPeriod?.start != null &&
-    resource.dosageInstruction[0].timing?.repeat?.boundsPeriod?.end != null
+    resource.dosageInstruction[0].timing?.repeat?.boundsPeriod?.end != null &&
+    new Date(resource.dosageInstruction[0].timing.repeat.boundsPeriod.end).getTime() -
+      new Date(resource.dosageInstruction[0].timing.repeat.boundsPeriod.start).getTime() >=
+      MILLISECONDS_PER_DAY
   );
 }
 
@@ -79,9 +82,9 @@ export type TimingMedication = {
             value: number;
             code: string;
           };
-        }
+        },
       ];
-    } & Dosage
+    } & Dosage,
   ];
   dispenseRequest: {
     initialFill: {
@@ -114,7 +117,7 @@ export type TimingScheduleMedication = {
           periodUnit: 'd' | 'h' | 'wk';
         };
       };
-    } & TimingMedication['dosageInstruction'][0]
+    } & TimingMedication['dosageInstruction'][0],
   ];
 } & TimingMedication;
 
@@ -138,7 +141,7 @@ export type TimingCodeMedication = {
           }[];
         };
       };
-    } & TimingMedication['dosageInstruction'][0]
+    } & TimingMedication['dosageInstruction'][0],
   ];
 } & TimingMedication;
 
@@ -160,7 +163,7 @@ export type TimingTextMedication = {
           text: string;
         };
       };
-    } & TimingMedication['dosageInstruction'][0]
+    } & TimingMedication['dosageInstruction'][0],
   ];
 } & TimingMedication;
 

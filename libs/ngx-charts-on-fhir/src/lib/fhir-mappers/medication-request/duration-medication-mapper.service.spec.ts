@@ -97,6 +97,25 @@ describe('DurationMedicationMapper', () => {
       expect(mapper.canMap(medication)).toBe(true);
     });
 
+    it('should return false for a BoundsPeriodMedication less than 24hr', () => {
+      const medication: BoundsPeriodMedication = {
+        ...basicMedication,
+        dosageInstruction: [
+          {
+            timing: {
+              repeat: {
+                boundsPeriod: {
+                  start: '2023-01-01T00:00:00Z',
+                  end: '2023-01-01T00:00:00Z',
+                },
+              },
+            },
+          },
+        ],
+      };
+      expect(mapper.canMap(medication)).toBe(false);
+    });
+
     it('should return true for an ExpectedSupplyMedication', () => {
       const medication: ExpectedSupplyMedication = {
         ...basicMedication,
