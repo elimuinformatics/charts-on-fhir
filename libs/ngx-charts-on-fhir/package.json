@@ -1,6 +1,6 @@
 {
   "name": "@elimuinformatics/ngx-charts-on-fhir",
-  "version": "7.0.1",
+  "version": "8.0.0",
   "description": "Charts-on-FHIR: A data visualization library for SMART-on-FHIR healthcare applications",
   "license": "Apache-2.0",
   "homepage": "https://elimuinformatics.github.io/charts-on-fhir",
@@ -18,18 +18,18 @@
     }
   },
   "peerDependencies": {
-    "@angular/cdk": ">=16.2.0",
-    "@angular/common": ">=16.2.0",
-    "@angular/core": ">=16.2.0",
-    "@angular/forms": ">=16.2.0",
-    "@angular/material": ">=16.2.0",
-    "@angular/platform-browser": ">=16.2.0",
-    "@angular/platform-browser-dynamic": ">=16.2.0",
+    "@angular/cdk": ">=19.1.4",
+    "@angular/common": ">=19.1.6",
+    "@angular/core": ">=19.1.6",
+    "@angular/forms": ">=19.1.6",
+    "@angular/material": ">=19.1.4",
+    "@angular/platform-browser": ">=19.1.6",
+    "@angular/platform-browser-dynamic": ">=19.1.6",
     "@fontsource/roboto": "^4.5.8",
     "@types/fhir": "^0.0.37",
     "chart.js": "^4.3.3",
     "chartjs-adapter-date-fns": "^3.0.0",
-    "chartjs-plugin-annotation": "^2.2.1",
+    "chartjs-plugin-annotation": "3.1.0",
     "chartjs-plugin-zoom": "^2.0.1",
     "date-fns": "^2.29.3",
     "fhirclient": "^2.5.2",
@@ -39,9 +39,9 @@
     "ng2-charts": "^5.0.3",
     "rxjs": "^7.5.0",
     "tinycolor2": "^1.5.2",
-    "zone.js": ">=0.11.4"
+    "zone.js": ">=0.15.0"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.6.2"
   }
 }

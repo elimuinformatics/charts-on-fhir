@@ -28,3 +28,7 @@ mat-sidenav-container {
 .sidebar-close-button mat-icon {
   margin: -4px;
 }
+
+.mat-sidenav {
+  width: 40%;
+}
