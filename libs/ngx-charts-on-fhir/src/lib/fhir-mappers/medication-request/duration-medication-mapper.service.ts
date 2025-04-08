@@ -170,7 +170,7 @@ export type TimingTextMedication = {
 export function isTimingTextMedication(resource: MedicationRequest): resource is TimingTextMedication {
   return (
     isTimingMedication(resource) && //
-    resource.dosageInstruction[0].timing?.code?.text === 'daily'
+    resource.dosageInstruction[0].timing?.code?.text?.toLowerCase() === 'daily'
   );
 }
 
@@ -277,14 +277,15 @@ function computeDailyFrequency(resource: TimingMedication) {
       q8h: 3,
       bed: 1,
       week: 1 / 7,
+      wk: 1 / 7,
       mo: 1 / 30,
     };
     const coding = resource.dosageInstruction[0].timing.code.coding.find(({ system }) => system === timingAbbreviationCodeSystem);
-    if (coding?.code && timingCodeFrequency[coding.code] != null) {
-      return timingCodeFrequency[coding.code];
+    if (coding?.code && timingCodeFrequency[coding.code.toLowerCase()] != null) {
+      return timingCodeFrequency[coding.code.toLowerCase()];
     }
   } else if (isTimingTextMedication(resource)) {
-    if (resource.dosageInstruction[0].timing.code.text === 'daily') {
+    if (resource.dosageInstruction[0].timing.code.text.toLowerCase() === 'daily') {
       return 1;
     }
   }
