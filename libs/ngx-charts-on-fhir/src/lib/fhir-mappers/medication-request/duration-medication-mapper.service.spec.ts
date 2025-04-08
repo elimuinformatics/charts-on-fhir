@@ -455,6 +455,49 @@ describe('DurationMedicationMapper', () => {
       expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
     });
 
+    it('should compute duration for a TimingCodeMedication with uppercase code', () => {
+      const medication: TimingCodeMedication = {
+        ...basicMedication,
+        dosageInstruction: [
+          {
+            timing: {
+              code: {
+                coding: [
+                  {
+                    system: 'http://www.example.com/proprietary-code-system',
+                    code: 'never',
+                  },
+                  {
+                    system: timingAbbreviationCodeSystem,
+                    code: 'QD',
+                  },
+                ],
+              },
+            },
+            doseAndRate: [
+              {
+                doseQuantity: {
+                  value: 10,
+                  code: 'mg',
+                },
+              },
+            ],
+          },
+        ],
+        dispenseRequest: {
+          initialFill: {
+            quantity: {
+              value: 300,
+              code: 'mg',
+            },
+          },
+        },
+      };
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
+    });
+
     it('should throw an error for invalid Timing code', () => {
       const medication: TimingCodeMedication = {
         ...basicMedication,
@@ -536,6 +579,38 @@ describe('DurationMedicationMapper', () => {
           {
             timing: {
               code: { text: 'daily' },
+            },
+            doseAndRate: [
+              {
+                doseQuantity: {
+                  value: 10,
+                  code: 'mg',
+                },
+              },
+            ],
+          },
+        ],
+        dispenseRequest: {
+          initialFill: {
+            quantity: {
+              value: 300,
+              code: 'mg',
+            },
+          },
+        },
+      };
+      const expectedStartDate = new Date(medication.authoredOn).getTime();
+      const expectedEndDate = new Date('2023-01-31T00:00:00Z').getTime();
+      expect(mapper.map(medication).datasets[0].data[0].x).toEqual([expectedStartDate, expectedEndDate]);
+    });
+
+    it('should compute duration for a TimingTextMedication with uppercase text', () => {
+      const medication: TimingTextMedication = {
+        ...basicMedication,
+        dosageInstruction: [
+          {
+            timing: {
+              code: { text: 'Daily' },
             },
             doseAndRate: [
               {
