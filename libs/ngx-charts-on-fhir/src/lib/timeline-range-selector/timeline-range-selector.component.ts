@@ -124,6 +124,7 @@ export class TimelineRangeSelectorComponent {
       return new DateRange<Date>(null, null);
     }
     const maxDate = new Date();
+    maxDate.setHours(23, 59, 59, 999);
     const [value, unit] = rangeString.split(' ');
     if (unit === 'y') {
       return new DateRange<Date>(subtractMonths(maxDate, parseInt(value) * 12), maxDate);
