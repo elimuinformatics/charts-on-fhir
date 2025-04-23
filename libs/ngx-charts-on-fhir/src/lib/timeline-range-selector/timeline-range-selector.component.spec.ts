@@ -76,7 +76,7 @@ describe('TimelineRangeSelectorComponent', () => {
     component.buttons = ['2 d'];
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '2 d' }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2022-03-28T00:00');
+    const expectedMinDate = new Date('2022-03-28T23:59:59.999');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
@@ -84,7 +84,7 @@ describe('TimelineRangeSelectorComponent', () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 mo' }));
     await ButtonInputGroup.check();
-    const expectedMinDate = new Date('2022-02-28T00:00');
+    const expectedMinDate = new Date('2022-02-28T23:59:59.999');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
@@ -92,7 +92,7 @@ describe('TimelineRangeSelectorComponent', () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '3 mo' }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-12-30T00:00');
+    const expectedMinDate = new Date('2021-12-30T23:59:59.999');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
@@ -100,7 +100,7 @@ describe('TimelineRangeSelectorComponent', () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '6 mo' }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-09-30T00:00');
+    const expectedMinDate = new Date('2021-09-30T23:59:59.999');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
@@ -108,7 +108,7 @@ describe('TimelineRangeSelectorComponent', () => {
     jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
     let ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 y' }));
     await ButtonInput.check();
-    const expectedMinDate = new Date('2021-03-30T00:00');
+    const expectedMinDate = new Date('2021-03-30T23:59:59.999');
     expect(component.selectedDateRange.start).toEqual(expectedMinDate);
   });
 
