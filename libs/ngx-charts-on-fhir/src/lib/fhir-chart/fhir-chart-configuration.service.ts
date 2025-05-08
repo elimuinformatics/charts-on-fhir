@@ -214,7 +214,7 @@ export class FhirChartConfigurationService {
           tooltip: {
             position: 'center',
             callbacks: {
-              title: (items) => items.map(getTooltipTitle),
+              title: (items) => uniq(items.map(getTooltipTitle)),
               label: (item) => (item.raw as any)['tooltip'] ?? (Chart.defaults.plugins.tooltip.callbacks as any).label(item),
               beforeFooter: (context: any) => {
                 const refRange = findReferenceRangeForDataset(annotations, context[0].dataset);
