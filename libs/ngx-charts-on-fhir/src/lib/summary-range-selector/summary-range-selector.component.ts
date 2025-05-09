@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, MatDatepickerModule, MatInputModule, MatButtonToggleModule, MatNativeDateModule, FormsModule],
   selector: 'summary-range-selector',
   templateUrl: './summary-range-selector.component.html',
-  styleUrls: ['./summary-range-selector.component.css'],
+  styleUrls: ['./summary-range-selector.component.scss'],
 })
 export class SummaryRangeSelectorComponent {
   buttons = [
