@@ -19,7 +19,7 @@ type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
   imports: [CommonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
   selector: 'timeline-range-selector',
   templateUrl: './timeline-range-selector.component.html',
-  styleUrls: ['./timeline-range-selector.component.css'],
+  styleUrls: ['./timeline-range-selector.component.scss'],
 })
 export class TimelineRangeSelectorComponent {
   selectedDateRange: DateRange<Date> = new DateRange<Date>(null, null);
