@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DateRange, MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
@@ -64,12 +64,14 @@ export class TimelineRangeSelectorComponent {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
-    if (datePickerType === 'min') {
-      this.selectedDateRange = new DateRange(event.value, this.selectedDateRange.end);
-    } else {
-      this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
-    }
-    this.zoomChart();
+    setTimeout(() => {
+      if (datePickerType === 'min') {
+        this.selectedDateRange = new DateRange(event.value, this.selectedDateRange.end);
+      } else {
+        this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
+      }
+      this.zoomChart();
+    }, 0);
   }
 
   openCalendar() {
