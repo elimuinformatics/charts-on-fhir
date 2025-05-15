@@ -64,12 +64,12 @@ export class TimelineRangeSelectorComponent {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
+    if (datePickerType === 'min') {
+      this.selectedDateRange = new DateRange(event.value, this.selectedDateRange.end);
+    } else {
+      this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
+    }
     setTimeout(() => {
-      if (datePickerType === 'min') {
-        this.selectedDateRange = new DateRange(event.value, this.selectedDateRange.end);
-      } else {
-        this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
-      }
       this.zoomChart();
     }, 0);
   }

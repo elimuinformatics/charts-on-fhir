@@ -19,7 +19,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCalendarHarness, MatDateRangeInputHarness } from '@angular/material/datepicker/testing';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 const max = new Date('2022-03-30T00:00').getTime();
 const min = new Date('2022-01-06T00:00').getTime();
@@ -119,21 +118,19 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(mockConfigService.resetZoom).toHaveBeenCalled();
   });
 
-  it('should check dateChange selected event for start date', fakeAsync(() => {
+  it('should check dateChange selected event for start date', () => {
     const date: any = { value: new Date(2020, 2, 2) };
     component.dateChange(date, 'min');
-    tick();
     fixture.detectChanges();
     expect(component.selectedDateRange.start).toEqual(date.value);
-  }));
+  });
 
-  it('should check dateChange selected event for end date', fakeAsync(() => {
+  it('should check dateChange selected event for end date', () => {
     const date: any = { value: new Date(2020, 2, 2) };
     component.dateChange(date, 'max');
-    tick();
     fixture.detectChanges();
     expect(component.selectedDateRange.end).toEqual(date.value);
-  }));
+  });
 
   it('should check month difference between two dates', async () => {
     const componentMaxdate = new Date('2022-01-01T00:00');
