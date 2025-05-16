@@ -69,7 +69,9 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
     }
-    this.zoomChart();
+    setTimeout(() => {
+      this.zoomChart();
+    }, 0);
   }
 
   openCalendar() {
