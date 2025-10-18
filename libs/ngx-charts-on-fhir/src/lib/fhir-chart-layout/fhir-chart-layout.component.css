@@ -24,6 +24,7 @@ mat-sidenav-container {
   padding: 0px;
   width: 16px;
   cursor: pointer;
+  background-color: var(--mat-sys-primary);
 }
 .sidebar-close-button mat-icon {
   margin: -4px;
