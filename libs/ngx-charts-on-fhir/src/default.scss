@@ -7,38 +7,35 @@
 @include mat.elevation-classes();
 @include mat.app-background();
 
-// Define a theme.
+// Define a theme using the new mat.theme pattern
 $primary: mat.$azure-palette;
 $tertiary: mat.$rose-palette;
 
-$theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: $primary,
-      tertiary: $tertiary,
-    ),
-    typography: (
-      brand-family: (
-        Roboto,
-        "Helvetica Neue",
-        sans-serif,
-      ),
-    ),
-    density: (
-      scale: -1,
-    ),
-  )
-);
-@include mat.typography-hierarchy($theme);
-
 :root {
-  // Apply theme to all @angular/material components
-  @include mat.all-component-themes($theme);
+  // Apply theme using the new mat.theme mixin
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $primary,
+        tertiary: $tertiary,
+      ),
+      typography: (
+        brand-family: (
+          Roboto,
+          "Helvetica Neue",
+          sans-serif,
+        ),
+      ),
+      density: (
+        scale: -1,
+      ),
+    )
+  );
 
   // Apply theme to ngx-charts-on-fhir components
-  @include toolbar.theme($theme);
-  @include layout.theme($theme);
+  @include toolbar.theme();
+  @include layout.theme();
 
   // Adjust density for some components
   @include mat.table-density("minimum");
