@@ -1,5 +1,3 @@
-@mixin theme() {
-  .sidebar-close-button {
-    background-color: var(--mat-sys-primary-container);
-  }
+.sidebar-close-button {
+  background-color: var(--mat-sys-primary-container);
 }

@@ -1,8 +1,6 @@
-@mixin theme() {
-  .layout-toolbar {
-    background-color: var(--mat-sys-primary-container);
-  }
-  .mat-badge-content {
-    background: none;
-  }
+.layout-toolbar {
+  background-color: var(--mat-sys-primary-container);
+}
+.mat-badge-content {
+  background: none;
 }
