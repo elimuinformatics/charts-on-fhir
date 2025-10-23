@@ -1,15 +1,11 @@
 <ng-doc-root>
   <ng-doc-navbar>
-    <ng-template ngDocNavbarLeft>
-      <h3 style="margin: 0">Charts-on-FHIR</h3>
-    </ng-template>
-    <ng-template ngDocNavbarRight>
-      <div class="ng-doc-header-controls">
-        <a ng-doc-button-icon size="large" href="https://github.com/elimuinformatics/charts-on-fhir" ngDocTooltip="GitHub Repository">
-          <ng-doc-icon customIcon="github" [size]="24"></ng-doc-icon>
-        </a>
-      </div>
-    </ng-template>
+    <h3 ngDocNavbarLeft style="margin: 0">Charts-on-FHIR</h3>
+    <div ngDocNavbarRight class="ng-doc-header-controls">
+      <a ng-doc-button-icon size="large" href="https://github.com/elimuinformatics/charts-on-fhir" ngDocTooltip="GitHub Repository">
+        <ng-doc-icon icon="github" [size]="24"></ng-doc-icon>
+      </a>
+    </div>
   </ng-doc-navbar>
   <ng-doc-sidebar></ng-doc-sidebar>
   <router-outlet></router-outlet>
