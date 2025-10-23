@@ -53,19 +53,24 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         scrollPositionRestoration: 'enabled',
         anchorScrolling: 'enabled',
         scrollOffset: [0, 70],
-      }
+      },
     ),
   ],
   providers: [
     provideNgDocContext(),
-    provideNgDocApp(),
+    provideNgDocApp({
+      uiKit: {
+        assetsPath: 'assets',
+        customIconsPath: 'assets/icons',
+      },
+    }),
     provideSearchEngine(NgDocDefaultSearchEngine),
     providePageSkeleton(NG_DOC_DEFAULT_PAGE_SKELETON),
     provideMainPageProcessor(NG_DOC_DEFAULT_PAGE_PROCESSORS),
     provideChartsOnFhir(
       withColors('#e36667', '#377eb8', '#4daf4a', '#984ea3'),
       withDataLayerServices(MockDataLayerService),
-      withSummaryServices(ScatterDataPointSummaryService)
+      withSummaryServices(ScatterDataPointSummaryService),
     ),
     { provide: PatientService, useClass: MockPatientService },
     provideHttpClient(withInterceptorsFromDi()),
