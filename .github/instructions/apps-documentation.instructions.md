@@ -29,10 +29,8 @@ The documentation app uses ng-doc to generate comprehensive documentation for th
 
 #### Healthcare Context
 
-- Frame examples in clinical workflow contexts
-- Use realistic patient data scenarios (de-identified)
-- Explain FHIR resource relationships and clinical significance
-- Address privacy and security considerations
+- Frame examples in simplified clinical workflow contexts
+- Explain how FHIR standards are used in the library
 
 #### Interactive Examples
 
@@ -46,23 +44,19 @@ The documentation app uses ng-doc to generate comprehensive documentation for th
 ### Code Examples
 
 - Always use TypeScript with proper typing
-- Show both template-driven and reactive approaches
 - Include error handling and loading states
 - Demonstrate accessibility best practices
 
 ### Clinical Context
 
-- Explain the clinical significance of visualized data
 - Use appropriate medical terminology with explanations
 - Show how charts support clinical decision-making
-- Address healthcare regulatory considerations
 
 ### API Documentation
 
 - Document all public interfaces with JSDoc
 - Include parameter validation and error conditions
 - Provide migration guides for breaking changes
-- Show integration patterns with popular Angular libraries
 
 ## Common Tasks
 
@@ -72,7 +66,6 @@ The documentation app uses ng-doc to generate comprehensive documentation for th
 2. Include live code examples with realistic FHIR data
 3. Document all input/output properties and methods
 4. Add accessibility and mobile responsiveness notes
-5. Test examples with screen readers and mobile devices
 
 ### Updating Guides
 
