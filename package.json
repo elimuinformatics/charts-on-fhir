@@ -24,7 +24,7 @@
     "@angular/router": "20.3.15",
     "@fontsource/roboto": "^4.5.8",
     "@ng-doc/app": "^20.0.0",
-    "@ng-doc/builder": "^15.2.0",
+    "@ng-doc/builder": "^20.1.1",
     "@ng-doc/core": "^20.0.0",
     "@ng-doc/ui-kit": "^20.0.0",
     "@nx/angular": "22.2.5",
