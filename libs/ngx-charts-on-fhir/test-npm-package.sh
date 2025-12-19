@@ -21,7 +21,7 @@ echo ::::: Installing Angular Material
 npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} add @angular/material --skip-confirmation --interactive=false
 
 echo ::::: Installing Charts-on-FHIR library
-npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
+npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE} --legacy-peer-deps
 
 echo ::::: Building the Angular app
 npx ng build
