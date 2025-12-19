@@ -2,11 +2,11 @@
   @if (layers.length > 0) {
     <div class="summary-range-selector">
       <mat-label>Data summary</mat-label>
-      <mat-button-toggle-group id="timeframeselector" name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle-group id="timeframeselector" aria-label="Data summary range" (change)="configService.setSummaryRange($event.value)">
         @for (button of buttons; track button) {
-          <mat-button-toggle [id]="button.value" [value]="button.month" (click)="configService.setSummaryRange(button.month)">{{
-            button.value
-          }}</mat-button-toggle>
+          <mat-button-toggle [id]="button.value" [value]="button.month">
+            {{ button.value }}
+          </mat-button-toggle>
         }
       </mat-button-toggle-group>
     </div>

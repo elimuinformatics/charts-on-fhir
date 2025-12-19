@@ -18,7 +18,7 @@
           </fhir-chart-summary-card>
         }
         @if (expandedCard != null) {
-          <div class="backdrop" (click)="expandedCard = null"></div>
+          <button type="button" class="backdrop" (click)="expandedCard = null"></button>
         }
       </div>
     }
