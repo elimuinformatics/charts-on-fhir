@@ -1,5 +1,9 @@
-<div class="legend" *ngIf="enabledTags$ | async as enabledTags">
-  <ng-container *ngFor="let tagStyle of this.tagsService.tagStyles$ | async | keyvalue">
-    <fhir-chart-legend-item *ngIf="enabledTags.includes(tagStyle.key)" [icon]="tagStyle.value.pointStyle" [label]="tagStyle.key"></fhir-chart-legend-item>
-  </ng-container>
-</div>
+@if (enabledTags$ | async; as enabledTags) {
+  <div class="legend">
+    @for (tagStyle of this.tagsService.tagStyles$ | async | keyvalue; track tagStyle) {
+      @if (enabledTags.includes(tagStyle.key)) {
+        <fhir-chart-legend-item [icon]="tagStyle.value.pointStyle" [label]="tagStyle.key"></fhir-chart-legend-item>
+      }
+    }
+  </div>
+}

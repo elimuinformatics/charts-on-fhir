@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { ChartType, ChartTypeRegistry } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 import { merge } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
 import { produce, castDraft } from 'immer';
@@ -34,7 +36,7 @@ export class FhirChartTagsService {
     this.tagStyles.next(
       produce(this.tagStyles.value, (draft) => {
         Object.assign(draft, castDraft(newTagStyles));
-      })
+      }),
     );
   }
   applyTagStyles(dataset: Dataset) {

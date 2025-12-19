@@ -3,7 +3,7 @@ import { DateRange, MatDatepickerInputEvent, MatDatepickerModule } from '@angula
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
 import { MILLISECONDS_PER_DAY, subtractMonths } from '../utils';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,7 @@ type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
  * See `*TimelineRangeSelector` for example usage.
  */
 @Component({
-  imports: [CommonModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
+  imports: [MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatButtonToggleModule, MatMenuModule],
   selector: 'timeline-range-selector',
   templateUrl: './timeline-range-selector.component.html',
   styleUrls: ['./timeline-range-selector.component.scss'],

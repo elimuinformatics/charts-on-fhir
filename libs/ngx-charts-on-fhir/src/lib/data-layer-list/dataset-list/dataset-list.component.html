@@ -1,20 +1,24 @@
 <mat-accordion displayMode="flat" multi="true">
-  <mat-expansion-panel *ngFor="let dataset of datasetsReversed; trackBy: trackByLabel" expanded="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="onCheckboxChange(dataset, $event)"
-          [checked]="!dataset.hidden"
-          [title]="dataset.hidden ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
-          color="primary"
-        ></mat-checkbox>
-        <mat-title *ngIf="dataset.label" [matTooltip]="dataset.label">
-          {{ dataset.label }}
-        </mat-title>
-      </mat-panel-title>
-      <mat-panel-description> {{ dataset.data.length }} observations </mat-panel-description>
-    </mat-expansion-panel-header>
-    <dataset-options [dataset]="dataset" (datasetChange)="this.onDatasetOptionsChange(dataset, $event)"></dataset-options>
-  </mat-expansion-panel>
+  @for (dataset of datasetsReversed; track trackByLabel($index, dataset)) {
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="onCheckboxChange(dataset, $event)"
+            [checked]="!dataset.hidden"
+            [title]="dataset.hidden ? 'Show this dataset on the chart' : 'Hide this dataset on the chart'"
+            color="primary"
+          ></mat-checkbox>
+          @if (dataset.label) {
+            <mat-title [matTooltip]="dataset.label">
+              {{ dataset.label }}
+            </mat-title>
+          }
+        </mat-panel-title>
+        <mat-panel-description> {{ dataset.data.length }} observations </mat-panel-description>
+      </mat-expansion-panel-header>
+      <dataset-options [dataset]="dataset" (datasetChange)="this.onDatasetOptionsChange(dataset, $event)"></dataset-options>
+    </mat-expansion-panel>
+  }
 </mat-accordion>

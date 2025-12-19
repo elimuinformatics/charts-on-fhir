@@ -20,8 +20,12 @@
   (backdropClick)="isOpen = false"
 >
   <div class="overlay">
-    <button mat-mini-fab *ngFor="let color of palette" [ngStyle]="{ 'background-color': color }" class="mat-elevation-z4" (click)="onClick(color)">
-      <mat-icon *ngIf="color === selectedColor">check_small</mat-icon>
-    </button>
+    @for (color of palette; track color) {
+      <button mat-mini-fab [ngStyle]="{ 'background-color': color }" class="mat-elevation-z4" (click)="onClick(color)">
+        @if (color === selectedColor) {
+          <mat-icon>check_small</mat-icon>
+        }
+      </button>
+    }
   </div>
 </ng-template>

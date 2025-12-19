@@ -1,24 +1,28 @@
 <div class="chart-container" [style.width]="width" [style.height]="height">
   <div class="chart-container-resize-fix">
-    <ng-container *ngIf="datasets && datasets.length > 0; else empty">
-      <div class="error-msg" *ngIf="layerManager.dataRetrievalError$ | async">There was a problem retrieving data. The timeline may be incomplete.</div>
+    @if (datasets && datasets.length > 0) {
+      @if (layerManager.dataRetrievalError$ | async) {
+        <div class="error-msg">There was a problem retrieving data. The timeline may be incomplete.</div>
+      }
       <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
       <div class="floating-content-container">
-        <div *ngIf="floatingContent" class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
-          <ng-container [ngTemplateOutlet]="floatingContent"></ng-container>
-        </div>
+        @if (floatingContent) {
+          <div class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
+            <ng-container [ngTemplateOutlet]="floatingContent"></ng-container>
+          </div>
+        }
       </div>
-    </ng-container>
-    <ng-template #empty>
+    } @else {
       <div class="empty-message">
         <div class="empty-message-content">
-          <ng-container *ngIf="layerManager.loading$ | async; else doneLoading">
+          @if (layerManager.loading$ | async) {
             <div>Loading data...</div>
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-          </ng-container>
-          <ng-template #doneLoading>{{ emptyMessage }}</ng-template>
+          } @else {
+            {{ emptyMessage }}
+          }
         </div>
       </div>
-    </ng-template>
+    }
   </div>
 </div>

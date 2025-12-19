@@ -1,6 +1,8 @@
 import { StatisticsService, findReferenceRangeForDataset } from './statistics.service';
-import { ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
+import { TimelineDataPoint } from '../data-layer/data-layer';
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset, TimelineChartType } from '../data-layer/data-layer';
 
@@ -13,7 +15,7 @@ describe('StatisticsService', () => {
 
   describe('getFormattedStatistics', () => {
     it('should compute statistics for the dataset', async () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -52,7 +54,7 @@ describe('StatisticsService', () => {
     });
 
     it('should return "N/A" when there are no points in range', async () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -91,7 +93,7 @@ describe('StatisticsService', () => {
     });
 
     it('should omit "Outside Goal" when there is no matching reference range', async () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -122,7 +124,7 @@ describe('StatisticsService', () => {
     });
 
     it('should combine multiple datasets', async () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -178,7 +180,7 @@ describe('StatisticsService', () => {
     });
 
     it('should omit hidden datasets', async () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -242,7 +244,7 @@ describe('StatisticsService', () => {
 
   describe('computeDaysOutOfRange', () => {
     it('should return the number of days outside of the reference range', () => {
-      const layer: DataLayer<TimelineChartType, ScatterDataPoint[]> = {
+      const layer: DataLayer<TimelineChartType, TimelineDataPoint[]> = {
         name: 'Layer',
         datasets: [
           {
@@ -267,7 +269,7 @@ describe('StatisticsService', () => {
           },
         ],
       };
-      const days = service.getDaysOutOfRange(layer, layer.datasets[0], layer.datasets[0].data);
+      const days = service.getDaysOutOfRange(layer as any, layer.datasets[0] as any, layer.datasets[0].data as any);
       expect(days?.length).toBe(2);
     });
   });

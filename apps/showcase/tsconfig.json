@@ -3,6 +3,7 @@
   "files": ["src/main.ts", "src/polyfills.ts"],
   "include": ["**/*.ts"],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "bundler"
   }
 }

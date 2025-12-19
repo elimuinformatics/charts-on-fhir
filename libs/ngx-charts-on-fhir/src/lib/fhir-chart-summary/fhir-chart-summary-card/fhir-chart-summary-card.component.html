@@ -1,4 +1,4 @@
-<ng-container *ngIf="configService.summaryRange$ | async as range">
+@if (configService.summaryRange$ | async; as range) {
   <ng-template #template>
     <div class="card summary-card" [style.background]="getBackgroundStyle()">
       <dynamic-table [data]="summarize(range)"></dynamic-table>
@@ -6,7 +6,9 @@
   </ng-template>
   <div class="overlay-origin" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="expanded = true" [matTooltip]="getTooltip()">
     <ng-container [ngTemplateOutlet]="template"></ng-container>
-    <div *ngIf="contentOverflow" class="content-overflow"></div>
+    @if (contentOverflow) {
+      <div class="content-overflow"></div>
+    }
   </div>
   <ng-template
     cdkConnectedOverlay
@@ -25,4 +27,4 @@
       <ng-container [ngTemplateOutlet]="template"></ng-container>
     </div>
   </ng-template>
-</ng-container>
+}

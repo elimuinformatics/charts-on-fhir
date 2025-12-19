@@ -1,27 +1,32 @@
 <div class="layout-toolbar">
-  <data-layer-toolbar-loading-indicator *ngIf="showButton('loading')" [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
-  <data-layer-toolbar-button
-    *ngIf="showButton('patients')"
-    [active]="active === 'patients'"
-    [badge]="(patientService.patients$ | async)?.length"
-    icon="person"
-    tooltip="Patient List"
-    (click)="onClick('patients')"
-  ></data-layer-toolbar-button>
-  <data-layer-toolbar-button
-    *ngIf="showButton('browser')"
-    [active]="active === 'browser'"
-    [badge]="(layerManager.availableLayers$ | async)?.length"
-    icon="add"
-    tooltip="Add Data Layers"
-    (click)="onClick('browser')"
-  ></data-layer-toolbar-button>
-  <data-layer-toolbar-button
-    *ngIf="showButton('options')"
-    [active]="active === 'options'"
-    [badge]="(layerManager.selectedLayers$ | async)?.length"
-    icon="checklist"
-    tooltip="Selected Layers"
-    (click)="onClick('options')"
-  ></data-layer-toolbar-button>
+  @if (showButton("loading")) {
+    <data-layer-toolbar-loading-indicator [loading]="layerManager.loading$ | async"></data-layer-toolbar-loading-indicator>
+  }
+  @if (showButton("patients")) {
+    <data-layer-toolbar-button
+      [active]="active === 'patients'"
+      [badge]="(patientService.patients$ | async)?.length"
+      icon="person"
+      tooltip="Patient List"
+      (click)="onClick('patients')"
+    ></data-layer-toolbar-button>
+  }
+  @if (showButton("browser")) {
+    <data-layer-toolbar-button
+      [active]="active === 'browser'"
+      [badge]="(layerManager.availableLayers$ | async)?.length"
+      icon="add"
+      tooltip="Add Data Layers"
+      (click)="onClick('browser')"
+    ></data-layer-toolbar-button>
+  }
+  @if (showButton("options")) {
+    <data-layer-toolbar-button
+      [active]="active === 'options'"
+      [badge]="(layerManager.selectedLayers$ | async)?.length"
+      icon="checklist"
+      tooltip="Selected Layers"
+      (click)="onClick('options')"
+    ></data-layer-toolbar-button>
+  }
 </div>

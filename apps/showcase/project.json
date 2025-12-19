@@ -94,7 +94,8 @@
           "buildTarget": "showcase:build:development,mock"
         }
       },
-      "defaultConfiguration": "logica-open"
+      "defaultConfiguration": "logica-open",
+      "continuous": true
     },
     "deploy": {
       "executor": "nx:run-commands",

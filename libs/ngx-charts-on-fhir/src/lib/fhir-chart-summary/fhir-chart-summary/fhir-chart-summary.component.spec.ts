@@ -7,7 +7,9 @@ import { DataLayerManagerService } from '../../data-layer/data-layer-manager.ser
 import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
 import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { Chart } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { SummaryService } from '../summary.service';

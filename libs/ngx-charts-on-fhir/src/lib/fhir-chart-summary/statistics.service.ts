@@ -4,7 +4,9 @@ import { ScatterDataPoint } from 'chart.js';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 import { DataLayer, Dataset } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
-import { DeepPartial } from 'chart.js/dist/types/utils';
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
 
 type Stats = {
   days: number;
@@ -170,11 +172,11 @@ type ReferenceRange = {
 };
 
 function isOutOfRange(refRange: ReferenceRange) {
-  return (point: ScatterDataPoint) => point.y < refRange.yMin || refRange.yMax < point.y;
+  return (point: ScatterDataPoint) => typeof point.y === 'number' && (point.y < refRange.yMin || refRange.yMax < point.y);
 }
 
 function getDay(point: ScatterDataPoint): string {
-  const date = new Date(point.x);
+  const date = new Date(point.x as number | Date);
   return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`;
 }
 

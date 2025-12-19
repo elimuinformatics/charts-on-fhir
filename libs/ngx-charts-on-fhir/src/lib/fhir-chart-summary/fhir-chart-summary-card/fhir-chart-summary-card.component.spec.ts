@@ -10,7 +10,7 @@ import { SummaryService } from '../summary.service';
 import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common';
+
 import { DynamicTableComponent } from '../../dynamic-table/dynamic-table.component';
 
 class MockConfigService {
@@ -18,7 +18,7 @@ class MockConfigService {
 }
 
 @Component({
-  imports: [CommonModule],
+  imports: [],
   selector: 'dynamic-table',
   template: '',
 })

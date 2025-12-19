@@ -1,5 +1,4 @@
 import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, ScaleChartOptions, ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
 
 export type MonthRange = NumberRange & { months?: number };
@@ -13,9 +12,9 @@ export function previous({ min, max }: NumberRange): NumberRange {
 
 export type ChartData = ChartConfiguration['data'];
 export type ChartDatasets = ChartConfiguration['data']['datasets'];
-export type ChartScales = DeepPartial<ScaleChartOptions>['scales'];
-export type ChartAnnotations = DeepPartial<AnnotationOptions>[];
-export type ChartAnnotation = DeepPartial<AnnotationOptions>;
+export type ChartScales = ScaleChartOptions['scales'] | Record<string, unknown>;
+export type ChartAnnotations = Array<Partial<AnnotationOptions> | Record<string, unknown>>;
+export type ChartAnnotation = Partial<AnnotationOptions> | Record<string, unknown>;
 
 export function isDefined<T>(value: T | null | undefined): value is T {
   return value != null;

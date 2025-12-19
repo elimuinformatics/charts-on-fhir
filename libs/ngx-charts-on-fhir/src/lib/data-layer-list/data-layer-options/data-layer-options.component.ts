@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { produce, castDraft } from 'immer';
 import { Dataset, ManagedDataLayer } from '../../data-layer/data-layer';
-import { CommonModule } from '@angular/common';
+
 import { DatasetListComponent } from '../dataset-list/dataset-list.component';
 import { AnnotationListComponent } from '../annotation-list/annotation-list.component';
 
 @Component({
-  imports: [CommonModule, DatasetListComponent, AnnotationListComponent],
+  imports: [DatasetListComponent, AnnotationListComponent],
   selector: 'data-layer-options',
   templateUrl: './data-layer-options.component.html',
 })

@@ -1,6 +1,10 @@
 <div class="spinner-wrapper" [matTooltip]="loading ? 'Loading data...' : 'All data has finished loading'" matTooltipPosition="right">
-  <div *ngIf="loading">
-    <mat-progress-spinner [mode]="loading ? 'indeterminate' : 'determinate'" value="100" color="accent" diameter="24"></mat-progress-spinner>
-  </div>
-  <div *ngIf="!loading"><mat-icon>task_alt</mat-icon></div>
+  @if (loading) {
+    <div>
+      <mat-progress-spinner [mode]="loading ? 'indeterminate' : 'determinate'" value="100" color="accent" diameter="24"></mat-progress-spinner>
+    </div>
+  }
+  @if (!loading) {
+    <div><mat-icon>task_alt</mat-icon></div>
+  }
 </div>

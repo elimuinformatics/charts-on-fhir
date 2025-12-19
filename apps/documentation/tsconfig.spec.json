@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["jasmine"]
+    "types": ["jasmine"],
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }
