@@ -17,14 +17,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org/
           cache: npm
-      # Ensure npm 11.5.1 or later is installed for trusted publishing support
-      - name: Update npm
-        run: npm install -g npm@latest
+
+      - name: Increase Node memory
+        run: echo "NODE_OPTIONS=--max-old-space-size=4096" >> $GITHUB_ENV
+
+      - name: Ensure stable npm version
+        run: npm install -g npm@10
+
       - run: npm ci
       - run: npm run build ngx-charts-on-fhir
       - run: npm publish dist/libs/ngx-charts-on-fhir/ --access public
@@ -34,13 +39,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
+      - name: Increase Node memory
+        run: echo "NODE_OPTIONS=--max-old-space-size=4096" >> $GITHUB_ENV
+
       - run: npm ci
       - run: npm run build documentation -- --base-href=/charts-on-fhir/
-      - run: cp dist/apps/documentation/browser/index.html dist/apps/documentation/browser/404.html # Needed for Angular routing
+      - run: cp dist/apps/documentation/browser/index.html dist/apps/documentation/browser/404.html
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/apps/documentation/browser
