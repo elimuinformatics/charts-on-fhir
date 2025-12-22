@@ -1,10 +1,12 @@
 <mat-accordion displayMode="flat" multi="true">
-  @for (annotation of _annotations; track trackByIndex(i); let i = $index) {
+  @for (annotation of _annotations; track $index; let i = $index) {
     <mat-expansion-panel expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-checkbox
             (click)="$event.stopPropagation()"
+            (keydown.enter)="$event.stopPropagation()"
+            (keydown.space)="$event.stopPropagation()"
             (change)="onCheckboxChange(i, $event)"
             [checked]="annotation.display ?? true"
             [title]="annotation.display ? 'Show this annotation on the chart' : 'Hide this annotation on the chart'"

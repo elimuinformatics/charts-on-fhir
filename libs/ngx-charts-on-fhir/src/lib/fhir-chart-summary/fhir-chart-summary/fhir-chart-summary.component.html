@@ -18,7 +18,7 @@
           </fhir-chart-summary-card>
         }
         @if (expandedCard != null) {
-          <button type="button" class="backdrop" (click)="expandedCard = null"></button>
+          <button type="button" class="backdrop" aria-label="Close expanded summary card" (click)="expandedCard = null"></button>
         }
       </div>
     }

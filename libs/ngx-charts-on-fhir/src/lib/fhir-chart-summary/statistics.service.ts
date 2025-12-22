@@ -172,7 +172,7 @@ type ReferenceRange = {
 };
 
 function isOutOfRange(refRange: ReferenceRange) {
-  return (point: ScatterDataPoint) => typeof point.y === 'number' && (point.y < refRange.yMin || refRange.yMax < point.y);
+  return (point: ScatterDataPoint) => point.y != null && typeof point.y === 'number' && (point.y < refRange.yMin || refRange.yMax < point.y);
 }
 
 function getDay(point: ScatterDataPoint): string {
