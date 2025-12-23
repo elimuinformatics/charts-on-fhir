@@ -1,6 +1,10 @@
 import { ChartDataset, ChartType, ScaleOptions } from 'chart.js';
 import { ChartAnnotations } from '../utils';
 
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
 /** Timeline only supports Chart Types that have a Y-axis */
 export type TimelineChartType = 'line' | 'bar' | 'scatter' | 'radar';
 

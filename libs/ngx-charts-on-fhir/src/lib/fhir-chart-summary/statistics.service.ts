@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { mean, groupBy, uniq } from 'lodash-es';
 import { ScatterDataPoint } from 'chart.js';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
-import { DataLayer, Dataset } from '../data-layer/data-layer';
+import { DataLayer, Dataset, DeepPartial } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
-};
 
 type Stats = {
   days: number;

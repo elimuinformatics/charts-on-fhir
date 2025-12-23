@@ -13,15 +13,22 @@ cd dist/libs/ngx-charts-on-fhir
 PACKAGE_FILE=$(npm pack)
 cd ../../..
 
-echo ::::: Creating a new Angular app
-npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} new test-app --defaults
+echo ::::: Creating a new Angular app with Angular $MIN_ANGULAR_VERSION
+npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} new test-app --defaults --package-manager=npm
 cd test-app
 
-echo ::::: Installing Angular Material
-npx --yes \@angular/cli@${MIN_ANGULAR_VERSION} add @angular/material --skip-confirmation --interactive=false
+# Get the actual Angular version that was installed
+INSTALLED_ANGULAR_VERSION=$(jq -r '.dependencies."@angular/core"' package.json | sed 's/\^//')
+echo "Angular version installed: $INSTALLED_ANGULAR_VERSION"
+
+echo ::::: Installing Angular Material compatible with Angular $INSTALLED_ANGULAR_VERSION
+npm install @angular/material@20.2.14 @angular/cdk@20.2.14
+
+echo ::::: Pinning all Angular dependencies to version 20.x
+npm install @angular/core@20.3.15 @angular/common@20.3.15 @angular/platform-browser@20.3.15 @angular/platform-browser-dynamic@20.3.15 @angular/forms@20.3.15 @angular/router@20.3.15
 
 echo ::::: Installing Charts-on-FHIR library
-npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE} --legacy-peer-deps
+npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
 
 echo ::::: Building the Angular app
 npx ng build
