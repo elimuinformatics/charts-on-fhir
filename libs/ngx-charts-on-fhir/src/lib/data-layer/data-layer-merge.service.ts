@@ -11,7 +11,10 @@ import { hashCode } from '../utils';
  */
 @Injectable()
 export class DataLayerMergeService {
-  constructor(private readonly colorService: DataLayerColorService, private readonly tagsService: FhirChartTagsService) {}
+  constructor(
+    private readonly colorService: DataLayerColorService,
+    private readonly tagsService: FhirChartTagsService,
+  ) {}
 
   merge(collection: DataLayerCollection, layer: DataLayer): DataLayerCollection {
     return produce(collection, (draft) => {
@@ -19,8 +22,8 @@ export class DataLayerMergeService {
       if (!draft[id]) {
         draft[id] = { id, ...castDraft(layer) };
       } else {
-        this.mergeDatasets(draft[id], layer);
-        this.mergeAnnotations(draft[id], layer);
+        this.mergeDatasets(draft[id] as ManagedDataLayer, layer);
+        this.mergeAnnotations(draft[id] as ManagedDataLayer, layer);
       }
     });
   }

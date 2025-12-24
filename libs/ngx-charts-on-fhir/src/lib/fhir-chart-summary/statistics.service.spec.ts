@@ -1,10 +1,6 @@
-import { StatisticsService, findReferenceRangeForDataset } from './statistics.service';
-import { TimelineDataPoint } from '../data-layer/data-layer';
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends (infer U)[] ? DeepPartial<U>[] : T[P] extends object ? DeepPartial<T[P]> : T[P];
-};
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
-import { DataLayer, Dataset, TimelineChartType } from '../data-layer/data-layer';
+import { DataLayer, Dataset, DeepPartial, TimelineChartType, TimelineDataPoint } from '../data-layer/data-layer';
+import { StatisticsService, findReferenceRangeForDataset } from './statistics.service';
 
 describe('StatisticsService', () => {
   let service: StatisticsService;
