@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Dataset, TimelineChartType } from '../../data-layer/data-layer';
 import { ChartType, ChartTypeRegistry } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
+import { castDraft, produce } from 'immer';
 import { merge } from 'lodash-es';
 import { BehaviorSubject } from 'rxjs';
-import { produce, castDraft } from 'immer';
+import { Dataset, DeepPartial, TimelineChartType } from '../../data-layer/data-layer';
 
 type DatasetOptions<TType extends TimelineChartType = TimelineChartType> = DeepPartial<
   { [key in ChartType]: { type: key } & ChartTypeRegistry[key]['datasetOptions'] }[TType]
@@ -34,7 +33,7 @@ export class FhirChartTagsService {
     this.tagStyles.next(
       produce(this.tagStyles.value, (draft) => {
         Object.assign(draft, castDraft(newTagStyles));
-      })
+      }),
     );
   }
   applyTagStyles(dataset: Dataset) {

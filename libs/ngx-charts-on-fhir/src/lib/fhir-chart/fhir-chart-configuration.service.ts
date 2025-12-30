@@ -176,7 +176,7 @@ export class FhirChartConfigurationService {
     const datasets = merged.datasets.map((dataset) => mergeWith(findDataset(config, dataset), dataset, datasetMergeCustomizer));
     const scales = mapValues(merged.scales, (scale, key) => merge(findScale(config, key), scale));
     const annotations = merged.annotations?.map((anno) => merge(findAnnotation(config, anno), anno));
-    return this.buildConfiguration(datasets, scales, annotations);
+    return this.buildConfiguration(datasets, scales as ChartScales, annotations);
   }
 
   /** Build a chart configuration object to display the given datasets, scales, and annotations */
@@ -259,7 +259,7 @@ const findScale = (config: TimelineConfiguration, key: string) => config.options
 const findAnnotation = (config: TimelineConfiguration, anno: ChartAnnotation) => {
   const annotations = config.options?.plugins?.annotation?.annotations ?? [];
   if (Array.isArray(annotations)) {
-    return annotations.find(annotationEquals(anno));
+    return (annotations as ChartAnnotation[]).find(annotationEquals(anno));
   } else {
     throw new TypeError('Record-based annotation configuration is not yet supported. Use an Array instead.');
   }

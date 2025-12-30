@@ -1,8 +1,14 @@
 <div class="grid-table" [style.gridTemplateColumns]="'repeat(' + columns.length + ', auto)'">
   <div class="grid-thead">
-    <div class="grid-th" *ngFor="let col of columns">{{ col | titlecase }}</div>
+    @for (col of columns; track col) {
+      <div class="grid-th">{{ col | titlecase }}</div>
+    }
   </div>
-  <div class="grid-tbody" *ngFor="let row of _data">
-    <div class="grid-td" *ngFor="let col of columns">{{ row[col] }}</div>
-  </div>
+  @for (row of _data; track $index) {
+    <div class="grid-tbody">
+      @for (col of columns; track col) {
+        <div class="grid-td">{{ row[col] }}</div>
+      }
+    </div>
+  }
 </div>

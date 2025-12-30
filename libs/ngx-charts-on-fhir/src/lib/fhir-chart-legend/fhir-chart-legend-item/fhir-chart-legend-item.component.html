@@ -1,10 +1,22 @@
 <div class="legend-item">
-  <div class="legend-icon" [ngSwitch]="icon" [style.color]="color">
-    <mat-icon *ngSwitchCase="'circle'">circle</mat-icon>
-    <mat-icon *ngSwitchCase="'rect'">square</mat-icon>
-    <mat-icon *ngSwitchCase="'rectRot'" style="rotate: 45deg; scale: 0.8">square</mat-icon>
-    <mat-icon *ngSwitchCase="'triangle'" svgIcon="triangle"></mat-icon>
-    <mat-icon *ngSwitchDefault>square</mat-icon>
+  <div class="legend-icon" [style.color]="color">
+    @switch (icon) {
+      @case ("circle") {
+        <mat-icon>circle</mat-icon>
+      }
+      @case ("rect") {
+        <mat-icon>square</mat-icon>
+      }
+      @case ("rectRot") {
+        <mat-icon style="rotate: 45deg; scale: 0.8">square</mat-icon>
+      }
+      @case ("triangle") {
+        <mat-icon svgIcon="triangle"></mat-icon>
+      }
+      @default {
+        <mat-icon>square</mat-icon>
+      }
+    }
   </div>
   <div>
     {{ label }}

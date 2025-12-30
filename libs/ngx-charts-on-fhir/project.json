@@ -8,15 +8,14 @@
     "build": {
       "executor": "@nx/angular:package",
       "options": {
-        "project": "libs/ngx-charts-on-fhir/ng-package.json"
+        "project": "libs/ngx-charts-on-fhir/ng-package.json",
+        "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.json"
       },
       "configurations": {
         "production": {
           "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.prod.json"
         },
-        "development": {
-          "tsConfig": "libs/ngx-charts-on-fhir/tsconfig.lib.json"
-        }
+        "development": {}
       },
       "defaultConfiguration": "production"
     },

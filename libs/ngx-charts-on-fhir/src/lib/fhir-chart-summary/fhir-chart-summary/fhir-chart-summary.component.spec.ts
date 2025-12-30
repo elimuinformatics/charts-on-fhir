@@ -1,18 +1,16 @@
+import { CommonModule } from '@angular/common';
 import { Component, DebugElement, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { ManagedDataLayer } from '../../data-layer/data-layer';
-import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
-import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
-import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { Chart } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
-import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { DeepPartial, ManagedDataLayer } from '../../data-layer/data-layer';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { SummaryService } from '../summary.service';
-import { CommonModule } from '@angular/common';
+import { DataLayerManagerService } from '../../data-layer/data-layer-manager.service';
+import { FhirChartConfigurationService } from '../../fhir-chart/fhir-chart-configuration.service';
+import { FhirChartLifecycleService } from '../../fhir-chart/fhir-chart-lifecycle.service';
 import { FhirChartSummaryCardComponent } from '../fhir-chart-summary-card/fhir-chart-summary-card.component';
+import { FhirChartSummaryComponent } from './fhir-chart-summary.component';
 
 class MockLayerManager {
   enabledLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);

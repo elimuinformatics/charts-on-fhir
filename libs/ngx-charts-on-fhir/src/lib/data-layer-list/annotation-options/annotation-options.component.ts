@@ -3,13 +3,13 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { produce } from 'immer';
 import { merge } from 'lodash-es';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ColorPickerComponent } from '../../color-picker/color-picker.component';
 
 @Component({
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, ColorPickerComponent],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, ColorPickerComponent],
   selector: 'annotation-options',
   templateUrl: './annotation-options.component.html',
   styleUrls: ['./annotation-options.component.css'],

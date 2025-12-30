@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { mean, groupBy, uniq } from 'lodash-es';
 import { ScatterDataPoint } from 'chart.js';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
-import { DataLayer, Dataset } from '../data-layer/data-layer';
+import { DataLayer, Dataset, DeepPartial } from '../data-layer/data-layer';
 import { NumberRange, isValidScatterDataPoint, MILLISECONDS_PER_DAY, isDefined, ChartAnnotations } from '../utils';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 
 type Stats = {
   days: number;
@@ -170,11 +169,11 @@ type ReferenceRange = {
 };
 
 function isOutOfRange(refRange: ReferenceRange) {
-  return (point: ScatterDataPoint) => point.y < refRange.yMin || refRange.yMax < point.y;
+  return (point: ScatterDataPoint) => point.y != null && typeof point.y === 'number' && (point.y < refRange.yMin || refRange.yMax < point.y);
 }
 
 function getDay(point: ScatterDataPoint): string {
-  const date = new Date(point.x);
+  const date = new Date(point.x as number | Date);
   return `${date.getFullYear()} ${date.getMonth()} ${date.getDate()}`;
 }
 

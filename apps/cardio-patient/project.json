@@ -83,7 +83,8 @@
           "buildTarget": "cardio-patient:build:development,logica-open"
         }
       },
-      "defaultConfiguration": "logica-open"
+      "defaultConfiguration": "logica-open",
+      "continuous": true
     },
     "deploy": {
       "executor": "nx:run-commands",

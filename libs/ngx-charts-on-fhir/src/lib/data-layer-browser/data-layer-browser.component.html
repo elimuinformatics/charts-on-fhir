@@ -40,16 +40,22 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       <tr *matNoDataRow>
-        <td *ngIf="filterControl.value" [attr.colspan]="3">
-          <p class="empty-message">No data layers match the filter.</p>
-          <button mat-button color="primary" (click)="filterControl.setValue('')">SHOW ALL</button>
-        </td>
-        <td *ngIf="!filterControl.value && (layerManager.selectedLayers$ | async)?.length" [attr.colspan]="3">
-          <p class="empty-message">All data layers have already been added to the chart.</p>
-        </td>
-        <td *ngIf="!filterControl.value && !(layerManager.selectedLayers$ | async)?.length" [attr.colspan]="3">
-          <p class="empty-message">No data layers are available for this patient.</p>
-        </td>
+        @if (filterControl.value) {
+          <td [attr.colspan]="3">
+            <p class="empty-message">No data layers match the filter.</p>
+            <button mat-button color="primary" (click)="filterControl.setValue('')">SHOW ALL</button>
+          </td>
+        }
+        @if (!filterControl.value && (layerManager.selectedLayers$ | async)?.length) {
+          <td [attr.colspan]="3">
+            <p class="empty-message">All data layers have already been added to the chart.</p>
+          </td>
+        }
+        @if (!filterControl.value && !(layerManager.selectedLayers$ | async)?.length) {
+          <td [attr.colspan]="3">
+            <p class="empty-message">No data layers are available for this patient.</p>
+          </td>
+        }
       </tr>
     </table>
   </div>

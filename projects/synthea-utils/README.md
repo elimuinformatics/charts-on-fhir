@@ -5,6 +5,7 @@ This project contains some modules and utility scripts for creating patient-gene
 ## Quick Start
 
 1. Download the Synthea JAR: https://github.com/synthetichealth/synthea/wiki/Basic-Setup-and-Running
+1. Place the file at `projects/synthea-utils/synthea-with-dependencies.jar` (or update `SYNTHEA_BINARY` in `projects/synthea-utils/index.ts` to match your JAR filename)
 1. Run `npm start`
 1. Find the post-processed patient bundle in `../mock-fhir-server/data/` folder
 

@@ -3,7 +3,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { DataLayerToolbarComponent, ToolbarButtonName } from '../data-layer-toolbar/data-layer-toolbar/data-layer-toolbar.component';
 import { SharedDataLayerListService } from '../data-layer-list/shared-data-layer-list.service';
 import { FhirDataService } from '../fhir-data/fhir-data.service';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { PatientBrowserComponent } from '../patient-browser/patient-browser.component';
 import { DataLayerListComponent } from '../data-layer-list/data-layer-list/data-layer-list.component';
@@ -13,15 +13,7 @@ import { DataLayerBrowserComponent } from '../data-layer-browser/data-layer-brow
  * See `*ChartLayout` for example usage.
  */
 @Component({
-  imports: [
-    CommonModule,
-    MatSidenavModule,
-    MatIconModule,
-    DataLayerToolbarComponent,
-    PatientBrowserComponent,
-    DataLayerListComponent,
-    DataLayerBrowserComponent,
-  ],
+  imports: [MatSidenavModule, MatIconModule, DataLayerToolbarComponent, PatientBrowserComponent, DataLayerListComponent, DataLayerBrowserComponent],
   selector: 'fhir-chart-layout',
   templateUrl: './fhir-chart-layout.component.html',
   styleUrls: ['./fhir-chart-layout.component.css'],

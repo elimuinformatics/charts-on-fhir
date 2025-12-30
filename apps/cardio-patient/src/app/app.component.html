@@ -1,8 +1,12 @@
 <mat-toolbar>
-  <img class="banner-logo" *ngIf="cdsicLogo" src="assets/cdsic-logo-small.png" alt="CDSiC Logo" />
+  @if (cdsicLogo) {
+    <img class="banner-logo" src="assets/cdsic-logo-small.png" alt="CDSiC Logo" />
+  }
   <span>{{ appTitle }}</span>
   <span style="flex: auto"></span>
-  <options-menu *ngIf="selectedIndex === 1" (legendChange)="showLegend = $event"></options-menu>
+  @if (selectedIndex === 1) {
+    <options-menu (legendChange)="showLegend = $event"></options-menu>
+  }
 </mat-toolbar>
 <mat-tab-group
   class="bp-tab-group"

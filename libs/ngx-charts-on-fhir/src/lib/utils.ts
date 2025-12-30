@@ -1,6 +1,6 @@
 import { CartesianScaleOptions, ChartConfiguration, CoreScaleOptions, Scale, ScaleChartOptions, ScatterDataPoint } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 import { AnnotationOptions } from 'chartjs-plugin-annotation';
+import { DeepPartial } from './data-layer/data-layer';
 
 export type MonthRange = NumberRange & { months?: number };
 export type NumberRange = { min: number; max: number };
@@ -22,8 +22,12 @@ export function isDefined<T>(value: T | null | undefined): value is T {
 }
 
 export function isValidScatterDataPoint<P>(point: P): point is P & ScatterDataPoint {
-  const p = point as any;
-  return p != null && typeof p === 'object' && p.x != null && p.x > 0 && p.y != null && typeof p.y === 'number'; // y <= 0 is ok
+  if (point == null || typeof point !== 'object') {
+    return false;
+  }
+
+  const candidate = point as Record<string, unknown>;
+  return 'x' in candidate && 'y' in candidate && typeof candidate['x'] === 'number' && typeof candidate['y'] === 'number' && candidate['x'] > 0; // y <= 0 is ok
 }
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;

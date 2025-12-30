@@ -1,5 +1,5 @@
 import { BarElement, ChartType, Tooltip, TooltipModel } from 'chart.js';
-import { ActiveElement } from 'chart.js/dist/plugins/plugin.tooltip';
+type ActiveElement = { element: unknown; datasetIndex: number; index: number };
 import './center-tooltip-positioner';
 
 describe('Tooltip.positioners.center', () => {
@@ -16,12 +16,12 @@ describe('Tooltip.positioners.center', () => {
         chartArea: { width: 500, height: 500 },
       },
     } as TooltipModel<ChartType>;
-    const position = Tooltip.positioners.center.apply(tooltipModel, [elements, { x: 50, y: 50 }]);
+    const position = Tooltip.positioners.center.apply(tooltipModel, [elements as any, { x: 50, y: 50 }]);
     expect(position).toEqual(
       jasmine.objectContaining({
         x: 75,
         y: 50,
-      })
+      }),
     );
   });
 
@@ -38,12 +38,12 @@ describe('Tooltip.positioners.center', () => {
         chartArea: { width: 500, height: 500 },
       },
     } as TooltipModel<ChartType>;
-    const position = Tooltip.positioners.center.apply(tooltipModel, [elements, { x: 100, y: 50 }]);
+    const position = Tooltip.positioners.center.apply(tooltipModel, [elements as any, { x: 100, y: 50 }]);
     expect(position).toEqual(
       jasmine.objectContaining({
         x: 100,
         y: 50,
-      })
+      }),
     );
   });
 
@@ -60,11 +60,11 @@ describe('Tooltip.positioners.center', () => {
         chartArea: { width: 500, height: 500 },
       },
     } as TooltipModel<ChartType>;
-    const position = Tooltip.positioners.center.apply(tooltipModel, [elements, { x: 50, y: 50 }]);
+    const position = Tooltip.positioners.center.apply(tooltipModel, [elements as any, { x: 50, y: 50 }]);
     expect(position).toEqual(
       jasmine.objectContaining({
         yAlign: 'top',
-      })
+      }),
     );
   });
 
@@ -81,11 +81,11 @@ describe('Tooltip.positioners.center', () => {
         chartArea: { width: 500, height: 500 },
       },
     } as TooltipModel<ChartType>;
-    const position = Tooltip.positioners.center.apply(tooltipModel, [elements, { x: 50, y: 450 }]);
+    const position = Tooltip.positioners.center.apply(tooltipModel, [elements as any, { x: 50, y: 450 }]);
     expect(position).toEqual(
       jasmine.objectContaining({
         yAlign: 'bottom',
-      })
+      }),
     );
   });
 });

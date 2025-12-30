@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -14,7 +13,6 @@ import {
 
 @Component({
   imports: [
-    CommonModule,
     FhirChartComponent,
     FhirChartLayoutComponent,
     FhirChartSummaryComponent,

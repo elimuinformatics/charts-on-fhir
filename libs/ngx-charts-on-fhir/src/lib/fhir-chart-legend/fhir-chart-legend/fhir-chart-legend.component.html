@@ -1,12 +1,9 @@
 <div class="legend">
-  <ng-container *ngFor="let layer of layerManager.enabledLayers$ | async">
-    <ng-container *ngFor="let dataset of layer.datasets | sortDatasets">
-      <fhir-chart-legend-item
-        *ngIf="!dataset.hidden"
-        [icon]="dataset.pointStyle"
-        [color]="colorService.getColor(dataset)"
-        [label]="dataset.label"
-      ></fhir-chart-legend-item>
-    </ng-container>
-  </ng-container>
+  @for (layer of layerManager.enabledLayers$ | async; track layer.id) {
+    @for (dataset of layer.datasets | sortDatasets; track dataset.label) {
+      @if (!dataset.hidden) {
+        <fhir-chart-legend-item [icon]="dataset.pointStyle" [color]="colorService.getColor(dataset)" [label]="dataset.label"></fhir-chart-legend-item>
+      }
+    }
+  }
 </div>

@@ -1,14 +1,14 @@
 <form [formGroup]="form" id="annotationform">
   <section>
-    <ng-container *ngIf="annotation?.type === 'box'">
+    @if (annotation?.type === "box") {
       <mat-label>Color</mat-label>
       <color-picker formControlName="color"></color-picker>
-    </ng-container>
+    }
     <mat-form-field>
       <mat-label>Label</mat-label>
       <input matInput formControlName="label" id="annotationLabel" placeholder="Annotation name" />
     </mat-form-field>
-    <ng-container *ngIf="annotation?.type === 'box'">
+    @if (annotation?.type === "box") {
       <mat-label>Range</mat-label>
       <section>
         <mat-form-field class="input-width">
@@ -20,6 +20,6 @@
           <input type="number" matInput formControlName="yMin" id="yMin" />
         </mat-form-field>
       </section>
-    </ng-container>
+    }
   </section>
 </form>

@@ -84,7 +84,7 @@ export class DataLayerManagerService {
     @Inject(DataLayerService) readonly dataLayerServices: DataLayerService[],
     private readonly colorService: DataLayerColorService,
     private readonly tagsService: FhirChartTagsService,
-    private readonly mergeService: DataLayerMergeService
+    private readonly mergeService: DataLayerMergeService,
   ) {}
   dataRetrievalError$ = new BehaviorSubject<boolean>(false);
   private readonly stateSubject = new BehaviorSubject(initialState);
@@ -102,12 +102,12 @@ export class DataLayerManagerService {
   allLayers$ = this.stateSubject.pipe(map(({ layers }) => Object.values(layers)));
   selectedLayers$ = this.stateSubject.pipe(
     map(({ layers, selected }) => selected.map((id) => layers[id])),
-    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
+    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c)),
   );
   availableLayers$ = this.allLayers$.pipe(map((layers) => layers.filter((layer) => !layer.selected)));
   enabledLayers$ = this.selectedLayers$.pipe(
     map((layers) => layers.filter((layer) => layer.enabled)),
-    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c))
+    distinctUntilChanged((previous, current) => previous.length === current.length && zip(previous, current).every(([p, c]) => p === c)),
   );
   loading$ = new BehaviorSubject<boolean>(false);
   settings$ = this.stateSubject.pipe(
@@ -116,7 +116,7 @@ export class DataLayerManagerService {
       isAutoEnable: !!state.autoEnableFn,
       isAutoSort: !!state.autoSortFn,
     })),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   private readonly cancel$ = new Subject<void>();
@@ -141,9 +141,9 @@ export class DataLayerManagerService {
             this.dataRetrievalError$.next(true);
             console.error(error);
             return EMPTY;
-          })
-        )
-      )
+          }),
+        ),
+      ),
     )
       .pipe(takeUntil(this.cancel$))
       .subscribe({
@@ -310,7 +310,7 @@ export class DataLayerManagerService {
     if (!draft.layers[id].selected) {
       layer.selected = true;
       layer.enabled = true;
-      this.colorService.chooseColorsFromPalette(layer);
+      this.colorService.chooseColorsFromPalette(layer as DataLayer);
       for (let dataset of layer.datasets) {
         this.tagsService.applyTagStyles(dataset);
       }
@@ -349,7 +349,7 @@ export class DataLayerManagerService {
   /** Reducer that returns a new state after applying the auto-sort function */
   private readonly autoSortLayers = produce<DataLayerManagerState>((draft) => {
     if (draft.autoSortFn) {
-      draft.selected.sort((idA, idB) => draft.autoSortFn!(draft.layers[idA], draft.layers[idB]));
+      draft.selected.sort((idA, idB) => draft.autoSortFn!(draft.layers[idA] as DataLayer, draft.layers[idB] as DataLayer));
     }
   });
 }

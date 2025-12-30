@@ -10,7 +10,7 @@ permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 env:
-  NODE_VERSION: 18.x
+  NODE_VERSION: 20.x
 
 jobs:
   format:
@@ -20,11 +20,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: nrwl/nx-set-shas@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
       - run: npm ci
       - run: npx nx format:check
 
@@ -35,13 +38,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: nrwl/nx-set-shas@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
       - run: npm ci
-      - run: npx nx affected -t build --parallel=5
+      - run: npx nx affected -t build --parallel=3
 
   test-affected:
     name: Test and Scan
@@ -50,16 +56,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: nrwl/nx-set-shas@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
       - run: npm ci
       - if: ${{ github.ref == 'refs/heads/main' }} # Run all tests when merging to main for accurate coverage in SonarCloud
-        run: npx nx run-many -t test --parallel=5 --no-watch --code-coverage
+        run: npx nx run-many -t test --parallel=3 --no-watch --code-coverage
       - if: ${{ github.ref != 'refs/heads/main' }} # Only test affected projects in PRs
-        run: npx nx affected -t test --parallel=5 --no-watch --code-coverage
+        run: npx nx affected -t test --parallel=3 --no-watch --code-coverage
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarqube-scan-action@master
         env:
@@ -82,10 +91,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: nrwl/nx-set-shas@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
+
       - run: npm ci
-      - run: npx nx affected -t test-npm-package
+      - run: npx nx affected -t test-npm-package --parallel=3
