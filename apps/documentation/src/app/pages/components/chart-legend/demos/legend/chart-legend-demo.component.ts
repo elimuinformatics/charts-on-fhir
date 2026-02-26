@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -8,7 +7,7 @@ import {
 @Component({
   selector: 'example-chart-legend-demo',
   templateUrl: './chart-legend-demo.component.html',
-  imports: [CommonModule, FhirChartLegendComponent],
+  imports: [FhirChartLegendComponent],
 })
 export class ChartLegendDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerBrowserComponent,
@@ -8,7 +7,7 @@ import {
 @Component({
   selector: 'example-data-layer-browser-demo',
   templateUrl: './data-layer-browser-demo.component.html',
-  imports: [CommonModule, DataLayerBrowserComponent],
+  imports: [DataLayerBrowserComponent],
 })
 export class DataLayerBrowserDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

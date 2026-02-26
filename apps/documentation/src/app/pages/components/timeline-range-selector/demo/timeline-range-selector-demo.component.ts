@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -9,7 +8,7 @@ import {
 @Component({
   selector: 'example-timeline-range-selector-demo',
   templateUrl: './timeline-range-selector-demo.component.html',
-  imports: [CommonModule, FhirChartComponent, TimelineRangeSelectorComponent],
+  imports: [FhirChartComponent, TimelineRangeSelectorComponent],
 })
 export class TimelineRangeSelectorDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

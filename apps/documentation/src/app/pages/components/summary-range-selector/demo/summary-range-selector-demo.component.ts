@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -11,12 +10,7 @@ import {
   selector: 'example-summary-range-selector-demo',
   templateUrl: './summary-range-selector-demo.component.html',
   styleUrls: ['./summary-range-selector-demo.css'],
-  imports: [
-    CommonModule,
-    FhirChartComponent,
-    FhirChartSummaryComponent,
-    SummaryRangeSelectorComponent,
-  ],
+  imports: [FhirChartComponent, FhirChartSummaryComponent, SummaryRangeSelectorComponent],
 })
 export class SummaryRangeSelectorDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

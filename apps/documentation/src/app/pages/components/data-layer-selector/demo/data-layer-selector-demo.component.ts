@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -10,7 +9,7 @@ import {
 @Component({
   selector: 'example-data-layer-selector-demo',
   templateUrl: './data-layer-selector-demo.component.html',
-  imports: [CommonModule, DataLayerSelectorComponent, FhirChartComponent],
+  imports: [DataLayerSelectorComponent, FhirChartComponent],
 })
 export class DataLayerSelectorDemoComponent implements OnInit {
   views: DataLayerViews = {
