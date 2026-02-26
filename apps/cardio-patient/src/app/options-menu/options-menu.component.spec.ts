@@ -40,7 +40,8 @@ describe('OptionsMenuComponent', () => {
   });
 
   it('should emit legendChange when unchecked', async () => {
-    component.legend = true;
+    fixture.componentRef.setInput('legend', true);
+    fixture.detectChanges();
     const menu = await loader.getHarness(MatMenuHarness);
     await menu.open();
     const childLoader = await menu.getChildLoader('*');
