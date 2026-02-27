@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DateRange, MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { delay } from 'rxjs';
 import { FhirChartConfigurationService } from '../fhir-chart/fhir-chart-configuration.service';
@@ -20,13 +20,36 @@ type DateRangeString = `${number} ${'y' | 'mo' | 'd'}` | 'All' | 'Custom';
   selector: 'timeline-range-selector',
   templateUrl: './timeline-range-selector.component.html',
   styleUrls: ['./timeline-range-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimelineRangeSelectorComponent {
   selectedDateRange: DateRange<Date> = new DateRange<Date>(null, null);
   calendarDateRange: DateRange<Date> = new DateRange<Date>(null, null);
-  selectedButton: DateRangeString = 'All';
-  @Input() showTimelineViewTitle: boolean = false;
-  @Input() buttons: DateRangeString[] = ['1 mo', '3 mo', '6 mo', '1 y', 'All'];
+  private _selectedButton: DateRangeString = 'All';
+  set selectedButton(value: DateRangeString) {
+    this._selectedButton = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  get selectedButton() {
+    return this._selectedButton;
+  }
+  private _showTimelineViewTitle: boolean = false;
+  @Input() set showTimelineViewTitle(value: boolean) {
+    this._showTimelineViewTitle = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  get showTimelineViewTitle() {
+    return this._showTimelineViewTitle;
+  }
+
+  private _buttons: DateRangeString[] = ['1 mo', '3 mo', '6 mo', '1 y', 'All'];
+  @Input() set buttons(value: DateRangeString[]) {
+    this._buttons = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  get buttons() {
+    return this._buttons;
+  }
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -34,7 +57,7 @@ export class TimelineRangeSelectorComponent {
   ) {}
 
   ngOnInit(): void {
-    this.configService.timelineRange$.pipe(delay(0)).subscribe((timelineRange) => {
+    this.configService.timelineRange$.subscribe((timelineRange) => {
       this.selectedDateRange = new DateRange(new Date(timelineRange.min), new Date(timelineRange.max));
       this.selectedButton = this.findMatchingButton(this.selectedDateRange);
       this.changeDetectorRef.markForCheck();
@@ -42,13 +65,14 @@ export class TimelineRangeSelectorComponent {
   }
 
   updateRangeSelector(range: DateRangeString) {
+    this.selectedButton = range;
     if (range === 'All') {
       this.resetZoomChart();
-    }
-    if (this.selectedDateRange.end && range) {
+    } else if (this.selectedDateRange.end) {
       this.selectedDateRange = this.convertStringToDateRange(range);
       this.zoomChart();
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   zoomChart() {
@@ -69,6 +93,7 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.selectedDateRange = new DateRange(this.selectedDateRange.start, event.value);
     }
+    this.changeDetectorRef.markForCheck();
     setTimeout(() => {
       this.zoomChart();
     }, 0);
@@ -76,6 +101,7 @@ export class TimelineRangeSelectorComponent {
 
   openCalendar() {
     this.calendarDateRange = this.selectedDateRange;
+    this.changeDetectorRef.markForCheck();
   }
 
   calendarDateChange(event: MatDatepickerInputEvent<Date>, datePickerType: string) {
@@ -84,6 +110,7 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.calendarDateRange = new DateRange(this.calendarDateRange.start, event.value);
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   calendarSelectedChange(date: Date): void {
@@ -92,11 +119,13 @@ export class TimelineRangeSelectorComponent {
     } else {
       this.calendarDateRange = new DateRange(date, null);
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   applyCalendarDateRange() {
     this.selectedDateRange = this.calendarDateRange;
     this.zoomChart();
+    this.changeDetectorRef.markForCheck();
   }
 
   findMatchingButton(dateRange: DateRange<Date>) {
