@@ -1,14 +1,14 @@
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { AnnotationListComponent } from './annotation-list.component';
-import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
 import { AnnotationOptionsComponent } from '../annotation-options/annotation-options.component';
+import { AnnotationListComponent } from './annotation-list.component';
 
 @Component({
   selector: 'annotation-options',
