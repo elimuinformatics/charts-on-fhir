@@ -70,7 +70,7 @@ jobs:
       - if: ${{ github.ref != 'refs/heads/main' }} # Only test affected projects in PRs
         run: npx nx affected -t test --parallel=3 --no-watch --code-coverage
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
