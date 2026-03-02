@@ -22,6 +22,7 @@ import { DateRange } from '@angular/material/datepicker';
 
 const min = new Date('2022-01-01T00:00').getTime();
 const max = new Date('2022-01-02T00:00').getTime();
+const RealDate = Date;
 
 class MockConfigService {
   timelineRange$ = of({ min, max });
@@ -37,9 +38,9 @@ describe('TimelineRangeSelectorComponent', () => {
   let loader: HarnessLoader;
   let mockConfigService: MockConfigService;
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(async () => {
     mockConfigService = new MockConfigService();
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
         MatInputModule,
@@ -59,9 +60,13 @@ describe('TimelineRangeSelectorComponent', () => {
     element = fixture.debugElement;
     loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
-    tick();
+    await fixture.whenStable();
     fixture.detectChanges();
-  }));
+  });
+
+  afterEach(() => {
+    // Top-level cleanup
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -72,94 +77,97 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(rangeSelector).toBeTruthy();
   });
 
-  it('should support custom button with range specified in days', fakeAsync(async () => {
-    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    component.buttons = ['2 d', 'All'];
-    fixture.detectChanges();
-    tick();
-    const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '2 d' }));
-    await ButtonInput.check();
-    fixture.detectChanges();
-    const expectedMinDate = new Date('2022-03-28T23:59:59.999');
-    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
-  }));
+  describe('Date Range Selection', () => {
+    let mockNow: Date;
+    beforeEach(() => {
+      mockNow = new RealDate('2022-03-30T00:00');
+      const DateSpy = spyOn(globalThis, 'Date' as any).and.callFake(function (this: any, ...args: any[]) {
+        if (args.length > 0) {
+          return new (RealDate as any)(...args);
+        }
+        return new RealDate(mockNow.getTime());
+      } as any);
+      (DateSpy as any).now = () => mockNow.getTime();
+      (DateSpy as any).parse = RealDate.parse;
+      (DateSpy as any).UTC = RealDate.UTC;
+      (DateSpy as any).prototype = RealDate.prototype;
+    });
 
-  it('should calculate proper 1 month ago date from max layer date', fakeAsync(async () => {
-    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    fixture.detectChanges();
-    tick();
-    const ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 mo' }));
-    await ButtonInputGroup.check();
-    fixture.detectChanges();
-    tick();
-    const expectedMinDate = new Date('2022-02-28T23:59:59.999');
-    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
-  }));
+    it('should support custom button with range specified in days', async () => {
+      component.buttons = ['2 d', 'All'];
+      fixture.detectChanges();
+      const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '2 d' }));
+      await ButtonInput.check();
+      fixture.detectChanges();
+      const expectedMinDate = new Date('2022-03-28T23:59:59.999');
+      expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+    });
 
-  it('should calculate proper 3 month ago date from max layer date', fakeAsync(async () => {
-    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    fixture.detectChanges();
-    tick();
-    const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '3 mo' }));
-    await ButtonInput.check();
-    fixture.detectChanges();
-    tick();
-    const expectedMinDate = new Date('2021-12-30T23:59:59.999');
-    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
-  }));
+    it('should calculate proper 1 month ago date from max layer date', async () => {
+      fixture.detectChanges();
+      const ButtonInputGroup = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 mo' }));
+      await ButtonInputGroup.check();
+      fixture.detectChanges();
+      const expectedMinDate = new Date('2022-02-28T23:59:59.999');
+      expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+    });
 
-  it('should calculate proper 6 month ago date from max layer date', fakeAsync(async () => {
-    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    fixture.detectChanges();
-    tick();
-    const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '6 mo' }));
-    await ButtonInput.check();
-    fixture.detectChanges();
-    tick();
-    const expectedMinDate = new Date('2021-09-30T23:59:59.999');
-    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
-  }));
+    it('should calculate proper 3 month ago date from max layer date', async () => {
+      fixture.detectChanges();
+      const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '3 mo' }));
+      await ButtonInput.check();
+      fixture.detectChanges();
+      const expectedMinDate = new Date('2021-12-30T23:59:59.999');
+      expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+    });
 
-  it('should calculate proper 12 month ago date from max layer date', fakeAsync(async () => {
-    jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
-    fixture.detectChanges();
-    tick();
-    const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 y' }));
-    await ButtonInput.check();
-    fixture.detectChanges();
-    tick();
-    const expectedMinDate = new Date('2021-03-30T23:59:59.999');
-    expect(component.selectedDateRange.start).toEqual(expectedMinDate);
-  }));
+    it('should calculate proper 6 month ago date from max layer date', async () => {
+      fixture.detectChanges();
+      const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '6 mo' }));
+      await ButtonInput.check();
+      fixture.detectChanges();
+      const expectedMinDate = new Date('2021-09-30T23:59:59.999');
+      expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+    });
 
-  it('should reset a chart when click on all button', fakeAsync(async () => {
+    it('should calculate proper 12 month ago date from max layer date', async () => {
+      fixture.detectChanges();
+      const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: '1 y' }));
+      await ButtonInput.check();
+      fixture.detectChanges();
+      const expectedMinDate = new Date('2021-03-30T23:59:59.999');
+      expect(component.selectedDateRange.start).toEqual(expectedMinDate);
+    });
+  });
+
+  it('should reset a chart when click on all button', async () => {
     mockConfigService.isAutoZoom = false;
     component.selectedButton = 'Custom';
     fixture.detectChanges();
-    tick();
     const ButtonInput = await loader.getHarness(MatButtonToggleHarness.with({ text: 'All' }));
     await ButtonInput.check();
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(mockConfigService.resetZoom).toHaveBeenCalled();
-  }));
+  });
 
-  it('should check dateChange selected event for start date', fakeAsync(() => {
+  it('should check dateChange selected event for start date', async () => {
     const date: any = { value: new Date(2020, 2, 2) };
     component.selectedDateRange = new DateRange(new Date(min), new Date(max));
     component.dateChange(date, 'min');
-    flush();
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(component.selectedDateRange.start).toEqual(date.value);
-  }));
+  });
 
-  it('should check dateChange selected event for end date', fakeAsync(() => {
+  it('should check dateChange selected event for end date', async () => {
     const date: any = { value: new Date(2020, 2, 2) };
     component.selectedDateRange = new DateRange(new Date(min), new Date(max));
     component.dateChange(date, 'max');
-    flush();
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(component.selectedDateRange.end).toEqual(date.value);
-  }));
+  });
 
   it('should check month difference between two dates', () => {
     const componentMaxdate = new Date('2022-01-01T00:00');
@@ -168,42 +176,49 @@ describe('TimelineRangeSelectorComponent', () => {
     expect(months).toEqual(1);
   });
 
-  it('should subscribe timelineRange when the component initializes and set selectedDateRange', fakeAsync(() => {
+  it('should subscribe timelineRange when the component initializes and set selectedDateRange', async () => {
     fixture.detectChanges();
-    tick();
+    await fixture.whenStable();
     fixture.detectChanges();
     expect(component.selectedDateRange.start).toEqual(new Date(min));
     expect(component.selectedDateRange.end).toEqual(new Date(max));
     expect(component.selectedButton).toEqual('All');
-  }));
+  });
 
-  it('should call configService.zoom when start date is changed', fakeAsync(async () => {
+  it('should call configService.zoom when start date is changed', fakeAsync(() => {
+    fixture.detectChanges();
+    let rangeInput: MatDateRangeInputHarness;
+    loader.getHarness(MatDateRangeInputHarness.with({ selector: '#range-selector-inline mat-date-range-input' })).then((h) => (rangeInput = h));
+    flush();
+    let startInput: any;
+    rangeInput!.getStartInput().then((s) => (startInput = s));
+    flush();
+    startInput.setValue('3/2/2020');
+    flush();
     fixture.detectChanges();
     tick();
-    const rangeInput = await loader.getHarness(MatDateRangeInputHarness);
-    const startInput = await rangeInput.getStartInput();
-    await startInput.setValue('3/2/2020');
-    fixture.detectChanges();
-    flush();
     fixture.detectChanges();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({ min: new Date('3/2/2020').getTime(), max });
   }));
 
-  it('should call configService.zoom when end date is changed', fakeAsync(async () => {
+  it('should call configService.zoom when end date is changed', fakeAsync(() => {
+    fixture.detectChanges();
+    let rangeInput: MatDateRangeInputHarness;
+    loader.getHarness(MatDateRangeInputHarness.with({ selector: '#range-selector-inline mat-date-range-input' })).then((h) => (rangeInput = h));
+    flush();
+    let endInput: any;
+    rangeInput!.getEndInput().then((e) => (endInput = e));
+    flush();
+    endInput.setValue('3/2/2023');
+    flush();
     fixture.detectChanges();
     tick();
-    const rangeInput = await loader.getHarness(MatDateRangeInputHarness);
-    const endInput = await rangeInput.getEndInput();
-    await endInput.setValue('3/2/2023');
-    fixture.detectChanges();
-    flush();
     fixture.detectChanges();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({ min, max: new Date('3/2/2023').getTime() });
   }));
 
-  it('should call configService.zoom when date range is entered manually in dropdown', fakeAsync(async () => {
+  it('should call configService.zoom when date range is entered manually in dropdown', async () => {
     fixture.detectChanges();
-    tick();
     const menu = await loader.getHarness(MatMenuHarness.with({ selector: '#range-selector-dropdown .mat-mdc-menu-trigger' }));
     await menu.open();
     fixture.detectChanges();
@@ -219,17 +234,15 @@ describe('TimelineRangeSelectorComponent', () => {
     const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
     await apply.click();
     fixture.detectChanges();
-    flush();
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({
       min: new Date('3/2/2020').getTime(),
       max: new Date('3/2/2023').getTime(),
     });
-  }));
+  });
 
-  it('should call configService.zoom when range is selected on calendar', fakeAsync(async () => {
+  it('should call configService.zoom when range is selected on calendar', async () => {
     fixture.detectChanges();
-    tick();
     const menu = await loader.getHarness(MatMenuHarness.with({ selector: '#range-selector-dropdown .mat-mdc-menu-trigger' }));
     await menu.open();
     fixture.detectChanges();
@@ -240,11 +253,10 @@ describe('TimelineRangeSelectorComponent', () => {
     const apply = await menu.getHarness(MatButtonHarness.with({ text: 'Apply' }));
     await apply.click();
     fixture.detectChanges();
-    flush();
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(mockConfigService.zoom).toHaveBeenCalledWith({
       min: new Date(`1 ${monthYear}`).getTime(),
       max: new Date(`22 ${monthYear}`).getTime(),
     });
-  }));
+  });
 });

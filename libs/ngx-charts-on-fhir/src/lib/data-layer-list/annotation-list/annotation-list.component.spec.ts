@@ -26,61 +26,62 @@ describe('DatasetAnnotationListComponent', () => {
 
   let palette: string[] = ['#FFFFFF', '#121212', '#000000'];
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(async () => {
     colorService = new DataLayerColorService(palette);
 
-    TestBed.configureTestingModule({
-      imports: [MatExpansionModule, MatCheckboxModule, NoopAnimationsModule, MockAnnotationOptionsComponent],
+    await TestBed.configureTestingModule({
+      imports: [MatExpansionModule, MatCheckboxModule, NoopAnimationsModule, MockAnnotationOptionsComponent, AnnotationListComponent],
       providers: [{ provide: DataLayerColorService, useValue: colorService }],
-    });
-    TestBed.overrideComponent(AnnotationListComponent, {
-      remove: { imports: [AnnotationOptionsComponent] },
-      add: { imports: [MockAnnotationOptionsComponent] },
-    });
-    TestBed.compileComponents();
+    })
+      .overrideComponent(AnnotationListComponent, {
+        remove: { imports: [AnnotationOptionsComponent] },
+        add: { imports: [MockAnnotationOptionsComponent] },
+      })
+      .compileComponents();
+
     fixture = TestBed.createComponent(AnnotationListComponent);
     component = fixture.componentInstance;
     component.annotations = [];
     fixture.detectChanges();
-    tick();
+    await fixture.whenStable();
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   describe('onCheckboxChange', () => {
-    it('should set display true when checked', fakeAsync(async () => {
+    it('should set display true when checked', async () => {
       let emitted: any;
       component.annotationsChange.subscribe((e) => (emitted = e));
       const annotations = [{ label: { content: 'Test', display: true }, display: false }];
       component.annotations = annotations;
       fixture.detectChanges();
-      tick();
+      await fixture.whenStable();
       fixture.detectChanges();
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: true }];
       let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.check();
-      tick();
       fixture.detectChanges();
+      await fixture.whenStable();
       expect(emitted).toEqual(expectedOutput);
-    }));
-    it('should set display false when unchecked', fakeAsync(async () => {
+    });
+    it('should set display false when unchecked', async () => {
       let emitted: any;
       component.annotationsChange.subscribe((e) => (emitted = e));
       const annotations = [{ label: { content: 'Test', display: true }, display: true }];
       component.annotations = annotations;
       fixture.detectChanges();
-      tick();
+      await fixture.whenStable();
       fixture.detectChanges();
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: false }];
       let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.uncheck();
-      tick();
       fixture.detectChanges();
+      await fixture.whenStable();
       expect(emitted).toEqual(expectedOutput);
-    }));
+    });
   });
 
   describe('onAnnotationsChange', () => {
