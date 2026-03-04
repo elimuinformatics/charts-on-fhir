@@ -7,15 +7,14 @@ set -e
 MIN_ANGULAR_CLI_VERSION="20.3.13"
 MIN_MATERIAL_VERSION="20.2.14"
 echo Using Angular CLI $MIN_ANGULAR_CLI_VERSION
-echo Using Angular CLI $ANGULAR_CLI_VERSION
 
 echo :::: Packaging Charts-on-FHIR library
 cd dist/libs/ngx-charts-on-fhir
 PACKAGE_FILE=$(npm pack)
 cd ../../..
 
-echo ::::: Creating a new Angular app with Angular CLI $ANGULAR_CLI_VERSION
-npx --yes \@angular/cli@${ANGULAR_CLI_VERSION} new test-app --defaults --package-manager=npm
+echo ::::: Creating a new Angular app with Angular CLI $MIN_ANGULAR_CLI_VERSION
+npx --yes \@angular/cli@${MIN_ANGULAR_CLI_VERSION} new test-app --defaults --package-manager=npm
 cd test-app
 
 INSTALLED_ANGULAR_VERSION=$(jq -r '.dependencies."@angular/core"' package.json | sed 's/^\^//')
