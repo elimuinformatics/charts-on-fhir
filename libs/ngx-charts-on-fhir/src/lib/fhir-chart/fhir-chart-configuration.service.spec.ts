@@ -35,6 +35,13 @@ describe('FhirChartConfigurationService', () => {
   });
 
   describe('mergeLayers', () => {
+    beforeEach(() => {
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+    });
+    afterEach(() => {
+      jasmine.clock().uninstall();
+    });
     it('should add datasets when layers are selected', () => {
       const e: ManagedDataLayer[] = [];
       const a: ManagedDataLayer[] = [
@@ -437,6 +444,13 @@ describe('FhirChartConfigurationService', () => {
   });
 
   describe('setSummaryRange', () => {
+    beforeEach(() => {
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+    });
+    afterEach(() => {
+      jasmine.clock().uninstall();
+    });
     it('should emit summaryRange$ with the given timeframe', () => {
       jasmine.clock().mockDate(new Date('2023-01-31T00:00'));
       const a: ManagedDataLayer[] = [{ name: 'a', id: 'a', datasets: [], scale: { id: 'a' } }];

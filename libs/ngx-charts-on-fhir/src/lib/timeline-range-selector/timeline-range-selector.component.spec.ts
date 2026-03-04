@@ -22,7 +22,6 @@ import { DateRange } from '@angular/material/datepicker';
 
 const min = new Date('2022-01-01T00:00').getTime();
 const max = new Date('2022-01-02T00:00').getTime();
-const RealDate = Date;
 
 class MockConfigService {
   timelineRange$ = of({ min, max });
@@ -61,11 +60,6 @@ describe('TimelineRangeSelectorComponent', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
     await fixture.whenStable();
-    fixture.detectChanges();
-  });
-
-  afterEach(() => {
-    // Top-level cleanup
   });
 
   it('should create', () => {
@@ -78,19 +72,14 @@ describe('TimelineRangeSelectorComponent', () => {
   });
 
   describe('Date Range Selection', () => {
-    let mockNow: Date;
     beforeEach(() => {
-      mockNow = new RealDate('2022-03-30T00:00');
-      const DateSpy = spyOn(globalThis, 'Date' as any).and.callFake(function (this: any, ...args: any[]) {
-        if (args.length > 0) {
-          return new (RealDate as any)(...args);
-        }
-        return new RealDate(mockNow.getTime());
-      } as any);
-      (DateSpy as any).now = () => mockNow.getTime();
-      (DateSpy as any).parse = RealDate.parse;
-      (DateSpy as any).UTC = RealDate.UTC;
-      (DateSpy as any).prototype = RealDate.prototype;
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+      jasmine.clock().mockDate(new Date('2022-03-30T00:00'));
+    });
+
+    afterEach(() => {
+      jasmine.clock().uninstall();
     });
 
     it('should support custom button with range specified in days', async () => {

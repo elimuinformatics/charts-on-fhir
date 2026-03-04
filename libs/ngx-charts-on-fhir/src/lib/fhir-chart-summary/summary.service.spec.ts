@@ -34,6 +34,13 @@ describe('ScatterDataPointSummaryService', () => {
   });
 
   describe('summarize', () => {
+    beforeEach(() => {
+      jasmine.clock().uninstall();
+      jasmine.clock().install();
+    });
+    afterEach(() => {
+      jasmine.clock().uninstall();
+    });
     it('should include statistics for current and previous timespan', () => {
       jasmine.clock().mockDate(new Date('2023-05-21T00:00'));
       const statisticsService = jasmine.createSpyObj<StatisticsService>('StatisticsService', ['getFormattedStatistics']);
@@ -46,7 +53,6 @@ describe('ScatterDataPointSummaryService', () => {
         min: new Date('2023-05-11T00:00').getTime(),
         max: new Date('2023-05-21T00:00').getTime(),
       });
-      console.log(summary);
       expect(summary).toEqual([
         {
           [mockLayer.name]: 'Average',
@@ -103,7 +109,6 @@ describe('ScatterDataPointSummaryService', () => {
         min: new Date('2023-02-21T00:00').getTime(),
         max: new Date('2023-05-21T00:00').getTime(),
       });
-      console.log(summary);
       expect(summary).toEqual([
         {
           [mockLayer.name]: 'Average',
