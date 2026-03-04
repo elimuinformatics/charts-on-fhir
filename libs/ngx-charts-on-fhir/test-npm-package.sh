@@ -4,7 +4,9 @@
 
 set -e
 
-ANGULAR_CLI_VERSION="${ANGULAR_CLI_VERSION:-latest}"
+MIN_ANGULAR_CLI_VERSION="20.3.13"
+MIN_MATERIAL_VERSION="20.2.14"
+echo Using Angular CLI $MIN_ANGULAR_CLI_VERSION
 echo Using Angular CLI $ANGULAR_CLI_VERSION
 
 echo :::: Packaging Charts-on-FHIR library

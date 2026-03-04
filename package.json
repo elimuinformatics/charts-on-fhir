@@ -1,6 +1,6 @@
 {
   "name": "@elimuinformatics/charts-on-fhir",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",

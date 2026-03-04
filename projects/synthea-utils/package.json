@@ -1,6 +1,6 @@
 {
   "name": "synthea-utils",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Utilities to generate synthetic patient data for testing Charts-on-FHIR apps",
   "main": "index.ts",
   "type": "module",
