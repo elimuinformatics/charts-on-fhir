@@ -20,14 +20,14 @@ npx --yes \@angular/cli@${MIN_ANGULAR_CLI_VERSION} new test-app --defaults --pac
 cd test-app
 
 # Get the actual Angular version that was installed
-INSTALLED_ANGULAR_VERSION=$(jq -r '.dependencies."@angular/core"' package.json | sed 's/\^//')
+INSTALLED_ANGULAR_VERSION=$(jq -r '.version' node_modules/@angular/core/package.json)
 echo "Angular version installed: $INSTALLED_ANGULAR_VERSION"
 
 echo ::::: Installing Angular Material compatible with Angular $MIN_ANGULAR_VERSION
 npm install @angular/material@${MIN_MATERIAL_VERSION} @angular/cdk@${MIN_MATERIAL_VERSION}
 
-echo ::::: Pinning all Angular dependencies to version $MIN_ANGULAR_VERSION
-npm install @angular/core@${MIN_ANGULAR_VERSION} @angular/common@${MIN_ANGULAR_VERSION} @angular/platform-browser@${MIN_ANGULAR_VERSION} @angular/platform-browser-dynamic@${MIN_ANGULAR_VERSION} @angular/forms@${MIN_ANGULAR_VERSION} @angular/router@${MIN_ANGULAR_VERSION}
+echo ::::: Pinning all Angular dependencies to version $INSTALLED_ANGULAR_VERSION
+npm install @angular/core@${INSTALLED_ANGULAR_VERSION} @angular/common@${INSTALLED_ANGULAR_VERSION} @angular/platform-browser@${INSTALLED_ANGULAR_VERSION} @angular/platform-browser-dynamic@${INSTALLED_ANGULAR_VERSION} @angular/forms@${INSTALLED_ANGULAR_VERSION} @angular/router@${INSTALLED_ANGULAR_VERSION}
 
 echo ::::: Installing Charts-on-FHIR library
 npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
