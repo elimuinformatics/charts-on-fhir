@@ -24,6 +24,13 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: npm
 
+      # npm 11.5.1+ is required for trusted publishing (OIDC)
+      - name: Update npm
+        run: npm install -g npm@11.5.1 --ignore-scripts
+
+      - name: Show npm version
+        run: npm --version
+
       - run: npm ci
       - run: npm run build ngx-charts-on-fhir
       - run: npm publish dist/libs/ngx-charts-on-fhir/ --access public
