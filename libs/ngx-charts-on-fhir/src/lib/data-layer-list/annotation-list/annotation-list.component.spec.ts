@@ -1,13 +1,14 @@
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { AnnotationListComponent } from './annotation-list.component';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Component, Input } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DataLayerColorService } from '../../data-layer/data-layer-color.service';
+import { AnnotationOptionsComponent } from '../annotation-options/annotation-options.component';
+import { AnnotationListComponent } from './annotation-list.component';
 
 @Component({
   selector: 'annotation-options',
@@ -29,11 +30,20 @@ describe('DatasetAnnotationListComponent', () => {
     colorService = new DataLayerColorService(palette);
 
     await TestBed.configureTestingModule({
-      imports: [MatExpansionModule, MatCheckboxModule, BrowserAnimationsModule, MockAnnotationOptionsComponent],
+      imports: [MatExpansionModule, MatCheckboxModule, NoopAnimationsModule, MockAnnotationOptionsComponent, AnnotationListComponent],
       providers: [{ provide: DataLayerColorService, useValue: colorService }],
-    }).compileComponents();
+    })
+      .overrideComponent(AnnotationListComponent, {
+        remove: { imports: [AnnotationOptionsComponent] },
+        add: { imports: [MockAnnotationOptionsComponent] },
+      })
+      .compileComponents();
+
     fixture = TestBed.createComponent(AnnotationListComponent);
     component = fixture.componentInstance;
+    component.annotations = [];
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
@@ -47,9 +57,14 @@ describe('DatasetAnnotationListComponent', () => {
       component.annotationsChange.subscribe((e) => (emitted = e));
       const annotations = [{ label: { content: 'Test', display: true }, display: false }];
       component.annotations = annotations;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: true }];
       let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.check();
+      fixture.detectChanges();
+      await fixture.whenStable();
       expect(emitted).toEqual(expectedOutput);
     });
     it('should set display false when unchecked', async () => {
@@ -57,9 +72,14 @@ describe('DatasetAnnotationListComponent', () => {
       component.annotationsChange.subscribe((e) => (emitted = e));
       const annotations = [{ label: { content: 'Test', display: true }, display: true }];
       component.annotations = annotations;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
       let expectedOutput: any = [{ label: { content: 'Test', display: true }, display: false }];
       let checkBoxHarness = await loader.getHarness(MatCheckboxHarness.with({ selector: '[id]' }));
       await checkBoxHarness.uncheck();
+      fixture.detectChanges();
+      await fixture.whenStable();
       expect(emitted).toEqual(expectedOutput);
     });
   });

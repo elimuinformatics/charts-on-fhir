@@ -1,6 +1,6 @@
 {
   "name": "mock-fhir-server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A simple mock FHIR server for local development",
   "scripts": {
     "start": "node server.js",

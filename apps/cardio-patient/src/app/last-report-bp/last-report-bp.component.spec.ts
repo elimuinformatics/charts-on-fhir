@@ -5,20 +5,19 @@ import { BehaviorSubject, EMPTY } from 'rxjs';
 import { LastReportBPModule } from './last-report-bp.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader } from '@angular/cdk/testing';
 import { MatCardHarness } from '@angular/material/card/testing';
 
 class MockLayerManager {
   allLayers$ = new BehaviorSubject<ManagedDataLayer[]>([]);
   selectedLayers$ = EMPTY;
   availableLayers$ = EMPTY;
+  loading$ = new BehaviorSubject<boolean>(false);
 }
 
 describe('LastReportBPComponent', () => {
   let component: LastReportBPComponent;
   let fixture: ComponentFixture<LastReportBPComponent>;
   let layerManager: MockLayerManager;
-  let loader: HarnessLoader;
 
   beforeEach(async () => {
     layerManager = new MockLayerManager();
@@ -29,10 +28,10 @@ describe('LastReportBPComponent', () => {
 
     fixture = TestBed.createComponent(LastReportBPComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -75,7 +74,10 @@ describe('LastReportBPComponent', () => {
         scale: { id: '1' },
       },
     ];
+
     layerManager.allLayers$.next(layers);
+
+    fixture.detectChanges();
 
     const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
     const contentText = await cardHarness.getText();
@@ -86,8 +88,8 @@ describe('LastReportBPComponent', () => {
     };
     expect(contentText).toContain(
       `Last BP reported was ${component?.lastReportedBPdata?.systolic.value}/${component?.lastReportedBPdata?.diastolic.value} on ${component.formatDate(
-        expectedOutput.systolic.date
-      )} at ${component.formatTime(expectedOutput.systolic.date)}`
+        expectedOutput.systolic.date,
+      )} at ${component.formatTime(expectedOutput.systolic.date)}`,
     );
   });
 
@@ -114,7 +116,10 @@ describe('LastReportBPComponent', () => {
         scale: { id: '1' },
       },
     ];
+
     layerManager.allLayers$.next(layers);
+    fixture.detectChanges();
+
     const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
     const contentText = await cardHarness.getText();
     expect(contentText).toContain('There is no last reported prior BP for Patient');
@@ -145,7 +150,9 @@ describe('LastReportBPComponent', () => {
         scale: { id: '1' },
       },
     ];
+
     layerManager.allLayers$.next(layers);
+    fixture.detectChanges();
 
     const cardHarness = await TestbedHarnessEnvironment.harnessForFixture(fixture, MatCardHarness);
     const contentText = await cardHarness.getText();
@@ -156,8 +163,8 @@ describe('LastReportBPComponent', () => {
     };
     expect(contentText).toContain(
       `Last BP reported was ${component?.lastReportedBPdata?.systolic.value}/${component?.lastReportedBPdata?.diastolic.value} on ${component.formatDate(
-        expectedOutput.systolic.date
-      )} at ${component.formatTime(expectedOutput.systolic.date)}`
+        expectedOutput.systolic.date,
+      )} at ${component.formatTime(expectedOutput.systolic.date)}`,
     );
   });
 });

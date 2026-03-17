@@ -4,6 +4,7 @@
   "include": ["**/*.ts"],
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "module": "preserve"
   }
 }

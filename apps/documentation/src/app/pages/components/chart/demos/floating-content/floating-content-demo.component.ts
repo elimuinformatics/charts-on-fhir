@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerManagerService,
@@ -9,7 +8,7 @@ import {
 @Component({
   selector: 'example-floating-content-demo',
   templateUrl: './floating-content-demo.component.html',
-  imports: [CommonModule, FhirChartComponent, FhirChartLegendComponent],
+  imports: [FhirChartComponent, FhirChartLegendComponent],
 })
 export class FloatingContentDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}

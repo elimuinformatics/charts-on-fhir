@@ -3,8 +3,10 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "types": ["jasmine"],
-    "moduleResolution": "node",
-    "skipLibCheck": true
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "module": "preserve",
+    "isolatedModules": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

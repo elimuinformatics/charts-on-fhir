@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { produce, castDraft } from 'immer';
 import { AnnotationOptionsComponent } from '../annotation-options/annotation-options.component';
@@ -9,13 +9,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
   selector: 'annotation-list',
   templateUrl: './annotation-list.component.html',
   styleUrls: ['./annotation-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnnotationListComponent {
   public _annotations: any[] | undefined;
 
   @Input() set annotations(annotations: any[] | undefined) {
     this._annotations = annotations;
+    this.changeDetectorRef.markForCheck();
   }
+
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
   @Output() annotationsChange = new EventEmitter<any[]>();
 

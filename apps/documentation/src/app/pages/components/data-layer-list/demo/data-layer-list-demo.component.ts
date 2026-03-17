@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   DataLayerListComponent,
@@ -8,7 +7,7 @@ import {
 @Component({
   selector: 'example-data-layer-list-demo',
   templateUrl: './data-layer-list-demo.component.html',
-  imports: [CommonModule, DataLayerListComponent],
+  imports: [DataLayerListComponent],
 })
 export class DataLayerListDemoComponent implements OnInit {
   constructor(private layerManager: DataLayerManagerService) {}
