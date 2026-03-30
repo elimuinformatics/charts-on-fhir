@@ -34,7 +34,7 @@ describe('provideChartsOnFhir', () => {
       withDataLayerServices(MyDataLayerService),
       withMappers(MyMapper),
       withSummaryServices(MySummaryService),
-      withColors('#000000')
+      withColors('#000000'),
     );
     expect(actualProviders).toEqual(jasmine.arrayWithExactContents(expectedProviders));
   });
