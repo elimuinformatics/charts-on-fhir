@@ -24,7 +24,7 @@ describe('provideChartsOnFhir', () => {
       MultiMapper,
       ReferenceRangeService,
       FhirCodeService,
-      jasmine.objectContaining({ provide: ENVIRONMENT_INITIALIZER, multi: true }),
+      jasmine.objectContaining({ ɵproviders: [jasmine.objectContaining({ provide: ENVIRONMENT_INITIALIZER, multi: true })] }),
       [{ provide: DataLayerService, useClass: MyDataLayerService, multi: true }],
       [MyMapper, { provide: Mapper, useClass: MyMapper, multi: true }],
       [{ provide: SummaryService, useClass: MySummaryService, multi: true }],

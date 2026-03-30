@@ -1,4 +1,4 @@
-import { ENVIRONMENT_INITIALIZER, Provider, Type, inject } from '@angular/core';
+import { EnvironmentProviders, Provider, Type, inject, provideEnvironmentInitializer } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { COLOR_PALETTE, DataLayerColorService } from './data-layer/data-layer-color.service';
 import { DataLayerManagerService, DataLayerService } from './data-layer/data-layer-manager.service';
@@ -31,7 +31,7 @@ import { FhirCodeService } from './fhir-mappers/fhir-code.service';
  * ];
  * ```
  */
-export function provideChartsOnFhir(...features: Provider[]): Provider[] {
+export function provideChartsOnFhir(...features: Provider[]): Array<Provider | EnvironmentProviders> {
   return [
     DataLayerManagerService,
     DataLayerMergeService,
@@ -41,11 +41,7 @@ export function provideChartsOnFhir(...features: Provider[]): Provider[] {
     MultiMapper,
     ReferenceRangeService,
     FhirCodeService,
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      multi: true,
-      useValue: () => inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined'),
-    },
+    provideEnvironmentInitializer(() => inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined')),
     ...features,
   ];
 }
