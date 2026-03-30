@@ -1,3 +1,4 @@
+import { ENVIRONMENT_INITIALIZER } from '@angular/core';
 import { COLOR_PALETTE, DataLayerColorService } from './data-layer/data-layer-color.service';
 import { DataLayerManagerService, DataLayerService } from './data-layer/data-layer-manager.service';
 import { DataLayerMergeService } from './data-layer/data-layer-merge.service';
@@ -23,6 +24,7 @@ describe('provideChartsOnFhir', () => {
       MultiMapper,
       ReferenceRangeService,
       FhirCodeService,
+      jasmine.objectContaining({ provide: ENVIRONMENT_INITIALIZER, multi: true }),
       [{ provide: DataLayerService, useClass: MyDataLayerService, multi: true }],
       [MyMapper, { provide: Mapper, useClass: MyMapper, multi: true }],
       [{ provide: SummaryService, useClass: MySummaryService, multi: true }],

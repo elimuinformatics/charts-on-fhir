@@ -34,7 +34,6 @@
     "fhirclient": "^2.5.2",
     "immer": "^9.0.16",
     "lodash-es": "^4.17.21",
-    "material-icons": "^1.13.12",
     "material-symbols": "^0.43.0",
     "ng2-charts": "^5.0.3",
     "rxjs": "~7.5.0",
