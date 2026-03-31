@@ -5,6 +5,7 @@ $material-symbols-font-path: "material-symbols/";
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/roboto/500.css";
 
+// Use filled style for all icons (FILL=1 overrides the default outlined-only appearance)
 .material-symbols-outlined {
   font-variation-settings: "FILL" 1;
 }
