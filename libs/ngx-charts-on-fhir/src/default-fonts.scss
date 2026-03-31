@@ -4,3 +4,7 @@ $material-symbols-font-path: "material-symbols/";
 @import "@fontsource/roboto/300.css";
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/roboto/500.css";
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 1;
+}

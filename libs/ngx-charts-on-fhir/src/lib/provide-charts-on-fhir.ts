@@ -41,7 +41,7 @@ export function provideChartsOnFhir(...features: Provider[]): Array<Provider | E
     MultiMapper,
     ReferenceRangeService,
     FhirCodeService,
-    provideEnvironmentInitializer(() => inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined')),
+    provideEnvironmentInitializer(() => inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined', 'mat-ligature-font')),
     ...features,
   ];
 }
