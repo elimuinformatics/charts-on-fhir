@@ -1,0 +1,37 @@
+# Copilot coding agent environment setup.
+# Job name MUST be exactly "copilot-setup-steps".
+
+name: "Copilot Setup Steps"
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/copilot-setup-steps.yml"]
+
+jobs:
+  copilot-setup-steps: # ⚠ MUST be this exact name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ==== CUSTOMIZE BELOW FOR YOUR STACK ====
+
+      # ---- Node.js example ----
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run build
+      - run: npm test -- --passWithNoTests
+
+      # ---- .NET example (uncomment if needed) ----
+      # - uses: actions/setup-dotnet@v4
+      #   with: { dotnet-version: "10.0.x" }
+      # - run: dotnet restore src/MyApp.sln
+      # - run: dotnet build src/MyApp.sln --configuration Release
+      # - run: dotnet test src/MyApp.sln --no-build
+
+      # ---- Python example (uncomment if needed) ----
+      # - uses: actions/setup-python@v5
+      #   with: { python-version: "3.12" }
+      # - run: pip install -r requirements.txt
+      # - run: pytest
