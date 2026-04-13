@@ -30,6 +30,7 @@ export * from './lib/fhir-mappers/fhir-converter.service';
 export * from './lib/fhir-mappers/multi-mapper.service';
 export * from './lib/fhir-mappers/fhir-mapper-options';
 export * from './lib/fhir-mappers/encounter/encounter-mapper.service';
+export * from './lib/fhir-mappers/care-plan/care-plan-mapper.service';
 export * from './lib/fhir-mappers/observation/component-observation-mapper.service';
 export * from './lib/fhir-mappers/observation/simple-observation-mapper.service';
 export * from './lib/fhir-mappers/observation/blood-pressure-mapper.service';
