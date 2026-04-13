@@ -19,13 +19,17 @@ jobs:
           cache: "npm"
 
       # Install all dependencies (including dev dependencies for build tooling)
+      # HUSKY=0 prevents husky from trying to install git hooks in the CI environment
       - name: Install dependencies
         run: npm ci
+        env:
+          HUSKY: "0"
 
       # Build all Nx projects (Angular apps and libraries)
+      # --all is deprecated in Nx 22; run-many targets all projects by default
       - name: Build
-        run: npx nx run-many --target=build --all --parallel=3
+        run: npx nx run-many --target=build --parallel=3
 
       # Run unit tests across all projects
       - name: Test
-        run: npx nx run-many --target=test --all --parallel=3 --passWithNoTests
+        run: npx nx run-many --target=test --parallel=3 --passWithNoTests
