@@ -13,25 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ==== CUSTOMIZE BELOW FOR YOUR STACK ====
-
-      # ---- Node.js example ----
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - run: npm ci
-      - run: npm run build
-      - run: npm test -- --passWithNoTests
+          node-version: "18"
+          cache: "npm"
 
-      # ---- .NET example (uncomment if needed) ----
-      # - uses: actions/setup-dotnet@v4
-      #   with: { dotnet-version: "10.0.x" }
-      # - run: dotnet restore src/MyApp.sln
-      # - run: dotnet build src/MyApp.sln --configuration Release
-      # - run: dotnet test src/MyApp.sln --no-build
+      # Install all dependencies (including dev dependencies for build tooling)
+      # HUSKY=0 prevents husky from trying to install git hooks in the CI environment
+      - name: Install dependencies
+        run: npm ci
+        env:
+          HUSKY: "0"
 
-      # ---- Python example (uncomment if needed) ----
-      # - uses: actions/setup-python@v5
-      #   with: { python-version: "3.12" }
-      # - run: pip install -r requirements.txt
-      # - run: pytest
+      # Build all Nx projects (Angular apps and libraries)
+      # --all is deprecated in Nx 22; run-many targets all projects by default
+      - name: Build
+        run: npx nx run-many --target=build --parallel=3
+
+      # Run unit tests across all projects
+      - name: Test
+        run: npx nx run-many --target=test --parallel=3 --passWithNoTests
