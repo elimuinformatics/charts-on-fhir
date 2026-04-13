@@ -1,0 +1,22 @@
+{
+  "resourceType": "Bundle",
+  "id": "patient-bundle",
+  "type": "searchset",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "test-patient-001",
+        "name": [
+          {
+            "use": "official",
+            "family": "Doe",
+            "given": ["Jane"]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1980-05-15"
+      }
+    }
+  ]
+}

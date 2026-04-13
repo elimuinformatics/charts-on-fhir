@@ -1,0 +1,82 @@
+{
+  "resourceType": "Bundle",
+  "id": "observation-bundle",
+  "type": "searchset",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-001",
+        "status": "final",
+        "subject": { "reference": "Patient/test-patient-001" },
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "Heart rate"
+            }
+          ],
+          "text": "Heart rate"
+        },
+        "effectiveDateTime": "2024-06-01T10:00:00Z",
+        "valueQuantity": {
+          "value": 72,
+          "unit": "beats/min",
+          "system": "http://unitsofmeasure.org",
+          "code": "/min"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-002",
+        "status": "final",
+        "subject": { "reference": "Patient/test-patient-001" },
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8867-4",
+              "display": "Heart rate"
+            }
+          ],
+          "text": "Heart rate"
+        },
+        "effectiveDateTime": "2024-07-01T10:00:00Z",
+        "valueQuantity": {
+          "value": 68,
+          "unit": "beats/min",
+          "system": "http://unitsofmeasure.org",
+          "code": "/min"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-003",
+        "status": "final",
+        "subject": { "reference": "Patient/test-patient-001" },
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "Body mass index (BMI)"
+            }
+          ],
+          "text": "Body mass index (BMI)"
+        },
+        "effectiveDateTime": "2024-06-15T08:30:00Z",
+        "valueQuantity": {
+          "value": 24.5,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      }
+    }
+  ]
+}

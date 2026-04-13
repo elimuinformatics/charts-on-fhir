@@ -3,7 +3,7 @@
     <h2>Patient List</h2>
     <mat-form-field class="filter">
       <mat-icon matPrefix fontIcon="search"></mat-icon>
-      <input matInput [formControl]="filterControl" placeholder="Search" />
+      <input matInput [formControl]="filterControl" placeholder="Search" data-testid="patient-search" />
       <button mat-icon-button matSuffix (click)="filterControl.setValue('')"><mat-icon fontIcon="close"></mat-icon></button>
     </mat-form-field>
   </header>
@@ -17,6 +17,7 @@
       matSortActive="name"
       matSortDirection="asc"
       aria-label="Patient List"
+      data-testid="patient-table"
     >
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -29,7 +30,7 @@
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>Select</th>
         <td mat-cell *matCellDef="let patient">
-          <button mat-icon-button color="primary" (click)="patientService.selectPatient(patient.id)">
+          <button mat-icon-button color="primary" data-testid="select-patient-button" (click)="patientService.selectPatient(patient.id)">
             <mat-icon>{{ patient.id === this.selectedPatient ? "radio_button_checked" : "radio_button_unchecked" }}</mat-icon>
           </button>
         </td>
@@ -46,7 +47,7 @@
         }
         @if (!filterControl.value) {
           <td [attr.colspan]="3">
-            <p class="empty-message">No patients are available.</p>
+            <p class="empty-message" data-testid="no-patients-message">No patients are available.</p>
           </td>
         }
       </tr>

@@ -8,6 +8,7 @@
       [badge]="(patientService.patients$ | async)?.length"
       icon="person"
       tooltip="Patient List"
+      data-testid="toolbar-patients"
       (click)="onClick('patients')"
     ></data-layer-toolbar-button>
   }
@@ -17,6 +18,7 @@
       [badge]="(layerManager.availableLayers$ | async)?.length"
       icon="add"
       tooltip="Add Data Layers"
+      data-testid="toolbar-browser"
       (click)="onClick('browser')"
     ></data-layer-toolbar-button>
   }
@@ -26,6 +28,7 @@
       [badge]="(layerManager.selectedLayers$ | async)?.length"
       icon="checklist"
       tooltip="Selected Layers"
+      data-testid="toolbar-options"
       (click)="onClick('options')"
     ></data-layer-toolbar-button>
   }

@@ -2,9 +2,9 @@
   <div class="chart-container-resize-fix">
     @if (datasets && datasets.length > 0) {
       @if (layerManager.dataRetrievalError$ | async) {
-        <div class="error-msg">There was a problem retrieving data. The timeline may be incomplete.</div>
+        <div class="error-msg" data-testid="chart-error">There was a problem retrieving data. The timeline may be incomplete.</div>
       }
-      <canvas width="100%" baseChart id="baseChart" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
+      <canvas width="100%" baseChart id="baseChart" data-testid="chart-canvas" [type]="type ?? defaultType" [datasets]="datasets" [options]="options ?? defaultOptions"></canvas>
       <div class="floating-content-container">
         @if (floatingContent) {
           <div class="floating-content mat-elevation-z2" cdkDrag cdkDragBoundary=".chart-container">
@@ -13,10 +13,10 @@
         }
       </div>
     } @else {
-      <div class="empty-message">
+      <div class="empty-message" data-testid="chart-empty">
         <div class="empty-message-content">
           @if (layerManager.loading$ | async) {
-            <div>Loading data...</div>
+            <div data-testid="chart-loading">Loading data...</div>
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           } @else {
             {{ emptyMessage }}

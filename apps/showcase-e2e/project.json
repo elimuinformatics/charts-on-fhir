@@ -1,0 +1,15 @@
+{
+  "name": "showcase-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/showcase-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "options": {
+        "playwrightConfig": "apps/showcase-e2e/playwright.config.ts",
+        "testingType": "e2e"
+      }
+    }
+  }
+}

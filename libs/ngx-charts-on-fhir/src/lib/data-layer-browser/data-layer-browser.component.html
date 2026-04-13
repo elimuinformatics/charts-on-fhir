@@ -3,7 +3,7 @@
     <h2>Available Data Layers</h2>
     <mat-form-field class="filter">
       <mat-icon matPrefix fontIcon="search"></mat-icon>
-      <input matInput [formControl]="filterControl" placeholder="Search" />
+      <input matInput [formControl]="filterControl" placeholder="Search" data-testid="layer-search" />
       <button mat-icon-button matSuffix (click)="filterControl.setValue('')"><mat-icon fontIcon="close"></mat-icon></button>
     </mat-form-field>
   </header>
@@ -17,6 +17,7 @@
       matSortActive="name"
       matSortDirection="asc"
       aria-label="Available data layers"
+      data-testid="layer-browser-table"
     >
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -33,7 +34,7 @@
       <ng-container matColumnDef="add">
         <th mat-header-cell *matHeaderCellDef>Add</th>
         <td mat-cell *matCellDef="let layer">
-          <button mat-icon-button color="primary" (click)="layerManager.select(layer.id)"><mat-icon fontIcon="add_circle"></mat-icon></button>
+          <button mat-icon-button color="primary" data-testid="add-layer-button" (click)="layerManager.select(layer.id)"><mat-icon fontIcon="add_circle"></mat-icon></button>
         </td>
       </ng-container>
 
@@ -53,7 +54,7 @@
         }
         @if (!filterControl.value && !(layerManager.selectedLayers$ | async)?.length) {
           <td [attr.colspan]="3">
-            <p class="empty-message">No data layers are available for this patient.</p>
+            <p class="empty-message" data-testid="no-layers-message">No data layers are available for this patient.</p>
           </td>
         }
       </tr>
