@@ -17,60 +17,60 @@ jobs:
     name: Code Formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx format:check
+      - run: npm ci --ignore-scripts
+      - run: node_modules/.bin/nx format:check
 
   build-affected:
     name: Production Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx affected -t build --parallel=3
+      - run: npm ci --ignore-scripts
+      - run: node_modules/.bin/nx affected -t build --parallel=3
 
   test-affected:
     name: Test and Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - if: ${{ github.ref == 'refs/heads/main' }} # Run all tests when merging to main for accurate coverage in SonarCloud
-        run: npx nx run-many -t test --parallel=3 --no-watch --code-coverage
+        run: node_modules/.bin/nx run-many -t test --parallel=3 --no-watch --code-coverage
       - if: ${{ github.ref != 'refs/heads/main' }} # Only test affected projects in PRs
-        run: npx nx affected -t test --parallel=3 --no-watch --code-coverage
+        run: node_modules/.bin/nx affected -t test --parallel=3 --no-watch --code-coverage
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
+        uses: SonarSource/sonarqube-scan-action@c7ee0f9df90b7aa20e8dcf9695dcfe2e7da5b4f2 # v7.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
@@ -88,16 +88,16 @@ jobs:
     name: Test NPM Package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx affected -t test-npm-package --parallel=3
+      - run: npm ci --ignore-scripts
+      - run: node_modules/.bin/nx affected -t test-npm-package --parallel=3
