@@ -31,7 +31,7 @@ jobs:
       - name: Show npm version
         run: npm --version
 
-      - run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
       - run: npm run build ngx-charts-on-fhir
       - run: npm publish dist/libs/ngx-charts-on-fhir/ --access public
 
@@ -46,7 +46,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci --ignore-scripts
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
       - run: npm run build documentation -- --base-href=/charts-on-fhir/
       - run: cp dist/apps/documentation/browser/index.html dist/apps/documentation/browser/404.html
 
