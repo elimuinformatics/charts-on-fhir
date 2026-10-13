@@ -46,3 +46,6 @@ Thumbs.db
 
 # NgDoc files
 ng-doc
+.claude/worktrees
+.nx/polygraph
+.nx/self-healing
