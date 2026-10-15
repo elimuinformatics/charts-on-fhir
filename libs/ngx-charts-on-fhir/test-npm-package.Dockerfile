@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:24.22.0-alpine
 RUN apk update && apk add jq
 USER node
 WORKDIR /home/node
