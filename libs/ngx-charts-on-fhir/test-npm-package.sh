@@ -16,7 +16,9 @@ PACKAGE_FILE=$(npm pack)
 cd ../../..
 
 echo ::::: Creating a new Angular app with Angular $MIN_ANGULAR_CLI_VERSION
-npx --yes \@angular/cli@${MIN_ANGULAR_CLI_VERSION} new test-app --defaults --package-manager=npm
+ANGULAR_CLI_DIR=$(mktemp -d)
+npm install --prefix "$ANGULAR_CLI_DIR" --ignore-scripts --no-audit --no-fund @angular/cli@${MIN_ANGULAR_CLI_VERSION}
+"$ANGULAR_CLI_DIR/node_modules/.bin/ng" new test-app --defaults --package-manager=npm
 cd test-app
 
 # Get the actual Angular version that was installed
@@ -33,6 +35,6 @@ echo ::::: Installing Charts-on-FHIR library
 npm i ../dist/libs/ngx-charts-on-fhir/${PACKAGE_FILE}
 
 echo ::::: Building the Angular app
-npx ng build
+node_modules/.bin/ng build
 
 echo ::::: Success
