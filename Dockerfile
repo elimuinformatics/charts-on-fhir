@@ -1,5 +1,5 @@
 ### STAGE 1: Build ###
-FROM node:20-alpine AS build
+FROM node:24.22.0-alpine AS build
 USER node
 WORKDIR /home/node
 COPY --chown=node package*.json ./
