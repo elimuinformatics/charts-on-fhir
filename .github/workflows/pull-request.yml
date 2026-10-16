@@ -6,8 +6,7 @@ on:
   pull_request:
     branches: ["main"]
 
-permissions:
-  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+permissions: {}
 
 env:
   NODE_VERSION: "24.22.0"
@@ -16,61 +15,71 @@ jobs:
   format:
     name: Code Formatting
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx format:check
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
+      - run: node_modules/.bin/nx format:check
 
   build-affected:
     name: Production Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx affected -t build --parallel=3
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
+      - run: node_modules/.bin/nx affected -t build --parallel=3
 
   test-affected:
     name: Test and Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read # allows SonarCloud to decorate PRs with analysis results
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
       - if: ${{ github.ref == 'refs/heads/main' }} # Run all tests when merging to main for accurate coverage in SonarCloud
-        run: npx nx run-many -t test --parallel=3 --no-watch --code-coverage
+        run: node_modules/.bin/nx run-many -t test --parallel=3 --no-watch --code-coverage
       - if: ${{ github.ref != 'refs/heads/main' }} # Only test affected projects in PRs
-        run: npx nx affected -t test --parallel=3 --no-watch --code-coverage
+        run: node_modules/.bin/nx affected -t test --parallel=3 --no-watch --code-coverage
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
+        uses: SonarSource/sonarqube-scan-action@ba9859eae8dd6bd29e412f25ddbbef3d032000f4 # v8.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
@@ -87,17 +96,20 @@ jobs:
   test-npm-package:
     name: Test NPM Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
-      - run: npm ci
-      - run: npx nx affected -t test-npm-package --parallel=3
+      - run: npm ci --ignore-scripts && npm rebuild @parcel/watcher nice-napi nx esbuild @swc/core
+      - run: node_modules/.bin/nx affected -t test-npm-package --parallel=3
