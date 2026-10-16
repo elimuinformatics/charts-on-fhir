@@ -6,10 +6,7 @@ on:
   pull_request:
     branches: ["main"]
 
-permissions:
-  contents: read # allows nx-set-shas to read the repository
-  actions: read # allows nx-set-shas to find the last successful workflow run
-  pull-requests: read # allows SonarCloud to decorate PRs with analysis results
+permissions: {}
 
 env:
   NODE_VERSION: 20.x
@@ -18,12 +15,15 @@ jobs:
   format:
     name: Code Formatting
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v5
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
       - uses: actions/setup-node@v7
         with:
@@ -36,12 +36,15 @@ jobs:
   build-affected:
     name: Production Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v5
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
       - uses: actions/setup-node@v7
         with:
@@ -54,12 +57,16 @@ jobs:
   test-affected:
     name: Test and Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read # allows SonarCloud to decorate PRs with analysis results
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v5
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
       - uses: actions/setup-node@v7
         with:
@@ -89,12 +96,15 @@ jobs:
   test-npm-package:
     name: Test NPM Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v5
+      - uses: nrwl/nx-set-shas@afb73a62d26e41464e9254689e1fd6122ee683c1 # v5.0.1
 
       - uses: actions/setup-node@v7
         with:
