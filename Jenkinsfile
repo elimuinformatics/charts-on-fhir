@@ -2,7 +2,7 @@ pipeline {
   parameters {
     choice(name: 'app', choices: ['showcase', 'cardio-patient', 'cardio'], description: 'Select the app to build and deploy')
   }
-  agent any
+  agent { label 'ec2-fleet' }
   options {
     buildDiscarder(logRotator(numToKeepStr: '30'))
   }
