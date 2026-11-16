@@ -40,6 +40,28 @@ describe('SimpleMedicationMapper', () => {
     });
   });
 
+  describe('canMap status', () => {
+    const medication = {
+      resourceType: 'MedicationRequest',
+      medicationCodeableConcept: { text: 'text' },
+      authoredOn: '2023-01-01T00:00:00Z',
+      intent: 'order',
+      subject: {},
+    } as const;
+
+    for (const status of ['entered-in-error', 'cancelled'] as const) {
+      it(`should return false for a ${status} order`, () => {
+        expect(mapper.canMap({ ...medication, status })).toBe(false);
+      });
+    }
+
+    for (const status of ['active', 'completed', 'stopped', 'on-hold', 'draft', 'unknown'] as const) {
+      it(`should return true for a ${status} order`, () => {
+        expect(mapper.canMap({ ...medication, status })).toBe(true);
+      });
+    }
+  });
+
   describe('map', () => {
     it('should return a layer with medication category', () => {
       const date = new Date();

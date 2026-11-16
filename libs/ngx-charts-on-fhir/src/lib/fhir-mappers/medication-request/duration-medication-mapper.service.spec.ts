@@ -12,6 +12,8 @@ import {
 } from './duration-medication-mapper.service';
 import { SimpleMedicationMapper } from './simple-medication-mapper.service';
 import { FhirCodeService } from '../fhir-code.service';
+import { MedicationRequest } from 'fhir/r4';
+import { MILLISECONDS_PER_DAY, formatDate } from '../../utils';
 
 const basicMedication = {
   resourceType: 'MedicationRequest',
@@ -533,6 +535,7 @@ describe('DurationMedicationMapper', () => {
         },
       };
       expect(() => mapper.map(medication)).toThrowError();
+      expect(mapper.canMap(medication)).toBe(false);
     });
 
     it('should throw an error if initialFill has a different quantity code', () => {
@@ -655,6 +658,182 @@ describe('DurationMedicationMapper', () => {
       };
       const expectedDate = new Date(medication.authoredOn).getTime();
       expect(mapper.map(medication).datasets[0].data[0].authoredOn).toEqual(expectedDate);
+    });
+  });
+  describe('supply segments and stopped orders', () => {
+    const authoredOn = new Date('2023-01-01T00:00:00Z').getTime();
+    const day = (n: number) => authoredOn + n * MILLISECONDS_PER_DAY;
+
+    /** Shaped like a Cerner order: dispensed amount in `dispenseRequest.quantity`, frequency as a GTS abbreviation code */
+    function cernerOrder(options: {
+      dose: number;
+      unit: string;
+      timingCode: string;
+      quantity: number;
+      refills: number;
+      status?: MedicationRequest['status'];
+      boundsEnd?: string;
+    }): MedicationRequest {
+      return {
+        ...basicMedication,
+        status: options.status ?? 'active',
+        dosageInstruction: [
+          {
+            timing: {
+              repeat: { boundsPeriod: { start: '2023-01-01T00:00:00Z', end: options.boundsEnd } },
+              code: { coding: [{ system: timingAbbreviationCodeSystem, code: options.timingCode }] },
+            },
+            doseAndRate: [{ doseQuantity: { value: options.dose, code: options.unit } }],
+          },
+        ],
+        dispenseRequest: {
+          numberOfRepeatsAllowed: options.refills,
+          quantity: { value: options.quantity, code: options.unit },
+        },
+      };
+    }
+
+    it('should map an order whose dispensed amount is only in dispenseRequest.quantity', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 0 });
+      expect(mapper.canMap(medication)).toBe(true);
+    });
+
+    it('should draw one 90-day segment for 90 tablets taken once a day with no refills', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 0 });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(90)]]);
+    });
+
+    it('should compute a 30-day supply for 540 mL taken as 6 mL three times a day', () => {
+      const medication = cernerOrder({ dose: 6, unit: 'mL', timingCode: 'TID', quantity: 540, refills: 0 });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
+    });
+
+    it('should draw authorized refills as a separate refill segment after the first fill', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 3 });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([
+        [authoredOn, day(90)],
+        [day(90), day(360)],
+      ]);
+      expect(data.map((point) => point.segment)).toEqual([undefined, 'refill']);
+    });
+
+    it('should describe the supply and refills in the tooltip', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 3 });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data[0].tooltip).toEqual([`Prescribed: ${formatDate(authoredOn)}`, `90-day supply + 3 refills (est. through ${formatDate(day(360))})`]);
+      expect(data[1].tooltip).toEqual(data[0].tooltip);
+    });
+
+    it('should use initialFill.quantity for the first fill and quantity for each refill', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 1 });
+      medication.dispenseRequest!.initialFill = { quantity: { value: 30, code: '{tbl}' } };
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([
+        [authoredOn, day(30)],
+        [day(30), day(120)],
+      ]);
+    });
+
+    it('should count the initial supply when numberOfRepeatsAllowed is 0', () => {
+      const medication: ExpectedSupplyMedication = {
+        ...basicMedication,
+        dispenseRequest: {
+          expectedSupplyDuration: { code: 'd', value: 30 },
+          numberOfRepeatsAllowed: 0,
+        },
+      };
+      const data = mapper.map(medication).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
+    });
+
+    it('should add one supply period per refill to an expectedSupplyDuration order', () => {
+      const medication: ExpectedSupplyMedication = {
+        ...basicMedication,
+        dispenseRequest: {
+          expectedSupplyDuration: { code: 'd', value: 30 },
+          numberOfRepeatsAllowed: 2,
+        },
+      };
+      const data = mapper.map(medication).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([
+        [authoredOn, day(30)],
+        [day(30), day(90)],
+      ]);
+    });
+
+    it('should not map an order whose timing code has no known frequency', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'Q36H', quantity: 90, refills: 0 });
+      expect(mapper.canMap(medication)).toBe(false);
+    });
+
+    it('should end a stopped order at its stop date and mark it stopped', () => {
+      const stop = '2023-01-01T00:14:30Z';
+      const medication = cernerOrder({ dose: 0.5, unit: '{tbl}', timingCode: 'BID', quantity: 180, refills: 0, status: 'stopped', boundsEnd: stop });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, new Date(stop).getTime()]]);
+      expect(data[0].stopped).toBe(true);
+    });
+
+    it('should show the stop date in the tooltip of a stopped order', () => {
+      const stop = '2023-01-01T00:14:30Z';
+      const medication = cernerOrder({ dose: 0.5, unit: '{tbl}', timingCode: 'BID', quantity: 180, refills: 0, status: 'stopped', boundsEnd: stop });
+      const tooltip = mapper.map(medication as any).datasets[0].data[0].tooltip as string[];
+      expect(tooltip[tooltip.length - 1]).toMatch(/^Stopped: /);
+    });
+
+    it('should truncate the refill segment when the order is stopped during the refill period', () => {
+      const medication = cernerOrder({
+        dose: 1,
+        unit: '{tbl}',
+        timingCode: 'QD',
+        quantity: 90,
+        refills: 3,
+        status: 'stopped',
+        boundsEnd: '2023-05-11T00:00:00Z',
+      });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([
+        [authoredOn, day(90)],
+        [day(90), day(130)],
+      ]);
+      expect(data.map((point) => point.stopped)).toEqual([undefined, true]);
+    });
+
+    it('should keep the full supply when the order was stopped after the supply ran out', () => {
+      const medication = cernerOrder({
+        dose: 1,
+        unit: '{tbl}',
+        timingCode: 'QD',
+        quantity: 30,
+        refills: 0,
+        status: 'stopped',
+        boundsEnd: '2023-12-31T00:00:00Z',
+      });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
+      expect(data[0].stopped).toBeUndefined();
+    });
+
+    it('should keep the full supply and say so in the tooltip when a stopped order has no stop date', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 30, refills: 0, status: 'stopped' });
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
+      expect(data[0].stopped).toBeUndefined();
+      expect(data[0].tooltip).toContain('Stopped (stop date not recorded)');
+    });
+
+    it('should mark a stopped order whose duration comes from its bounds period', () => {
+      const medication: BoundsPeriodMedication = {
+        ...basicMedication,
+        status: 'stopped',
+        dosageInstruction: [{ timing: { repeat: { boundsPeriod: { start: '2023-01-01T00:00:00Z', end: '2023-01-11T00:00:00Z' } } } }],
+      };
+      const data = mapper.map(medication).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(10)]]);
+      expect(data[0].stopped).toBe(true);
     });
   });
 });

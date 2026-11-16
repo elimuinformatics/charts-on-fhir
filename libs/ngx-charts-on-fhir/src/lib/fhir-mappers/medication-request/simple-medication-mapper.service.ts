@@ -15,13 +15,25 @@ export type SimpleMedication = {
   };
   authoredOn: string;
 } & MedicationRequest;
+/** Statuses of orders that were never in effect. They are not drawn. */
+const HIDDEN_MEDICATION_STATUSES: ReadonlyArray<MedicationRequest['status']> = ['entered-in-error', 'cancelled'];
+
 export function isMedication(resource: FhirResource): resource is SimpleMedication {
-  return !!(resource.resourceType === 'MedicationRequest' && resource.authoredOn && resource.medicationCodeableConcept?.text);
+  return !!(
+    resource.resourceType === 'MedicationRequest' &&
+    resource.authoredOn &&
+    resource.medicationCodeableConcept?.text &&
+    !HIDDEN_MEDICATION_STATUSES.includes(resource.status)
+  );
 }
 
 export type MedicationDataPoint = TimelineDataPoint & {
   y: string;
   authoredOn: number;
+  /** Set on the part of a duration bar that covers authorized refills */
+  segment?: 'refill';
+  /** Set on the last part of a duration bar when the order was stopped before its supply ran out */
+  stopped?: boolean;
 };
 
 /** Maps a FHIR MedicationRequest resource that only has an `authoredOn` and no supply duration */
