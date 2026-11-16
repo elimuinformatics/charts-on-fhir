@@ -737,6 +737,14 @@ describe('DurationMedicationMapper', () => {
       ]);
     });
 
+    it('should draw only the first fill when the per-fill quantity is in a different unit', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 3 });
+      medication.dispenseRequest!.initialFill = { quantity: { value: 30, code: '{tbl}' } };
+      medication.dispenseRequest!.quantity = { value: 2, code: '{bottle}' };
+      const data = mapper.map(medication as any).datasets[0].data;
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
+    });
+
     it('should count the initial supply when numberOfRepeatsAllowed is 0', () => {
       const medication: ExpectedSupplyMedication = {
         ...basicMedication,

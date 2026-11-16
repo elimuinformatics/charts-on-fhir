@@ -284,8 +284,9 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
           segment: 'refill',
         });
       }
-      if (truncated) {
-        data[data.length - 1].stopped = true;
+      const lastPoint = data.at(-1);
+      if (truncated && lastPoint) {
+        lastPoint.stopped = true;
       }
       return {
         ...dataset,
@@ -339,11 +340,16 @@ function computeSupply(resource: DurationMedication): Supply {
     const doseQuantity = resource.dosageInstruction[0].doseAndRate[0].doseQuantity;
     const dailyQuantity = doseQuantity.value * dailyFrequency;
     const firstFill = firstFillQuantity(resource)!;
+    const firstFillDuration = (firstFill.value! / dailyQuantity) * MILLISECONDS_PER_DAY;
+    // Refills are dispensed in the per-fill quantity. When it is missing or in another unit, the refill period is unknown,
+    // so only the first fill is drawn rather than assuming each refill matches the first fill.
     const perFill = resource.dispenseRequest.quantity;
-    const refillQuantity = perFill?.value != null && perFill.code === doseQuantity.code ? perFill.value : firstFill.value!;
+    if (perFill?.value == null || perFill.code !== doseQuantity.code) {
+      return { firstFill: firstFillDuration, refill: 0, refills: 0 };
+    }
     return {
-      firstFill: (firstFill.value! / dailyQuantity) * MILLISECONDS_PER_DAY,
-      refill: (refillQuantity / dailyQuantity) * MILLISECONDS_PER_DAY,
+      firstFill: firstFillDuration,
+      refill: (perFill.value / dailyQuantity) * MILLISECONDS_PER_DAY,
       refills: resource.dispenseRequest.numberOfRepeatsAllowed ?? 0,
     };
   }
@@ -361,7 +367,8 @@ function computeStopTime(resource: MedicationRequest): number | undefined {
 
 function buildTooltip(resource: MedicationRequest, authoredOn: number, supply: Supply, supplyEnd: number, stoppedAt: number | undefined): string[] {
   const days = Math.round(supply.firstFill / MILLISECONDS_PER_DAY);
-  const refills = supply.refills > 0 ? ` + ${supply.refills} ${supply.refills === 1 ? 'refill' : 'refills'}` : '';
+  const refillWord = supply.refills === 1 ? 'refill' : 'refills';
+  const refills = supply.refills > 0 ? ` + ${supply.refills} ${refillWord}` : '';
   const tooltip = [`Prescribed: ${formatDate(authoredOn)}`, `${days}-day supply${refills} (est. through ${formatDate(supplyEnd)})`];
   if (stoppedAt != null) {
     tooltip.push(`Stopped: ${formatDateTime(stoppedAt)}`);
@@ -408,6 +415,12 @@ function registerStoppedMarkerPlugin() {
     id: 'medicationStoppedMarker',
     afterDatasetsDraw: (chart: Chart) => {
       const ctx = chart.ctx;
+      const { left, top, width, height: areaHeight } = chart.chartArea;
+      ctx.save();
+      // clip to the plot area, so the marker of a bar that is panned or zoomed out of view is not drawn over the axes
+      ctx.beginPath();
+      ctx.rect(left, top, width, areaHeight);
+      ctx.clip();
       chart.data.datasets.forEach((dataset, datasetIndex) => {
         const meta = chart.getDatasetMeta(datasetIndex);
         if (meta.type !== 'bar' || meta.hidden) {
@@ -436,6 +449,7 @@ function registerStoppedMarkerPlugin() {
           ctx.restore();
         });
       });
+      ctx.restore();
     },
   });
 }

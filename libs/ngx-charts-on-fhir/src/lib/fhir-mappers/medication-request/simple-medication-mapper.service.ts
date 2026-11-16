@@ -16,14 +16,14 @@ export type SimpleMedication = {
   authoredOn: string;
 } & MedicationRequest;
 /** Statuses of orders that were never in effect. They are not drawn. */
-const HIDDEN_MEDICATION_STATUSES: ReadonlyArray<MedicationRequest['status']> = ['entered-in-error', 'cancelled'];
+const HIDDEN_MEDICATION_STATUSES: ReadonlySet<MedicationRequest['status']> = new Set(['entered-in-error', 'cancelled']);
 
 export function isMedication(resource: FhirResource): resource is SimpleMedication {
   return !!(
     resource.resourceType === 'MedicationRequest' &&
     resource.authoredOn &&
     resource.medicationCodeableConcept?.text &&
-    !HIDDEN_MEDICATION_STATUSES.includes(resource.status)
+    !HIDDEN_MEDICATION_STATUSES.has(resource.status)
   );
 }
 
