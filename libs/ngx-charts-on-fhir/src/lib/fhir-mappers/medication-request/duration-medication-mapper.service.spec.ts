@@ -792,6 +792,34 @@ describe('DurationMedicationMapper', () => {
       expect(tooltip[tooltip.length - 1]).toMatch(/^Stopped: /);
     });
 
+    it('should read a date-only stop date as the end of that local day and show it without a time', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 0, status: 'stopped', boundsEnd: '2023-01-15' });
+      const point = mapper.map(medication as any).datasets[0].data[0];
+      const endOfDay = new Date(2023, 0, 15, 23, 59, 59, 999).getTime();
+      expect(point.x).toEqual([authoredOn, endOfDay]);
+      expect(point.tooltip).toContain(`Stopped: ${formatDate(endOfDay)}`);
+    });
+
+    it('should read a year-month stop date as the end of that local month', () => {
+      const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 0, status: 'stopped', boundsEnd: '2023-02' });
+      const point = mapper.map(medication as any).datasets[0].data[0];
+      expect(point.x).toEqual([authoredOn, new Date(2023, 1, 28, 23, 59, 59, 999).getTime()]);
+    });
+
+    it('should not set minBarLength, which would clamp out-of-view bars into the plot area', () => {
+      const medication = cernerOrder({
+        dose: 0.5,
+        unit: '{tbl}',
+        timingCode: 'BID',
+        quantity: 180,
+        refills: 0,
+        status: 'stopped',
+        boundsEnd: '2023-01-01T00:14:30Z',
+      });
+      const dataset = mapper.map(medication as any).datasets[0] as any;
+      expect(dataset.minBarLength).toBeUndefined();
+    });
+
     it('should truncate the refill segment when the order is stopped during the refill period', () => {
       const medication = cernerOrder({
         dose: 1,

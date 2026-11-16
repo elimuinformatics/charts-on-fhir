@@ -233,7 +233,10 @@ export function isDurationMedication(resource: MedicationRequest): resource is D
   );
 }
 
-/** Smallest length, in pixels, of a duration bar, so an order stopped minutes after it was written is still visible */
+/**
+ * Smallest length, in pixels, at which a duration bar is drawn, so an order stopped minutes after it was written is still visible.
+ * The plugin draws it rather than Chart.js `minBarLength`, which clamps an out-of-view bar into the plot area.
+ */
 const MIN_BAR_LENGTH_PX = 4;
 
 /**
@@ -249,7 +252,7 @@ const MIN_BAR_LENGTH_PX = 4;
 @Injectable()
 export class DurationMedicationMapper implements Mapper<DurationMedication> {
   constructor(private readonly baseMapper: SimpleMedicationMapper) {
-    registerStoppedMarkerPlugin();
+    registerMedicationBarPlugin();
   }
   canMap = isDurationMedication;
   map(resource: DurationMedication): DataLayer<'bar', MedicationDataPoint[]> {
@@ -257,11 +260,12 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
     const authoredOn = new Date(resource.authoredOn).getTime();
     const firstFillEnd = authoredOn + supply.firstFill;
     const supplyEnd = firstFillEnd + supply.refills * supply.refill;
-    const stoppedAt = computeStopTime(resource);
+    const stop = computeStop(resource);
+    const stoppedAt = stop?.time;
     // A bounds period already ends at the stop date, so a stopped bounds-period order is marked even though it is not shortened
     const truncated = stoppedAt != null && (stoppedAt < supplyEnd || supply.fromBoundsPeriod);
     const end = truncated ? Math.max(Math.min(stoppedAt, supplyEnd), authoredOn) : supplyEnd;
-    const tooltip = buildTooltip(resource, authoredOn, supply, supplyEnd, stoppedAt);
+    const tooltip = buildTooltip(resource, authoredOn, supply, supplyEnd, stop);
 
     const layer = this.baseMapper.map(resource) as DataLayer<'bar', MedicationDataPoint[]>;
     layer.datasets = layer.datasets.map((dataset) => {
@@ -296,7 +300,6 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
         borderSkipped: false,
         barPercentage: 1,
         grouped: false,
-        minBarLength: MIN_BAR_LENGTH_PX,
         data,
       };
     });
@@ -356,22 +359,46 @@ function computeSupply(resource: DurationMedication): Supply {
   throw new TypeError('Cannot compute duration for this MedicationRequest');
 }
 
-/** Stop time (in milliseconds) of a `stopped` order, or `undefined` if the order is not stopped or the stop time is not recorded */
-function computeStopTime(resource: MedicationRequest): number | undefined {
+type Stop = {
+  /** Stop time in milliseconds */
+  time: number;
+  /** False when the record gives only a date (or year-month, or year) for the stop */
+  hasTime: boolean;
+};
+
+/** Stop time of a `stopped` order, or `undefined` if the order is not stopped or the stop time is not recorded */
+function computeStop(resource: MedicationRequest): Stop | undefined {
   if (resource.status !== 'stopped') {
     return undefined;
   }
   const end = resource.dosageInstruction?.[0]?.timing?.repeat?.boundsPeriod?.end;
-  return end ? new Date(end).getTime() : undefined;
+  return end ? parsePeriodEnd(end) : undefined;
 }
 
-function buildTooltip(resource: MedicationRequest, authoredOn: number, supply: Supply, supplyEnd: number, stoppedAt: number | undefined): string[] {
+/**
+ * Parses the end of a FHIR Period.
+ * A dateTime without a time (`2024-03-01`, `2024-03`, `2024`) means the whole day, month, or year, so it is read as the local
+ * end of that period. `new Date('2024-03-01')` would read it as UTC midnight, which is the previous day west of UTC.
+ */
+function parsePeriodEnd(end: string): Stop {
+  const match = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(end);
+  if (!match) {
+    return { time: new Date(end).getTime(), hasTime: true };
+  }
+  const year = Number(match[1]);
+  const month = match[2] ? Number(match[2]) : 12;
+  // day 0 of the following month is the last day of `month`
+  const day = match[3] ? Number(match[3]) : new Date(year, month, 0).getDate();
+  return { time: new Date(year, month - 1, day, 23, 59, 59, 999).getTime(), hasTime: false };
+}
+
+function buildTooltip(resource: MedicationRequest, authoredOn: number, supply: Supply, supplyEnd: number, stop: Stop | undefined): string[] {
   const days = Math.round(supply.firstFill / MILLISECONDS_PER_DAY);
   const refillWord = supply.refills === 1 ? 'refill' : 'refills';
   const refills = supply.refills > 0 ? ` + ${supply.refills} ${refillWord}` : '';
   const tooltip = [`Prescribed: ${formatDate(authoredOn)}`, `${days}-day supply${refills} (est. through ${formatDate(supplyEnd)})`];
-  if (stoppedAt != null) {
-    tooltip.push(`Stopped: ${formatDateTime(stoppedAt)}`);
+  if (stop) {
+    tooltip.push(`Stopped: ${stop.hasTime ? formatDateTime(stop.time) : formatDate(stop.time)}`);
   } else if (resource.status === 'stopped') {
     tooltip.push('Stopped (stop date not recorded)');
   }
@@ -409,15 +436,18 @@ function computeDailyFrequency(resource: TimingMedication) {
   throw new TypeError(`Unsupported MedicationRequest Timing: ${JSON.stringify(resource.dosageInstruction[0].timing)}`);
 }
 
-/** Registers a Chart.js plugin that draws an ✕ at the end of every bar whose data point has `stopped: true` */
-function registerStoppedMarkerPlugin() {
+/**
+ * Registers a Chart.js plugin for medication duration bars. It draws bars shorter than `MIN_BAR_LENGTH_PX` at that length,
+ * and an ✕ at the end of every bar whose data point has `stopped: true`. Drawing is clipped to the plot area, so a bar that is
+ * panned or zoomed out of view leaves nothing over the axes.
+ */
+function registerMedicationBarPlugin() {
   Chart.register({
-    id: 'medicationStoppedMarker',
+    id: 'medicationBars',
     afterDatasetsDraw: (chart: Chart) => {
       const ctx = chart.ctx;
       const { left, top, width, height: areaHeight } = chart.chartArea;
       ctx.save();
-      // clip to the plot area, so the marker of a bar that is panned or zoomed out of view is not drawn over the axes
       ctx.beginPath();
       ctx.rect(left, top, width, areaHeight);
       ctx.clip();
@@ -426,30 +456,42 @@ function registerStoppedMarkerPlugin() {
         if (meta.type !== 'bar' || meta.hidden) {
           return;
         }
+        const color = typeof dataset.borderColor === 'string' ? dataset.borderColor : '#666666';
         meta.data.forEach((element, index) => {
           const point = dataset.data[index] as MedicationDataPoint | undefined;
-          if (!point?.stopped) {
+          if (point?.authoredOn == null) {
             return;
           }
           const { x, y, base, height } = (element as unknown as BarElement).getProps(['x', 'y', 'base', 'height'], true);
           if (x == null || y == null) {
             return;
           }
-          const endX = Math.max(x, base);
-          const size = Math.min(height / 2, 6);
-          ctx.save();
-          ctx.strokeStyle = typeof dataset.borderColor === 'string' ? dataset.borderColor : '#666666';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(endX - size, y - size);
-          ctx.lineTo(endX + size, y + size);
-          ctx.moveTo(endX - size, y + size);
-          ctx.lineTo(endX + size, y - size);
-          ctx.stroke();
-          ctx.restore();
+          const start = Math.min(x, base);
+          let end = Math.max(x, base);
+          if (end - start < MIN_BAR_LENGTH_PX) {
+            end = start + MIN_BAR_LENGTH_PX;
+            ctx.fillStyle = color;
+            ctx.fillRect(start, y - height / 2, MIN_BAR_LENGTH_PX, height);
+          }
+          if (point.stopped) {
+            drawStoppedMarker(ctx, end, y, Math.min(height / 2, 6), color);
+          }
         });
       });
       ctx.restore();
     },
   });
+}
+
+function drawStoppedMarker(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x - size, y - size);
+  ctx.lineTo(x + size, y + size);
+  ctx.moveTo(x - size, y + size);
+  ctx.lineTo(x + size, y - size);
+  ctx.stroke();
+  ctx.restore();
 }
