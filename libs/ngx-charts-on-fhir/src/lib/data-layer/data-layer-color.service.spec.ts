@@ -116,6 +116,12 @@ describe('DataLayerColorService', () => {
     }));
   });
 
+  describe('getHatchPattern', () => {
+    it('should return the transparent fill', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      expect(service.getHatchPattern('#e41a1c')).toEqual(service.addTransparency('#e41a1c'));
+    }));
+  });
+
   describe('getColor', () => {
     it('should get the borderColor of a dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = {

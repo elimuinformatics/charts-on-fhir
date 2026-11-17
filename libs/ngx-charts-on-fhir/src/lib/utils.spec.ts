@@ -1,4 +1,4 @@
-import { formatDate, formatTime } from './utils';
+import { countDataPoints, formatDate, formatTime } from './utils';
 
 describe('utils', () => {
   it('should convert timestamp in expected timeformat for different time zones', () => {
@@ -14,5 +14,9 @@ describe('utils', () => {
   it('should convert timestamp in expected dateformat', () => {
     const expectedDate = formatDate(1676547182000);
     expect(expectedDate).toEqual('16 Feb 2023');
+  });
+
+  it('should count every data point', () => {
+    expect(countDataPoints({ data: [{}, {}, {}] })).toBe(3);
   });
 });

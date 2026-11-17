@@ -111,6 +111,14 @@ export class DataLayerColorService {
     line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
   }
 
+  /**
+   * @deprecated Refill segments are no longer drawn, so this returns the transparent fill.
+   * It will be removed in the next major version.
+   */
+  getHatchPattern(color: string): CanvasPattern | string | undefined {
+    return this.addTransparency(color);
+  }
+
   getColor(dataset: Dataset): string | undefined {
     const color = dataset.borderColor;
     if (typeof color === 'string') {

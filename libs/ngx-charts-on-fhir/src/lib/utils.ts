@@ -100,3 +100,11 @@ export function hashCode(str: string): number {
   }
   return hash;
 }
+
+/**
+ * Number of data points in a dataset.
+ * @deprecated Every medication order is now one data point, so this is `dataset.data.length`. It will be removed in the next major version.
+ */
+export function countDataPoints(dataset: { data: readonly unknown[] }): number {
+  return dataset.data.length;
+}
