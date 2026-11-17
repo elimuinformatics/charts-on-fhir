@@ -242,11 +242,10 @@ const MIN_BAR_LENGTH_PX = 4;
 /**
  * Maps a FHIR MedicationRequest resource for which the supply duration can be calculated using one the supported algorthims.
  *
- * The first fill is drawn as one data point. Authorized refills are drawn as a second data point with `segment: 'refill'`,
- * which `DataLayerColorService` fills with a hatched pattern. Refills are authorized, not dispensed, so the refill segment
- * is an estimate of the period the patient is meant to be on the medication.
+ * Each order is drawn as one bar covering the first fill and all authorized refills. Refills are authorized, not dispensed,
+ * so the bar is an estimate of the period the patient is meant to be on the medication.
  *
- * A `stopped` order is truncated at its stop date (`dosageInstruction[0].timing.repeat.boundsPeriod.end`), and the last
+ * A `stopped` order is truncated at its stop date (`dosageInstruction[0].timing.repeat.boundsPeriod.end`), and its
  * data point is flagged with `stopped: true` so the chart draws an end marker.
  */
 @Injectable()
@@ -271,27 +270,14 @@ export class DurationMedicationMapper implements Mapper<DurationMedication> {
     layer.datasets = layer.datasets.map((dataset) => {
       const data: MedicationDataPoint[] = [
         {
-          x: [authoredOn, Math.min(firstFillEnd, end)],
+          x: [authoredOn, end],
           y: dataset.data[0].y,
           authoredOn,
           tooltip,
           resource,
+          ...(truncated && { stopped: true }),
         },
       ];
-      if (end > firstFillEnd) {
-        data.push({
-          x: [firstFillEnd, end],
-          y: dataset.data[0].y,
-          authoredOn,
-          tooltip,
-          resource,
-          segment: 'refill',
-        });
-      }
-      const lastPoint = data.at(-1);
-      if (truncated && lastPoint) {
-        lastPoint.stopped = true;
-      }
       return {
         ...dataset,
         label: dataset.label + ' (Est. Duration)',

@@ -30,9 +30,7 @@ export function isMedication(resource: FhirResource): resource is SimpleMedicati
 export type MedicationDataPoint = TimelineDataPoint & {
   y: string;
   authoredOn: number;
-  /** Set on the part of a duration bar that covers authorized refills */
-  segment?: 'refill';
-  /** Set on the last part of a duration bar when the order was stopped before its supply ran out */
+  /** Set on a duration bar when the order was stopped before its supply ran out */
   stopped?: boolean;
 };
 

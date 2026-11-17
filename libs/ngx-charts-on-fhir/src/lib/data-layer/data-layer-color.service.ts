@@ -2,7 +2,6 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { DataLayer, Dataset } from './data-layer';
 import tinycolor from 'tinycolor2';
 import { BoxAnnotationOptions } from 'chartjs-plugin-annotation';
-import { ScriptableContext } from 'chart.js';
 import { hashCode } from '../utils';
 /**
  * Injection Token used by `DataLayerColorService` to define the available chart colors.
@@ -103,9 +102,6 @@ export class DataLayerColorService {
   /**
    * Sets the border and background color of all chart elements in the given dataset (point, line, bar, etc.).
    * Transparency will be applied to the point background color if the dataset defines the custom property `chartsOnFhir.backgroundStyle = 'transparent'`
-   *
-   * In a bar dataset, a data point with `segment: 'refill'` is filled with a hatched pattern instead of the transparent color.
-   * The fill is chosen per data point, so it stays correct when data from another resource is merged into the dataset later.
    */
   setColor(dataset: Dataset, color: string): void {
     const line = dataset as Dataset<'line'>;
@@ -113,21 +109,6 @@ export class DataLayerColorService {
     line.backgroundColor = this.addTransparency(color);
     line.pointBorderColor = color;
     line.pointBackgroundColor = dataset.chartsOnFhir?.backgroundStyle === 'transparent' ? this.addTransparency(color) : color;
-    if (dataset.type === 'bar') {
-      const fill = this.addTransparency(color);
-      (dataset as Dataset<'bar'>).backgroundColor = (context: ScriptableContext<'bar'>) =>
-        (context.raw as { segment?: string } | undefined)?.segment === 'refill' ? this.getHatchPattern(color) : fill;
-    }
-  }
-
-  private readonly hatchPatterns = new Map<string, CanvasPattern | string | undefined>();
-
-  /** Gets a diagonally hatched fill in the given color, falling back to the transparent color where a canvas is not available */
-  getHatchPattern(color: string): CanvasPattern | string | undefined {
-    if (!this.hatchPatterns.has(color)) {
-      this.hatchPatterns.set(color, createHatchPattern(color) ?? this.addTransparency(color));
-    }
-    return this.hatchPatterns.get(color);
   }
 
   getColor(dataset: Dataset): string | undefined {
@@ -151,32 +132,4 @@ export class DataLayerColorService {
     const gradient = `linear-gradient(0deg, ${segments.join(',')})`;
     return gradient;
   }
-}
-
-function createHatchPattern(color: string): CanvasPattern | undefined {
-  if (typeof document === 'undefined') {
-    return undefined;
-  }
-  const size = 8;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) {
-    return undefined;
-  }
-  ctx.fillStyle = tinycolor(color).setAlpha(0.08).toString();
-  ctx.fillRect(0, 0, size, size);
-  ctx.strokeStyle = tinycolor(color).setAlpha(0.6).toString();
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  // one diagonal across the tile plus the two corner pieces, so the lines join across tiles
-  ctx.moveTo(0, size);
-  ctx.lineTo(size, 0);
-  ctx.moveTo(-1, 1);
-  ctx.lineTo(1, -1);
-  ctx.moveTo(size - 1, size + 1);
-  ctx.lineTo(size + 1, size - 1);
-  ctx.stroke();
-  return ctx.createPattern(canvas, 'repeat') ?? undefined;
 }
