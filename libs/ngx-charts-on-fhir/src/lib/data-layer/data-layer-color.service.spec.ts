@@ -116,6 +116,12 @@ describe('DataLayerColorService', () => {
     }));
   });
 
+  describe('getHatchPattern', () => {
+    it('should return the transparent fill', inject([DataLayerColorService], (service: DataLayerColorService) => {
+      expect(service.getHatchPattern('#e41a1c')).toEqual(service.addTransparency('#e41a1c'));
+    }));
+  });
+
   describe('getColor', () => {
     it('should get the borderColor of a dataset', inject([DataLayerColorService], (service: DataLayerColorService) => {
       const dataset: any = {
@@ -133,18 +139,6 @@ describe('DataLayerColorService', () => {
       const dataset: any = { borderColor: '#e41a1c' };
       service.setColor(dataset, '#e41a1c');
       expect(dataset.borderColor).toEqual('#e41a1c');
-    }));
-
-    it('should fill refill segments of a bar dataset with a hatched pattern', inject([DataLayerColorService], (service: DataLayerColorService) => {
-      const dataset: any = { type: 'bar', data: [] };
-      service.setColor(dataset, '#e41a1c');
-      expect(dataset.backgroundColor({ raw: { segment: 'refill' } })).toBeInstanceOf(CanvasPattern);
-    }));
-
-    it('should fill other segments of a bar dataset with the transparent color', inject([DataLayerColorService], (service: DataLayerColorService) => {
-      const dataset: any = { type: 'bar', data: [] };
-      service.setColor(dataset, '#e41a1c');
-      expect(dataset.backgroundColor({ raw: {} })).toEqual(service.addTransparency('#e41a1c'));
     }));
   });
 });

@@ -16,7 +16,7 @@
             </mat-title>
           }
         </mat-panel-title>
-        <mat-panel-description> {{ countDataPoints(dataset) }} observations </mat-panel-description>
+        <mat-panel-description> {{ dataset.data.length }} observations </mat-panel-description>
       </mat-expansion-panel-header>
       <dataset-options [dataset]="dataset" (datasetChange)="this.onDatasetOptionsChange(dataset, $event)"></dataset-options>
     </mat-expansion-panel>

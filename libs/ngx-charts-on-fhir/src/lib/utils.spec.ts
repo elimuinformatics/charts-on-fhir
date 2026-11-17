@@ -15,11 +15,8 @@ describe('utils', () => {
     const expectedDate = formatDate(1676547182000);
     expect(expectedDate).toEqual('16 Feb 2023');
   });
-});
 
-describe('countDataPoints', () => {
-  it('should count a duration bar with a refill segment as one data point', () => {
-    const dataset = { data: [{ x: [0, 1] }, { x: [1, 2], segment: 'refill' }, { x: [3, 4] }] };
-    expect(countDataPoints(dataset)).toBe(2);
+  it('should count every data point', () => {
+    expect(countDataPoints({ data: [{}, {}, {}] })).toBe(3);
   });
 });

@@ -4,7 +4,6 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { sum } from 'lodash-es';
 import { DataLayer } from '../data-layer/data-layer';
-import { countDataPoints } from '../utils';
 import { DataLayerManagerService } from '../data-layer/data-layer-manager.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +32,7 @@ export class DataLayerBrowserComponent implements OnInit, AfterViewInit {
 
   getLayerId = (index: number, layer: DataLayer) => layer.name;
   getDatasetCount = (layer: DataLayer) => layer.datasets.length;
-  getDatapointCount = (layer: DataLayer) => sum(layer.datasets.map(countDataPoints));
+  getDatapointCount = (layer: DataLayer) => sum(layer.datasets.map((dataset) => dataset.data.length));
   getCategory = (layer: DataLayer) => layer.category?.join(', ') ?? '';
   ngOnInit(): void {
     this.layerManager.availableLayers$.subscribe((layers) => (this.dataSource.data = layers));

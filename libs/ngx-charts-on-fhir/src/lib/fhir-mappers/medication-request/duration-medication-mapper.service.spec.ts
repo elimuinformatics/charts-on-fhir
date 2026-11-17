@@ -660,7 +660,7 @@ describe('DurationMedicationMapper', () => {
       expect(mapper.map(medication).datasets[0].data[0].authoredOn).toEqual(expectedDate);
     });
   });
-  describe('supply segments and stopped orders', () => {
+  describe('supply bars and stopped orders', () => {
     const authoredOn = new Date('2023-01-01T00:00:00Z').getTime();
     const day = (n: number) => authoredOn + n * MILLISECONDS_PER_DAY;
 
@@ -698,7 +698,7 @@ describe('DurationMedicationMapper', () => {
       expect(mapper.canMap(medication)).toBe(true);
     });
 
-    it('should draw one 90-day segment for 90 tablets taken once a day with no refills', () => {
+    it('should draw one 90-day bar for 90 tablets taken once a day with no refills', () => {
       const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 0 });
       const data = mapper.map(medication as any).datasets[0].data;
       expect(data.map((point) => point.x)).toEqual([[authoredOn, day(90)]]);
@@ -710,31 +710,23 @@ describe('DurationMedicationMapper', () => {
       expect(data.map((point) => point.x)).toEqual([[authoredOn, day(30)]]);
     });
 
-    it('should draw authorized refills as a separate refill segment after the first fill', () => {
+    it('should draw the first fill and authorized refills as one bar', () => {
       const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 3 });
       const data = mapper.map(medication as any).datasets[0].data;
-      expect(data.map((point) => point.x)).toEqual([
-        [authoredOn, day(90)],
-        [day(90), day(360)],
-      ]);
-      expect(data.map((point) => point.segment)).toEqual([undefined, 'refill']);
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(360)]]);
     });
 
     it('should describe the supply and refills in the tooltip', () => {
       const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 3 });
       const data = mapper.map(medication as any).datasets[0].data;
       expect(data[0].tooltip).toEqual([`Prescribed: ${formatDate(authoredOn)}`, `90-day supply + 3 refills (est. through ${formatDate(day(360))})`]);
-      expect(data[1].tooltip).toEqual(data[0].tooltip);
     });
 
     it('should use initialFill.quantity for the first fill and quantity for each refill', () => {
       const medication = cernerOrder({ dose: 1, unit: '{tbl}', timingCode: 'QD', quantity: 90, refills: 1 });
       medication.dispenseRequest!.initialFill = { quantity: { value: 30, code: '{tbl}' } };
       const data = mapper.map(medication as any).datasets[0].data;
-      expect(data.map((point) => point.x)).toEqual([
-        [authoredOn, day(30)],
-        [day(30), day(120)],
-      ]);
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(120)]]);
     });
 
     it('should draw only the first fill when the per-fill quantity is in a different unit', () => {
@@ -766,10 +758,7 @@ describe('DurationMedicationMapper', () => {
         },
       };
       const data = mapper.map(medication).datasets[0].data;
-      expect(data.map((point) => point.x)).toEqual([
-        [authoredOn, day(30)],
-        [day(30), day(90)],
-      ]);
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(90)]]);
     });
 
     it('should not map an order whose timing code has no known frequency', () => {
@@ -820,7 +809,7 @@ describe('DurationMedicationMapper', () => {
       expect(dataset.minBarLength).toBeUndefined();
     });
 
-    it('should truncate the refill segment when the order is stopped during the refill period', () => {
+    it('should truncate the bar when the order is stopped during the refill period', () => {
       const medication = cernerOrder({
         dose: 1,
         unit: '{tbl}',
@@ -831,11 +820,8 @@ describe('DurationMedicationMapper', () => {
         boundsEnd: '2023-05-11T00:00:00Z',
       });
       const data = mapper.map(medication as any).datasets[0].data;
-      expect(data.map((point) => point.x)).toEqual([
-        [authoredOn, day(90)],
-        [day(90), day(130)],
-      ]);
-      expect(data.map((point) => point.stopped)).toEqual([undefined, true]);
+      expect(data.map((point) => point.x)).toEqual([[authoredOn, day(130)]]);
+      expect(data[0].stopped).toBe(true);
     });
 
     it('should keep the full supply when the order was stopped after the supply ran out', () => {

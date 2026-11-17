@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { produce, castDraft } from 'immer';
 import { Dataset } from '../../data-layer/data-layer';
-import { countDataPoints } from '../../utils';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DatasetOptionsComponent } from '../dataset-options/dataset-options.component';
@@ -26,7 +25,6 @@ export class DatasetListComponent {
     }
   }
   @Output() datasetsChange = new EventEmitter<Dataset[]>();
-  readonly countDataPoints = countDataPoints;
 
   onCheckboxChange(dataset: Dataset, event: MatCheckboxChange) {
     if (this._datasets) {

@@ -102,9 +102,9 @@ export function hashCode(str: string): number {
 }
 
 /**
- * Number of data points in a dataset, for display.
- * A medication duration bar split into a first fill and a `segment: 'refill'` point is one order, so it is counted once.
+ * Number of data points in a dataset.
+ * @deprecated Every medication order is now one data point, so this is `dataset.data.length`. It will be removed in the next major version.
  */
 export function countDataPoints(dataset: { data: readonly unknown[] }): number {
-  return dataset.data.filter((point) => (point as { segment?: string } | null)?.segment !== 'refill').length;
+  return dataset.data.length;
 }
